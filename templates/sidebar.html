@@ -1,0 +1,18 @@
+{% load static %}
+
+<div class="sidebar">
+    <ul class="sidebar-menu">
+        <li class="{% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'home' %}">Accueil</a>
+        </li>
+        <li class="{% if request.path == '/corpus/' %}active{% endif %}">
+            <a href="{% url 'corpus' %}">Corpus</a>
+        </li>
+        <li class="{% if request.path == '/outils/' %}active{% endif %}">
+            <a href="{% url 'outils' %}">Outils</a>
+        </li>
+        <li class="{% if request.path == '/ressources/' %}active{% endif %}">
+            <a href="{% url 'ressources' %}">Ressources</a>
+        </li>
+    </ul>
+</div>
