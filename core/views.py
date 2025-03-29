@@ -12,3 +12,9 @@ def outils(request):
 
 def ressources(request):
     return render(request, 'core/ressources.html') 
+
+def projets(request):
+    return render(request, 'core/projets.html')
+
+def communaute(request):
+    return render(request, 'core/communaute.html')

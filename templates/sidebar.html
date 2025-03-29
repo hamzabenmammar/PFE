@@ -14,5 +14,11 @@
         <li class="{% if request.path == '/ressources/' %}active{% endif %}">
             <a href="{% url 'ressources' %}">Ressources</a>
         </li>
+        <li class="{% if request.path == '/projets/' %}active{% endif %}">
+            <a href="{% url 'projets' %}">Projets de recherche</a>
+        </li>
+        <li class="{% if request.path == '/communaute/' %}active{% endif %}">
+            <a href="{% url 'communaute' %}">Communauté</a>
+        </li>
     </ul>
 </div>

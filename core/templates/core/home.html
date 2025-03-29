@@ -12,22 +12,35 @@
     </div>
 
     <div class="quick-actions">
+
+        <a href="{% url "corpus" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">📊</div>
             <h3 class="action-title">Parcourir les corpus</h3>
         </div>
+        </a>
+
+        <a href="{% url "outils" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">🔧</div>
             <h3 class="action-title">Utiliser les outils</h3>
         </div>
+        </a>
+
+        <a href="{% url "projets" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">📝</div>
             <h3 class="action-title">Soumettre un projet</h3>
         </div>
+        </a>
+
+        <a href="{% url "communaute" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">👥</div>
             <h3 class="action-title">Rejoindre la communauté</h3>
         </div>
+        </a>
+
     </div>
 
     <div class="stats-container">
