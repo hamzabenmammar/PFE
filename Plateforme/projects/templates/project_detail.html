@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ project.title }}</h1>
+  <p>{{ project.description }}</p>
+  {% if project.coordinator == user %}
+    <a href="{% url 'projects:project_update' project.pk %}">Edit</a>
+    <a href="{% url 'projects:project_delete' project.pk %}">Delete</a>
+  {% else %}
+    {% if user in project.memberships.all %}
+      <form action="{% url 'projects:leave_project' project.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Leave</button>
+      </form>
+    {% else %}
+    {% endif %}
+  {% endif %}
+  
+  <div class="project-members">
+    <h2>Membres</h2>
+    <ul>
+      {% for pm in project.memberships.all %}
+        <li>{{ pm.member.username }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  <a href="{% url 'projects:project_list' %}">Back</a>
+{% endblock %}

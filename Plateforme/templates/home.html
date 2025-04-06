@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+    <div class="welcome-text">
+        <h1>Welcome to Arabic NLP Platform</h1>
+        <p>Explore resources, tools, and corpus for Arabic Natural Language Processing. Collaborate with researchers and developers on innovative projects.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary">Explore Resources</a>
+    </div>
+    <img src="{% static 'images/nlp-illustration.png' %}" alt="Arabic NLP illustration" />
+</div>
+
+<div class="quick-actions">
+    <a href="{% url 'home' %}" class="action-card">
+        <div class="action-icon">📊</div>
+        <h3 class="action-title">Browse Corpus</h3>
+    </a>
+    <a href="{% url 'home' %}" class="action-card">
+        <div class="action-icon">🔧</div>
+        <h3 class="action-title">Use Tools</h3>
+    </a>
+    <a href="{% url 'projects:project_new' %}" class="action-card">
+        <div class="action-icon">📝</div>
+        <h3 class="action-title">Submit Project</h3>
+    </a>
+    <a href="{% url 'home' %}" class="action-card">
+        <div class="action-icon">👥</div>
+        <h3 class="action-title">Join Community</h3>
+    </a>
+</div>
+
+<!-- Rest of the home page content remains the same as in the previous template -->
+{% endblock %}

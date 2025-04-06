@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Créer un nouveau sujet</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Titre</label>
+                    <input type="text" name="{{ form.title.name }}" class="form-control" id="{{ form.title.id_for_label }}" {% if form.title.value %}value="{{ form.title.value }}"{% endif %}>
+                    {% if form.title.errors %}
+                    <div class="text-danger">
+                        {{ form.title.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    <textarea name="{{ form.description.name }}" class="form-control" id="{{ form.description.id_for_label }}">{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+                    {% if form.description.errors %}
+                    <div class="text-danger">
+                        {{ form.description.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="">Créer</button>
+                <a href="{% url 'forum:topic-list' %}" class="">Annuler</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

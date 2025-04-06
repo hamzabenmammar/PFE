@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4>{{ chatroom.name }}</h4>
+                        
+                    </div>
+                    <p class="mb-0">{{ chatroom.description }}</p>
+                    <small>Sujet: {{ chatroom.topic.title }} | Créé par {{ chatroom.creator }}</small>
+                </div>
+                <div class="card-body" style="height: 400px; overflow-y: auto;" id="message-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="mb-3 p-2 {% if message.user == user %}bg-light text-right{% else %}bg-white{% endif %}" style="border-radius: 10px;">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ message.user }}</strong>
+                                <small>{{ message.timestamp|date:"d/m/Y H:i" }}</small>
+                            </div>
+                            <p class="mb-0">{{ message.content }}</p>
+                            {% if message.user == user %}
+                            <div class="mt-1">
+                                <form method="post" action="{% url 'forum:message-delete' message.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="">Supprimer</button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="">
+                            Aucun message dans cette salle pour le moment.
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="message" class="form-control" placeholder="Votre message..." required>
+                            <div class="input-group-append">
+                                <button type="submit" class="">Envoyer</button>
+                                <a href="{%url 'forum:chatroom-list' pk=topic.pk %}">Back</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Faire défiler automatiquement vers le dernier message
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageContainer = document.getElementById('message-container');
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    });
+</script>
+{% endblock %}

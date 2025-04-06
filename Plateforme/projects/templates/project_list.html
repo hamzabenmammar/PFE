@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Projects of Research in Arabic TAL{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .content {
+            margin-left: 290px;
+            padding: 20px;
+        }
+        .page-title {
+            color: #1c4e6d;
+            margin-bottom: 30px;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .project-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: white;
+        }
+        .project-title {
+            color: #1c4e6d;
+            margin-top: 0;
+        }
+        .project-tags {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            padding: 3px 10px;
+            font-size: 0.9em;
+        }
+        .project-description {
+            margin-bottom: 15px;
+        }
+        .project-meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary1 {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid #1c4e6d;
+            color: #1c4e6d;
+        }
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1 class="page-title">Projects of Research in Arabic TAL</h1>
+        <form method="get" action="{% url 'projects:project_search' %}">
+            <input type="text" name="q" placeholder="Search projects">
+            <button type="submit">Search</button>
+        </form>
+        
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                <h2 class="project-title">{{ project.title }}</h2>
+                <div class="project-description">
+                    {{ project.description }}
+                </div>
+                <div class="project-meta">
+                    <div>Institution: {{ project.institution }}</div>
+                    <div>Period: {{ project.date_start }} - {{ project.date_end }}</div>
+                    <div>Coordinator: {{ project.coordinator }}</div>
+                </div>
+                <div class="button-group">
+                  <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-primary1">Details</a>
+                  {% if project.coordinator == user %}
+                    <a href="{% url 'projects:project_update' project.pk %}" class="btn btn-secondary">Update</a>
+                    <a href="{% url 'projects:project_delete' project.pk %}" class="btn btn-danger">Delete</a>
+                  {% else %}
+                    <form action="{% url 'projects:join_project' project.pk %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-secondary">Join</button>
+                    </form>
+                
+                  {% endif %}
+                
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

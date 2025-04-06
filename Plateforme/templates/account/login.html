@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load account socialaccount %}
+
+{% block title %}Log In{% endblock title %}
+{% block content %}
+<h2>Log In</h2>
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<button ctype="submit">Log In</button>
+</form>
+
+<a href="{% url 'account_signup' %}">Don't have an account? Sign up</a>
+{% endblock%}

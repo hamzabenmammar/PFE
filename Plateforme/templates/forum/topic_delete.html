@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4>Supprimer le sujet</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Êtes-vous sûr de vouloir supprimer le sujet "{{ topic.title }}" ?</h5>
+                    <p class="text-danger">Cette action est irréversible et supprimera toutes les salles de discussion et messages associés.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="">Confirmer la suppression</button>
+                        <a href="{% url 'forum:topic-list' %}" class="">Annuler</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

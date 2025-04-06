@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Sujets de discussion</h1>
+                <a href="{% url 'forum:topic-new' %}" class="">Nouveau sujet</a>
+            </div>
+            
+            {% if topics %}
+            <div class="list-group">
+                {% for topic in topics %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <a href="{% url 'forum:chatroom-list' topic.id %}"><h5 class="mb-1">{{ topic.title }}</h5></a>
+                        <small>{{ topic.created_at|date:"d/m/Y" }}</small>
+                    </div>
+                    <p class="mb-1">{{ topic.description }}</p>
+                    <small>Créé par {{ topic.creator }}</small>
+                    <div class="mt-2">
+                        <a href="{% url 'forum:chatroom-new' topic.id %}" class="">Créer une salle de discussion</a>
+                        {% if topic.creator == user %}
+                        <a href="{% url 'forum:topic-update' topic.id %}" class="">Modifier</a>
+                        <a href="{% url 'forum:topic-delete' topic.id %}" class="">Supprimer</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Aucun sujet n'a été créé pour le moment.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

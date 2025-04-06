@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Salles de discussion</h1>
+                <a href="{% url 'forum:topic-list' %}" class="">Voir les sujets</a>
+            </div>
+            
+            {% if chatrooms %}
+            <div class="list-group">
+                {% for chatroom in chatrooms %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ chatroom.name }}</h5>
+                        <small>{{ chatroom.created_at|date:"d/m/Y" }}</small>
+                    </div>
+                    <p class="mb-1">{{ chatroom.description }}</p>
+                    <small>Sujet: {{ chatroom.topic.title }} | Créé par {{ chatroom.creator }}</small>
+                    <div class="mt-2">
+                        <a href="{% url 'forum:chatroom-detail' chatroom.id %}" class="">Rejoindre</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Aucune salle de discussion n'a été créée pour le moment.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

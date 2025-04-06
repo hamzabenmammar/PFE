@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search Projects</h1>
+<form method="get" action="{% url 'projects:project_search' %}">
+  <input type="text" name="q" placeholder="Search projects">
+  <button type="submit">Search</button>
+</form>
+{% if projects %}
+  <h2>Results</h2>
+  <ul>
+    {% for project in projects %}
+      <li>{{ project.title }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No projects found</p>
+{% endif %}
+<a href="{% url 'projects:project_list' %}">Back</a>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+  <h2>Profil de {{ user.full_name }}</h2>
+  <p><strong>Email :</strong> {{ user.email }}</p>
+  <p><strong>Affiliation :</strong> {{ user.institution }}</p>
+  <p><strong>Bio :</strong> {{ user.bio }}</p>
+  
+  <a href="{% url 'accounts:profile-edit' pk=user.pk %}">Edit</a>
+  <a href="{% url 'account_logout' %}">Logout</a>
+</div>
+{% endblock %}
