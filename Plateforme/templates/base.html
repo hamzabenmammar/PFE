@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Arabic NLP Platform{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+    <div class="header">
+        <div class="nav-container">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" />
+            <div class="search-bar">
+                <input type="text" placeholder="Search resources, tools, corpus..." />
+                <button class="search-button">Search</button>
+            </div>
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:profile' user.id %}" class="btn">Profile</a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-primary">Logout</a>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="btn">Log in</a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a {% if page == 'home' %}class="active"{% endif %} href="{% url 'home' %}">Home</a></li>
+            <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'home' %}">Corpus</a></li>
+            <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'home' %}">Tools</a></li>
+            <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'home' %}">Resources</a></li>
+            <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">Research Projects</a></li>
+            <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">Community</a></li>
+            <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">Events</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

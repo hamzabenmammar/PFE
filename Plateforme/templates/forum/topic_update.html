@@ -1,0 +1,113 @@
+<!-- forum/topic_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Sujets de discussion</h1>
+                <a href="{% url 'forum:topic-new' %}" class="btn btn-primary">Nouveau sujet</a>
+            </div>
+            
+            {% if topics %}
+            <div class="list-group">
+                {% for topic in topics %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ topic.title }}</h5>
+                        <small>{{ topic.created_at|date:"d/m/Y" }}</small>
+                    </div>
+                    <p class="mb-1">{{ topic.description }}</p>
+                    <small>Créé par {{ topic.creator.username }}</small>
+                    <div class="mt-2">
+                        <a href="{% url 'forum:chatroom-new' topic.id %}" class="btn btn-sm btn-success">Créer une salle de discussion</a>
+                        {% if topic.creator == user %}
+                        <a href="{% url 'forum:topic-update' topic.id %}" class="btn btn-sm btn-warning">Modifier</a>
+                        <a href="{% url 'forum:topic-delete' topic.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Aucun sujet n'a été créé pour le moment.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- forum/topic_new.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Créer un nouveau sujet</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Titre</label>
+                    <input type="text" name="{{ form.title.name }}" class="form-control" id="{{ form.title.id_for_label }}" {% if form.title.value %}value="{{ form.title.value }}"{% endif %}>
+                    {% if form.title.errors %}
+                    <div class="text-danger">
+                        {{ form.title.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    <textarea name="{{ form.description.name }}" class="form-control" id="{{ form.description.id_for_label }}">{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+                    {% if form.description.errors %}
+                    <div class="text-danger">
+                        {{ form.description.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Créer</button>
+                <a href="{% url 'forum:topic-list' %}" class="btn btn-secondary mt-3">Annuler</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- forum/topic_update.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Modifier le sujet</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Titre</label>
+                    <input type="text" name="{{ form.title.name }}" class="form-control" id="{{ form.title.id_for_label }}" {% if form.title.value %}value="{{ form.title.value }}"{% endif %}>
+                    {% if form.title.errors %}
+                    <div class="text-danger">
+                        {{ form.title.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    <textarea name="{{ form.description.name }}" class="form-control" id="{{ form.description.id_for_label }}">{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+                    {% if form.description.errors %}
+                    <div class="text-danger">
+                        {{ form.description.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+                <a href="{% url 'forum:topic-list' %}" class="btn btn-secondary mt-3">Annuler</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
