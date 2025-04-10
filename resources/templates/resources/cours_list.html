@@ -1,0 +1,23 @@
+
+{% extends "main.html" %}
+{% block title %}Cours - Plateforme collaborative pour le TAL arabe{% endblock title %}
+
+{% block content %}
+{% for cour in cours %}
+<div class="cour-item">
+    <h3>{{ cour.titre }}</h3>
+    <div><strong>Id:</strong> {{ cour.id }}</div>
+    <div><strong>Date de création:</strong> {{ cour.date_creation|date:"d/m/Y H:i" }}</div>
+    <div><strong>Description:</strong> {{ cour.description }}</div>
+    <div><strong>Lien d'accès:</strong> {{ cour.lien_acces }}</div>
+    <div><strong>Domaine:</strong> {{ cour.domaine }}</div>
+    <div><strong>Niveau:</strong> {{ cour.niveau }}</div>
+    <div><strong>Enseignant:</strong> {{ cour.enseignant }}</div>
+    <div><a href="{% url 'resources:resource-detail' type='cours' pk=cour.id %}">
+        Pour plus de détails
+    </a></div>
+    <hr><br>
+</div>
+{% empty %}
+<p>Aucun cour disponible pour le moment.</p>
+{% endfor %}{% endblock content%}

@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block title %}Ressources - Plateforme collaborative pour le TAL arabe{% endblock title %}
+{% block content %}
+
+{% for rsc in resources  %}
+<div><strong>Id:</strong> {{ rsc.id }}</div>
+    <div><strong>Date de création:</strong> {{ rsc.date_creation|date:"d/m/Y H:i" }}</div>
+    <div><strong>Description:</strong> {{ rsc.description }}</div>
+    <div><strong>Lien d'accès:</strong> {{ rsc.lien_acces }}</div>
+    <div><strong>auteur:</strong> {{ rsc.auteur }}</div>
+    <div><strong>Mots cles:</strong> {{ rsc.mots_cles }}</div>
+    <div><a href="{% url 'resources:resource-detail' type=rsc.resource_type pk=rsc.id %}">
+        Pour plus de détails
+    </a></div>
+    <hr><br>
+{% endfor %}
+        
+{% endblock content%}

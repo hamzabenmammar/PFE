@@ -39,8 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'core.apps.CoreConfig',
+    'resources.apps.ResourcesConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,3 +136,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Charger les variables depuis le fichier .env
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Récupérer la clé dans settings.py

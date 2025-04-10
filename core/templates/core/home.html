@@ -6,21 +6,21 @@
         <div class="welcome-text">
             <h1>Bienvenue sur la plateforme TAL arabe</h1>
             <p>Explorez les ressources, outils et corpus pour le traitement automatique de la langue arabe. Collaborez avec d'autres chercheurs et développeurs sur des projets innovants.</p>
-            <button class="btn btn-primary">Explorer les ressources</button>
+           <a href="{% url 'resources:list' %}"><button class="btn btn-primary">Explorer les ressources</button></a> 
         </div>
         <img src="/api/placeholder/200/120" alt="TAL arabe illustration" />
     </div>
 
     <div class="quick-actions">
 
-        <a href="{% url "corpus" %}" class="action-card" style="display: contents">
+        <a href="{% url "resources:corpus_list" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">📊</div>
             <h3 class="action-title">Parcourir les corpus</h3>
         </div>
         </a>
 
-        <a href="{% url "outils" %}" class="action-card" style="display: contents">
+        <a href="{% url "resources:outil_list" %}" class="action-card" style="display: contents">
         <div class="action-card">
             <div class="action-icon">🔧</div>
             <h3 class="action-title">Utiliser les outils</h3>
