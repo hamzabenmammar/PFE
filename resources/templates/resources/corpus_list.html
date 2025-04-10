@@ -3,6 +3,7 @@
 {% block title %}Corpus - Plateforme collaborative pour le TAL arabe{% endblock title %}
 
 {% block content %}
+<h2>Corpus trouvées ({{ total_count }})</h2>
 {% for corpus in lcorpus %}
 <div class="corpus-item">
     <h3>{{ corpus.titre }}</h3>

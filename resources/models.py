@@ -14,11 +14,11 @@ class RessourceBase(models.Model):
     """
     Base model for all resources.
     """
+    
     class TypeAcces(models.TextChoices):
         PUBLIC = 'public', _('Public')
         PRIVE = 'privé', _('Privé')
         RESTREINT = 'restreint', _('Accès restreint')
-  
 
     titre = models.CharField(
         max_length=200,

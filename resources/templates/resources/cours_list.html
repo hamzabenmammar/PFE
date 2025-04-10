@@ -3,6 +3,7 @@
 {% block title %}Cours - Plateforme collaborative pour le TAL arabe{% endblock title %}
 
 {% block content %}
+<h2>Cours trouvées ({{ total_count }})</h2>
 {% for cour in cours %}
 <div class="cour-item">
     <h3>{{ cour.titre }}</h3>

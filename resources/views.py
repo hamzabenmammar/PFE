@@ -10,7 +10,7 @@ from .models import Document, OutilTAL, Article, These , Memoire, Cours , Corpus
 class ResourceListView(ListView):
     template_name = 'resources/list.html'
     context_object_name = 'resources'
-    paginate_by = 10
+    paginate_by = 40
 
     def get_queryset(self):
         documents = list(Document.objects.all().select_related('article', 'these', 'memoire'))
@@ -83,6 +83,11 @@ class CorpusListView(ListView):
     template_name = 'resources/corpus_list.html'
     context_object_name = 'lcorpus'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_count'] = (Corpus.objects.count() )
+        return context
 
 
 class ResourceDetailView(DetailView):

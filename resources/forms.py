@@ -390,6 +390,14 @@ class ResourceForm(forms.Form):
             universite=self.cleaned_data['universite_cours'],
             annee_academique=self.cleaned_data['annee_academique_cours']
         )
+     elif resource_type == 'corpus':
+        return Corpus.objects.create(
+            **common_data,
+            langue=self.cleaned_data['langue_corpus'],
+            taille=self.cleaned_data['taille_corpus'],
+            domaine=self.cleaned_data['domaine_corpus'],
+            format=self.cleaned_data['format_corpus']
+        )
      elif resource_type == 'outil':
         return OutilTAL.objects.create(
             **common_data,

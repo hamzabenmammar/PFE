@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% block title %}Ressources - Plateforme collaborative pour le TAL arabe{% endblock title %}
 {% block content %}
-
+<h2>Ressources trouvées ({{ total_count }})</h2>
 {% for rsc in resources  %}
 <div><strong>Id:</strong> {{ rsc.id }}</div>
     <div><strong>Date de création:</strong> {{ rsc.date_creation|date:"d/m/Y H:i" }}</div>
