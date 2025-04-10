@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+
+{% block title %}Détails du corpus : {{ object.titre }}{% endblock %}
+
+{% block content %}
+<div class="corpus-details">
+    <h1>{{ object.titre }}</h1>
+    
+    <div class="metadata">
+        <p><strong>Auteur :</strong> {{ object.auteur }}</p>
+        <p><strong>Date de création :</strong> {{ object.date_creation|date:"d/m/Y H:i" }}</p>
+        <p><strong>Langue :</strong> {{ object.langue }}</p>
+        <p><strong>Taille :</strong> {{ object.taille }} éléments</p>
+        <p><strong>Format :</strong> {{ object.format }}</p>
+        <p><strong>Description:</strong> {{ object.description }}</p>
+         <a  href="{{ object.lien_acces }}"  ><p><strong>Lien d'accès</strong></p></a>
+    </div>
+
+    <div class="description">
+        <h2>Description complète</h2>
+        <p>{{ object.description }}</p>
+    </div>
+
+    {% if object.lien_acces %}
+    <div class="access">
+        <a href="{{ object.lien_acces }}" target="_blank" class="btn btn-secandary">
+            Accéder au corpus
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

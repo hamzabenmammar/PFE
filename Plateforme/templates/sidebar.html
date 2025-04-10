@@ -1,0 +1,39 @@
+{% load static %}
+
+<div class="sidebar">
+    <ul class="sidebar-menu">
+        <!-- Accueil -->
+        <li class="{% if request.path == '/' %}active{% endif %}">
+            <a href="{% url 'home' %}">Accueil</a>
+        </li>
+
+    <!-- Corpus -->
+        <li class="{% if request.path == '/resources/corpus/' or request.path == '/corpus/' %}active{% endif %}">
+            <a href="{% url 'resources:corpus_list' %}">Corpus</a>
+        </li> 
+
+        <!-- Outils -->
+        <li class="{% if request.path == '/resources/outils/' or request.path == '/outils/' %}active{% endif %}">
+            <a href="{% url 'resources:outil_list' %}">Outils</a>
+        </li>
+
+        <li class="{% if request.path == '/resources/cours/' or request.path == '/cours/' %}active{% endif %}">
+            <a href="{% url 'resources:cours_list' %}">Cours</a>
+        </li>
+
+        <!-- Ressources -->
+        <li class="{% if request.path == '/resources/' or request.path == '/ressources/' %}active{% endif %}">
+            <a href="{% url 'resources:list' %}">Ressources</a>
+        </li>
+
+        <!-- Projets (reste dans core) -->
+        <li class="{% if request.path == '/projets/' %}active{% endif %}">
+            <a href="{% url 'projets' %}">Projets de recherche</a>
+        </li>
+
+        <!-- Communauté (reste dans core) -->
+        <li class="{% if request.path == '/communaute/' %}active{% endif %}">
+            <a href="{% url 'communaute' %}">Communauté</a>
+        </li>
+    </ul>
+</div>

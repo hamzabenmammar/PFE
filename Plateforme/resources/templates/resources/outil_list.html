@@ -1,0 +1,23 @@
+
+{% extends "main.html" %}
+{% block title %}Outils - Plateforme collaborative pour le TAL arabe{% endblock title %}
+
+{% block content %}
+{% for outil in outils %}
+<div class="outil-item">
+    <h3>{{ outil.titre }}</h3>
+    <div><strong>Id:</strong> {{ outil.id }}</div>
+    <div><strong>Date de création:</strong> {{ outil.date_creation|date:"d/m/Y H:i" }}</div>
+    <div><strong>Description:</strong> {{ outil.description }}</div>
+    <div><strong>Lien d'accès:</strong> {{ outil.lien_acces }}</div>
+    <div><strong>Type:</strong> {{ outil.type }}</div>
+    <div><strong>Version:</strong> {{ outil.version }}</div>
+    <div><strong>Documentation:</strong> {{ outil.documentation}}</div>
+    <div><a href="{% url 'resources:resource-detail' type='outil' pk=outil.id %}">
+        Pour plus de détails
+    </a></div>
+    <hr><br>
+</div>
+{% empty %}
+<p>Aucun outil disponible pour le moment.</p>
+{% endfor %}{% endblock content%}
