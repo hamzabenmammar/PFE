@@ -146,6 +146,7 @@ class ResourceDetailView(DetailView):
 # Import your form
 from .forms import ResourceForm
 
+# Dans views.py
 class ResourceCreateView(LoginRequiredMixin, FormView):
     template_name = 'resources/resource_form.html'
     form_class = ResourceForm
@@ -153,7 +154,7 @@ class ResourceCreateView(LoginRequiredMixin, FormView):
     
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs['user'] = self.request.user  # Passe l'utilisateur au formulaire
         return kwargs
     
     def form_valid(self, form):

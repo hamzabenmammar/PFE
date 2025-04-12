@@ -240,7 +240,7 @@ class Thesis(models.Model):
     def get_absolute_url(self):
         return reverse('resources:thesis_detail', kwargs={'pk': self.pk})
 
-    class Meta:
+    class Meta:  
         verbose_name = _("Thesis")
         verbose_name_plural = _("Theses")
 
@@ -310,7 +310,9 @@ class Article(models.Model):
         verbose_name=_("Journal")
     )
     publication_date = models.DateField(
-        verbose_name=_("Publication Date")
+        verbose_name=_("Publication Date"),
+        null=True,
+        blank=True
     )
 
     def get_citation(self):

@@ -1,247 +1,325 @@
-# forms.py
 from django import forms
-from django.forms import ModelForm, Select, Textarea
-from .models import Document, Course, NLPTool, Article, Thesis, Memoir, Corpus
+from django.utils.translation import gettext_lazy as _
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Fieldset, Submit, Row, Column, HTML, Hidden    
+from .models import Course, NLPTool, Corpus, Document, Article, Thesis, Memoir, ResourceBase
+from accounts.models import Institution  # Nouvelle importation
 
 class ResourceForm(forms.Form):
-    """
-    A form for creating different types of resources.
-    """
     RESOURCE_TYPES = [
-        ('document', 'Document'),
-        ('tool', 'NLP Tool'),
-        ('course', 'Course'),
-        ('article', 'Article'),
-        ('thesis', 'Thesis'),
-        ('memoir', 'Memoir'),
-        ('corpus', 'Corpus')
+        ('course', _('Course')),
+        ('nlp_tool', _('NLP Tool')),
+        ('corpus', _('Corpus')),
+        ('document', _('Document')),
     ]
-    
+
+    DOCUMENT_TYPES = [
+        ('article', _('Article')),
+        ('thesis', _('Thesis')),
+        ('memoir', _('Memoir')),
+    ]
+
+    # ==================== COMMON FIELDS ====================
     resource_type = forms.ChoiceField(
         choices=RESOURCE_TYPES,
-        label="Resource Type",
-        widget=forms.Select(attrs={'class': 'form-control'})
+        label=_("Resource Type *"),
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
-    
-    # Common fields for all resources
     title = forms.CharField(
+        label=_("Title *"),
         max_length=200,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
+        label=_("Description *"),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
     )
     access_type = forms.ChoiceField(
-        choices=[
-            ('public', 'Public'),
-            ('private', 'Private'),
-            ('restricted', 'Restricted Access')
-        ],
-        widget=forms.Select(attrs={'class': 'form-control'})
+        choices=ResourceBase.AccessType.choices,
+        initial='public',
+        label=_("Access Type *"),
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
+    # Supprimé: author (géré automatiquement)
     keywords = forms.CharField(
+        label=_("Keywords"),
+        required=False,
         max_length=255,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text=_("Comma-separated")
     )
-    
-    # NLP Tool specific fields
-    tool_type = forms.ChoiceField(
-        choices=NLPTool.ToolType.choices,
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-    version = forms.CharField(
-        max_length=20,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    documentation_link = forms.URLField(
+    access_link = forms.URLField(
+        label=_("Access Link"),
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
-    languages = forms.CharField(
-        max_length=255,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    
-    # Course specific fields
-    field = forms.CharField(
+
+    # ==================== SPECIFIC FIELDS ====================
+    # Course
+    course_field = forms.CharField(
+        label=_("Field of Study *"),
         max_length=50,
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     academic_level = forms.ChoiceField(
         choices=Course.Level.choices,
+        label=_("Academic Level *"),
         required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    # Modifié: Institution comme ModelChoiceField
+    institution = forms.ModelChoiceField(
+        queryset=Institution.objects.all(),
+        label=_("Institution *"),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     academic_year = forms.CharField(
+        label=_("Academic Year * (YYYY-YYYY)"),
         max_length=9,
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '2023-2024'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text=_("Format: 2023-2024")
     )
-    
-    # Document specific fields
-    document_type = forms.ChoiceField(
-        choices=Document.DocumentType.choices,
+
+    # NLP Tool
+    tool_type = forms.ChoiceField(
+        choices=NLPTool.ToolType.choices,
+        label=_("Tool Type *"),
         required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
-    file_format = forms.CharField(
-        max_length=10,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'PDF, DOCX, etc.'})
-    )
-    
-    # Corpus specific fields
-    language = forms.CharField(
-        max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Arabic'})
-    )
-    size = forms.IntegerField(
-        required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
-    )
-    
-    # Article specific fields
-    doi = forms.CharField(
-        max_length=100,
+    tool_version = forms.CharField(
+        label=_("Version *"),
+        max_length=20,
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+    documentation = forms.URLField(
+        label=_("Documentation"),
+        required=False,
+        widget=forms.URLInput(attrs={'class': 'form-control'})
+    )
+    languages = forms.CharField(
+        label=_("Supported Languages *"),
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        initial='Arabic'
+    )
+
+    # Corpus
+    corpus_language = forms.CharField(
+        label=_("Primary Language *"),
+        max_length=50,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        initial='Arabic'
+    )
+    corpus_size = forms.IntegerField(
+        label=_("Size * (words/documents)"),
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+    corpus_field = forms.CharField(
+        label=_("Field of Study *"),
+        max_length=50,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    corpus_format = forms.CharField(
+        label=_("Format * (TXT/CSV/JSON)"),
+        max_length=10,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    # Document
+    document_type = forms.ChoiceField(
+        choices=DOCUMENT_TYPES,
+        label=_("Document Type *"),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    document_format = forms.CharField(
+        label=_("Format * (PDF/DOCX)"),
+        max_length=10,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    # Article
+    doi = forms.CharField(
+        label=_("DOI"),
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text=_("e.g., 10.1234/abcd")
+    )
     journal = forms.CharField(
+        label=_("Journal *"),
         max_length=200,
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     publication_date = forms.DateField(
+        label=_("Publication Date *"),
         required=False,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+        widget=forms.DateInput(
+            attrs={'class': 'form-control', 'type': 'date'},
+            format='%Y-%m-%d'
+        )
     )
-    
-    # Thesis/Memoir specific fields
+
+    # Thesis
     supervisor = forms.CharField(
+        label=_("Supervisor *"),
         max_length=100,
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+    thesis_institution = forms.ModelChoiceField(
+        queryset=Institution.objects.all(),
+        label=_("Institution *"),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
     defense_year = forms.IntegerField(
+        label=_("Defense Year *"),
         required=False,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
-    
+
+    # Memoir
+    memoir_level = forms.ChoiceField(
+        choices=Memoir._meta.get_field('academic_level').choices,
+        label=_("Academic Level *"),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    memoir_institution = forms.ModelChoiceField(
+        queryset=Institution.objects.all(),
+        label=_("Institution *"),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    memoir_defense_year = forms.IntegerField(
+        label=_("Defense Year *"),
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)  # Récupère l'utilisateur
         super().__init__(*args, **kwargs)
-    
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'needs-validation'
+        self.helper.attrs = {'novalidate': ''}
+        
+        # Modifié: Suppression du champ author du layout
+        self.helper.layout = Layout(
+            Fieldset(
+                _('Basic Information'),
+                Row(
+                    Column('resource_type', css_class='col-md-6'),
+                    Column('access_type', css_class='col-md-6')
+                ),
+                'title',
+                'description',
+                Row(
+                    Column('keywords', css_class='col-md-12')  # Modifié
+                ),
+                'access_link',
+                HTML("""<hr class="my-4">"""),
+                # ... (le reste du layout reste inchangé)
+            ),
+            Submit('submit', _('Save'), css_class='btn-primary w-100 py-2 mt-3')
+        )
+
     def clean(self):
         cleaned_data = super().clean()
         resource_type = cleaned_data.get('resource_type')
         
-        # Validate required fields based on resource type
-        if resource_type == 'tool':
-            required_fields = ['tool_type', 'version']
-        elif resource_type == 'course':
-            required_fields = ['field', 'academic_level', 'academic_year']
-        elif resource_type == 'document':
-            required_fields = ['document_type', 'file_format']
+        # Validation modifiée pour les ModelChoiceFields
+        if resource_type == 'course':
+            required_fields = ['course_field', 'academic_level', 'institution', 'academic_year']
+        elif resource_type == 'nlp_tool':
+            required_fields = ['tool_type', 'tool_version']
         elif resource_type == 'corpus':
-            required_fields = ['language', 'size', 'field', 'file_format']
-        else:
-            required_fields = []
-            
+            required_fields = ['corpus_language', 'corpus_size', 'corpus_field', 'corpus_format']
+        elif resource_type == 'document':
+            required_fields = ['document_type', 'document_format']
+
         for field in required_fields:
             if not cleaned_data.get(field):
-                self.add_error(field, f'This field is required for {resource_type}.')
-                
+                self.add_error(field, _("This field is required for this resource type"))
+
         return cleaned_data
-        
+
     def save(self):
-        """
-        Create the appropriate resource based on the form data.
-        """
-        data = self.cleaned_data
-        resource_type = data['resource_type']
-        
-        # Common attributes for all resources
-        common_attrs = {
-            'title': data['title'],
-            'description': data['description'],
-            'access_type': data['access_type'],
-            'keywords': data['keywords'],
-            'author': self.user,
+        resource_type = self.cleaned_data['resource_type']
+        common_data = {
+            'title': self.cleaned_data['title'],
+            'description': self.cleaned_data['description'],
+            'access_type': self.cleaned_data['access_type'],
+            'author': self.user,  # Utilisateur connecté
+            'keywords': self.cleaned_data['keywords'],
+            'access_link': self.cleaned_data['access_link'] or None,
         }
-        
-        if resource_type == 'tool':
-            tool = NLPTool.objects.create(
-                **common_attrs,
-                tool_type=data['tool_type'],
-                version=data['version'],
-                documentation_link=data['documentation_link'],
-                languages=data['languages'] or 'Arabic',
+
+        if resource_type == 'course':
+            return Course.objects.create(
+                **common_data,
+                field=self.cleaned_data['course_field'],
+                academic_level=self.cleaned_data['academic_level'],
+                teacher=self.user,  # Enseignant = utilisateur
+                institution=self.cleaned_data['institution'],
+                academic_year=self.cleaned_data['academic_year']
             )
-            return tool
-            
-        elif resource_type == 'course':
-            from accounts.models import Institution
-            # Get the first institution (this should be improved in a real app)
-            institution = Institution.objects.first()
-            course = Course.objects.create(
-                **common_attrs,
-                field=data['field'],
-                academic_level=data['academic_level'],
-                academic_year=data['academic_year'],
-                teacher=self.user,  # Assuming the author is the teacher
-                institution=institution,
+        elif resource_type == 'nlp_tool':
+            return NLPTool.objects.create(
+                **common_data,
+                tool_type=self.cleaned_data['tool_type'],
+                version=self.cleaned_data['tool_version'],
+                documentation_link=self.cleaned_data['documentation'],
+                languages=self.cleaned_data['languages']
             )
-            return course
-            
         elif resource_type == 'corpus':
-            corpus = Corpus.objects.create(
-                **common_attrs,
-                language=data['language'] or 'Arabic',
-                size=data['size'],
-                field=data['field'],
-                file_format=data['file_format'],
+            return Corpus.objects.create(
+                **common_data,
+                language=self.cleaned_data['corpus_language'],
+                size=self.cleaned_data['corpus_size'],
+                field=self.cleaned_data['corpus_field'],
+                file_format=self.cleaned_data['corpus_format']
             )
-            return corpus
-            
         elif resource_type == 'document':
-            document = Document.objects.create(
-                **common_attrs,
-                document_type=data['document_type'],
-                file_format=data['file_format'],
+            doc = Document.objects.create(
+                **common_data,
+                document_type=self.cleaned_data['document_type'],
+                file_format=self.cleaned_data['document_format']
             )
             
-            # Create corresponding specialized document
-            if data['document_type'] == Document.DocumentType.ARTICLE and data.get('journal'):
-                from accounts.models import Institution
+            if doc.document_type == 'article':
                 Article.objects.create(
-                    document=document,
-                    doi=data.get('doi', ''),
-                    journal=data['journal'],
-                    publication_date=data['publication_date'],
+                    document=doc,
+                    doi=self.cleaned_data['doi'],
+                    journal=self.cleaned_data['journal'],
+                    publication_date=self.cleaned_data['publication_date']
                 )
-            elif data['document_type'] == Document.DocumentType.THESIS and data.get('supervisor'):
-                from accounts.models import Institution
-                institution = Institution.objects.first()
+            elif doc.document_type == 'thesis':
                 Thesis.objects.create(
-                    document=document,
-                    supervisor=data['supervisor'],
-                    institution=institution,
-                    defense_year=data['defense_year'],
+                    document=doc,
+                    supervisor=self.cleaned_data['supervisor'],
+                    institution=self.cleaned_data['thesis_institution'],
+                    defense_year=self.cleaned_data['defense_year']
                 )
-            elif data['document_type'] == Document.DocumentType.MEMOIR:
-                from accounts.models import Institution
-                institution = Institution.objects.first()
+            elif doc.document_type == 'memoir':
                 Memoir.objects.create(
-                    document=document,
-                    academic_level=data.get('academic_level', 'master'),
-                    institution=institution,
-                    defense_year=data.get('defense_year', 2023),
+                    document=doc,
+                    academic_level=self.cleaned_data['memoir_level'],
+                    institution=self.cleaned_data['memoir_institution'],
+                    defense_year=self.cleaned_data['memoir_defense_year']
                 )
-                
-            return document
+            return doc

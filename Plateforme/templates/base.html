@@ -33,12 +33,12 @@
         <ul class="sidebar-menu">
             <li><a {% if page == 'home' %}class="active"{% endif %} href="{% url 'home' %}">Home</a></li>
             <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">Corpus</a></li>
-            <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:outil_list' %}">Tools</a></li>
+            <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">Tools</a></li>
             <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'resources:list' %}">Resources</a></li>
             <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">Research Projects</a></li>
             <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">Community</a></li>
             <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">Events</a></li>
-            <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:cours_list' %}">Cours</a></li>
+            <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">Cours</a></li>
         </ul>
     </div>
 
