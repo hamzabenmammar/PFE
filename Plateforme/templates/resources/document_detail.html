@@ -1,0 +1,77 @@
+{% extends "resources/resource_detail.html" %}
+
+{% block resource_specific_details %}
+<div class="row">
+    <div class="col-12">
+        <h3>Document Details</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th style="width: 200px;">Document Type</th>
+                        <td>{{ object.get_document_type_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>File Format</th>
+                        <td>{{ object.file_format }}</td>
+                    </tr>
+                    
+                    {% if object.document_type == 'article' and object.article %}
+                        <tr>
+                            <th>Journal</th>
+                            <td>{{ object.article.journal }}</td>
+                        </tr>
+                        <tr>
+                            <th>Publication Date</th>
+                            <td>{{ object.article.publication_date|date:"F j, Y" }}</td>
+                        </tr>
+                        {% if object.article.doi %}
+                        <tr>
+                            <th>DOI</th>
+                            <td>{{ object.article.doi }}</td>
+                        </tr>
+                        {% endif %}
+                    {% elif object.document_type == 'thesis' and object.thesis %}
+                        <tr>
+                            <th>Supervisor</th>
+                            <td>{{ object.thesis.supervisor }}</td>
+                        </tr>
+                        <tr>
+                            <th>Defense Year</th>
+                            <td>{{ object.thesis.defense_year }}</td>
+                        </tr>
+                        <tr>
+                            <th>Institution</th>
+                            <td>{{ object.thesis.institution.name }}</td>
+                        </tr>
+                    {% elif object.document_type == 'memoir' and object.memoir %}
+                        <tr>
+                            <th>Academic Level</th>
+                            <td>{{ object.memoir.get_academic_level_display }}</td>
+                        </tr>
+                        <tr>
+                            <th>Defense Year</th>
+                            <td>{{ object.memoir.defense_year }}</td>
+                        </tr>
+                        <tr>
+                            <th>Institution</th>
+                            <td>{{ object.memoir.institution.name }}</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if object.document_type == 'article' or object.document_type == 'thesis' or object.document_type == 'memoir' %}
+        <div class="mt-4">
+            <h4>Citation</h4>
+            <div class="card">
+                <div class="card-body">
+                    <p class="mb-0">{{ object.get_citation }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "resources/resource_detail.html" %}
+
+{% block resource_specific_details %}
+<div class="row">
+    <div class="col-12">
+        <h3>Memoir Details</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th style="width: 200px;">Document Type</th>
+                        <td>Memoir</td>
+                    </tr>
+                    <tr>
+                        <th>File Format</th>
+                        <td>{{ object.document.file_format }}</td>
+                    </tr>
+                    <tr>
+                        <th>Academic Level</th>
+                        <td>{{ object.get_academic_level_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>Defense Year</th>
+                        <td>{{ object.defense_year }}</td>
+                    </tr>
+                    <tr>
+                        <th>Institution</th>
+                        <td>{{ object.institution.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            <h4>Citation</h4>
+            <div class="card">
+                <div class="card-body">
+                    <p class="mb-0">{{ object.get_citation }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
