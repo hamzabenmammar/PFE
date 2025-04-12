@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'resources:list' %}">Resources</a></li>
+            {% if object.resource_type == 'document' %}
+                <li class="breadcrumb-item"><a href="{% url 'resources:document_list' %}">Documents</a></li>
+            {% elif object.resource_type == 'tool' %}
+                <li class="breadcrumb-item"><a href="{% url 'resources:tool_list' %}">NLP Tools</a></li>
+            {% elif object.resource_type == 'course' %}
+                <li class="breadcrumb-item"><a href="{% url 'resources:course_list' %}">Courses</a></li>
+            {% elif object.resource_type == 'corpus' %}
+                <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}">Corpora</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active">{{ object.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h1>{{ object.title }}</h1>
+            {% if object.access_type == 'public' %}
+                <span class="badge bg-success">Public</span>
+            {% elif object.access_type == 'private' %}
+                <span class="badge bg-danger">Private</span>
+            {% else %}
+                <span class="badge bg-warning">Restricted</span>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <h5>Description</h5>
+                    <p>{{ object.description }}</p>
+                    
+                    {% if object.keywords %}
+                    <h5>Keywords</h5>
+                    <div class="mb-3">
+                        {% for keyword in object.keywords.split(',') %}
+                            <span class="badge bg-secondary me-1">{{ keyword.strip }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Resource Information</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Author:</strong> {{ object.author.get_full_name|default:object.author.username }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Created:</strong> {{ object.creation_date|date:"F j, Y" }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Status:</strong> {{ object.get_status_display }}
+                            </li>
+                            
+                            {% if object.access_link %}
+                            <li class="list-group-item">
+                                <strong>Access Link:</strong> 
+                                <a href="{{ object.access_link }}" target="_blank" rel="noopener">
+                                    Access Resource <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            {# Specific details based on resource type #}
+            {% block resource_specific_details %}
+                {# This block will be overridden by type-specific templates #}
+            {% endblock %}
+        </div>
+        
+        {% if user.is_authenticated and user == object.author %}
+        <div class="card-footer">
+            <a href="#" class="btn btn-primary">Edit</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if user.is_authenticated and user == object.author %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete "{{ object.title }}"? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

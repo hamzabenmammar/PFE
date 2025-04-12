@@ -1,0 +1,30 @@
+{% extends "resources/resource_detail.html" %}
+{% block resource_specific_details %}
+<div class="row">
+    <div class="col-12">
+        <h3>Corpus Details</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th style="width: 200px;">Language</th>
+                        <td>{{ object.language }}</td>
+                    </tr>
+                    <tr>
+                        <th>Field of Study</th>
+                        <td>{{ object.field }}</td>
+                    </tr>
+                    <tr>
+                        <th>Size</th>
+                        <td>{{ object.size }} words/documents</td>
+                    </tr>
+                    <tr>
+                        <th>File Format</th>
+                        <td>{{ object.file_format }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

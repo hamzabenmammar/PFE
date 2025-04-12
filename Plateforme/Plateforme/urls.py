@@ -26,5 +26,5 @@ urlpatterns = [
     path('projects/', include('projects.urls', namespace='projects')),
     path('forum/', include('forum.urls', namespace='forum')),
     path('events/', include('events.urls', namespace='events')),
-
+    path('resources/', include('resources.urls', namespace='resources')),
 ]

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Créer une nouvelle ressource</h1>
+    <p>Veuillez remplir le formulaire ci-dessous pour créer une nouvelle ressource.</p>
+           <center>{% crispy form %}</center> 
+{% endblock %}
