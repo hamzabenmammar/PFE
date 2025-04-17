@@ -69,7 +69,7 @@ class ResourceForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-select'})
     )
     # Modifié: Institution comme ModelChoiceField
-    institution = forms.ModelChoiceField(
+    course_institution = forms.ModelChoiceField(
         queryset=Institution.objects.all(),
         label=_("Institution *"),
         required=False,
@@ -241,23 +241,48 @@ class ResourceForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         resource_type = cleaned_data.get('resource_type')
-        
-        # Validation modifiée pour les ModelChoiceFields
+    
+          # Validation principale
+        required_fields = []
         if resource_type == 'course':
-            required_fields = ['course_field', 'academic_level', 'institution', 'academic_year']
+             required_fields = ['course_field', 'academic_level', 'course_institution', 'academic_year']
         elif resource_type == 'nlp_tool':
-            required_fields = ['tool_type', 'tool_version']
+             required_fields = ['tool_type', 'tool_version']
         elif resource_type == 'corpus':
             required_fields = ['corpus_language', 'corpus_size', 'corpus_field', 'corpus_format']
         elif resource_type == 'document':
             required_fields = ['document_type', 'document_format']
 
+    # Validation des champs obligatoires
         for field in required_fields:
-            if not cleaned_data.get(field):
+             if not cleaned_data.get(field):
                 self.add_error(field, _("This field is required for this resource type"))
 
-        return cleaned_data
+    # Validation des sous-types de document
+        if resource_type == 'document':
+            doc_type = cleaned_data.get('document_type')
+            if doc_type == 'article':
+                 required = ['journal', 'publication_date']
+            elif doc_type == 'thesis':
+                 required = ['supervisor', 'thesis_institution', 'defense_year']
+            elif doc_type == 'memoir':
+                 required = ['memoir_level', 'memoir_institution', 'memoir_defense_year']
+        
+            for field in required:
+                if not cleaned_data.get(field):
+                    self.add_error(field, _("This field is required for this document type"))
 
+    # Validation de l'année académique
+        if resource_type == 'course' and cleaned_data.get('academic_year'):
+            try:
+                start, end = map(int, cleaned_data['academic_year'].split('-'))
+                if end != start + 1:
+                     self.add_error('academic_year', _("End year must be start year + 1"))
+            except (ValueError, AttributeError):
+                 self.add_error('academic_year', _("Invalid format (ex: 2023-2024)"))
+
+        return cleaned_data
+    
     def save(self):
         resource_type = self.cleaned_data['resource_type']
         common_data = {
@@ -275,7 +300,7 @@ class ResourceForm(forms.Form):
                 field=self.cleaned_data['course_field'],
                 academic_level=self.cleaned_data['academic_level'],
                 teacher=self.user,  # Enseignant = utilisateur
-                institution=self.cleaned_data['institution'],
+                institution=self.cleaned_data['course_institution'],
                 academic_year=self.cleaned_data['academic_year']
             )
         elif resource_type == 'nlp_tool':

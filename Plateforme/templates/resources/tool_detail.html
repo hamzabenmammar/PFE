@@ -18,7 +18,7 @@
                     <tr>
                         <th>Supported Languages</th>
                         <td>
-                            {% for language in object.languages.split(',') %}
+                            {% for language in object.languages %}
                                 <span class="badge bg-info me-1">{{ language.strip }}</span>
                             {% endfor %}
                         </td>

@@ -3,112 +3,258 @@
 {% block title %}All Resources{% endblock %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col">
-        <h1>Resources</h1>
-        <p class="lead">Browse all available resources ({{ total_count }} total)</p>
-    </div>
-    <div class="col-auto">
+<div class="resources-container">
+    <!-- Header avec bouton à droite -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Research Resources</h1>
+            <p class="text-muted">{{ total_count }} resources available</p>
+
+
+        </div>
+        <br>
         {% if user.is_authenticated %}
-            <a href="{% url 'resources:create' %}" class="btn btn-primary">
-                <i class="bi bi-plus"></i> Add New Resource
+        <div>
+            <a href="{% url 'resources:create' %}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Add Resource
             </a>
+        </div>
         {% endif %}
     </div>
-</div>
+    <br>
 
-<div class="row mb-4">
-    <div class="col">
-        <form method="get" action="" class="row g-3">
-            <div class="col-md-6">
-                <input type="text" name="q" class="form-control" placeholder="Search resources..." 
-                    value="{{ request.GET.q|default:'' }}">
-            </div>
-            <div class="col-md-3">
-                <select name="type" class="form-select">
-                    <option value="">All Types</option>
-                    <option value="document" {% if request.GET.type == 'document' %}selected{% endif %}>Document</option>
-                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>NLP Tool</option>
-                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Course</option>
-                    <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>Corpus</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-secondary w-100">Search</button>
-            </div>
-        </form>
+    <!-- Barre de recherche centrée -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <form method="get" action="" class="bg-white p-3 rounded shadow-sm">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control form-control-sm" 
+                           placeholder="Search resources..." value="{{ request.GET.q|default:'' }}">
+                    <select name="type" class="form-select form-select-sm" style="max-width: 150px;">
+                        <option value="">All types</option>
+                        <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>Article</option>
+                        <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>Thesis</option>
+                        <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>Memoir</option>
+                        <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>Tool</option>
+                        <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Course</option>
+                    </select>
+                    <button type="submit" class="btn btn-dark btn-sm">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+    <br>
+    <!-- Filtres horizontaux -->
+    <div class="mb-4">
+        <div class="d-flex flex-wrap gap-1">
+            <a href="?q={{ request.GET.q }}" 
+               class="btn btn-sm {% if not request.GET.type %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                All
+            </a>
+            <a href="?q={{ request.GET.q }}&type=article" 
+               class="btn btn-sm {% if request.GET.type == 'article' %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Articles
+            </a>
+            <a href="?q={{ request.GET.q }}&type=thesis" 
+               class="btn btn-sm {% if request.GET.type == 'thesis' %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Theses
+            </a>
+            <a href="?q={{ request.GET.q }}&type=memoir" 
+               class="btn btn-sm {% if request.GET.type == 'memoir' %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Memoirs
+            </a>
+            <a href="?q={{ request.GET.q }}&type=tool" 
+               class="btn btn-sm {% if request.GET.type == 'tool' %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Tools
+            </a>
+            <a href="?q={{ request.GET.q }}&type=course" 
+               class="btn btn-sm {% if request.GET.type == 'course' %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Courses
+            </a>
+        </div>
+    </div>
 
-{% if resources %}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for resource in resources %}
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-header bg-{{ resource.resource_type }}">
-                        <span class="badge bg-primary">{{ resource.resource_type|title }}</span>
-                        {% if resource.access_type == 'public' %}
-                            <span class="badge bg-success float-end">Public</span>
-                        {% elif resource.access_type == 'private' %}
-                            <span class="badge bg-danger float-end">Private</span>
-                        {% else %}
-                            <span class="badge bg-warning float-end">Restricted</span>
-                        {% endif %}
+    <!-- Liste des ressources -->
+     <br>
+    {% if resources %}
+        <div class="resource-grid">
+            {% for resource in resources %}
+            <div class="resource-card">
+                <div class="card-header">
+                    <span class="badge {% if resource.resource_type == 'article' %}bg-primary{% elif resource.resource_type == 'thesis' %}bg-info{% elif resource.resource_type == 'memoir' %}bg-warning{% elif resource.resource_type == 'tool' %}bg-success{% else %}bg-secondary{% endif %}">
+                        {{ resource.resource_type|title }}
+                    </span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ resource.title }}</h5>
+                    <div class="card-text text-muted mb-2 flex-grow-1">
+                        {{ resource.description|truncatewords:20|default:"No description provided" }}
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ resource.title }}</h5>
-                        <p class="card-text">{{ resource.description|truncatewords:20 }}</p>
-                    </div>
-                    <div class="card-footer">
+                    <div class="resource-meta mt-auto">
                         <small class="text-muted">
-                            Added on {{ resource.creation_date|date:"F j, Y" }}
+                            <i class="bi bi-person"></i> {{ resource.author }}
                         </small>
-                        <a href="{% url 'resources:resource-detail' resource.resource_type resource.id %}" 
-                           class="btn btn-sm btn-primary float-end">View Details</a>
+                        <small class="text-muted d-block">
+                            <i class="bi bi-calendar"></i> {{ resource.creation_date|date:"M d, Y" }}
+                        </small>
                     </div>
                 </div>
+                <div class="card-footer">
+                    <a href="{% url 'resources:resource-detail' resource.resource_type resource.id %}" 
+                       class="btn btn-outline-dark btn-sm w-100">
+                        View Details
+                    </a>
+                </div>
             </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
-    {% if is_paginated %}
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">&laquo; First</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                </li>
-            {% endif %}
-
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <li class="page-item active">
-                        <span class="page-link">{{ num }}</span>
-                    </li>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav class="mt-4">
+            <ul class="pagination pagination-sm justify-content-center">
+                {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page=1">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.previous_page_number }}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
                     </li>
                 {% endif %}
-            {% endfor %}
 
-            {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-                </li>
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.next_page_number }}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.paginator.num_pages }}">
+                            <i class="bi bi-chevron-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info text-center py-3">
+            <i class="bi bi-info-circle"></i> No resources found.
+            {% if user.is_authenticated %}
+                <a href="{% url 'resources:create' %}" class="alert-link ms-2">Add a resource</a>
             {% endif %}
-        </ul>
-    </nav>
+        </div>
     {% endif %}
-{% else %}
-    <div class="alert alert-info">
-        No resources found. {% if user.is_authenticated %}<a href="{% url 'resources:create' %}">Add a resource</a>{% endif %}
-    </div>
-{% endif %}
+</div>
+
+<style>
+    .resources-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    /* Barre de recherche */
+    .input-group {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    /* Cartes de ressources */
+    .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.25rem;
+    }
+    
+    .resource-card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.2s;
+        display: flex;
+    flex-direction: column;
+    height: 100%
+    }
+    
+    .resource-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    
+    .resource-card .card-header {
+        padding: 0.5rem 1rem;
+        background-color: #1a4e6e;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .resource-card .card-body {
+        padding: 1rem;
+    }
+    
+    .resource-card .card-footer {
+        padding: 0.75rem 1rem;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+    }
+    
+    /* Boutons */
+    .btn-dark {
+        background-color: #212529;
+        border-color: #212529;
+    }
+    
+    .btn-outline-dark:hover {
+        background-color: #212529;
+        color: white;
+    }
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+        color: white;
+       
+    }
+    .card-header {
+        
+    
+    }
+    .resource-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Prend toute la hauteur disponible */
+    }
+    
+    .card-body {
+        flex: 1; /* Prend l'espace restant */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card-text {
+        min-height: 60px; /* Hauteur minimale pour la description */
+    }
+    
+    .resource-meta {
+        margin-top: auto; /* Pousse les métadonnées vers le bas */
+    }
+   
+</style>
 {% endblock %}

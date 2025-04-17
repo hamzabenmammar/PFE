@@ -3,114 +3,146 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'resources:list' %}">Resources</a></li>
+<div class="container py-4">
+    <!-- Fil d'Ariane amélioré -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light p-3 rounded-3 shadow-sm">
+            <li class="breadcrumb-item"><a href="{% url 'resources:list' %}" class="text-decoration-none"><i class="bi bi-archive me-1"></i>Resources</a></li>
             {% if object.resource_type == 'document' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:document_list' %}">Documents</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'resources:document_list' %}" class="text-decoration-none"><i class="bi bi-file-text me-1"></i>Documents</a></li>
             {% elif object.resource_type == 'tool' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:tool_list' %}">NLP Tools</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'resources:tool_list' %}" class="text-decoration-none"><i class="bi bi-tools me-1"></i>Tools</a></li>
             {% elif object.resource_type == 'course' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:course_list' %}">Courses</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'resources:course_list' %}" class="text-decoration-none"><i class="bi bi-mortarboard me-1"></i>Courses</a></li>
             {% elif object.resource_type == 'corpus' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}">Corpora</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}" class="text-decoration-none"><i class="bi bi-database me-1"></i>Corpora</a></li>
             {% endif %}
-            <li class="breadcrumb-item active">{{ object.title }}</li>
+            <li class="breadcrumb-item active">{{ object.title|truncatechars:30 }}</li>
         </ol>
     </nav>
 
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h1>{{ object.title }}</h1>
-            {% if object.access_type == 'public' %}
-                <span class="badge bg-success">Public</span>
-            {% elif object.access_type == 'private' %}
-                <span class="badge bg-danger">Private</span>
-            {% else %}
-                <span class="badge bg-warning">Restricted</span>
+    <!-- Carte principale -->
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
+            <div>
+                <h1 class="h4 mb-0 fw-bold">{{ object.title }}</h1>
+            
+                 {% if request.user == object.author %}
+       
+                 <center><a href="{% url 'resources:resource-update' type=view.kwargs.type pk=object.pk %}" class="btn btn-light btn-sm me-2 shadow-sm">
+                       <i class="fas fa-edit me-1"></i> Edit
+                         </a>
+                         <a href="{% url 'resources:resource-delete' type=view.kwargs.type pk=object.pk %}" class="btn btn-danger btn-sm shadow-sm">
+                          <i class="fas fa-trash me-1"></i> Delete
+                     </a></center> 
+            </div>
             {% endif %}
         </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-8">
-                    <h5>Description</h5>
-                    <p>{{ object.description }}</p>
+        <br>
+        <hr>
+        
+        <div class="card-body p-4">
+            <div class="row g-4">
+                <!-- Colonne principale -->
+                <div class="col-lg-8">
+                    <div class="mb-4">
+                        <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-card-text me-2"></i>Description</h3>
+                        <p class="lead mt-3">{{ object.description }}</p>
+                    </div>
+                    <br>
                     
                     {% if object.keywords %}
-                    <h5>Keywords</h5>
-                    <div class="mb-3">
-                        {% for keyword in object.keywords.split(',') %}
-                            <span class="badge bg-secondary me-1">{{ keyword.strip }}</span>
-                        {% endfor %}
+                    <div class="mb-4">
+                        <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-tags me-2"></i>Keywords</h3>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                                <span class="badge bg-secondary py-2 px-3"><i class="bi bi-tag me-1"></i>{{ object.keywords }}</span>
+                        </div>
                     </div>
                     {% endif %}
+                    <hr>
+                    
+                    {% block resource_specific_details %}
+                    <!-- Contenu spécifique au type de ressource -->
+                    {% endblock %}
+                    
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">Resource Information</div>
+                <br>
+                
+                <!-- Sidebar avec métadonnées -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-light">
+                            <h3 class="h6 mb-0 fw-bold"><i class="bi bi-info-circle me-2"></i>Resource Details</h3>
+                        </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <strong>Author:</strong> {{ object.author.get_full_name|default:object.author.username }}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-person me-2 text-primary"></i>Author</span>
+                                <strong>{{ object.author.get_full_name|default:object.author.username }}</strong>
                             </li>
-                            <li class="list-group-item">
-                                <strong>Created:</strong> {{ object.creation_date|date:"F j, Y" }}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-calendar me-2 text-primary"></i>Created</span>
+                                <strong>{{ object.creation_date|date:"M d, Y" }}</strong>
                             </li>
-                            <li class="list-group-item">
-                                <strong>Status:</strong> {{ object.get_status_display }}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-arrow-repeat me-2 text-primary"></i>Last Updated</span>
+                                <strong>{{ object.modified_date|date:"M d, Y" }}</strong>
                             </li>
-                            
                             {% if object.access_link %}
                             <li class="list-group-item">
-                                <strong>Access Link:</strong> 
-                                <a href="{{ object.access_link }}" target="_blank" rel="noopener">
-                                    Access Resource <i class="bi bi-box-arrow-up-right"></i>
+                                <a href="{{ object.access_link }}" target="_blank" class="btn btn-outline-primary w-100 shadow-sm">
+                                    <i class="bi bi-box-arrow-up-right me-2"></i>Access Resource
                                 </a>
                             </li>
                             {% endif %}
                         </ul>
                     </div>
+                    
+
                 </div>
             </div>
-            
-            {# Specific details based on resource type #}
-            {% block resource_specific_details %}
-                {# This block will be overridden by type-specific templates #}
-            {% endblock %}
         </div>
-        
-        {% if user.is_authenticated and user == object.author %}
-        <div class="card-footer">
-            <a href="#" class="btn btn-primary">Edit</a>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                Delete
-            </button>
-        </div>
-        {% endif %}
     </div>
 </div>
 
-{% if user.is_authenticated and user == object.author %}
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete "{{ object.title }}"? This action cannot be undone.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form method="post" action="#">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
+<style>
+    .card {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .breadcrumb {
+        padding: 0.75rem 1rem;
+    }
+    
+    .list-group-item {
+        padding: 1rem;
+    }
+    
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 0.8em;
+        margin-right: 0.5rem;
+        border-radius: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    .btn {
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .lead {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .h5 {
+        color: #495057;
+    }
+</style>
 {% endblock %}

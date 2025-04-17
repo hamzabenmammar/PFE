@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Corpus{% endblock title %}
+{% block content %}
+<h2>Corpus found ({{ total_count }})</h2>
+
+<br>
+{% if user.is_authenticated %}
+    <a href="{% url 'resources:create' %}" class="btn btn-primary">Add a new corpus</a>
+{% else %}
+    <p><strong>Note:</strong> You need to be logged in to add a new corpus.</p>
+{% endif %}
+<br><br>
+<hr>
+
+<div class="corpus-grid">
+  {% for corpus in corpora %}
+  <div class="corpus-card">
+    <h3>{{ corpus.titre }}</h3>
+    <div><strong>Title:</strong> {{ corpus.title }}</div>
+
+    <div><strong>Creation Date:</strong> {{ corpus.creation_date|date:"d/m/Y H:i" }}</div>
+    <div><strong>Author:</strong> {{ corpus.author }}</div>
+    <div class="corpus-stats">
+      <div class="stat-item">{{corpus.size}} words</div>
+      <div class="stat-item">{{corpus.file_format}}</div>
+    </div>
+    <div class="corpus-actions">
+      <a href="{% url 'resources:corpus_detail' corpus.id %}" class='btn btn-primary'>
+        View Details
+      </a>
+    </div>
+  </div>
+  {% empty %}
+  <p>No corpus available.</p>
+  {% endfor %}
+</div>
+
+<style>
+    .corpus-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    .corpus-card {
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Conserver les autres styles existants */
+    .page-title {
+        color: #1e455e;
+        margin-bottom: 30px;
+    }
+    .corpus-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .corpus-card h3 {
+        margin-top: 0;
+        color: #1e455e;
+    }
+    .stat-item {
+        margin-right: 20px;
+        font-size: 14px;
+    }
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 15px;
+    }
+    /* ... autres styles conservés ... */
+</style>
+{% endblock content%}

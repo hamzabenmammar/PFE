@@ -9,7 +9,9 @@ from .views import (
     ThesisListView,  # Renamed from TheseListView
     MemoirListView,  # Renamed from MemoireListView
     ResourceDetailView,
-    ResourceCreateView
+    ResourceCreateView,
+    ResourceUpdateView,
+    ResourceDeleteView 
 )
 
 app_name = 'resources'
@@ -31,6 +33,8 @@ urlpatterns = [
     
     # Create view
     path('add/', ResourceCreateView.as_view(), name="create"),
+    path('update/<str:type>/<uuid:pk>/', ResourceUpdateView.as_view(), name="resource-update"),
+    path('delete/<str:type>/<uuid:pk>/', ResourceDeleteView.as_view(), name="resource-delete"),
     
     # Type-specific detail views
     path('document/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'document'}, name="document_detail"),

@@ -66,34 +66,26 @@ body {
 }
 
 .btn {
-  text-decoration: none;
+  border: 1px solid white;
+  color: black;
+  background: grey; /* Correction de la faute de frappe */
   padding: 8px 15px;
   border-radius: 5px;
   transition: all 0.3s ease;
   font-weight: 600;
   text-transform: uppercase;
+  text-decoration: none; /* Déplacé ici */
 }
 
-.btn-primary {
-  background-color: #4CAF50;
-  color: white;
+/* Ajouter une spécificité accrue pour .btn-primary */
+.btn-primary.btn {
+   /* Couleur bleu foncé cohérente avec le header */
   border: none;
 }
 
-.btn-primary:hover {
-  background-color: #45a049;
+.btn-primary.btn:hover {
+  background-color: #15374d; /* Version plus foncée au survol */
 }
-
-.btn {
-  border: 1px solid white;
-  color: white;
-  background: transparent;
-}
-
-.btn:hover {
-  background-color: rgba(255,255,255,0.2);
-}
-
 /* Sidebar */
 .sidebar {
   width: 250px;
@@ -171,4 +163,14 @@ body {
 
 .mb-20 {
   margin-bottom: 20px;
+}
+
+.btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
 }
