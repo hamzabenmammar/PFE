@@ -4,137 +4,176 @@
 {% block title %}{% trans "Scientific Events" %} | {% trans "Arabic NLP Platform" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row mb-4">
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-4 align-items-center">
         <div class="col-md-8">
-            <h1 class="mb-3">{% trans "Scientific Events" %}</h1>
-            <p class="lead">{% trans "Discover conferences, workshops, and calls for papers in Arabic NLP, Speech Processing, and AI." %}</p>
+            <h1 class="display-4 fw-bold mb-3 text-primary">{% trans "Scientific Events" %}</h1>
+            <p class="lead text-muted">{% trans "Discover conferences, workshops, and calls for papers in Arabic NLP, Speech Processing, and AI." %}</p>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
             {% if user.is_authenticated %}
-            <a href="{% url 'events:event_create' %}" class="">
-                <i class=""></i> {% trans "Submit Event" %}
+            <a href="{% url 'events:event_create' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus-circle me-2"></i> {% trans "Submit Event" %}
             </a>
             {% endif %}
         </div>
     </div>
 
-    <div class="">
-        <div class="">
-            <h5 class="">{% trans "Search Events" %}</h5>
+    <!-- Search Card -->
+    <div class="card shadow-lg mb-5">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-search me-2"></i>{% trans "Search Events" %}</h5>
         </div>
         <div class="card-body">
-            <form method="get" class="row g-3">
+            <form method="get" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    {{ search_form.keyword.label_tag }}
-                    {{ search_form.keyword }}
+                    <div class="form-floating">
+                        {{ search_form.keyword }}
+                        <label for="{{ search_form.keyword.id_for_label }}">{% trans "Keywords" %}</label>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    {{ search_form.event_type.label_tag }}
-                    {{ search_form.event_type }}
+                    <div class="form-floating">
+                        {{ search_form.event_type }}
+                        <label for="{{ search_form.event_type.id_for_label }}">{% trans "Event Type" %}</label>
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    {{ search_form.domain.label_tag }}
-                    {{ search_form.domain }}
+                    <div class="form-floating">
+                        {{ search_form.domain }}
+                        <label for="{{ search_form.domain.id_for_label }}">{% trans "Domain" %}</label>
+                    </div>
                 </div>
                 <div class="col-md-2">
-                    {{ search_form.start_date.label_tag }}
-                    {{ search_form.start_date }}
-                </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        {{ search_form.include_past }}
-                        {{ search_form.include_past.label_tag }}
+                    <div class="form-floating">
+                        {{ search_form.start_date }}
+                        <label for="{{ search_form.start_date.id_for_label }}">{% trans "Start Date" %}</label>
                     </div>
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="">{% trans "Search" %}</button>
-                    <a href="{% url 'events:event_list' %}" class="">{% trans "Clear Filters" %}</a>
+                    <div class="form-check form-switch">
+                        {{ search_form.include_past }}
+                        <label class="form-check-label" for="{{ search_form.include_past.id_for_label }}">
+                            {% trans "Include Past Events" %}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-filter me-2"></i>{% trans "Search" %}
+                    </button>
+                    <a href="{% url 'events:event_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo me-2"></i>{% trans "Clear Filters" %}
+                    </a>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Events List -->
     {% if events %}
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for event in events %}
         <div class="col">
-            <div class="card h-100 {% if event.is_ongoing %}border-success{% elif event.is_upcoming %}border-primary{% else %}border-secondary{% endif %}">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span class="badge bg-{% if event.event_type == 'conference' %}primary{% elif event.event_type == 'workshop' %}success{% elif event.event_type == 'call_for_papers' %}warning{% elif event.event_type == 'hackathon' %}danger{% else %}secondary{% endif %}">
+            <div class="card h-100 shadow-sm hover-effect">
+                <div class="card-header d-flex justify-content-between align-items-center bg-transparent">
+                    <span class="badge rounded-pill bg-{% if event.event_type == 'conference' %}primary{% elif event.event_type == 'workshop' %}success{% elif event.event_type == 'call_for_papers' %}warning{% elif event.event_type == 'hackathon' %}danger{% else %}secondary{% endif %} py-2 px-3">
                         {{ event.get_event_type_display }}
                     </span>
-                    <small class="text-muted">
+                    <div class="d-flex align-items-center gap-2">
                         {% if event.is_ongoing %}
-                            <span class="text-success"><i class="fas fa-calendar-check"></i> {% trans "Ongoing" %}</span>
+                        <span class="badge bg-success rounded-pill">
+                            <i class="fas fa-calendar-check fa-fw"></i> {% trans "Ongoing" %}
+                        </span>
                         {% elif event.is_upcoming %}
-                            <span class="text-primary"><i class="fas fa-calendar-alt"></i> {% trans "Upcoming" %}</span>
+                        <span class="badge bg-primary rounded-pill">
+                            <i class="fas fa-calendar-alt fa-fw"></i> {% trans "Upcoming" %}
+                        </span>
                         {% else %}
-                            <span class="text-secondary"><i class="fas fa-calendar-times"></i> {% trans "Past" %}</span>
+                        <span class="badge bg-secondary rounded-pill">
+                            <i class="fas fa-calendar-times fa-fw"></i> {% trans "Past" %}
+                        </span>
                         {% endif %}
-                    </small>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ event.title }}</h5>
-                    <p class="card-text">{{ event.description|truncatewords:30 }}</p>
-                    
-                    <div class="mb-2">
-                        <i class="fas fa-tags text-muted"></i> 
-                        {% for domain in event.domain_list %}
-                        <span class="badge bg-light text-dark">{{ domain }}</span>
-                        {% endfor %}
                     </div>
+                </div>
+
+                <div class="card-body">
+                    <h3 class="card-title h5 mb-3">{{ event.title }}</h3>
+                    <p class="card-text text-muted mb-4">{{ event.description|truncatewords:30 }}</p>
                     
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <i class="fas fa-map-marker-alt text-muted"></i> 
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-light text-dark border py-2 px-3">
+                            <i class="fas fa-globe me-2 text-primary"></i>
                             {% if event.is_virtual %}
-                                <span class="badge bg-info">{% trans "Virtual" %}</span>
+                            {% trans "Virtual Event" %}
                             {% else %}
-                                {{ event.location }}
+                            {{ event.location|truncatechars:25 }}
                             {% endif %}
-                        </div>
-                        <div>
-                            <i class="fas fa-calendar text-muted"></i> 
+                        </span>
+                        <span class="badge bg-light text-dark border py-2 px-3">
+                            <i class="fas fa-calendar-day me-2 text-primary"></i>
                             {{ event.start_date|date:"M d, Y" }}
                             {% if event.start_date != event.end_date %}
-                                - {{ event.end_date|date:"M d, Y" }}
+                            - {{ event.end_date|date:"M d, Y" }}
                             {% endif %}
-                        </div>
+                        </span>
                     </div>
-                    
+
+                    {% if event.domain_list %}
+                    <div class="mb-3">
+                        <span class="small text-muted"><i class="fas fa-tags me-1"></i>{% trans "Domains:" %}</span>
+                        {% for domain in event.domain_list %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary me-1">{{ domain }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
                     {% if event.submission_deadline and event.days_until_deadline != None %}
-                    <div class="alert alert-warning mt-2">
-                        <i class="fas fa-hourglass-half"></i> 
-                        {% trans "Submission deadline" %}: {{ event.submission_deadline|date:"M d, Y" }}
-                        ({{ event.days_until_deadline }} {% trans "days left" %})
+                    <div class="alert alert-warning d-flex align-items-center mb-0">
+                        <i class="fas fa-hourglass-half fa-2x me-3"></i>
+                        <div>
+                            <strong>{% trans "Submission Deadline:" %}</strong><br>
+                            {{ event.submission_deadline|date:"M d, Y" }}
+                            <span class="badge bg-warning text-dark ms-2">
+                                {{ event.days_until_deadline }} {% trans "days left" %}
+                            </span>
+                        </div>
                     </div>
                     {% endif %}
                 </div>
-                <div class="card-footer bg-transparent">
-                    <a href="{% url 'events:event_detail' event.pk %}" class="">{% trans "View Details" %}</a>
+
+                <div class="card-footer bg-transparent border-0 d-flex justify-content-end">
+                    <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-arrow-right me-2"></i>{% trans "View Details" %}
+                    </a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    
+
+    <!-- Pagination -->
     {% if is_paginated %}
-    <nav aria-label="Page navigation" class="mt-4">
+    <nav aria-label="Page navigation" class="mt-5">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page=1">{% trans "First" %}</a>
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
             </li>
             {% endif %}
-            
+
             {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                <li class="page-item active">
-                    <span class="page-link">{{ num }} <span class="sr-only">(current)</span></span>
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}</span>
                 </li>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                 <li class="page-item">
@@ -142,23 +181,44 @@
                 </li>
                 {% endif %}
             {% endfor %}
-            
+
             {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{% trans "Last" %}</a>
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
             </li>
             {% endif %}
         </ul>
     </nav>
     {% endif %}
-    
+
     {% else %}
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle"></i> {% trans "No events found matching your criteria." %}
+    <div class="alert alert-info d-flex align-items-center mt-5">
+        <i class="fas fa-info-circle fa-2x me-3"></i>
+        <div>
+            <h4 class="alert-heading">{% trans "No events found!" %}</h4>
+            <p class="mb-0">{% trans "Try adjusting your search filters or check back later." %}</p>
+        </div>
     </div>
     {% endif %}
 </div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .form-floating label {
+        color: #6c757d;
+    }
+</style>
 {% endblock %}

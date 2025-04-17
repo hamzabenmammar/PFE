@@ -1,119 +1,326 @@
 {% extends 'base.html' %}
 {% block title %}Projects of Research in Arabic TAL{% endblock %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .content {
-            margin-left: 290px;
-            padding: 20px;
-        }
-        .page-title {
-            color: #1c4e6d;
-            margin-bottom: 30px;
-        }
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .project-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            background-color: white;
-        }
-        .project-title {
-            color: #1c4e6d;
-            margin-top: 0;
-        }
-        .project-tags {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .tag {
-            background-color: #f0f0f0;
-            border-radius: 15px;
-            padding: 3px 10px;
-            font-size: 0.9em;
-        }
-        .project-description {
-            margin-bottom: 15px;
-        }
-        .project-meta {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-        .btn {
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-primary1 {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-        }
-        .btn-secondary {
-            background-color: white;
-            border: 1px solid #1c4e6d;
-            color: #1c4e6d;
-        }
-        .btn-danger {
-            background-color: #f44336;
-            color: white;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="content">
-        <h1 class="page-title">Projects of Research in Arabic TAL</h1>
+<div class="content">
+    <h1 class="page-title">Projects of Research in Arabic TAL</h1>
+    
+    <div class="search-container">
         <form method="get" action="{% url 'projects:project_search' %}">
-            <input type="text" name="q" placeholder="Search projects">
-            <button type="submit">Search</button>
+            <div class="search-wrapper">
+                <input type="text" name="q" placeholder="Search projects" class="search-input">
+                <button type="submit" class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
         </form>
-        
-        <div class="projects-grid">
-            {% for project in projects %}
-            <div class="project-card">
+    </div>
+    
+    <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card">
+            <div class="project-header">
                 <h2 class="project-title">{{ project.title }}</h2>
-                <div class="project-description">
-                    {{ project.description }}
+                <div class="project-date">{{ project.date_start }} - {{ project.date_end }}</div>
+            </div>
+            
+            <div class="project-description">{{ project.description }}</div>
+            
+            <div class="project-meta">
+                <div class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"></path><path d="M1 21h22"></path><path d="M10 9h4"></path><path d="M10 13h4"></path><path d="M10 17h4"></path></svg>
+                    <span>{{ project.institution }}</span>
                 </div>
-                <div class="project-meta">
-                    <div>Institution: {{ project.institution }}</div>
-                    <div>Period: {{ project.date_start }} - {{ project.date_end }}</div>
-                    <div>Coordinator: {{ project.coordinator }}</div>
-                </div>
-                <div class="button-group">
-                  <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-primary1">Details</a>
-                  {% if project.coordinator == user %}
-                    <a href="{% url 'projects:project_update' project.pk %}" class="btn btn-secondary">Update</a>
-                    <a href="{% url 'projects:project_delete' project.pk %}" class="btn btn-danger">Delete</a>
-                  {% else %}
-                    <form action="{% url 'projects:join_project' project.pk %}" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-secondary">Join</button>
-                    </form>
-                
-                  {% endif %}
-                
+                <div class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>{{ project.coordinator }}</span>
                 </div>
             </div>
-            {% endfor %}
+            
+            <div class="project-actions">
+                <a href="{% url 'projects:project_detail' project.pk %}" class="btn details-btn">
+                    DETAILS 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                </a>
+                
+                {% if project.coordinator == user %}
+                    <a href="{% url 'projects:project_update' project.pk %}" class="btn update-btn">UPDATE</a>
+                    <a href="{% url 'projects:project_delete' project.pk %}" class="btn delete-btn">DELETE</a>
+                {% else %}
+                    <form action="{% url 'projects:join_project' project.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn join-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                            JOIN PROJECT
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
+        {% endfor %}
     </div>
-</body>
-</html>
+</div>
+
+<style>
+    /* Global styles */
+    :root {
+        --primary: #1e4e6d;
+        --secondary: #4CAF50;
+        --text-dark: #333;
+        --text-light: #666;
+        --border-color: #e0e0e0;
+        --bg-light: #f5f5f5;
+        --card-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    /* Main content area */
+    .content {
+        padding: 20px;
+        margin-left: 250px;
+        max-width: 1200px;
+    }
+    
+    /* Page title */
+    .page-title {
+        color: var(--primary);
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    
+    .page-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: var(--secondary);
+    }
+    
+    /* Search area */
+    .search-container {
+        margin: 25px 0;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .search-wrapper {
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .search-input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-right: none;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+        font-size: 16px;
+    }
+    
+    .search-button {
+        background-color: var(--secondary);
+        color: white;
+        border: none;
+        padding: 0 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Projects grid */
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+    }
+    
+    /* Project cards */
+    .project-card {
+        background-color: white;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .project-header {
+        padding: 15px 20px 5px;
+    }
+    
+    .project-title {
+        color: var(--primary);
+        margin: 0 0 5px 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    .project-date {
+        color: var(--text-light);
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .project-description {
+        padding: 0 20px 15px;
+        color: var(--text-dark);
+        font-size: 15px;
+        line-height: 1.5;
+        flex-grow: 1;
+    }
+    
+    .project-meta {
+        background-color: var(--bg-light);
+        padding: 12px 20px;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        color: var(--text-light);
+        font-size: 14px;
+    }
+    
+    .meta-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .meta-item svg {
+        margin-right: 8px;
+        color: var(--primary);
+    }
+    
+    .project-actions {
+        padding: 15px 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border: none;
+        text-align: center;
+    }
+    
+    .details-btn {
+        background-color: var(--secondary);
+        color: white;
+        grid-column: span 2;
+    }
+    
+    .details-btn svg {
+        margin-left: 5px;
+    }
+    
+    .details-btn:hover {
+        background-color: #3d9a40;
+    }
+    
+    .update-btn {
+        background-color: white;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+    }
+    
+    .update-btn:hover {
+        background-color: #f0f7fa;
+    }
+    
+    .delete-btn {
+        background-color: #f44336;
+        color: white;
+    }
+    
+    .delete-btn:hover {
+        background-color: #d32f2f;
+    }
+    
+    .join-btn {
+        background-color: var(--primary);
+        color: white;
+        grid-column: span 2;
+    }
+    
+    .join-btn svg {
+        margin-right: 5px;
+    }
+    
+    .join-btn:hover {
+        background-color: #183d56;
+    }
+    
+    /* Form styling */
+    form {
+        width: 100%;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 1024px) {
+        .content {
+            margin-left: 0;
+            padding: 15px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .project-actions {
+            grid-template-columns: 1fr;
+        }
+        
+        .details-btn, .join-btn {
+            grid-column: span 1;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .content {
+            padding: 10px;
+        }
+        
+        .search-wrapper {
+            max-width: 100%;
+        }
+        
+        .page-title {
+            font-size: 24px;
+        }
+        
+        .project-card {
+            margin-bottom: 15px;
+        }
+    }
+</style>
 {% endblock %}

@@ -1,13 +1,66 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="profile-container">
-  <h2>Profil de {{ user.full_name }}</h2>
-  <p><strong>Email :</strong> {{ user.email }}</p>
-  <p><strong>Affiliation :</strong> {{ user.institution }}</p>
-  <p><strong>Bio :</strong> {{ user.bio }}</p>
-  
-  <a href="{% url 'accounts:profile-edit' pk=user.pk %}">Edit</a>
-  <a href="{% url 'account_logout' %}">Logout</a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <!-- Profile Header -->
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-3x"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h2 class="mb-0">{{ user.full_name }}</h2>
+                            <p class="mb-0">{{ user.institution }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Details -->
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-envelope me-3 text-primary"></i>
+                            <div>
+                                <h6 class="mb-0">Email</h6>
+                                <p class="mb-0">{{ user.email }}</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-university me-3 text-primary"></i>
+                            <div>
+                                <h6 class="mb-0">Affiliation</h6>
+                                <p class="mb-0">{{ user.institution }}</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 text-primary"></i>
+                            <div>
+                                <h6 class="mb-0">Bio</h6>
+                                <p class="mb-0">{{ user.bio|default:"No bio provided" }}</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="card-footer bg-transparent">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'accounts:profile-edit' pk=user.pk %}" 
+                           class="btn btn-primary me-md-2">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </a>
+                        <a href="{% url 'account_logout' %}" 
+                           class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

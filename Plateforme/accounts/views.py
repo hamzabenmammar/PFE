@@ -20,6 +20,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
    template_name='account/profile_edit.html'
    context_object_name = 'user'
    def get_success_url(self):
-    return reverse_lazy('profile', kwargs={'pk': self.object.pk})
+    return reverse_lazy('accounts:profile', kwargs={'pk': self.object.pk})
 
 
