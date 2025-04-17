@@ -81,7 +81,7 @@ class ProjectSearchView(LoginRequiredMixin, ListView):
             return Project.objects.filter(
                 Q(title__icontains=query) |
                 Q(institution__name__icontains=query) |
-                Q(coordinator__username__icontains=query)
+                Q(coordinator__full_name__icontains=query)
             )
         else:
             return Project.objects.all()
