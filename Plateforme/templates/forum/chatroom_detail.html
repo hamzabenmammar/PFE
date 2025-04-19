@@ -3,50 +3,63 @@
 {% block content %}
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+        <div class="col-12">
+            <!-- Chatroom Header -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-primary text-white rounded-top">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4>{{ chatroom.name }}</h4>
-                        
+                        <h4 class="mb-0"><i class="fas fa-comments me-2"></i>{{ chatroom.name }}</h4>
+                        <a href="{% url 'forum:chatroom-list' pk=topic.pk %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Retour
+                        </a>
                     </div>
-                    <p class="mb-0">{{ chatroom.description }}</p>
-                    <small>Sujet: {{ chatroom.topic.title }} | Créé par {{ chatroom.creator }}</small>
+                    <p class="mb-1 mt-2">{{ chatroom.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small><i class="fas fa-tag me-1"></i>Sujet: {{ chatroom.topic.title }}</small>
+                        <small><i class="fas fa-user me-1"></i>Créé par {{ chatroom.creator }}</small>
+                    </div>
                 </div>
-                <div class="card-body" style="height: 400px; overflow-y: auto;" id="message-container">
+                
+                <!-- Messages Container -->
+                <div class="card-body bg-light" style="height: 60vh; overflow-y: auto;" id="message-container">
                     {% if messages %}
                         {% for message in messages %}
-                        <div class="mb-3 p-2 {% if message.user == user %}bg-light text-right{% else %}bg-white{% endif %}" style="border-radius: 10px;">
-                            <div class="d-flex justify-content-between">
+                        <div class="mb-3 p-3 {% if message.user == user %}bg-primary bg-opacity-10 ms-auto{% else %}bg-white{% endif %}" style="border-radius: 15px; max-width: 85%; ">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
                                 <strong>{{ message.user }}</strong>
-                                <small>{{ message.timestamp|date:"d/m/Y H:i" }}</small>
+                                <small class="text-muted">{{ message.timestamp|date:"d/m/Y H:i" }}</small>
                             </div>
-                            <p class="mb-0">{{ message.content }}</p>
+                            <p class="mb-1">{{ message.content }}</p>
                             {% if message.user == user %}
-                            <div class="mt-1">
+                            <div class="text-end mt-1">
                                 <form method="post" action="{% url 'forum:message-delete' message.id %}" class="d-inline">
                                     {% csrf_token %}
-                                    <button type="submit" class="">Supprimer</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Supprimer
+                                    </button>
                                 </form>
                             </div>
                             {% endif %}
                         </div>
                         {% endfor %}
                     {% else %}
-                        <div class="">
-                            Aucun message dans cette salle pour le moment.
+                        <div class="text-center p-5">
+                            <i class="fas fa-comments text-muted fa-3x mb-3"></i>
+                            <p class="lead text-muted">Aucun message dans cette salle pour le moment.</p>
+                            <p class="text-muted">Soyez le premier à démarrer la conversation!</p>
                         </div>
                     {% endif %}
                 </div>
-                <div class="card-footer">
-                    <form method="post">
+                
+                <!-- Message Input -->
+                <div class="card-footer bg-white border-top">
+                    <form method="post" class="message-form">
                         {% csrf_token %}
                         <div class="input-group">
                             <input type="text" name="message" class="form-control" placeholder="Votre message..." required>
-                            <div class="input-group-append">
-                                <button type="submit" class="">Envoyer</button>
-                                <a href="{%url 'forum:chatroom-list' pk=topic.pk %}">Back</a>
-                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i>Envoyer
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -56,10 +69,37 @@
 </div>
 
 <script>
-    // Faire défiler automatiquement vers le dernier message
+    // Auto-scroll to the last message
     document.addEventListener('DOMContentLoaded', function() {
         const messageContainer = document.getElementById('message-container');
         messageContainer.scrollTop = messageContainer.scrollHeight;
+        
+        // Focus on the message input when page loads
+        document.querySelector('input[name="message"]').focus();
+        
+        // Add smooth animation for new messages
+        const messageForm = document.querySelector('.message-form');
+        messageForm.addEventListener('submit', function() {
+            // You can add a loading animation here if needed
+            setTimeout(function() {
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }, 100);
+        });
+        
+        // Auto-refresh messages every 30 seconds (optional)
+        // setInterval(function() {
+        //     location.reload();
+        // }, 30000);
+    });
+    
+    // Make messages container responsive to window size
+    window.addEventListener('resize', function() {
+        const messageContainer = document.getElementById('message-container');
+        if (window.innerWidth < 768) {
+            messageContainer.style.height = '50vh';
+        } else {
+            messageContainer.style.height = '60vh';
+        }
     });
 </script>
 {% endblock %}

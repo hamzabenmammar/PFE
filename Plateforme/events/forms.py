@@ -8,31 +8,71 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = [
             'title', 'description', 'event_type', 'domains',
-            'location', 'is_virtual', 'start_date', 'end_date',
+            'location', 'start_date', 'end_date',
             'submission_deadline', 'website', 'organizer',
             'contact_email', 'attachment'
         ]
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'}),
-            'submission_deadline': forms.DateInput(attrs={'type': 'date'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ('Event Title')}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'event_type': forms.Select(attrs={'class': 'form-select'}),
+            'domains': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ('e.g., NLP, Speech Processing, Arabic Language')}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ('Leave blank for virtual events')}),
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'submission_deadline': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'website': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://'}),
+            'organizer': forms.Select(attrs={'class': 'form-select'}),
+            'contact_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'contact@example.com'}),
+            'attachment': forms.FileInput(attrs={'class': 'form-control'}),
         }
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        submission_deadline = cleaned_data.get('submission_deadline')
+        
+        if start_date and end_date and end_date < start_date:
+            self.add_error('end_date', ('End date must be after start date'))
+        
+        if start_date and submission_deadline and submission_deadline > start_date:
+            self.add_error('submission_deadline', ('Submission deadline must be before event start date'))
+        
+        return cleaned_data
 
 
 class EventSearchForm(forms.Form):
     """Form for searching events."""
     
-    keyword = forms.CharField(required=False)
+    keyword = forms.CharField(
+        required=False, 
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': ('Search by title, description, or organizer')
+        })
+    )
     event_type = forms.ChoiceField(
-        choices=[('', 'All Types')] + list(Event.TYPE_CHOICES),
-        required=False
+        choices=[('', ('All Types'))] + list(Event.TYPE_CHOICES),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     domain = forms.ChoiceField(
-        choices=[('', 'All Domains')] + list(Event.DOMAIN_CHOICES),
-        required=False
+        choices=[('', ('All Domains'))] + list(Event.DOMAIN_CHOICES),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     start_date = forms.DateField(
         required=False,
-        widget=forms.DateInput(attrs={'type': 'date'})
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control'
+        })
     )
-    include_past = forms.BooleanField(required=False, initial=False)
+    include_past = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input'
+        })
+    )

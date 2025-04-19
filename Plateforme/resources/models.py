@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError, PermissionDenied
-from accounts.models import Institution
+from institutions.models import Institution
 
 
 

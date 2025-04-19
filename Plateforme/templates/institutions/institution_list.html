@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Institution Directory" %} | {% trans "Arabic Language Technology Platform" %}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">{% trans "Directory of Research Institutions in Arabic Language Processing" %}</h1>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">{% trans "Search and Filter" %}</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="{% url 'institutions:institution_list' %}" class="row g-3">
+                <div class="col-md-3">
+                    {{ filter_form.institution_type.label_tag }}
+                    {{ filter_form.institution_type }}
+                </div>
+                <div class="col-md-3">
+                    {{ filter_form.country.label_tag }}
+                    {{ filter_form.country }}
+                </div>
+                <div class="col-md-3">
+                    {{ filter_form.specialty.label_tag }}
+                    {{ filter_form.specialty }}
+                </div>
+                <div class="col-md-3">
+                    {{ filter_form.search_term.label_tag }}
+                    {{ filter_form.search_term }}
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
+                    <a href="{% url 'institutions:institution_list' %}" class="btn btn-outline-secondary ms-2">{% trans "Reset" %}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if institutions %}
+            {% for institution in institutions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm institution-card">
+                        <div class="institution-logo text-center py-3 bg-light">
+                            {% if institution.logo %}
+                                <img src="{{ institution.logo.url }}" alt="{{ institution.name }}" class="img-fluid" style="max-height: 100px;">
+                            {% else %}
+                                <img src="{% static 'images/institution-placeholder.png' %}" alt="{{ institution.name }}" class="img-fluid" style="max-height: 100px;">
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ institution.name }}
+                                {% if institution.acronym %}
+                                    <span class="badge bg-secondary ms-1">{{ institution.acronym }}</span>
+                                {% endif %}
+                            </h5>
+                            <p class="card-text text-muted">
+                                {{ institution.type.name }} - {{ institution.country.name }}
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt me-2"></i> {{ institution.city }}
+                                {% if institution.website %}
+                                    <br><i class="fas fa-globe me-2"></i> 
+                                    <a href="{{ institution.website }}" target="_blank">{{ institution.website }}</a>
+                                {% endif %}
+                            </p>
+                            <div class="mt-auto">
+                                <a href="{% url 'institutions:institution_detail' institution.pk %}" class="btn btn-outline-primary btn-sm">{% trans "View Details" %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    {% trans "No institutions match your search criteria." %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="{% trans 'Page Navigation' %}" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&{% endif %}page=1">&laquo; {% trans "First" %}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&{% endif %}page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.urlencode %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.paginator.num_pages }}">{% trans "Last" %} &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="text-center mt-4">
+        <a href="{% url 'institutions:institution_create' %}" class="btn btn-success">
+            <i class="fas fa-plus-circle me-2"></i> {% trans "Add New Institution" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Script to enhance user experience
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add Bootstrap classes to form fields
+        const formInputs = document.querySelectorAll('form select, form input[type="text"]');
+        formInputs.forEach(function(input) {
+            input.classList.add('form-control');
+        });
+    });
+</script>
+{% endblock %}

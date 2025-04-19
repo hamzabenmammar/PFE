@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+  'resources',
+    'institutions',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -51,7 +53,7 @@ INSTALLED_APPS = [
     'projects',
     'forum',
     'events',
-    'resources',
+    
 ]
 
 MIDDLEWARE = [

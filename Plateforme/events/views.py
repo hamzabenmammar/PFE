@@ -5,20 +5,22 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from .models import Event, EventRegistration
 from .forms import EventForm, EventSearchForm
+
 
 class EventListView(ListView):
     """View for listing events."""
     
     model = Event
-    template_name = 'event_list.html'
+    template_name = 'events/event_list.html'
     context_object_name = 'events'
     paginate_by = 10
     
     def get_queryset(self):
-        queryset = Event.objects.all()
+        queryset = Event.objects.filter(is_approved=True)
         form = EventSearchForm(self.request.GET)
         
         if form.is_valid():
@@ -32,7 +34,7 @@ class EventListView(ListView):
                 queryset = queryset.filter(
                     Q(title__icontains=keyword) | 
                     Q(description__icontains=keyword) |
-                    Q(organizer__icontains=keyword)
+                    Q(organizer__name__icontains=keyword)
                 )
             
             if event_type:
@@ -46,8 +48,11 @@ class EventListView(ListView):
             
             if not include_past:
                 queryset = queryset.filter(end_date__gte=timezone.now().date())
+        else:
+            # By default, only show upcoming and ongoing events
+            queryset = queryset.filter(end_date__gte=timezone.now().date())
         
-        return queryset
+        return queryset.select_related('organizer', 'created_by')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,24 +61,29 @@ class EventListView(ListView):
 
 
 class EventDetailView(DetailView):
-    """View for displaying event details."""
+    """View for displaying event details (visible to all users)."""
     
     model = Event
     template_name = 'events/event_detail.html'
     context_object_name = 'event'
-    
+
     def get_queryset(self):
-        # Only show approved events to regular users
-        if self.request.user.is_staff:
-            return Event.objects.all()
-      
+        """Add related objects to reduce database queries."""
+        return Event.objects.select_related('organizer', 'created_by')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Check if the user is registered for this event
         if self.request.user.is_authenticated:
             context['is_registered'] = EventRegistration.objects.filter(
-                event=self.object, 
+                event=self.object,
                 user=self.request.user
             ).exists()
+        else:
+            context['is_registered'] = False
+            
+        # Add registration count
+        context['registration_count'] = self.object.registrations.count()
         return context
 
 
@@ -85,15 +95,21 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     template_name = 'events/event_form.html'
     
     def form_valid(self, form):
+        # Auto-approve events created by staff
+        form.instance.is_approved = self.request.user.is_staff
         form.instance.created_by = self.request.user
-      
         
-        messages.success(
-            self.request, 
-            'Event created successfully! It will be visible after admin approval.' 
-            if not self.request.user.is_staff else 'Event created successfully!'
-        )
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        
+        if form.instance.is_approved:
+            messages.success(self.request, _('Event created successfully!'))
+        else:
+            messages.success(
+                self.request, 
+                _('Event created successfully! It will be visible after admin approval.')
+            )
+        
+        return response
 
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -104,12 +120,21 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'events/event_form.html'
     
     def test_func(self):
+        """Check if user has permission to edit this event."""
         event = self.get_object()
         return self.request.user == event.created_by or self.request.user.is_staff
     
     def form_valid(self, form):
-        
-        messages.success(self.request, 'Event updated successfully!')
+        # If a non-staff user edits an approved event, require re-approval
+        if not self.request.user.is_staff and self.get_object().is_approved:
+            form.instance.is_approved = False
+            messages.info(
+                self.request,
+                _('Your changes will be reviewed before becoming visible.')
+            )
+        else:
+            messages.success(self.request, _('Event updated successfully!'))
+            
         return super().form_valid(form)
 
 
@@ -121,11 +146,13 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('events:event_list')
     
     def test_func(self):
+        """Check if user has permission to delete this event."""
         event = self.get_object()
         return self.request.user == event.created_by or self.request.user.is_staff
     
     def delete(self, request, *args, **kwargs):
-        messages.success(request, 'Event deleted successfully.')
+        event_title = self.get_object().title
+        messages.success(request, _('Event "{}" deleted successfully.').format(event_title))
         return super().delete(request, *args, **kwargs)
 
 
@@ -133,17 +160,22 @@ def register_for_event(request, pk):
     """View for registering to an event."""
     
     if not request.user.is_authenticated:
-        messages.error(request, 'You must be logged in to register for events.')
-        return redirect('login')
+        messages.error(request, _('You must be logged in to register for events.'))
+        return redirect('account_login')
     
-    event = get_object_or_404(Event, pk=pk)
+    event = get_object_or_404(Event, pk=pk, is_approved=True)
+    
+    # Don't allow registration for past events
+    if event.is_past:
+        messages.error(request, _('Registration for past events is not allowed.'))
+        return redirect('events:event_detail', pk=pk)
     
     # Check if user is already registered
     if EventRegistration.objects.filter(event=event, user=request.user).exists():
-        messages.info(request, 'You are already registered for this event.')
+        messages.info(request, _('You are already registered for this event.'))
     else:
         EventRegistration.objects.create(event=event, user=request.user)
-        messages.success(request, f'You have successfully registered for "{event.title}".')
+        messages.success(request, _('You have successfully registered for "{}".').format(event.title))
     
     return redirect('events:event_detail', pk=pk)
 
@@ -152,11 +184,17 @@ def unregister_from_event(request, pk):
     """View for unregistering from an event."""
     
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('account_login')
     
     event = get_object_or_404(Event, pk=pk)
+    
+    # Don't allow unregistration from past events
+    if event.is_past:
+        messages.error(request, _('Unregistering from past events is not allowed.'))
+        return redirect('events:event_detail', pk=pk)
+    
     registration = get_object_or_404(EventRegistration, event=event, user=request.user)
     registration.delete()
     
-    messages.success(request, f'You have unregistered from "{event.title}".')
+    messages.success(request, _('You have unregistered from "{}".').format(event.title))
     return redirect('events:event_detail', pk=pk)

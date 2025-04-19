@@ -14,7 +14,15 @@
             </div>
         </form>
     </div>
-    
+     <div class="add-project-container">
+        <a href="{% url 'projects:project_new' %}" class="btn add-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            ADD PROJECT
+        </a>
+    </div>
     <div class="projects-grid">
         {% for project in projects %}
         <div class="project-card">
@@ -61,25 +69,8 @@
 </div>
 
 <style>
-    /* Global styles */
-    :root {
-        --primary: #1e4e6d;
-        --secondary: #4CAF50;
-        --text-dark: #333;
-        --text-light: #666;
-        --border-color: #e0e0e0;
-        --bg-light: #f5f5f5;
-        --card-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+
     
-    /* Main content area */
-    .content {
-        padding: 20px;
-        margin-left: 250px;
-        max-width: 1200px;
-    }
-    
-    /* Page title */
     .page-title {
         color: var(--primary);
         text-align: center;

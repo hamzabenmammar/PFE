@@ -1,81 +1,355 @@
 {% extends "base.html" %}
 {% block title %}NLP Tools{% endblock title %}
 {% block content %}
-<h2>Tools found ({{ total_count }})</h2>
-
-<br>
-{% if user.is_authenticated %}
-    <a href="{% url 'resources:create' %}" class="btn btn-primary">Add a new NLP Tool</a>
-{% else %}
-    <p><strong>Note:</strong> You need to be logged in to add a new tool.</p>
-{% endif %}
-<br>
-<br>
-<hr>
-<div class="tools-grid">
-{% for tool in tools %}
-
-    <div class="tool-card">
-        <h3>{{ tool.titre }}</h3>
-    
-        <div><strong>Title:</strong> {{ tool.title }}</div>
-        <div><strong>Type:</strong> {{ tool.tool_type }}</div>
-
-        <div><strong>Creation Date:</strong> {{ tool.creation_date|date:"d/m/Y H:i" }}</div>
-        <div><strong>Author:</strong> {{ tool.author }}</div>
-        <div class="tool-stats">
-            <div class="stat-item">{{tool.version}} </div>
-            <div class="stat-item">{{corpus.file_format}}</div>
-          </div>
-        
-        <div class="tool-actions">
-            <a href="{% url 'resources:tool_detail'  tool.id %}" class='btn btn-primary'>View Details</a>
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row header-section">
+        <div class="col-lg-8 col-md-7">
+            <h1 class="display-5 fw-bold mb-2">NLP Tools</h1>
+            <p class="text-muted fs-5">{{ total_count }} tools available</p>
+        </div>
+        <div class="col-lg-4 col-md-5 d-flex align-items-center justify-content-md-end justify-content-start mt-3 mt-md-0">
+            {% if user.is_authenticated %}
+            <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg shadow-sm">
+                <i class="bi bi-plus-lg me-2"></i> Add a new NLP Tool
+            </a>
+            {% else %}
+            <div class="alert alert-info d-flex align-items-center mb-0 py-3 px-4 shadow-sm">
+                <i class="bi bi-info-circle fs-5 me-2"></i> 
+                <span>You need to be logged in to add new tools</span>
+            </div>
+            {% endif %}
         </div>
     </div>
 
+    <div class="position-relative mb-5">
+        <hr class="my-4">
+        <div class="position-absolute top-0 start-50 translate-middle">
+            <div class="px-4 py-2 bg-white border rounded-pill shadow-sm">
+                <i class="bi bi-tools me-2 text-primary"></i> <span class="fw-medium">Explore Tools</span>
+            </div>
+        </div>
+    </div>
 
-{% empty %}
-<p>No tools available.</p>
-{% endfor %}
+    <!-- Tools Grid -->
+    {% if tools %}
+    <div class="tools-grid">
+        {% for tool in tools %}
+        <div class="tool-card">
+            <div class="tool-header">
+                <div class="tool-badge">
+                    <i class="bi bi-code-square"></i>
+                </div>
+                <h3 class="tool-title">{{ tool.titre }}</h3>
+            </div>
+            
+            <div class="tool-content">
+                <div class="info-row">
+                    <span class="info-label">Title:</span>
+                    <span class="info-value">{{ tool.title }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Type:</span>
+                    <span class="info-value">{{ tool.tool_type }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Author:</span>
+                    <span class="info-value">{{ tool.author }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Created:</span>
+                    <span class="info-value">{{ tool.creation_date|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+            
+            <div class="tool-footer">
+                <div class="tool-stats">
+                    {% if tool.version %}
+                    <div class="stat-item">
+                        <i class="bi bi-tag"></i>
+                        <span>v{{ tool.version }}</span>
+                    </div>
+                    {% endif %}
+                    {% if corpus.file_format %}
+                    <div class="stat-item">
+                        <i class="bi bi-file-earmark-code"></i>
+                        <span>{{ corpus.file_format }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="tool-actions">
+                    <a href="{% url 'resources:tool_detail' tool.id %}" class="btn-view-details">
+                        <span>View Details</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="bi bi-tools"></i>
+        </div>
+        <h3>No NLP tools available</h3>
+        <p class="text-muted">Tools you add will appear here</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="bi bi-plus-lg me-2"></i> Add Your First Tool
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
-<style>
-      .tools-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        padding: 20px 0;
-    }
 
+<style>
+    :root {
+        --primary: #4361ee;
+        --primary-hover: #3a56d4;
+        --dark-color: #1e455e;
+        --light-bg: #f8f9fa;
+        --text-muted: #6c757d;
+        --border-color: #e9ecef;
+        --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        --hover-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        --card-radius: 16px;
+    }
+    
+    .container {
+        max-width: 1320px;
+        margin: 0 auto;
+    }
+    
+    /* Header styling */
+    .header-section {
+        margin-bottom: 2rem;
+    }
+    
+    /* Tools grid */
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        padding: 0;
+    }
+    
+    /* Tool card styling */
     .tool-card {
-        min-height: 250px;
+        background-color: white;
+        border-radius: var(--card-radius);
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        min-height: 300px;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
     }
-
-    /* Conserver les autres styles existants */
-    .page-title {
-        color: #1e455e;
-        margin-bottom: 30px;
+    
+    .tool-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--hover-shadow);
     }
-    .tool-card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    
+    .tool-header {
+        padding: 1.5rem;
+        padding-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
     }
-    .tool-card h3 {
-        margin-top: 0;
-        color: #1e455e;
+    
+    .tool-badge {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 1.5rem;
     }
+    
+    .tool-title {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: var(--dark-color);
+        line-height: 1.4;
+    }
+    
+    .tool-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .info-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .info-value {
+        font-size: 0.95rem;
+    }
+    
+    .tool-footer {
+        padding: 1.5rem;
+        background-color: var(--light-bg);
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .tool-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
     .stat-item {
-        margin-right: 20px;
-        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    .btn {
-        background-color: #4CAF50;
+    
+    .stat-item i {
+        color: var(--primary);
+    }
+    
+    .tool-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .btn-view-details {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.75rem 1.25rem;
+        border: 2px solid var(--primary);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-view-details:hover {
+        background-color: var(--primary);
         color: white;
-        padding: 8px 15px;
     }
-    /* ... autres styles conservés ... */
-</style>{% endblock content%}
+    
+    .btn-view-details i {
+        transition: transform 0.2s ease;
+    }
+    
+    .btn-view-details:hover i {
+        transform: translateX(4px);
+    }
+    
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 1rem;
+        background-color: white;
+        border-radius: var(--card-radius);
+        box-shadow: var(--card-shadow);
+    }
+    
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--primary);
+        opacity: 0.5;
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state h3 {
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Button styling */
+    .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        border-width: 2px;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
+        transform: translateY(-2px);
+    }
+    
+    /* Alert styling */
+    .alert-info {
+        background-color: rgba(67, 97, 238, 0.1);
+        border: none;
+        color: var(--primary);
+        border-radius: 8px;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 767px) {
+        .tools-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .tool-stats {
+            flex-wrap: wrap;
+        }
+        
+        .tool-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .tool-content {
+            padding: 1.25rem;
+        }
+        
+        .tool-footer {
+            padding: 1.25rem;
+        }
+        
+        h1.display-5 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    @media (min-width: 768px) and (max-width: 991px) {
+        .tools-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .tools-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>
+{% endblock content %}

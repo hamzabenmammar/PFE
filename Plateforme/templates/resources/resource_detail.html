@@ -4,71 +4,91 @@
 
 {% block content %}
 <div class="container py-4">
-    <!-- Fil d'Ariane amélioré -->
+    <!-- Breadcrumb Navigation -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb bg-light p-3 rounded-3 shadow-sm">
             <li class="breadcrumb-item"><a href="{% url 'resources:list' %}" class="text-decoration-none"><i class="bi bi-archive me-1"></i>Resources</a></li>
-            {% if object.resource_type == 'document' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:document_list' %}" class="text-decoration-none"><i class="bi bi-file-text me-1"></i>Documents</a></li>
-            {% elif object.resource_type == 'tool' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:tool_list' %}" class="text-decoration-none"><i class="bi bi-tools me-1"></i>Tools</a></li>
-            {% elif object.resource_type == 'course' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:course_list' %}" class="text-decoration-none"><i class="bi bi-mortarboard me-1"></i>Courses</a></li>
-            {% elif object.resource_type == 'corpus' %}
-                <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}" class="text-decoration-none"><i class="bi bi-database me-1"></i>Corpora</a></li>
-            {% endif %}
+            <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}" class="text-decoration-none"><i class="bi bi-database me-1"></i>Corpora</a></li>
             <li class="breadcrumb-item active">{{ object.title|truncatechars:30 }}</li>
         </ol>
     </nav>
 
-    <!-- Carte principale -->
+    <!-- Main Card -->
     <div class="card border-0 shadow-lg">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
             <div>
                 <h1 class="h4 mb-0 fw-bold">{{ object.title }}</h1>
-            
-                 {% if request.user == object.author %}
-       
-                 <center><a href="{% url 'resources:resource-update' type=view.kwargs.type pk=object.pk %}" class="btn btn-light btn-sm me-2 shadow-sm">
-                       <i class="fas fa-edit me-1"></i> Edit
-                         </a>
-                         <a href="{% url 'resources:resource-delete' type=view.kwargs.type pk=object.pk %}" class="btn btn-danger btn-sm shadow-sm">
-                          <i class="fas fa-trash me-1"></i> Delete
-                     </a></center> 
+            </div>
+            {% if request.user == object.author %}
+            <div>
+                <a href="{% url 'resources:resource-update' type='corpus' pk=object.pk %}" class="btn btn-light btn-sm me-2 shadow-sm">
+                    <i class="bi bi-pencil me-1"></i> Edit
+                </a>
+                <a href="{% url 'resources:resource-delete' type='corpus' pk=object.pk %}" class="btn btn-danger btn-sm shadow-sm">
+                    <i class="bi bi-trash me-1"></i> Delete
+                </a>
             </div>
             {% endif %}
         </div>
-        <br>
-        <hr>
         
         <div class="card-body p-4">
             <div class="row g-4">
-                <!-- Colonne principale -->
+                <!-- Main Column -->
                 <div class="col-lg-8">
                     <div class="mb-4">
                         <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-card-text me-2"></i>Description</h3>
                         <p class="lead mt-3">{{ object.description }}</p>
                     </div>
-                    <br>
                     
                     {% if object.keywords %}
                     <div class="mb-4">
                         <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-tags me-2"></i>Keywords</h3>
                         <div class="d-flex flex-wrap gap-2 mt-3">
-                                <span class="badge bg-secondary py-2 px-3"><i class="bi bi-tag me-1"></i>{{ object.keywords }}</span>
+                            <span class="badge bg-secondary py-2 px-3"><i class="bi bi-tag me-1"></i>{{ object.keywords }}</span>
                         </div>
                     </div>
                     {% endif %}
+                    
                     <hr>
                     
-                    {% block resource_specific_details %}
-                    <!-- Contenu spécifique au type de ressource -->
-                    {% endblock %}
+                    <!-- Corpus-specific details -->
+                    <div class="mb-4">
+                        <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>Corpus Details</h3>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <span class="text-muted">Size:</span>
+                                    <strong class="ms-2">{{ object.size }} words</strong>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-muted">File Format:</span>
+                                    <strong class="ms-2">{{ object.file_format }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <span class="text-muted">Language:</span>
+                                    <strong class="ms-2">{{ object.language|default:"Not specified" }}</strong>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-muted">Titre:</span>
+                                    <strong class="ms-2">{{ object.titre|default:"Not specified" }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
+                    {% if object.notes %}
+                    <div class="mb-4">
+                        <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-journal me-2"></i>Notes</h3>
+                        <div class="mt-3">
+                            <p>{{ object.notes }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                <br>
                 
-                <!-- Sidebar avec métadonnées -->
+                <!-- Sidebar with metadata -->
                 <div class="col-lg-4">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-header bg-light">
@@ -87,6 +107,17 @@
                                 <span><i class="bi bi-arrow-repeat me-2 text-primary"></i>Last Updated</span>
                                 <strong>{{ object.modified_date|date:"M d, Y" }}</strong>
                             </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-database me-2 text-primary"></i>Type</span>
+                                <strong>Corpus</strong>
+                            </li>
+                            {% if object.file %}
+                            <li class="list-group-item">
+                                <a href="{{ object.file.url }}" target="_blank" class="btn btn-outline-primary w-100 shadow-sm">
+                                    <i class="bi bi-cloud-download me-2"></i>Download Corpus
+                                </a>
+                            </li>
+                            {% endif %}
                             {% if object.access_link %}
                             <li class="list-group-item">
                                 <a href="{{ object.access_link }}" target="_blank" class="btn btn-outline-primary w-100 shadow-sm">
@@ -96,15 +127,46 @@
                             {% endif %}
                         </ul>
                     </div>
-                    
-
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Related Corpora Section -->
+    <div class="related-resources mt-4">
+        <h3 class="h5 bg-light p-3 rounded-3 shadow-sm"><i class="bi bi-link-45deg me-2"></i>Related Corpora</h3>
+        
+        <div class="corpus-grid mt-3">
+            {% for corpus in related_corpora|slice:":3" %}
+            <div class="corpus-card">
+                <div class="corpus-header">
+                    <h3 class="corpus-title">{{ corpus.titre }}</h3>
+                </div>
+                <div class="corpus-body">
+                    <div class="corpus-info">
+                        <div class="info-row"><strong>Title:</strong> {{ corpus.title }}</div>
+                        <div class="info-row"><strong>Created:</strong> {{ corpus.creation_date|date:"d/m/Y" }}</div>
+                    </div>
+                    <div class="corpus-stats">
+                        <span class="stat-item"><i class="bi bi-file-earmark me-1"></i>{{corpus.file_format}}</span>
+                        <span class="stat-item"><i class="bi bi-text-left me-1"></i>{{corpus.size}} words</span>
+                    </div>
+                </div>
+                <div class="corpus-actions">
+                    <a href="{% url 'resources:corpus_detail' corpus.id %}" class="btn btn-outline-primary btn-block">
+                        <i class="bi bi-eye me-1"></i> View Details
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted fst-italic">No related corpora found.</p>
+            {% endfor %}
         </div>
     </div>
 </div>
 
 <style>
+    /* Card Styling */
     .card {
         border-radius: 0.75rem;
         overflow: hidden;
@@ -143,6 +205,106 @@
     
     .h5 {
         color: #495057;
+    }
+
+    /* Corpus Grid Layout */
+    .corpus-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    /* Corpus Card Styling */
+    .corpus-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.75rem;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        overflow: hidden;
+    }
+
+    .corpus-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .corpus-header {
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .corpus-title {
+        color: #1e455e;
+        font-size: 1.1rem;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .corpus-body {
+        padding: 15px;
+        flex-grow: 1;
+    }
+
+    .corpus-info {
+        margin-bottom: 10px;
+    }
+
+    .info-row {
+        margin-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .corpus-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .stat-item {
+        font-size: 0.875rem;
+        background-color: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: #495057;
+    }
+
+    .corpus-actions {
+        padding: 15px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 767px) {
+        .corpus-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start !important;
+        }
+        
+        .card-header div:last-child {
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
     }
 </style>
 {% endblock %}

@@ -8,48 +8,171 @@
     <title>{% block title %}Arabic NLP Platform{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    <div class="header">
-        <div class="nav-container">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" />
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="{% url 'home' %}" class="logo-link">
+                    <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" />
+                    <span class="logo-text">Arabic NLP</span>
+                </a>
+            </div>
+            
             <div class="search-bar">
                 <input type="text" placeholder="Search resources, tools, corpus..." />
-                <button class="search-button">Search</button>
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
+            
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'accounts:profile' user.id %}" class="btn">Profile</a>
-                    <a href="{% url 'account_logout' %}" class="btn btn-primary">Logout</a>
+                    <a href="{% url 'accounts:profile' user.id %}" class="btn btn-outline">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="{% url 'account_logout' %}" class="btn btn-primary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 {% else %}
-                    <a href="{% url 'account_login' %}" class="btn">Log in</a>
-                    <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign up</a>
+                    <a href="{% url 'account_login' %}" class="btn btn-outline">
+                        <i class="fas fa-sign-in-alt"></i> Log in
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Sign up
+                    </a>
                 {% endif %}
             </div>
+            
+            <button class="mobile-menu-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li><a {% if page == 'home' %}class="active"{% endif %} href="{% url 'home' %}">
+                        <i class="fas fa-home"></i> Home
+                    </a></li>
+                    <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
+                        <i class="fas fa-database"></i> Corpus
+                    </a></li>
+                    <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">
+                        <i class="fas fa-tools"></i> Tools
+                    </a></li>
+                    <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'resources:list' %}">
+                        <i class="fas fa-archive"></i> Resources
+                    </a></li>
+                    <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">
+                        <i class="fas fa-flask"></i> Research Projects
+                    </a></li>
+                    <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">
+                        <i class="fas fa-users"></i> Community
+                    </a></li>
+                    <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">
+                        <i class="fas fa-calendar-alt"></i> Events
+                    </a></li>
+                    <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">
+                        <i class="fas fa-graduation-cap"></i> Courses
+                    </a></li>
+                    <li>
+                        <a {% if page == 'institutions' %}class="active"{% endif %} href="{% url 'institutions:institution_list' %}" aria-label="Institutions">
+                          <i class="fas fa-university"></i> Institutions
+                        </a>
+                      </li>
+                      
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
     </div>
 
-    <div class="sidebar">
-        <ul class="sidebar-menu">
-            <li><a {% if page == 'home' %}class="active"{% endif %} href="{% url 'home' %}">Home</a></li>
-            <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">Corpus</a></li>
-            <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">Tools</a></li>
-            <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'resources:list' %}">Resources</a></li>
-            <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">Research Projects</a></li>
-            <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">Community</a></li>
-            <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">Events</a></li>
-            <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">Cours</a></li>
-        </ul>
-    </div>
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <h4>Arabic NLP Platform</h4>
+                        <p>A platform dedicated to advancing Arabic natural language processing through shared resources, tools, and community collaboration.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul class="footer-links">
+                            <li><a href="{% url 'resources:corpus_list' %}">Corpus</a></li>
+                            <li><a href="{% url 'resources:tool_list' %}">Tools</a></li>
+                            <li><a href="{% url 'resources:list' %}">All Resources</a></li>
+                            <li><a href="{% url 'resources:course_list' %}">Courses</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Community</h4>
+                        <ul class="footer-links">
+                            <li><a href="{% url 'forum:topic-list' %}">Forum</a></li>
+                            <li><a href="{% url 'projects:project_list' %}">Research Projects</a></li>
+                            <li><a href="{% url 'events:event_list' %}">Events</a></li>
+                            <li><a href="{% url 'home' %}#contributors">Contributors</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact Us</h4>
+                        <ul class="contact-info">
+                            <li><i class="fas fa-envelope"></i> contact@arabicnlp.org</li>
+                            <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Digital Campus, Tech University</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">© {% now "Y" %} Arabic NLP Platform. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="{% url 'home' %}">Privacy Policy</a>
+                    <a href="{% url 'home' %}">Terms of Service</a>
+                    <a href="{% url 'home' %}">About Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <div class="content">
-        {% block content %}{% endblock %}
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            
+            if (window.innerWidth <= 992 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !toggleBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+                document.body.classList.remove('sidebar-open');
+            }
+        });
+    </script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
