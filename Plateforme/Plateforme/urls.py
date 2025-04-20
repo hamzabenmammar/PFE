@@ -31,5 +31,6 @@ urlpatterns = [
     path('events/', include('events.urls', namespace='events')),
     path('resources/', include('resources.urls', namespace='resources')),
     path('institutions/', include('institutions.urls', namespace='institutions')),
+    path('QA/', include('QA.urls')),
 ]
 

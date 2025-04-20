@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="max-w-3xl mx-auto mt-12">
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Toutes les questions</h2>
+    <a href="{% url 'QA:ask_question' %}" class="btn btn-primary">
+      + Poser une question
+    </a>
+  </div>
+
+  <form method="get" class="mb-6">
+    <input type="text" name="q" value="{{ query }}" placeholder="Rechercher une question..."
+      class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+  </form>
+
+  {% if questions %}
+    <ul class="space-y-4">
+      {% for question in questions %}
+        <li class="border-b pb-4">
+          <a href="{% url 'QA:question_detail' question.pk %}" class="text-xl text-blue-600 hover:underline">
+            {{ question.title }}
+          </a>
+          <p class="text-gray-600 text-sm">par {{ question.author }} – {{ question.created_at|date:"d/m/Y H:i" }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500">Aucune question trouvée.</p>
+    <a href="{% url 'QA:qa_list' %}" class="btn btn-primary">
+        afficher tous les question
+      </a>
+  {% endif %}
+
+</div>
+{% endblock %}

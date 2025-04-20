@@ -16,9 +16,9 @@
     <header class="site-header">
         <div class="container header-container">
             <div class="logo-container">
-                <a href="{% url 'home' %}" class="logo-link">
-                    <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" />
-                    <span class="logo-text">Arabic NLP</span>
+                <a href="{% url 'home' %}" class="logo-link d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" style="height: 40px;">
+                    <span class="logo-text fw-bold fs-4">Arabic NLP</span>
                 </a>
             </div>
             
@@ -84,6 +84,11 @@
                     <li>
                         <a {% if page == 'institutions' %}class="active"{% endif %} href="{% url 'institutions:institution_list' %}" aria-label="Institutions">
                           <i class="fas fa-university"></i> Institutions
+                        </a>
+                      </li>
+                      <li>
+                        <a {% if page == 'QA' %}class="active"{% endif %} href="{% url 'QA:qa_list' %}" aria-label="QA">
+                          <i class="fas fa-university"></i> QA
                         </a>
                       </li>
                       
