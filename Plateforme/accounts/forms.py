@@ -22,3 +22,7 @@ class CustomUserChangeForm(UserChangeForm):
   class Meta:
     model = CustomUser
     fields = ['full_name', 'email', 'institution','bio']
+
+
+class EmailVerificationForm(forms.Form):
+    code = forms.CharField(max_length=6, label="Code de vérification")    

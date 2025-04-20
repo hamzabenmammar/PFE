@@ -47,6 +47,14 @@ class ChatRoomListView(LoginRequiredMixin, ListView):
     template_name = 'forum/chatroom_list.html'  # Ajout du préfixe 'forum/'
     context_object_name = 'chatrooms'
     ordering = ['-created_at']  # Tri par date de création décroissante
+    def get_queryset(self):
+        topic_id = self.kwargs.get('topic_id')  # récupérer l'id du topic depuis l'URL
+        return ChatRoom.objects.filter(topic_id=topic_id).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['topic_id'] = Topic.objects.get(id=self.kwargs.get('topic_id'))  # pour afficher le nom du topic si besoin
+        return context
 
 class ChatRoomDetailView(LoginRequiredMixin, DetailView):
     model = ChatRoom

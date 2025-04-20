@@ -1,13 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
-
-from accounts.managers import CustomUserManager;
+from accounts.managers import CustomUserManager
 from institutions.models import Institution
-
-
-
-
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 
 class CustomUser(AbstractUser):
@@ -23,6 +21,12 @@ class CustomUser(AbstractUser):
   bio = models.TextField(blank=True)
   profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, default='profile_pics/default_profile_pic.png')
   objects = CustomUserManager() 
+  is_email_verified = models.BooleanField(default=False)
+  email_verification_code = models.CharField(max_length=6, blank=True, null=True)
+
+  def generate_verification_code(self):
+        self.email_verification_code = get_random_string(length=6, allowed_chars='0123456789')
+        self.save()
 
   
   USERNAME_FIELD = 'email'  
@@ -32,6 +36,11 @@ class CustomUser(AbstractUser):
 
   def __str__(self):
     return self.email
+
+
+
+
+
 
 
 

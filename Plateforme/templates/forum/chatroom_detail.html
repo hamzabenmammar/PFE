@@ -9,14 +9,14 @@
                 <div class="card-header bg-primary text-white rounded-top">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"><i class="fas fa-comments me-2"></i>{{ chatroom.name }}</h4>
-                        <a href="{% url 'forum:chatroom-list' pk=topic.pk %}" class="btn btn-light btn-sm">
+                        <a href="{% url 'forum:chatroom-list' chatroom.topic.id %}" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left me-1"></i>Retour
                         </a>
                     </div>
                     <p class="mb-1 mt-2">{{ chatroom.description }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <small><i class="fas fa-tag me-1"></i>Sujet: {{ chatroom.topic.title }}</small>
-                        <small><i class="fas fa-user me-1"></i>Créé par {{ chatroom.creator }}</small>
+                        <small><i class="fas fa-user me-1"></i>Créé par {{ chatroom.creator.full_name }}</small>
                     </div>
                 </div>
                 

@@ -24,7 +24,7 @@
                             <i class="fas fa-folder"></i> {{ chatroom.topic.title }}
                         </span>
                         <span class="chatroom-author">
-                            <i class="fas fa-user"></i> {{ chatroom.creator }}
+                            <i class="fas fa-user"></i> {{ chatroom.creator.full_name }}
                         </span>
                         <span class="chatroom-date">
                             <i class="far fa-calendar-alt"></i> {{ chatroom.created_at|date:"d/m/Y" }}
