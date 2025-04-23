@@ -17,7 +17,7 @@ class InstitutionListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Institution.objects.filter(is_approved=True)
+        queryset = Institution.objects.all()
         
         # Apply filters from form
         form = InstitutionFilterForm(self.request.GET)
@@ -53,7 +53,7 @@ class InstitutionListView(ListView):
 
 class InstitutionDetailView(DetailView):
     model = Institution
-    template_name = 'institution_detail.html'
+    template_name = 'institutions/institution_detail.html'
     context_object_name = 'institution'
 
 

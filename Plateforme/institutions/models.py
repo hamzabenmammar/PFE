@@ -58,9 +58,6 @@ class Institution(models.Model):
     image = models.ImageField(default='default.jpg', upload_to='institution_pics')
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name=_("Created By"),
-                                   related_name='created_institutions', null=True, blank=True)
-    is_approved = models.BooleanField(_("Approved"), default=False)
      # Use AUTH_USER_MODEL here:
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,

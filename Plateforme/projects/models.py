@@ -6,6 +6,11 @@ import uuid
 
 
 class Project(models.Model):
+    STATUS_CHOICES = (
+        ( 'En cours' , 'ongoing'),
+        ( 'Réalisé' , 'completed'),
+        ('Planifié' , 'planned'),
+    )
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -17,13 +22,15 @@ class Project(models.Model):
         on_delete=models.CASCADE,
         related_name='projects'
     )
+    status = models.CharField(max_length=20, 
+    choices=STATUS_CHOICES, 
+    default='ongoing')
     coordinator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='coordinated_projects'
     )
     description = models.TextField()
-    website = models.URLField(blank=True)
     date_start = models.DateField(blank=True, null=True)
     date_end = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

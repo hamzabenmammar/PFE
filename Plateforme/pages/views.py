@@ -1,6 +1,24 @@
-
 from django.views.generic import TemplateView
+from django.utils.timezone import now
+from events.models import Event  # Assure-toi que le chemin est correct
 
 class HomePageView(TemplateView):
-  template_name = 'home.html'
+    template_name = 'home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = Event.objects.filter(
+            start_date__gte=now()
+        ).order_by('start_date')[:5]
+
+        # Ajoute ici tes autres contextes nécessaires :
+        # context['corpus_count'] = ...
+        # context['tools_count'] = ...
+        # context['projects_count'] = ...
+        # context['members_count'] = ...
+        # context['latest_news'] = ...
+        # context['popular_resources'] = ...
+        # context['new_members'] = ...
+        # context['recent_discussions'] = ...
+
+        return context

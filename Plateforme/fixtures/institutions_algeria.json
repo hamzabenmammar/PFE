@@ -1,0 +1,134 @@
+[
+  {
+    "model": "institutions.institution",
+    "pk": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "fields": {
+      "name": "Université des Sciences et de la Technologie Houari Boumédiène",
+      "acronym": "USTHB",
+      "type": "University",
+      "country": 1,
+      "city": "Bab Ezzouar, Alger",
+      "specialties": [],
+      "website": "https://www.usthb.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:00:00Z",
+      "updated_at": "2025-04-23T09:00:00Z"
+    }
+  },
+  {
+    "model": "institutions.institution",
+    "pk": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "fields": {
+      "name": "Ecole Nationale Polytechnique",
+      "acronym": "ENP",
+      "type": "University",
+      "country": 1,
+      "city": "El Harrach, Alger",
+      "specialties": [],
+      "website": "https://www.enp.edu.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:05:00Z",
+      "updated_at": "2025-04-23T09:05:00Z"
+    }
+  },
+  {
+    "model": "institutions.institution",
+    "pk": "d2719c1d-4f3f-4e87-bd2f-8b6e2c5d5f4a",
+    "fields": {
+      "name": "Université d'Alger 1 – Benyoucef Benkhedda",
+      "acronym": "UA1",
+      "type": "University",
+      "country": 1,
+      "city": "Alger",
+      "specialties": [],
+      "website": "https://www.univ-alger.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:10:00Z",
+      "updated_at": "2025-04-23T09:10:00Z"
+    }
+  },
+  {
+    "model": "institutions.institution",
+    "pk": "a3b2c1d0-9e8f-7a6b-5c4d-3e2f1a0b9c8d",
+    "fields": {
+      "name": "Ecole Militaire Polytechnique",
+      "acronym": "EMP",
+      "type": "Other",
+      "country": 1,
+      "city": "Bir Mourad Raïs, Alger",
+      "specialties": [],
+      "website": "https://www.emp.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:15:00Z",
+      "updated_at": "2025-04-23T09:15:00Z"
+    }
+  },
+  {
+    "model": "institutions.institution",
+    "pk": "0f1e2d3c-4b5a-6978-8c7d-6e5f4a3b2c1d",
+    "fields": {
+      "name": "Université Abderrahmane Mira de Béjaïa",
+      "acronym": "UBM",
+      "type": "University",
+      "country": 1,
+      "city": "Béjaïa",
+      "specialties": [],
+      "website": "https://www.univ-bejaia.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:20:00Z",
+      "updated_at": "2025-04-23T09:20:00Z"
+    }
+  },
+  {
+    "model": "institutions.institution",
+    "pk": "9c8b7a6f-5e4d-3c2b-1a0f-9e8d7c6b5a4f",
+    "fields": {
+      "name": "Centre de Recherche en Astronomie, Astrophysique et Géophysique",
+      "acronym": "CRAAG",
+      "type": "Research Center",
+      "country": 1,
+      "city": "Bouzaréah, Alger",
+      "specialties": [],
+      "website": "https://www.craag.dz",
+      "email": "",
+      "phone": "",
+      "address": "",
+      "description": "",
+      "logo": "",
+      "image": "",
+      "created_by": null,
+      "created_at": "2025-04-23T09:25:00Z",
+      "updated_at": "2025-04-23T09:25:00Z"
+    }
+  }
+]

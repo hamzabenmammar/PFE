@@ -20,7 +20,7 @@ class EventListView(ListView):
     paginate_by = 10
     
     def get_queryset(self):
-        queryset = Event.objects.filter(is_approved=True)
+        queryset = Event.objects.all()
         form = EventSearchForm(self.request.GET)
         
         if form.is_valid():

@@ -105,7 +105,7 @@
         <a href="{% url 'events:event_list' %}" class="view-all">View All</a>
     </div>
     <div class="events-list">
-        {% for event in upcoming_events %}
+        {% for event in events %}
         <div class="event-card">
             <div class="event-date">
                 <div class="event-day">{{ event.start_date|date:"d" }}</div>
