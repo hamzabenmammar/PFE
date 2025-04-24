@@ -3,32 +3,43 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from .models import Institution, Country, Specialty
 
-# Use ChoiceField for Institution.TYPE instead of nonexistent InstitutionType model
+
 class InstitutionFilterForm(forms.Form):
     INSTITUTION_TYPE_CHOICES = [('', _('All'))] + Institution.TYPE
 
     institution_type = forms.ChoiceField(
         choices=INSTITUTION_TYPE_CHOICES,
         required=False,
-        label=_('Institution Type')
+        label=_('Institution Type'),
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
     )
     country = forms.ModelChoiceField(
         queryset=Country.objects.all(),
         required=False,
         empty_label=_('All'),
-        label=_('Country')
+        label=_('Country'),
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
     )
     specialty = forms.ModelChoiceField(
         queryset=Specialty.objects.all(),
         required=False,
         empty_label=_('All'),
-        label=_('Specialty')
+        label=_('Specialty'),
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+        })
     )
     search_term = forms.CharField(
         required=False,
         label=_('Search Term'),
         widget=forms.TextInput(attrs={
-            'placeholder': _('Enter institution name or keyword...')
+            'class': 'form-control',
+            'placeholder': _('Enter institution name or keyword...'),
+            'type': 'search',
         })
     )
 

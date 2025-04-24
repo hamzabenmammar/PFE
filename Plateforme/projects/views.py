@@ -6,7 +6,7 @@ from .models import Project, ProjectMember
 from django.db.models import Q
 from django.db.models import Exists, OuterRef
 from django.urls import reverse_lazy
-from .forms import ProjectForm  # Importez votre nouveau formulaire
+from .forms import ProjectForm  
 
 
 class ProjectListView(LoginRequiredMixin, ListView):
@@ -52,7 +52,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  
     model = Project
-    form_class = ProjectForm  # Utilisez votre formulaire au lieu de fields
+    form_class = ProjectForm  
     template_name = 'project_update.html'
     success_url = reverse_lazy('projects:project_list')
     

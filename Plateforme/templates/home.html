@@ -105,33 +105,36 @@
         <a href="{% url 'events:event_list' %}" class="view-all">View All</a>
     </div>
     <div class="events-list">
-        {% for event in events %}
-        <div class="event-card">
-            <div class="event-date">
-                <div class="event-day">{{ event.start_date|date:"d" }}</div>
-                <div class="event-month">{{ event.start_date|date:"M"|upper }}</div>
-            </div>
-            <div class="event-details">
-                <h3 class="event-title">{{ event.title }}</h3>
-                <div class="event-location">
-                    {% if event.is_online %}
-                    🌍 Online • {{ event.start_time|date:"H:i" }}-{{ event.end_time|date:"H:i" }} {{ event.timezone }}
-                    {% else %}
-                    📍 {{ event.location }} • {{ event.start_date|date:"d M Y" }}{% if event.end_date %} - {{ event.end_date|date:"d M Y" }}{% endif %}
-                    {% endif %}
+        {% for event in events|slice:":3" %}
+        <a href="{% url 'events:event_detail' event.id %}" class="event-card-link">
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">{{ event.start_date|date:"d" }}</div>
+                    <div class="event-month">{{ event.start_date|date:"M"|upper }}</div>
                 </div>
-                <div class="resource-tags">
-                    {% for tag in event.tags.all %}
-                    <span class="tag">{{ tag.name }}</span>
-                    {% endfor %}
+                <div class="event-details">
+                    <h3 class="event-title">{{ event.title }}</h3>
+                    <div class="event-location">
+                        {% if event.is_online %}
+                        🌍 Online • {{ event.start_time|date:"H:i" }}-{{ event.end_time|date:"H:i" }} {{ event.timezone }}
+                        {% else %}
+                        📍 {{ event.location }} • {{ event.start_date|date:"d M Y" }}{% if event.end_date %} - {{ event.end_date|date:"d M Y" }}{% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="resource-tags">
+                        {% for tag in event.tags.all %}
+                        <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         {% empty %}
         <p>No upcoming events.</p>
         {% endfor %}
     </div>
 </div>
+    
 
 <div class="dashboard-section">
     <div class="section-header">
@@ -164,7 +167,7 @@
             {% for discussion in recent_discussions %}
             <div class="discussion-card">
                 <h4 class="discussion-title">
-                    <a href="{% url 'forum:topic-detail' discussion.id %}">{{ discussion.title }}</a>
+                    <a href="{% url 'forum:chatroom-detail' discussion.id %}">{{ discussion.title }}</a>
                 </h4>
                 <p>{{ discussion.content|truncatewords:15 }}</p>
                 <div class="discussion-meta">
