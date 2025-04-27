@@ -1,64 +1,95 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <!-- Chatroom Header -->
-            <div class="card shadow-sm mb-3">
-                <div class="card-header bg-primary text-white rounded-top">
+<div class="container-fluid py-4 px-3 px-md-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+            <!-- Modern Forum Chatroom -->
+            <div class="forum-card shadow-lg rounded-4 border-0 overflow-hidden">
+                <!-- Header -->
+                <div class="forum-header p-3 d-flex flex-column gap-2">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"><i class="fas fa-comments me-2"></i>{{ chatroom.name }}</h4>
-                        <a href="{% url 'forum:chatroom-list' chatroom.topic.id %}" class="btn btn-light btn-sm">
-                            <i class="fas fa-arrow-left me-1"></i>Retour
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="forum-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h4 class="mb-0 text-truncate">{{ chatroom.name }}</h4>
+                        </div>
+                        <a href="{% url 'forum:chatroom-list' chatroom.topic.id %}" 
+                           class="btn-return d-flex align-items-center">
+                            <i class="fas fa-arrow-left me-2"></i>Retour
                         </a>
                     </div>
-                    <p class="mb-1 mt-2">{{ chatroom.description }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small><i class="fas fa-tag me-1"></i>Sujet: {{ chatroom.topic.title }}</small>
-                        <small><i class="fas fa-user me-1"></i>Créé par {{ chatroom.creator.full_name }}</small>
+                    
+                    <p class="forum-description mb-0">{{ chatroom.description }}</p>
+                    
+                    <div class="forum-meta d-flex flex-wrap gap-3">
+                        <div class="forum-tag">
+                            <i class="fas fa-tag me-1"></i>{{ chatroom.topic.title }}
+                        </div>
+                        <div class="forum-creator">
+                            <i class="fas fa-user me-1"></i>{{ chatroom.creator.full_name }}
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Messages Container -->
-                <div class="card-body bg-light" style="height: 60vh; overflow-y: auto;" id="message-container">
-                    {% if messages %}
-                        {% for message in messages %}
-                        <div class="mb-3 p-3 {% if message.user == user %}bg-primary bg-opacity-10 ms-auto{% else %}bg-white{% endif %}" style="border-radius: 15px; max-width: 85%; ">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <strong>{{ message.user }}</strong>
-                                <small class="text-muted">{{ message.timestamp|date:"d/m/Y H:i" }}</small>
+                <div class="messages-container" id="message-container">
+                    <div class="messages-wrapper p-3">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="message-item {% if message.user == user %}message-mine{% else %}message-other{% endif %}">
+                                <div class="message-bubble">
+                                    <div class="message-header">
+                                        <div class="message-author">{{ message.user }}</div>
+                                        <div class="message-time">{{ message.timestamp|date:"d/m/Y H:i" }}</div>
+                                    </div>
+                                    <div class="message-content">
+                                        {{ message.content }}
+                                    </div>
+                                    {% if message.user == user %}
+                                    <div class="message-actions">
+                                        <form method="post" action="{% url 'forum:message-delete' message.id %}" class="delete-form">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <p class="mb-1">{{ message.content }}</p>
-                            {% if message.user == user %}
-                            <div class="text-end mt-1">
-                                <form method="post" action="{% url 'forum:message-delete' message.id %}" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash-alt"></i> Supprimer
-                                    </button>
-                                </form>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-messages">
+                                <div class="empty-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h5>Aucun message dans cette salle</h5>
+                                <p>Soyez le premier à démarrer la conversation!</p>
                             </div>
-                            {% endif %}
+                        {% endif %}
+                        <div id="typing-indicator" class="typing-indicator d-none">
+                            <div class="typing-bubble">
+                                <div class="typing-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
                         </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="text-center p-5">
-                            <i class="fas fa-comments text-muted fa-3x mb-3"></i>
-                            <p class="lead text-muted">Aucun message dans cette salle pour le moment.</p>
-                            <p class="text-muted">Soyez le premier à démarrer la conversation!</p>
-                        </div>
-                    {% endif %}
+                    </div>
                 </div>
                 
                 <!-- Message Input -->
-                <div class="card-footer bg-white border-top">
-                    <form method="post" class="message-form">
+                <div class="message-composer">
+                    <form method="post" class="message-form" id="message-form">
                         {% csrf_token %}
-                        <div class="input-group">
-                            <input type="text" name="message" class="form-control" placeholder="Votre message..." required>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-1"></i>Envoyer
+                        <div class="composer-container">
+                            <input type="text" name="message" class="message-input" 
+                                   placeholder="Votre message..." required autocomplete="off">
+                            <button type="submit" class="btn-send">
+                                <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </form>
@@ -68,38 +99,429 @@
     </div>
 </div>
 
+<style>
+    /* Modern Forum Theme */
+    :root {
+        --forum-primary: #4f46e5;
+        --forum-primary-hover: #4338ca;
+        --forum-bg: #f5f7fa;
+        --forum-header-bg: #4f46e5;
+        --forum-header-text: #ffffff;
+        --forum-border: #e2e8f0;
+        --forum-text: #334155;
+        --forum-text-light: #64748b;
+        --forum-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        --message-mine-bg: #eff6ff;
+        --message-mine-border: #dbeafe;
+        --message-other-bg: #ffffff;
+        --message-other-border: #e2e8f0;
+        --delete-btn: #ef4444;
+    }
+
+    body {
+        background-color: var(--forum-bg);
+    }
+
+    /* Forum Layout & Structure */
+    .forum-card {
+        background-color: #fff;
+        box-shadow: var(--forum-shadow);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .forum-header {
+        background-color: var(--forum-header-bg);
+        color: var(--forum-header-text);
+    }
+
+    .forum-icon {
+        width: 36px;
+        height: 36px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .forum-description {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .forum-meta {
+        font-size: 13px;
+    }
+
+    .forum-tag, .forum-creator {
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 4px 12px;
+        border-radius: 100px;
+    }
+
+    .btn-return {
+        color: var(--forum-header-text);
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-return:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: var(--forum-header-text);
+    }
+
+    /* Messages Container */
+    .messages-container {
+        height: 65vh;
+        overflow-y: auto;
+        background-color: var(--forum-bg);
+        flex-grow: 1;
+    }
+
+    .messages-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* Message Styling */
+    .message-item {
+        display: flex;
+        margin-bottom: 16px;
+        max-width: 80%;
+    }
+
+    .message-mine {
+        margin-left: auto;
+    }
+
+    .message-bubble {
+        padding: 12px 16px;
+        border-radius: 12px;
+        position: relative;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        width: 100%;
+    }
+
+    .message-mine .message-bubble {
+        background-color: var(--message-mine-bg);
+        border: 1px solid var(--message-mine-border);
+        border-bottom-right-radius: 4px;
+    }
+
+    .message-other .message-bubble {
+        background-color: var(--message-other-bg);
+        border: 1px solid var(--message-other-border);
+        border-bottom-left-radius: 4px;
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+
+    .message-author {
+        font-weight: 600;
+        color: var(--forum-primary);
+    }
+
+    .message-time {
+        color: var(--forum-text-light);
+        font-size: 12px;
+    }
+
+    .message-content {
+        color: var(--forum-text);
+        word-break: break-word;
+    }
+
+    /* Delete Button (Hidden by Default) */
+    .message-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        z-index: 5;
+    }
+
+    .message-mine:hover .message-actions {
+        opacity: 1;
+    }
+
+    .btn-delete {
+        background-color: var(--delete-btn);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+        transform: scale(1.05);
+    }
+
+    /* Message Composer */
+    .message-composer {
+        padding: 16px;
+        background-color: #fff;
+        border-top: 1px solid var(--forum-border);
+    }
+
+    .composer-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .message-input {
+        flex-grow: 1;
+        padding: 12px 16px;
+        border: 1px solid var(--forum-border);
+        border-radius: 100px;
+        outline: none;
+        font-size: 15px;
+        transition: all 0.2s ease;
+    }
+
+    .message-input:focus {
+        border-color: var(--forum-primary);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .btn-send {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background-color: var(--forum-primary);
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-send:hover {
+        background-color: var(--forum-primary-hover);
+    }
+
+    /* Empty State */
+    .empty-messages {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--forum-text-light);
+    }
+
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        color: #cbd5e1;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.7; }
+    }
+
+    /* Typing Indicator */
+    .typing-indicator {
+        margin-bottom: 12px;
+    }
+
+    .typing-bubble {
+        display: inline-block;
+        background-color: #fff;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border-bottom-left-radius: 4px;
+        border: 1px solid var(--forum-border);
+        max-width: 80px;
+    }
+
+    .typing-dots {
+        display: flex;
+        gap: 4px;
+    }
+
+    .typing-dots span {
+        width: 8px;
+        height: 8px;
+        background-color: #cbd5e1;
+        border-radius: 50%;
+        display: inline-block;
+        animation: typing 1.4s infinite ease-in-out both;
+    }
+
+    .typing-dots span:nth-child(1) {
+        animation-delay: -0.32s;
+    }
+
+    .typing-dots span:nth-child(2) {
+        animation-delay: -0.16s;
+    }
+
+    @keyframes typing {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .message-item {
+            max-width: 90%;
+        }
+        
+        .messages-container {
+            height: 60vh;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .forum-header {
+            padding: 12px;
+        }
+        
+        .message-item {
+            max-width: 95%;
+        }
+        
+        .messages-container {
+            height: 55vh;
+        }
+        
+        .message-header {
+            flex-direction: column;
+            gap: 2px;
+        }
+    }
+</style>
+
 <script>
-    // Auto-scroll to the last message
     document.addEventListener('DOMContentLoaded', function() {
         const messageContainer = document.getElementById('message-container');
-        messageContainer.scrollTop = messageContainer.scrollHeight;
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.querySelector('.message-input');
+        const typingIndicator = document.getElementById('typing-indicator');
+        
+        // Auto-scroll to the last message
+        scrollToBottom();
         
         // Focus on the message input when page loads
-        document.querySelector('input[name="message"]').focus();
+        messageInput.focus();
         
-        // Add smooth animation for new messages
-        const messageForm = document.querySelector('.message-form');
-        messageForm.addEventListener('submit', function() {
-            // You can add a loading animation here if needed
-            setTimeout(function() {
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }, 100);
+        // Handle form submission
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (messageInput.value.trim() === '') {
+                return;
+            }
+            
+            // Show typing indicator
+            typingIndicator.classList.remove('d-none');
+            scrollToBottom();
+            
+            // Create a FormData object and submit the form asynchronously
+            const formData = new FormData(messageForm);
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Clear the input field
+                    messageInput.value = '';
+                    
+                    // Hide typing indicator after a short delay and reload
+                    setTimeout(() => {
+                        typingIndicator.classList.add('d-none');
+                        window.location.reload();
+                    }, 500);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                typingIndicator.classList.add('d-none');
+            });
         });
         
-        // Auto-refresh messages every 30 seconds (optional)
-        // setInterval(function() {
-        //     location.reload();
-        // }, 30000);
-    });
-    
-    // Make messages container responsive to window size
-    window.addEventListener('resize', function() {
-        const messageContainer = document.getElementById('message-container');
-        if (window.innerWidth < 768) {
-            messageContainer.style.height = '50vh';
-        } else {
-            messageContainer.style.height = '60vh';
+        // Add confirmation to delete buttons
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer ce message?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+        
+        // Adapt height for different screen sizes
+        adjustHeight();
+        window.addEventListener('resize', adjustHeight);
+        
+        // Check for new messages periodically
+        setInterval(checkForNewMessages, 10000);
+        
+        // Helper functions
+        function scrollToBottom() {
+            messageContainer.scrollTop = messageContainer.scrollHeight;
         }
+        
+        function adjustHeight() {
+            if (window.innerWidth < 576) {
+                messageContainer.style.height = '55vh';
+            } else if (window.innerWidth < 768) {
+                messageContainer.style.height = '60vh';
+            } else {
+                messageContainer.style.height = '65vh';
+            }
+        }
+        
+        function checkForNewMessages() {
+            fetch(window.location.href + '?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    // Implementation depends on your backend
+                    // This is a placeholder for the real implementation
+                    if (data && data.hasNewMessages) {
+                        window.location.reload();
+                    }
+                })
+                .catch(error => console.error('Error checking for new messages:', error));
+        }
+        
+        // Add a subtle entrance animation for messages
+        document.querySelectorAll('.message-item').forEach((message, index) => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateY(10px)';
+            message.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                message.style.opacity = '1';
+                message.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
     });
 </script>
 {% endblock %}
