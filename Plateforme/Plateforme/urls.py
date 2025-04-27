@@ -17,7 +17,7 @@ Including another URLconf
 from os import stat
 from django.contrib import admin
 from django.urls import include, path
-
+from django.conf.urls.static import static
 from Plateforme import settings
 
 
@@ -33,4 +33,6 @@ urlpatterns = [
     path('institutions/', include('institutions.urls', namespace='institutions')),
     path('QA/', include('QA.urls')),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

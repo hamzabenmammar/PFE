@@ -21,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
   class Meta:
     model = CustomUser
-    fields = ['full_name', 'email', 'institution','bio']
+    fields = ['full_name', 'email', 'institution','bio','avatar']
 
 
 class EmailVerificationForm(forms.Form):

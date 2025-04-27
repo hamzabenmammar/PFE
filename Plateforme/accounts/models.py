@@ -19,7 +19,12 @@ class CustomUser(AbstractUser):
   full_name = models.CharField(max_length=255 , null=True , blank=True)
   institution = models.ForeignKey(Institution, on_delete=models.CASCADE , null=True , blank=True)
   bio = models.TextField(blank=True)
-  profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, default='profile_pics/default_profile_pic.png')
+  avatar = models.ImageField(
+        upload_to='avatars/%Y/%m/%d/',
+        null=True,
+        blank=True,
+        verbose_name="Photo de profil"
+    )
   objects = CustomUserManager() 
   is_email_verified = models.BooleanField(default=False)
   email_verification_code = models.CharField(max_length=6, blank=True, null=True)
