@@ -18,11 +18,6 @@ class ResourceBase(models.Model):
         editable=False
     )
 
-    class AccessType(models.TextChoices):
-        PUBLIC = 'public', _('Public')
-        PRIVATE = 'private', _('Private')
-        RESTRICTED = 'restricted', _('Restricted Access')
-
     title = models.CharField(
         max_length=200,
         verbose_name=_("Title"),
@@ -35,12 +30,6 @@ class ResourceBase(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_("Creation Date")
-    )
-    access_type = models.CharField(
-        max_length=20,
-        choices=AccessType.choices,
-        default=AccessType.PUBLIC,
-        verbose_name=_("Access Type")
     )
     access_link = models.URLField(
         verbose_name=_("Access Link"),
@@ -71,11 +60,7 @@ class ResourceBase(models.Model):
         choices=STATUS_CHOICES,
         default='draft'
     )
-    # Add is_public flag for access control
-    is_public = models.BooleanField(
-        default=True,
-        verbose_name=_("Is Public")
-    )
+   
 
     class Meta:
         abstract = True
@@ -241,7 +226,7 @@ class Thesis(models.Model):
         return reverse('resources:thesis_detail', kwargs={'pk': self.pk})
 
     class Meta:  
-        verbose_name = _("Thesis")
+        verbose_name = _("thesis")
         verbose_name_plural = _("Theses")
 
 
@@ -283,7 +268,7 @@ class Memoir(models.Model):
         return reverse('resources:memoir_detail', kwargs={'pk': self.pk})
 
     class Meta:
-        verbose_name = _("Memoir")
+        verbose_name = _("memoir")
         verbose_name_plural = _("Memoirs")
 
 
@@ -322,7 +307,7 @@ class Article(models.Model):
         return reverse('resources:article_detail', kwargs={'pk': self.pk})
 
     class Meta:
-        verbose_name = _("Scientific Article")
+        verbose_name = _("article")
         verbose_name_plural = _("Scientific Articles")
 
 
@@ -403,3 +388,7 @@ class Corpus(ResourceBase):
         verbose_name=_("Format"),
         help_text=_("Format of the corpus (e.g., TXT, CSV, JSON)")
     )
+
+    class Meta:
+        db_table = 'resources_corpus' 
+    

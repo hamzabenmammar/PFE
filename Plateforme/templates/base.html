@@ -63,6 +63,9 @@
                     <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
                         <i class="fas fa-database"></i> Corpus
                     </a></li>
+                    <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">
+                        <i class="fas fa-graduation-cap"></i> Courses
+                    </a></li>
                     <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">
                         <i class="fas fa-tools"></i> Tools
                     </a></li>

@@ -8,7 +8,7 @@
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb bg-light p-3 rounded-3 shadow-sm">
             <li class="breadcrumb-item"><a href="{% url 'resources:list' %}" class="text-decoration-none"><i class="bi bi-archive me-1"></i>Resources</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'resources:corpus_list' %}" class="text-decoration-none"><i class="bi bi-database me-1"></i>Corpora</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'resources:'|add:resource_type|add:'_list' %}" class="text-decoration-none"><i class="bi bi-database me-1"></i>{{resource_type}}</a></li>
             <li class="breadcrumb-item active">{{ object.title|truncatechars:30 }}</li>
         </ol>
     </nav>
@@ -21,10 +21,10 @@
             </div>
             {% if request.user == object.author %}
             <div>
-                <a href="{% url 'resources:resource-update' type='corpus' pk=object.pk %}" class="btn btn-light btn-sm me-2 shadow-sm">
+                <a href="{% url 'resources:resource-update' type=resource_type pk=object.pk %}" class="btn btn-light btn-sm me-2 shadow-sm">   
                     <i class="bi bi-pencil me-1"></i> Edit
                 </a>
-                <a href="{% url 'resources:resource-delete' type='corpus' pk=object.pk %}" class="btn btn-danger btn-sm shadow-sm">
+                <a href="{% url 'resources:resource-delete' type=resource_type pk=object.pk %}" class="btn btn-danger btn-sm shadow-sm">
                     <i class="bi bi-trash me-1"></i> Delete
                 </a>
             </div>
@@ -51,33 +51,8 @@
                     
                     <hr>
                     
-                    <!-- Corpus-specific details -->
-                    <div class="mb-4">
-                        <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>Corpus Details</h3>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <span class="text-muted">Size:</span>
-                                    <strong class="ms-2">{{ object.size }} words</strong>
-                                </div>
-                                <div class="mb-3">
-                                    <span class="text-muted">File Format:</span>
-                                    <strong class="ms-2">{{ object.file_format }}</strong>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <span class="text-muted">Language:</span>
-                                    <strong class="ms-2">{{ object.language|default:"Not specified" }}</strong>
-                                </div>
-                                <div class="mb-3">
-                                    <span class="text-muted">Titre:</span>
-                                    <strong class="ms-2">{{ object.titre|default:"Not specified" }}</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
+                    {% block resource_specific_details %}
+                    {% endblock %}
                     {% if object.notes %}
                     <div class="mb-4">
                         <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-journal me-2"></i>Notes</h3>
@@ -97,7 +72,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-person me-2 text-primary"></i>Author</span>
-                                <strong>{{ object.author.get_full_name|default:object.author.username }}</strong>
+                                <strong>{{ object.author.username}}</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-calendar me-2 text-primary"></i>Created</span>
@@ -109,7 +84,7 @@
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-database me-2 text-primary"></i>Type</span>
-                                <strong>Corpus</strong>
+                                <strong>{{resource_type}}</strong>
                             </li>
                             {% if object.file %}
                             <li class="list-group-item">
@@ -159,7 +134,7 @@
                 </div>
             </div>
             {% empty %}
-            <p class="text-muted fst-italic">No related corpora found.</p>
+            <p class="text-muted fst-italic">No related resource found.</p>
             {% endfor %}
         </div>
     </div>

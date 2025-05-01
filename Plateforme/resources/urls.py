@@ -11,7 +11,10 @@ from .views import (
     ResourceDetailView,
     ResourceCreateView,
     ResourceUpdateView,
-    ResourceDeleteView 
+    ResourceDeleteView,
+    CourseCreateView,  
+    CorpusCreateView,
+    ToolCreateView,  # Renamed from OutilCreateView
 )
 
 app_name = 'resources'
@@ -34,14 +37,20 @@ urlpatterns = [
     # Create view
     path('add/', ResourceCreateView.as_view(), name="create"),
     path('update/<str:type>/<uuid:pk>/', ResourceUpdateView.as_view(), name="resource-update"),
+    path('courses/add/', CourseCreateView.as_view(), name="course-create"),
+    path('corpus/add/', CorpusCreateView.as_view(), name="corpus-create"),
+    path('tools/add/', ToolCreateView.as_view(), name="tool-create"),
+    
     path('delete/<str:type>/<uuid:pk>/', ResourceDeleteView.as_view(), name="resource-delete"),
     
     # Type-specific detail views
-    path('document/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'document'}, name="document_detail"),
+   # path('document/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'document'}, name="document_detail"),
     path('tool/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'tool'}, name="tool_detail"),
     path('course/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'course'}, name="course_detail"),
     path('article/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'article'}, name="article_detail"),
     path('thesis/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'thesis'}, name="thesis_detail"),
     path('memoir/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'memoir'}, name="memoir_detail"),
     path('corpus/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'corpus'}, name="corpus_detail"),
+
+    
 ]

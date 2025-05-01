@@ -1,44 +1,26 @@
 {% extends "resources/resource_detail.html" %}
 
 {% block resource_specific_details %}
-<div class="row">
-    <div class="col-12">
-        <h3>NLP Tool Details</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <th style="width: 200px;">Tool Type</th>
-                        <td>{{ object.get_tool_type_display }}</td>
-                    </tr>
-                    <tr>
-                        <th>Version</th>
-                        <td>{{ object.version }}</td>
-                    </tr>
-                    <tr>
-                        <th>Supported Languages</th>
-                        <td>
-                            {% for language in object.languages %}
-                                <span class="badge bg-info me-1">{{ language.strip }}</span>
-                            {% endfor %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Last Updated</th>
-                        <td>{{ object.last_updated|date:"F j, Y" }}</td>
-                    </tr>
-                    {% if object.documentation_link %}
-                    <tr>
-                        <th>Documentation</th>
-                        <td>
-                            <a href="{{ object.documentation_link }}" target="_blank" rel="noopener">
-                                View Documentation <i class="bi bi-box-arrow-up-right"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+
+<div class="mb-4">
+    <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>Tool Details</h3>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <span class="text-muted">Tool Type:</span>
+                <strong class="ms-2">{{ object.get_tool_type_display  }} </strong>
+            </div>
+            <div class="mb-3">
+                <span class="text-muted">Version:</span>
+                <strong class="ms-2">{{ object.version }}</strong>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <span class="text-muted">Language:</span>
+                <strong class="ms-2">{{ object.language|default:"Not specified" }}</strong>
+            </div>
+            
         </div>
     </div>
 </div>
