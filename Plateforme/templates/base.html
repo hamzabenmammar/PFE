@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Arabic NLP Platform{% endblock %}</title>
+    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+     <script src="https://unpkg.com/htmx.org" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx-ext-ws" integrity="sha384-vuKxTKv5TX/b3lLzDKP2U363sOAoRo5wSvzzc3LJsbaQRSBSS+3rKKHcOx5J8doU" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -62,9 +65,6 @@
                     </a></li>
                     <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
                         <i class="fas fa-database"></i> Corpus
-                    </a></li>
-                    <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">
-                        <i class="fas fa-graduation-cap"></i> Courses
                     </a></li>
                     <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">
                         <i class="fas fa-tools"></i> Tools

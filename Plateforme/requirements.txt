@@ -41,3 +41,5 @@ tzdata==2025.2
 urllib3==2.3.0
 yarl==1.19.0
 django_multiselectfield
+django-htmx
+django-cleanup

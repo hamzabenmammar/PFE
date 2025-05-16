@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-  'resources',
+    'daphne',
+    'resources',
     'institutions',
     'allauth',
     'allauth.account',
@@ -88,8 +89,15 @@ TEMPLATES = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"  
 CRISPY_TEMPLATE_PACK = "bootstrap5"   
 
-WSGI_APPLICATION = 'Plateforme.wsgi.application'
 
+
+ASGI_APPLICATION = 'Plateforme.asgi.application'
+
+CHANNEL_LAYERS = {
+  'default': {
+    "BACKEND": "channels.layers.InMemoryChannelLayer",
+  }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

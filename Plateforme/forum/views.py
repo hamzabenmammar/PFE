@@ -1,9 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Topic, ChatRoom, Message
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
 
 class TopicListView(LoginRequiredMixin, ListView):
@@ -58,27 +59,41 @@ class ChatRoomListView(LoginRequiredMixin, ListView):
 
 class ChatRoomDetailView(LoginRequiredMixin, DetailView):
     model = ChatRoom
-    template_name = 'forum/chatroom_detail.html'  # Ajout du préfixe 'forum/'
+    template_name = 'forum/chatroom_detail.html'
     context_object_name = 'chatroom'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['messages'] = Message.objects.filter(chatroom=self.object).order_by('timestamp')
-        context['topic'] = self.object.topic
-        
         return context
     
     def post(self, request, *args, **kwargs):
+        # on récupère la salle et on crée le message
         self.object = self.get_object()
-        message_content = request.POST.get('message', '').strip()
-        if message_content:
-            Message.objects.create(
+        content = request.POST.get('message', '').strip()
+        if content:
+            message = Message.objects.create(
                 chatroom=self.object,
                 user=request.user,
-                content=message_content
+                content=content
             )
+        else:
+            return HttpResponse(status=204)  # pas de contenu à créer
+        
+        # si c'est une requête HTMX, on renvoie juste le fragment du nouveau message
+        if request.headers.get('HX-Request'):
+            html = render_to_string(
+                'forum/partials/message_item.html',
+                {
+                    'message': message,
+                    'user': request.user
+                },
+                request=request
+            )
+            return HttpResponse(html)
+        
+        # sinon on redirige normalement
         return redirect('forum:chatroom-detail', pk=self.object.pk)
-
 class ChatRoomCreateView(LoginRequiredMixin, CreateView):
     model = ChatRoom
     fields = ['name', 'description']

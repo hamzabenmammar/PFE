@@ -35,14 +35,23 @@
                 
                 <!-- Messages Container -->
                 <div class="messages-container" id="message-container">
-                    <div class="messages-wrapper p-3">
+                    <div class="messages-wrapper" id="messages-wrapper">
                         {% if messages %}
                             {% for message in messages %}
-                            <div class="message-item {% if message.user == user %}message-mine{% else %}message-other{% endif %}">
+                            <div class="message-item {% if message.user == user %}message-mine{% else %}message-other{% endif %}" id="message-{{ message.id }}">
                                 <div class="message-bubble">
                                     <div class="message-header">
-                                        <div class="message-author">{{ message.user }}</div>
-                                        <div class="message-time">{{ message.timestamp|date:"d/m/Y H:i" }}</div>
+                                        <div class="message-author">
+                                            <a href="{% url 'accounts:profile' message.user.id %}" class="profile-link">
+                                                {{ message.user }}
+                                            </a>
+                                        </div>
+                                        <div class="message-time">
+                                            {{ message.timestamp|date:"d/m/Y H:i" }}
+                                            {% if message.is_edited %}
+                                            <span class="edited-indicator">(modifié)</span>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="message-content">
                                         {{ message.content }}
@@ -51,7 +60,7 @@
                                     <div class="message-actions">
                                         <form method="post" action="{% url 'forum:message-delete' message.id %}" class="delete-form">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn-delete">
+                                            <button type="submit" class="btn-delete" aria-label="Supprimer le message">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -83,12 +92,17 @@
                 
                 <!-- Message Input -->
                 <div class="message-composer">
-                    <form method="post" class="message-form" id="message-form">
+                    <form class="message-form" id="message-form" 
+                    hx-ext = "ws"
+                    hx-connect = "/ws/chatroom/chatroom_id"
+                    hx-send
+                    _="on htmx:wsAfterSend reset() me"
+                    >
                         {% csrf_token %}
                         <div class="composer-container">
-                            <input type="text" name="message" class="message-input" 
+                            <input type="text" name="message" id="message-input" class="message-input" 
                                    placeholder="Votre message..." required autocomplete="off">
-                            <button type="submit" class="btn-send">
+                            <button type="submit" id="message-submit" class="btn-send">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
@@ -182,6 +196,8 @@
         overflow-y: auto;
         background-color: var(--forum-bg);
         flex-grow: 1;
+        scroll-behavior: smooth;
+        padding: 16px;
     }
 
     .messages-wrapper {
@@ -236,6 +252,11 @@
     .message-time {
         color: var(--forum-text-light);
         font-size: 12px;
+    }
+
+    .edited-indicator {
+        font-style: italic;
+        margin-left: 4px;
     }
 
     .message-content {
@@ -383,6 +404,16 @@
         40% { transform: scale(1); }
     }
 
+    /* Message animation */
+    .message-new {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Responsive Adjustments */
     @media (max-width: 768px) {
         .message-item {
@@ -418,8 +449,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         const messageContainer = document.getElementById('message-container');
         const messageForm = document.getElementById('message-form');
-        const messageInput = document.querySelector('.message-input');
+        const messageInput = document.getElementById('message-input');
+        const messageSubmit = document.getElementById('message-submit');
         const typingIndicator = document.getElementById('typing-indicator');
+        const messagesWrapper = document.getElementById('messages-wrapper');
         
         // Auto-scroll to the last message
         scrollToBottom();
@@ -427,11 +460,61 @@
         // Focus on the message input when page loads
         messageInput.focus();
         
+        // ChatRoom UUID from context
+        const chatroomId = "{{ chatroom.id }}";
+        
+        // WebSocket setup
+        let chatSocket;
+        
+        function initializeWebSocket() {
+            // Create WebSocket connection - use wss:// for HTTPS sites
+            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            chatSocket = new WebSocket(
+                protocol + window.location.host + '/ws/forum/chatroom/' + chatroomId + '/'
+            );
+            
+            // Connection opened
+            chatSocket.onopen = function(event) {
+                console.log('WebSocket connection established');
+            };
+            
+            // Listen for messages
+            chatSocket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                
+                // Check if message isn't from current user to avoid duplication
+                if (data.user_id !== "{{ user.id }}") {
+                    appendNewMessage(data);
+                    scrollToBottom();
+                }
+            };
+            
+            // Connection closed
+            chatSocket.onclose = function(event) {
+                console.log('WebSocket connection closed');
+                
+                // Try to reconnect after 2 seconds
+                setTimeout(function() {
+                    console.log('Attempting to reconnect WebSocket...');
+                    initializeWebSocket();
+                }, 2000);
+            };
+            
+            // Connection error
+            chatSocket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+        
+        // Initialize WebSocket
+        initializeWebSocket();
+        
         // Handle form submission
         messageForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (messageInput.value.trim() === '') {
+            const message = messageInput.value.trim();
+            if (message === '') {
                 return;
             }
             
@@ -439,8 +522,46 @@
             typingIndicator.classList.remove('d-none');
             scrollToBottom();
             
-            // Create a FormData object and submit the form asynchronously
-            const formData = new FormData(messageForm);
+            // Send message via WebSocket if connected
+            if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'csrftoken': '{{ csrf_token }}'
+                }));
+                
+                // Immediately create and display the message locally (optimistic UI)
+                const currentTime = new Date().toLocaleString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const messageData = {
+                    content: message,
+                    user_name: '{{ user }}',
+                    timestamp: currentTime,
+                    is_current_user: true
+                };
+                
+                appendNewMessage(messageData);
+                
+                // Clear input and hide typing indicator
+                messageInput.value = '';
+                typingIndicator.classList.add('d-none');
+                scrollToBottom();
+            } else {
+                // Fallback to traditional AJAX if WebSocket is not available
+                sendMessageViaAjax(message);
+            }
+        });
+        
+        function sendMessageViaAjax(message) {
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('message', message);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
             
             fetch(window.location.href, {
                 method: 'POST',
@@ -454,18 +575,66 @@
                     // Clear the input field
                     messageInput.value = '';
                     
-                    // Hide typing indicator after a short delay and reload
+                    // Hide typing indicator after a short delay and refresh
                     setTimeout(() => {
                         typingIndicator.classList.add('d-none');
-                        window.location.reload();
+                        window.location.reload(); // Fallback to reload when websockets fail
                     }, 500);
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error sending message:', error);
                 typingIndicator.classList.add('d-none');
             });
-        });
+        }
+        
+        // Append a new message to the chat
+        function appendNewMessage(data) {
+            const isCurrentUser = data.is_current_user || (data.user_id === "{{ user.id }}");
+            
+            const messageHTML = `
+                <div class="message-item message-new ${isCurrentUser ? 'message-mine' : 'message-other'}">
+                    <div class="message-bubble">
+                        <div class="message-header">
+                            <div class="message-author">
+                                <a href="${isCurrentUser ? '{% url "accounts:profile" user.id %}' : '#'}" class="profile-link">
+                                    ${data.user_name || '{{ user }}'}
+                                </a>
+                            </div>
+                            <div class="message-time">
+                                ${data.timestamp || new Date().toLocaleString('fr-FR')}
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            ${data.content}
+                        </div>
+                        ${isCurrentUser ? `
+                        <div class="message-actions">
+                            <form method="post" action="{% url 'forum:message-delete' '00000000-0000-0000-0000-000000000000' %}" class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            messagesWrapper.insertAdjacentHTML('beforeend', messageHTML);
+            
+            // Setup event listener for new delete buttons
+            const newDeleteForms = document.querySelectorAll('.delete-form:not(.event-bound)');
+            newDeleteForms.forEach(form => {
+                form.classList.add('event-bound');
+                form.addEventListener('submit', function(e) {
+                    if (!confirm('Êtes-vous sûr de vouloir supprimer ce message?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
         
         // Add confirmation to delete buttons
         document.querySelectorAll('.delete-form').forEach(form => {
@@ -479,9 +648,6 @@
         // Adapt height for different screen sizes
         adjustHeight();
         window.addEventListener('resize', adjustHeight);
-        
-        // Check for new messages periodically
-        setInterval(checkForNewMessages, 10000);
         
         // Helper functions
         function scrollToBottom() {
@@ -498,20 +664,7 @@
             }
         }
         
-        function checkForNewMessages() {
-            fetch(window.location.href + '?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    // Implementation depends on your backend
-                    // This is a placeholder for the real implementation
-                    if (data && data.hasNewMessages) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => console.error('Error checking for new messages:', error));
-        }
-        
-        // Add a subtle entrance animation for messages
+        // Add a subtle entrance animation for existing messages
         document.querySelectorAll('.message-item').forEach((message, index) => {
             message.style.opacity = '0';
             message.style.transform = 'translateY(10px)';
@@ -520,7 +673,7 @@
             setTimeout(() => {
                 message.style.opacity = '1';
                 message.style.transform = 'translateY(0)';
-            }, index * 100);
+            }, index * 50); // Faster animation (50ms instead of 100ms)
         });
     });
 </script>
