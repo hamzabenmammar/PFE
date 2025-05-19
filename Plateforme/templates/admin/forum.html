@@ -1,0 +1,320 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Administration des Forums{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="fs-2 fw-bold text-primary">Administration des Forums</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTopicModal">
+                    <i class="fas fa-plus me-2"></i>Nouveau sujet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+            <form method="get" id="filterForm">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0 ps-0" 
+                                   placeholder="Rechercher..." name="search" 
+                                   value="{{ search }}">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="category" id="categoryFilter">
+                            <option value="">Toutes les catégories</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if filter_category == cat.id|stringformat:"i" %}selected{% endif %}>
+                                    {{ cat.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="is_closed" id="statusFilter">
+                            <option value="">Tous les statuts</option>
+                            <option value="true" {% if filter_is_closed == 'true' %}selected{% endif %}>Fermés</option>
+                            <option value="false" {% if filter_is_closed == 'false' %}selected{% endif %}>Ouverts</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-2"></i>Filtrer
+                            </button>
+                            <a href="{% url 'pages:home' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-redo me-2"></i>Réinitialiser
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tableau des topics -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Sujets du forum ({{ topics.count }})</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3">Titre</th>
+                            <th class="py-3">Catégorie</th>
+                            <th class="py-3">Auteur</th>
+                            <th class="py-3">Date</th>
+                            <th class="py-3">Statut</th>
+                            <th class="py-3">Réponses</th>
+                            <th class="py-3 text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topic in topics %}
+                        <tr>
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <h6 class="mb-0">{{ topic.title }}</h6>
+                                        <p class="text-muted small mb-0 text-truncate" style="max-width: 300px;">
+                                            {{ topic.content|striptags|truncatechars:100 }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <span class="badge bg-light text-dark">{{ topic.category.name }}</span>
+                            </td>
+                            <td class="py-3">{{ topic.author.username }}</td>
+                            <td class="py-3">{{ topic.created_at|date:"d/m/Y H:i" }}</td>
+                            <td class="py-3">
+                                {% if topic.is_closed %}
+                                <span class="badge bg-danger">Fermé</span>
+                                {% else %}
+                                <span class="badge bg-success">Ouvert</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3">{{ topic.replies.count }}</td>
+                            <td class="py-3 text-end pe-4">
+                                <div class="btn-group">
+                                    <a href="{% url 'pages:home' %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary edit-topic" 
+                                            data-id="{{ topic.id }}" data-bs-toggle="modal" data-bs-target="#editTopicModal">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger delete-topic" 
+                                            data-id="{{ topic.id }}" data-bs-toggle="modal" data-bs-target="#deleteTopicModal">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    {% if topic.is_closed %}
+                                    <button type="button" class="btn btn-sm btn-outline-success toggle-status" 
+                                            data-id="{{ topic.id }}" data-action="open">
+                                        <i class="fas fa-lock-open"></i>
+                                    </button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-sm btn-outline-warning toggle-status" 
+                                            data-id="{{ topic.id }}" data-action="close">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="py-5">
+                                    <i class="fas fa-comment-slash fs-1 text-muted mb-3"></i>
+                                    <p class="mb-1">Aucun sujet ne correspond aux critères de recherche.</p>
+                                    <a href="{% url 'admin_forum' %}" class="btn btn-sm btn-outline-primary mt-2">
+                                        Voir tous les sujets
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajout Topic -->
+<div class="modal fade" id="addTopicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter un nouveau sujet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTopicForm" method="post" action="{% url 'pages:home' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Titre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="">Sélectionner une catégorie</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Contenu <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="addTopicForm" class="btn btn-primary">Créer le sujet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Édition Topic -->
+<div class="modal fade" id="editTopicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier le sujet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTopicForm" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit_topic_id" name="topic_id">
+                    <div class="mb-3">
+                        <label for="edit_title" class="form-label">Titre <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="edit_title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_category" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                        <select class="form-select" id="edit_category" name="category" required>
+                            <option value="">Sélectionner une catégorie</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_content" class="form-label">Contenu <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="edit_content" name="content" rows="5" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="editTopicForm" class="btn btn-primary">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Suppression Topic -->
+<div class="modal fade" id="deleteTopicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer ce sujet ? Cette action est irréversible.</p>
+                <p class="mb-0 fw-bold text-danger">Attention : Toutes les réponses associées seront également supprimées.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form id="deleteTopicForm" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="delete_topic_id" name="topic_id">
+                    <button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-submit on filter change
+        document.querySelectorAll('#categoryFilter, #statusFilter').forEach(filter => {
+            filter.addEventListener('change', function() {
+                document.getElementById('filterForm').submit();
+            });
+        });
+
+        // Edit topic modal
+        document.querySelectorAll('.edit-topic').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const topicId = this.getAttribute('data-id');
+                document.getElementById('edit_topic_id').value = topicId;
+                
+                // Fetch topic data via AJAX and populate form
+                fetch(`/admin/forum/topic/${topicId}/data/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('edit_title').value = data.title;
+                        document.getElementById('edit_category').value = data.category_id;
+                        document.getElementById('edit_content').value = data.content;
+                        document.getElementById('editTopicForm').action = `/admin/forum/topic/${topicId}/edit/`;
+                    });
+            });
+        });
+
+        // Delete topic modal
+        document.querySelectorAll('.delete-topic').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const topicId = this.getAttribute('data-id');
+                document.getElementById('delete_topic_id').value = topicId;
+                document.getElementById('deleteTopicForm').action = `/admin/forum/topic/${topicId}/delete/`;
+            });
+        });
+
+        // Toggle topic status (open/close)
+        document.querySelectorAll('.toggle-status').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const topicId = this.getAttribute('data-id');
+                const action = this.getAttribute('data-action');
+                
+                fetch(`/admin/forum/topic/${topicId}/${action}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

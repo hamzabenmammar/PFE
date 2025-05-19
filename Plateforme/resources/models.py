@@ -168,6 +168,12 @@ class Document(ResourceBase):
         verbose_name=_("Format"),
         help_text=_("PDF, DOCX, TXT, etc.")
     )
+    authors = models.ManyToManyField(
+        get_user_model(),
+        related_name='documents',
+        verbose_name="Auteurs",
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _("Document")

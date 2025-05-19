@@ -1,0 +1,222 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Container général */
+  .stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  /* Filtre dates */
+  .stats-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  .stats-filters input[type="date"] {
+    padding: 0.5rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 0.375rem;
+  }
+  .stats-filters button {
+    padding: 0.6rem 1.2rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
+  .stats-filters button:hover {
+    background-color: #4338ca;
+  }
+
+  /* Cartes résumé */
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  .stats-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  .stats-card h3 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+    color: #2d3748;
+  }
+  .stats-card p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4f46e5;
+  }
+
+  /* Grilles de charts */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 768px) {
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .chart-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .chart-card h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #2d3748;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="stats-container">
+
+  <!-- Filtre de date -->
+  <form method="get" class="stats-filters">
+    <label>
+      Du  
+      <input type="date" name="start_date" value="{{ start_date }}">
+    </label>
+    <label>
+      Au  
+      <input type="date" name="end_date" value="{{ end_date }}">
+    </label>
+    <button type="submit">Appliquer</button>
+  </form>
+
+  <!-- Cartes résumé -->
+  <div class="stats-cards">
+    <div class="stats-card">
+      <h3>Utilisateurs</h3>
+      <p>{{ current_stats.users_count }}</p>
+    </div>
+    <div class="stats-card">
+      <h3>Ressources</h3>
+      <p>{{ current_stats.publications_count|add:current_stats.corpora_count|add:current_stats.tools_count }}</p>
+    </div>
+    <div class="stats-card">
+      <h3>Visites</h3>
+      <p>{{ current_stats.visits_count }}</p>
+    </div>
+    <div class="stats-card">
+      <h3>Téléchargements</h3>
+      <p>{{ current_stats.downloads_count }}</p>
+    </div>
+    <div class="stats-card">
+      <h3>Projets</h3>
+      <p>{{ current_stats.projects_count }}</p>
+    </div>
+    <div class="stats-card">
+      <h3>Forums</h3>
+      <p>{{ current_stats.forum_posts_count }}</p>
+    </div>
+  </div>
+
+  <!-- Grille de graphs -->
+  <div class="charts-grid">
+    <!-- 1. Utilisateurs & Ressources -->
+    <div class="chart-card">
+      <h4>Utilisateurs vs Ressources</h4>
+      <canvas id="chartStats"></canvas>
+    </div>
+    <!-- 2. Inscriptions quotidiennes -->
+    <div class="chart-card">
+      <h4>Inscriptions journalières</h4>
+      <canvas id="chartUsers"></canvas>
+    </div>
+    <!-- 3. Visites & Téléchargements -->
+    <div class="chart-card">
+      <h4>Visites vs Téléchargements</h4>
+      <canvas id="chartVisits"></canvas>
+    </div>
+    <!-- 4. Répartition des ressources -->
+    <div class="chart-card">
+      <h4>Répartition Ressources</h4>
+      <canvas id="chartResources"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Séries depuis le contexte
+  const dates        = {{ chart_dates|safe }};
+  const usersData    = {{ users_data|safe }};
+  const resourcesData= {{ resources_data|safe }};
+  const visitsData   = {{ visits_data|safe }};
+  const downloadsData= {{ downloads_data|safe }};
+  const regDates     = {{ user_reg_dates|safe }};
+  const regCounts    = {{ user_reg_counts|safe }};
+
+  // 1. Utilisateurs vs Ressources
+  new Chart(document.getElementById('chartStats'), {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [
+        { label: 'Utilisateurs', data: usersData, fill: false, tension: 0.3 },
+        { label: 'Ressources',   data: resourcesData, fill: false, tension: 0.3 }
+      ]
+    },
+    options: { responsive: true }
+  });
+
+  // 2. Inscriptions journalières
+  new Chart(document.getElementById('chartUsers'), {
+    type: 'bar',
+    data: {
+      labels: regDates,
+      datasets: [{ label: 'Nouveaux inscrits', data: regCounts }]
+    },
+    options: { responsive: true }
+  });
+
+  // 3. Visites vs Téléchargements
+  new Chart(document.getElementById('chartVisits'), {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [
+        { label: 'Visites',      data: visitsData,      fill: false, tension: 0.3 },
+        { label: 'Téléchargements', data: downloadsData, fill: false, tension: 0.3 }
+      ]
+    },
+    options: { responsive: true }
+  });
+
+  // 4. Répartition des ressources
+  new Chart(document.getElementById('chartResources'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Publications', 'Corpora', 'Outils'],
+      datasets: [{
+        data: [
+          {{ current_stats.publications_count }},
+          {{ current_stats.corpora_count }},
+          {{ current_stats.tools_count }}
+        ]
+      }]
+    },
+    options: { responsive: true }
+  });
+</script>
+{% endblock %}

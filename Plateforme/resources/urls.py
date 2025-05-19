@@ -44,7 +44,7 @@ urlpatterns = [
     path('delete/<str:type>/<uuid:pk>/', ResourceDeleteView.as_view(), name="resource-delete"),
     
     # Type-specific detail views
-   # path('document/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'document'}, name="document_detail"),
+    path('document/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'document'}, name="document_detail"),
     path('tool/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'tool'}, name="tool_detail"),
     path('course/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'course'}, name="course_detail"),
     path('article/<uuid:pk>/', views.ResourceDetailView.as_view(), kwargs={'type': 'article'}, name="article_detail"),

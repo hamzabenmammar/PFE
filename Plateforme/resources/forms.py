@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
+from django.contrib.auth import get_user_model
 from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML
 from .models import Course, NLPTool, Corpus, Document, Article, Thesis, Memoir, ResourceBase
 from accounts.models import Institution
@@ -139,6 +140,12 @@ class ResourceForm(forms.Form):
         label=_("Format * (PDF/DOCX)"),
         max_length=10,
         required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    authors = forms.CharField(
+        required=False,
+        label=_("Authors"),
+        max_length=100,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 

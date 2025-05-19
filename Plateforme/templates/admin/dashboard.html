@@ -1,0 +1,351 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Tableau de bord administrateur{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Statistiques générales -->
+    <div class="col-md-12 mb-4">
+        <div class="row">
+            <!-- Utilisateurs -->
+            <div class="col-md-3 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Utilisateurs</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ users_count }}</div>
+                                <div class="text-xs mt-2 {% if user_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                    <i class="fas fa-{% if user_growth >= 0 %}arrow-up{% else %}arrow-down{% endif %} me-1"></i>
+                                    {{ user_growth|floatformat:1 }}% / mois
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ressources -->
+            <div class="col-md-3 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ressources</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ resources_count }}</div>
+                                <div class="text-xs mt-2 {% if pubs_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                    <i class="fas fa-{% if pubs_growth >= 0 %}arrow-up{% else %}arrow-down{% endif %} me-1"></i>
+                                    {{ pubs_growth|floatformat:1 }}% / mois
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-book fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projets -->
+            <div class="col-md-3 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Projets en cours</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ projects_count }}</div>
+                                <div class="text-xs mt-2 {% if projects_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                    <i class="fas fa-{% if projects_growth >= 0 %}arrow-up{% else %}arrow-down{% endif %} me-1"></i>
+                                    {{ projects_growth|floatformat:1 }}% / mois
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages forum -->
+            <div class="col-md-3 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Messages forum</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ forum_posts_count }}</div>
+                                <div class="text-xs mt-2 {% if posts_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                    <i class="fas fa-{% if posts_growth >= 0 %}arrow-up{% else %}arrow-down{% endif %} me-1"></i>
+                                    {{ posts_growth|floatformat:1 }}% / mois
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques / Visualisations -->
+    <div class="col-md-8 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Activité récente</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'pages:admin_statistics' %}">Voir les détails</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="activityChart" width="100%" height="50"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Utilisateurs récents -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Nouveaux utilisateurs</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'pages:admin_users' %}">Voir tous les utilisateurs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="usersTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Statut</th>
+                                <th>Date d'inscription</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in recent_users %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'pages:admin_user_edit' user.id %}">
+                                        {% if user.get_full_name %}
+                                            {{ user.get_full_name }}
+                                        {% else %}
+                                            {{ user.full_name }}
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if user.status == 'active' %}
+                                        <span class="badge bg-success">Actif</span>
+                                    {% elif user.status == 'pending' %}
+                                        <span class="badge bg-warning">En attente</span>
+                                    {% elif user.status == 'inactive' %}
+                                        <span class="badge bg-secondary">Inactif</span>
+                                    {% elif user.status == 'blocked' %}
+                                        <span class="badge bg-danger">Bloqué</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.date_joined|date:"d/m/Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucun utilisateur récent</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu récent -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Publications récentes</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'pages:admin_publications' %}">Voir toutes les publications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="publicationsTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Auteur(s)</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for publication in recent_publications %}
+                            <tr>
+                                <td>{{ publication.title }}</td>
+                                <td>
+                                     {% for author in publication.authors.all %}
+                                    {{ author.get_full_name|default:author.username }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                    —
+                                    {% endfor %}
+                                </td>
+                                <td>{{ publication.creation_date|date:"d/m/Y" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucune publication récente</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projets récents -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Projets récents</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'pages:admin_projects' %}">Voir tous les projets</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="projectsTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Participants</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in recent_projects %}
+                            <tr>
+                                <td>{{ project.title }}</td>
+                                <td>
+                                {# On récupère jusqu’à 3 membres #}
+                                {% for pm in project.members.all|slice:":3" %}
+                                    {{ pm.member.get_full_name|default:pm.member.full_name }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    <em>Aucun participant</em>
+                                {% endfor %}
+
+                                {# Si plus de 3 membres, on affiche « et N autres » #}
+                                {% if project.members.count > 3 %}
+                                    et {{ project.members.count|add:"-3" }} autres
+                                {% endif %}
+                                </td>
+                                <td>
+                                    {% if project.status == 'ongoing' %}
+                                        <span class="badge bg-primary">En cours</span>
+                                    {% elif project.status == 'completed' %}
+                                        <span class="badge bg-success">Terminé</span>
+                                    {% elif project.status == 'planning' %}
+                                        <span class="badge bg-info">Planification</span>
+                                    {% elif project.status == 'cancelled' %}
+                                        <span class="badge bg-danger">Annulé</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucun projet récent</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Graphique d'activité
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('activityChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                datasets: [{
+                    label: 'Nouveaux utilisateurs',
+                    data: [12, 19, 3, 5, 2, 3, 7, 8, 9, 10, 11, 15],
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+                    tension: 0.3
+                },
+                {
+                    label: 'Nouvelles ressources',
+                    data: [5, 7, 10, 12, 15, 10, 8, 9, 11, 14, 16, 18],
+                    borderColor: 'rgba(28, 200, 138, 1)',
+                    backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(28, 200, 138, 1)',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    });
+
+    // Charger des données en AJAX
+    function loadDashboardData() {
+        fetch('{% url "pages:admin_api_stats" %}')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Stats data loaded", data);
+                // Mise à jour des statistiques si nécessaire
+            });
+    }
+
+    // Appel initial
+    loadDashboardData();
+</script>
+{% endblock %}

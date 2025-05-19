@@ -22,7 +22,6 @@ from Plateforme import settings
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('accounts/', include('allauth.urls')),
     path('', include('pages.urls')),
@@ -32,6 +31,8 @@ urlpatterns = [
     path('resources/', include('resources.urls', namespace='resources')),
     path('institutions/', include('institutions.urls', namespace='institutions')),
     path('QA/', include('QA.urls')),
+    path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

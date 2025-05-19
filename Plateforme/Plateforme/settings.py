@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'forum',
     'events',
     'QA',
+    'notifications',
+    'channels',
     
 ]
 
@@ -67,14 +69,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'accounts.middleware.UserActivityMiddleware', 
 ]
-
+ONLINE_THRESHOLD = 300
 ROOT_URLCONF = 'Plateforme.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_processor',
             ],
         },
     },
@@ -172,8 +176,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
-LOGIN_REDIRECT_URL = 'home' 
-ACCOUNT_LOGOUT_REDIRECT = "home"
+LOGIN_REDIRECT_URL = 'pages:home' 
+ACCOUNT_LOGOUT_REDIRECT = "pages:home"
 
 
 

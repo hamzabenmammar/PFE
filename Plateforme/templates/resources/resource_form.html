@@ -52,6 +52,7 @@
             <h3>{% trans "Document Details" %}</h3>
             {{ form.document_type|as_crispy_field }}
             {{ form.document_format|as_crispy_field }}
+            {{ form.authors|as_crispy_field }}
             
             <!-- Sous-types de documents -->
             <div id="article-fields" class="specific-field sub-document-field">

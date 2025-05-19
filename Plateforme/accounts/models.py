@@ -1,14 +1,22 @@
+from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 from accounts.managers import CustomUserManager
 from institutions.models import Institution
-from django.contrib.auth import get_user_model
-from django.utils import timezone
+
+
 from django.utils.crypto import get_random_string
 
 
+
+
 class CustomUser(AbstractUser):
+  STATUS_CHOICES = [
+        ('pending', 'En attente'),
+        ('active', 'Actif'),
+        ('blocked', 'Bloqué'),
+    ]
   id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -19,6 +27,12 @@ class CustomUser(AbstractUser):
   full_name = models.CharField(max_length=255 , null=True , blank=True)
   institution = models.ForeignKey(Institution, on_delete=models.CASCADE , null=True , blank=True)
   bio = models.TextField(blank=True)
+  status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name="Statut du compte"
+    )
   avatar = models.ImageField(
         upload_to='avatars/%Y/%m/%d/',
         null=True,
@@ -41,14 +55,6 @@ class CustomUser(AbstractUser):
 
   def __str__(self):
     return self.email
-
-
-
-
-
-
-
-
 
 
 

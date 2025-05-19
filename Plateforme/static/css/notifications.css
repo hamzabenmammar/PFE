@@ -1,0 +1,96 @@
+/* Styles pour la page de notifications */
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification-item {
+    display: flex;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.notification-item.unread {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-left: 4px solid #0d6efd;
+}
+
+.notification-item.read {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+}
+
+.notification-status {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.notification-title {
+    margin: 0;
+    font-weight: 600;
+}
+
+.notification-message {
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.notification-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.notification-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: 1px solid #dee2e6;
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.tab-btn:hover:not(.active) {
+    background-color: #f8f9fa;
+}
+
+/* Styles pour les toasts */
+#toast-container {
+    z-index: 1056;
+}
+
+.toast {
+    min-width: 300px;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    border-left: 4px solid #0d6efd;
+}

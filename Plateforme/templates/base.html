@@ -7,10 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Arabic NLP Platform{% endblock %}</title>
     <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
-     <script src="https://unpkg.com/htmx.org" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/htmx-ext-ws" integrity="sha384-vuKxTKv5TX/b3lLzDKP2U363sOAoRo5wSvzzc3LJsbaQRSBSS+3rKKHcOx5J8doU" crossorigin="anonymous"></script>
+<!-- Charge HTMX core -->
+<script src="https://unpkg.com/htmx.org"></script>
+
+<!-- Puis l’extension WebSocket de HTMX -->
+<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/notifications.css' %}" rel="stylesheet">
+    <link href="{% static 'css/navbar_notifications.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% block extra_styles %}{% endblock %}
@@ -19,7 +26,7 @@
     <header class="site-header">
         <div class="container header-container">
             <div class="logo-container">
-                <a href="{% url 'home' %}" class="logo-link d-flex align-items-center gap-2">
+                <a href="{% url 'pages:home' %}" class="logo-link d-flex align-items-center gap-2">
                     <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" style="height: 40px;">
                     <span class="logo-text fw-bold fs-4">Arabic NLP</span>
                 </a>
@@ -27,19 +34,77 @@
             
             <div class="search-bar">
                 <input type="text" placeholder="Search resources, tools, corpus..." />
-                <button class="search-button">
-                    <i class="fas fa-search"></i>
-                </button>
+                <button class="search-button" aria-label="Rechercher">
+    <i class="fas fa-search" aria-hidden="true"></i>
+</button>
             </div>
             
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
+                    <!-- Notification Bell -->
+                    <div class="notification-dropdown-container">
+                        <button class="btn btn-icon notification-bell position-relative" 
+        id="notificationDropdownToggle" 
+        aria-label="Afficher les notifications">
+    <i class="fas fa-bell" aria-hidden="true"></i>
+    {% if unread_notifications_count > 0 %}
+      <span class="notification-badge">{{ unread_notifications_count }}</span>
+    {% endif %}
+</button>
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <h6>Notifications</h6>
+                                {% if unread_notifications_count > 0 %}
+                                <a href="{% url 'notifications:mark_all_read' %}" class="mark-all-read">
+                                    Mark all as read
+                                </a>
+                                {% endif %}
+                            </div>
+                            <div class="notification-body">
+                                {% if notifications %}
+                                    {% for notification in notifications %}
+                                    <a href="{% url 'notifications:redirect' notification.id %}" class="notification-item {% if not notification.read %}unread{% endif %}">
+                                        <div class="notification-icon">
+                                            {% if notification.notification_type == 'resource_update' %}
+                                                <i class="fas fa-file-alt"></i>
+                                            {% elif notification.notification_type == 'comment' %}
+                                                <i class="fas fa-comment"></i>
+                                            {% elif notification.notification_type == 'project_update' %}
+                                                <i class="fas fa-flask"></i>
+                                            {% elif notification.notification_type == 'event' %}
+                                                <i class="fas fa-calendar-alt"></i>
+                                            {% elif notification.notification_type == 'forum' %}
+                                                <i class="fas fa-users"></i>
+                                            {% else %}
+                                                <i class="fas fa-bell"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="notification-content">
+                                            <p>{{ notification.message }}</p>
+                                            <span class="notification-time">{{ notification.created_at|timesince }} ago</span>
+                                        </div>
+                                    </a>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="empty-notifications">
+                                        <p>No notifications yet</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="notification-footer">
+                                <a href="{% url 'notifications:list' %}">View all notifications</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Notification Bell -->
+                    
                     <a href="{% url 'accounts:profile' user.id %}" class="btn btn-outline">
                         <i class="fas fa-user"></i> Profile
                     </a>
                     <a href="{% url 'account_logout' %}" class="btn btn-primary">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
+                    
                 {% else %}
                     <a href="{% url 'account_login' %}" class="btn btn-outline">
                         <i class="fas fa-sign-in-alt"></i> Log in
@@ -50,9 +115,9 @@
                 {% endif %}
             </div>
             
-            <button class="mobile-menu-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button class="mobile-menu-toggle" id="sidebarToggle" aria-label="Ouvrir/fermer le menu">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+</button>
         </div>
     </header>
 
@@ -60,7 +125,7 @@
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
                 <ul class="sidebar-menu">
-                    <li><a {% if page == 'home' %}class="active"{% endif %} href="{% url 'home' %}">
+                    <li><a {% if page == 'pages:home' %}class="active"{% endif %} href="{% url 'pages:home' %}">
                         <i class="fas fa-home"></i> Home
                     </a></li>
                     <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
@@ -89,17 +154,37 @@
                           <i class="fas fa-university"></i> Institutions
                         </a>
                       </li>
-                      <li>
-                        <a {% if page == 'QA' %}class="active"{% endif %} href="{% url 'QA:qa_list' %}" aria-label="QA">
-                          <i class="fas fa-question-circle"></i> QA
+                                        {% if user.is_staff %}
+                    <li>
+                        <a {% if page == 'Admin' %}class="active"{% endif %}
+                        href="{% url 'pages:admin_dashboard' %}"
+                        aria-label="Admin">
+                        <i class="fas fa-tools"></i> Admin
                         </a>
-                      </li>
-                      
+                    </li>
+                    {% endif %}
+
                 </ul>
             </nav>
         </aside>
 
         <main class="content">
+            <!-- Toast Container for Flash Messages -->
+            <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="toast align-items-center border-0 {% if message.tags %}bg-{{ message.tags }} text-white{% else %}bg-dark text-white{% endif %}" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                {{ message }}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
             {% block content %}{% endblock %}
         </main>
     </div>
@@ -133,7 +218,7 @@
                             <li><a href="{% url 'forum:topic-list' %}">Forum</a></li>
                             <li><a href="{% url 'projects:project_list' %}">Research Projects</a></li>
                             <li><a href="{% url 'events:event_list' %}">Events</a></li>
-                            <li><a href="{% url 'home' %}#contributors">Contributors</a></li>
+                            <li><a href="{% url 'pages:home' %}#contributors">Contributors</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
@@ -151,15 +236,16 @@
             <div class="container">
                 <p class="copyright">© {% now "Y" %} Arabic NLP Platform. All rights reserved.</p>
                 <div class="legal-links">
-                    <a href="{% url 'home' %}">Privacy Policy</a>
-                    <a href="{% url 'home' %}">Terms of Service</a>
-                    <a href="{% url 'home' %}">About Us</a>
+                    <a href="{% url 'pages:home' %}">Privacy Policy</a>
+                    <a href="{% url 'pages:home' %}">Terms of Service</a>
+                    <a href="{% url 'pages:home' %}">About Us</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Mobile menu toggle
         document.getElementById('sidebarToggle').addEventListener('click', function() {
@@ -179,6 +265,64 @@
                 sidebar.classList.remove('active');
                 document.body.classList.remove('sidebar-open');
             }
+        });
+        
+        // Notification dropdown toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationToggle = document.getElementById('notificationDropdownToggle');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            
+            if (notificationToggle && notificationDropdown) {
+                notificationToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notificationDropdown.classList.toggle('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!notificationDropdown.contains(e.target) && !notificationToggle.contains(e.target)) {
+                        notificationDropdown.classList.remove('show');
+                    }
+                });
+            }
+            
+            // Initialize toasts
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            var toastList = toastElList.map(function(toastEl) {
+                var toast = new bootstrap.Toast(toastEl, {
+                    autohide: true,
+                    delay: 5000
+                });
+                toast.show();
+                return toast;
+            });
+            
+            // Refresh notifications periodically (if user is authenticated)
+            {% if user.is_authenticated %}
+            function refreshNotificationCount() {
+                fetch('{% url "notifications:count_ajax" %}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.querySelector('.notification-badge');
+                        if (data.count > 0) {
+                            if (badge) {
+                                badge.textContent = data.count;
+                                badge.style.display = 'flex';
+                            } else {
+                                const newBadge = document.createElement('span');
+                                newBadge.className = 'notification-badge';
+                                newBadge.textContent = data.count;
+                                document.getElementById('notificationDropdownToggle').appendChild(newBadge);
+                            }
+                        } else if (badge) {
+                            badge.style.display = 'none';
+                        }
+                    });
+            }
+            
+            // Refresh notification count every minute
+            setInterval(refreshNotificationCount, 60000);
+            {% endif %}
         });
     </script>
     {% block extra_scripts %}{% endblock %}
