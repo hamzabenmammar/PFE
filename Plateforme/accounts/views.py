@@ -10,6 +10,9 @@ from django.conf import settings
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from projects.models import Project, ProjectMember
+from notifications.models import Notification
+from notifications.services import NotificationService
 
 
 
@@ -81,5 +84,68 @@ class EmailVerificationView(View):
             else:
                 messages.error(request, "Code incorrect. Réessayez.")
         return render(request, self.template_name, {'form': form})
+
+class InviteToProjectView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        user_to_invite = get_object_or_404(get_user_model(), pk=pk)
+        project_id = request.POST.get('project_id')
+        project = get_object_or_404(Project, pk=project_id, coordinator=request.user)
+        # Vérifier que l'utilisateur n'est pas déjà membre ou invité
+        if not ProjectMember.objects.filter(project=project, member=user_to_invite).exists():
+            ProjectMember.objects.create(
+                project=project,
+                member=user_to_invite,
+                role='member',
+                status='pending'
+            )
+            # Utiliser NotificationService pour envoyer l'invitation
+            NotificationService.create_notification(
+                recipient=user_to_invite,
+                notification_type='PROJECT_INVITE', # Ou un type spécifique
+                title="Invitation à rejoindre un projet",
+                message=f"Vous avez été invité à rejoindre le projet « {project.title} » par {request.user.full_name}.",
+                project_id=project.pk,
+                sender=request.user # Ajouter l'expéditeur
+            )
+            messages.success(request, f"Invitation envoyée à {user_to_invite.full_name}.")
+        else:
+            messages.warning(request, f"{user_to_invite.full_name} est déjà membre ou a déjà une invitation en attente.")
+        return redirect('accounts:profile', pk=pk)
+
+class RespondToProjectInviteView(LoginRequiredMixin, View):
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id)
+        member = ProjectMember.objects.filter(project=project, member=request.user, status='pending').first()
+        if not member:
+            messages.error(request, "Aucune invitation en attente pour ce projet.")
+            return redirect('projects:project_detail', pk=project_id)
+        response = request.POST.get('response')
+        if response == 'accept':
+            member.status = 'accepted'
+            member.save()
+            # Utiliser NotificationService pour la notification d'acceptation
+            NotificationService.create_notification(
+                recipient=project.coordinator,
+                notification_type='PROJECT_INVITE_ACCEPTED', # Type spécifique pour l'acceptation
+                title="Invitation acceptée",
+                message=f"{request.user.full_name} a accepté l'invitation à rejoindre le projet « {project.title} ».",
+                project_id=project.pk,
+                sender=request.user # L'utilisateur qui accepte est l'expéditeur ici
+            )
+            messages.success(request, f"Vous avez rejoint le projet « {project.title} ».")
+        elif response == 'reject':
+            member.status = 'rejected'
+            member.save()
+            # Utiliser NotificationService pour la notification de refus
+            NotificationService.create_notification(
+                recipient=project.coordinator,
+                notification_type='PROJECT_INVITE_REJECTED', # Type spécifique pour le refus
+                title="Invitation refusée",
+                message=f"{request.user.full_name} a refusé l'invitation à rejoindre le projet « {project.title} ».",
+                project_id=project.pk,
+                sender=request.user # L'utilisateur qui refuse est l'expéditeur ici
+            )
+            messages.info(request, f"Vous avez refusé l'invitation.")
+        return redirect('projects:project_detail', pk=project_id)
 
 

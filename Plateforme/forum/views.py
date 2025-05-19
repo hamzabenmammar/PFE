@@ -6,6 +6,9 @@ from .models import Topic, ChatRoom, Message
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from notifications.models import Notification
+from notifications.services import NotificationService
 
 class TopicListView(LoginRequiredMixin, ListView):
     model = Topic
@@ -22,7 +25,20 @@ class TopicCreateView(LoginRequiredMixin, CreateView):
       
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        # NOTIFICATION à tous les utilisateurs actifs via le service
+        User = get_user_model()
+        for user in User.objects.filter(is_active=True):
+            # Évite d'envoyer la notification à l'utilisateur qui vient de créer le topic
+            if user != self.request.user:
+                NotificationService.create_notification(
+                    recipient=user,
+                    notification_type='SYSTEM', # Ou un type spécifique si tu en crées un pour le forum
+                    title="Nouveau sujet dans le forum",
+                    message=f"{self.request.user.username} a créé un nouveau sujet : {form.instance.title}",
+                    related_object=form.instance # Optionnel: lie la notification à l'objet Topic créé
+                )
+        return response
 
 class TopicUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Topic
@@ -77,6 +93,22 @@ class ChatRoomDetailView(LoginRequiredMixin, DetailView):
                 user=request.user,
                 content=content
             )
+            # Utiliser NotificationService pour les notifications de nouveau message dans une chatroom
+            if self.object.topic: # S'assurer que la chatroom est liée à un topic
+                # Notifier le créateur du topic si ce n'est pas l'utilisateur actuel
+                if self.object.topic.creator and self.object.topic.creator != request.user:
+                    NotificationService.create_notification(
+                        recipient=self.object.topic.creator,
+                        notification_type='FORUM_REPLY', # Utiliser un type spécifique si possible
+                        title=f"Nouvelle réponse dans le sujet « {self.object.topic.title} »",
+                        message=f"{request.user.username} a répondu dans la salle de discussion « {self.object.name} » liée à votre sujet.",
+                        related_object=self.object.topic,
+                        action_url=self.object.get_absolute_url() # Lien vers la chatroom/le message si possible
+                    )
+                # Tu pourrais aussi vouloir notifier d'autres participants de la chatroom si nécessaire
+                # for participant in self.object.participants.exclude(id=request.user.id).exclude(id=self.object.topic.creator.id):
+                #     NotificationService.create_notification(...)
+
         else:
             return HttpResponse(status=204)  # pas de contenu à créer
         
@@ -94,6 +126,7 @@ class ChatRoomDetailView(LoginRequiredMixin, DetailView):
         
         # sinon on redirige normalement
         return redirect('forum:chatroom-detail', pk=self.object.pk)
+
 class ChatRoomCreateView(LoginRequiredMixin, CreateView):
     model = ChatRoom
     fields = ['name', 'description']

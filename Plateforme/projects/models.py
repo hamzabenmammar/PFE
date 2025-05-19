@@ -49,6 +49,12 @@ class Project(models.Model):
 
 
 class ProjectMember(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'En attente'),
+        ('accepted', 'Accepté'),
+        ('rejected', 'Refusé'),
+    )
+    
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -65,6 +71,11 @@ class ProjectMember(models.Model):
         related_name='projects'
     )
     role = models.CharField(max_length=255)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

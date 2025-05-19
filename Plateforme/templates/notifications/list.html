@@ -1,8 +1,62 @@
-{% extends "base.html" %} {% load static %} {% block title %}Notifications{%endblock %}
- {% block extra_css %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
-{% endblock %} {% block content %}
-<h1>Notifications</h1>
-<div id="notificationList"></div>
+{% endblock %}
+
+{% block content %}
+<div class="notifications-container">
+  {% for notification in notifications %}
+    <div class="notification-card {% if not notification.read %}unread{% endif %}">
+      <!-- Pastille “non lue” -->
+      <div class="notification-status">
+        {% if not notification.read %}
+          <span class="dot"></span>
+        {% endif %}
+      </div>
+      <!-- Contenu principal -->
+      <div class="notification-content">
+        <h5>{{ notification.title }}</h5>
+        <p>{{ notification.message }}</p>
+
+        <!-- Footer : date + actions -->
+        <div class="notification-footer">
+          <small>{{ notification.created_at|date:"j M Y, H:i" }}</small>
+          <div class="footer-actions">
+            {% if notification.type == 'PROJECT_INVITE' and notification.project_id %}
+              <form method="post" action="{% url 'accounts:respond_project_invite' notification.project_id %}">
+                {% csrf_token %}
+                <button type="submit" name="response" value="accept" class="btn btn-link">Accepter</button>
+                <button type="submit" name="response" value="reject" class="btn btn-link">Refuser</button>
+              </form>
+            {% elif notification.type == 'PROJECT_JOIN_REQUEST' and notification.project_id and notification.sender_id %}
+              <form method="post" action="{% url 'projects:accept_member' notification.project_id notification.sender_id %}">
+                {% csrf_token %}
+                <button type="submit" name="response" value="accept" class="btn btn-link">Accepter</button>
+                <button type="submit" name="response" value="reject" class="btn btn-link">Refuser</button>
+              </form>
+            {% endif %}
+            {% if notification.read %}
+              <span class="text-muted">Lu</span>
+            {% else %}
+              <a href="{% url 'notifications:mark_read' notification.id %}">Marquer comme lu</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge de type -->
+      <span class="notification-badge">
+        {{ notification.type|default:"undefined" }}
+      </span>
+    </div>
+  {% empty %}
+    <p class="text-center text-muted">Aucune notification.</p>
+  {% endfor %}
+</div>
+
 <script src="{% static 'js/notifications.js' %}"></script>
 {% endblock %}

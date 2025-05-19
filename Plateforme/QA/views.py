@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Question
 from .forms import QuestionForm, AnswerForm
 from django.db.models import Q
+from django.contrib.auth import get_user_model
+from notifications.models import Notification
+from notifications.services import NotificationService
 
 def ask_question(request):
     query = request.GET.get('q')
@@ -30,6 +33,16 @@ def question_detail(request, pk):
             answer.author = request.user
             answer.question = question
             answer.save()
+            # NOTIFICATION à l'auteur de la question
+            if question.author != request.user:
+                NotificationService.create_notification(
+                    recipient=question.author,
+                    notification_type='QA_ANSWER',
+                    title="Nouvelle réponse à votre question",
+                    message=f"{request.user.username} a répondu à votre question « {question.title} ».",
+                    related_object=question,
+                    action_url=question.get_absolute_url()
+                )
             return redirect('QA:question_detail', pk=pk)
     else:
         form = AnswerForm()

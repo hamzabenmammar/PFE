@@ -9,6 +9,9 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Event, EventRegistration
 from .forms import EventForm, EventSearchForm
+from django.contrib.auth import get_user_model
+from notifications.models import Notification
+from notifications.services import NotificationService
 
 
 class EventListView(ListView):
@@ -98,9 +101,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         # Auto-approve events created by staff
         form.instance.is_approved = self.request.user.is_staff
         form.instance.created_by = self.request.user
-        
         response = super().form_valid(form)
-        
         if form.instance.is_approved:
             messages.success(self.request, _('Event created successfully!'))
         else:
@@ -108,7 +109,16 @@ class EventCreateView(LoginRequiredMixin, CreateView):
                 self.request, 
                 _('Event created successfully! It will be visible after admin approval.')
             )
-        
+        # NOTIFICATION à tous les utilisateurs actifs via le service
+        User = get_user_model()
+        for user in User.objects.filter(is_active=True):
+            NotificationService.create_notification(
+                recipient=user,
+                notification_type='SYSTEM', # Utilise un type SYSTEM pour l'instant, ou crée un type EVENT_CREATED si tu veux plus de granularité
+                title="Nouvel événement",
+                message=f"L'événement « {form.instance.title} » vient d'être publié.",
+                related_object=form.instance # Optionnel: lie la notification à l'objet Event créé
+            )
         return response
 
 
@@ -197,4 +207,5 @@ def unregister_from_event(request, pk):
     registration.delete()
     
     messages.success(request, _('You have unregistered from "{}".').format(event.title))
+    
     return redirect('events:event_detail', pk=pk)

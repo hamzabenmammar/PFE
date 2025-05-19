@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.contrib import messages
 from django.utils.translation import gettext as _
+from django.contrib.auth import get_user_model
+from notifications.services import NotificationService
 
 from .models import Institution
 from .forms import InstitutionFilterForm, InstitutionForm
@@ -78,7 +80,21 @@ class InstitutionCreateView(LoginRequiredMixin, CreateView):
             researcher_formset.save()
             project_formset.instance = self.object
             project_formset.save()
-            
+
+            # NOTIFICATION aux modérateurs lors de la création d'une institution
+            User = get_user_model()
+            moderators = User.objects.filter(is_staff=True)
+
+            for moderator in moderators:
+                NotificationService.create_notification(
+                    recipient=moderator,
+                    notification_type='INSTITUTION_PENDING_REVIEW', # Type spécifique
+                    title=f"Nouvelle institution à examiner",
+                    message=f"Une nouvelle institution '{form.instance.name}' a été créée par {self.request.user.username} et nécessite votre examen.",
+                    related_object=self.object, # Lier à l'institution créée
+                    # action_url=... # Ajouter un lien vers la page d'admin ou de modération si elle existe
+                )
+
             messages.success(self.request, _("The institution has been successfully added and will be reviewed by moderators."))
             return redirect(self.get_success_url())
         else:

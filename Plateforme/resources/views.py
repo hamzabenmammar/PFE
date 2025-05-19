@@ -1,4 +1,3 @@
-
 from django.http import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import ListView, DetailView
@@ -13,6 +12,8 @@ from .forms import ResourceForm
 
 # Import the correct model names from your models.py
 from .models import Document, NLPTool, Article, Thesis, Memoir, Course, Corpus, ResourceBase        
+from django.contrib.auth import get_user_model
+from notifications.models import Notification
 
 from django.db.models import Q
 
@@ -557,6 +558,14 @@ class ResourceCreateView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         resource = form.save()
         messages.success(self.request, f"Resource '{resource.title}' created successfully!")
+        # NOTIFICATION à tous les utilisateurs actifs
+        User = get_user_model()
+        for user in User.objects.filter(is_active=True):
+            Notification.objects.create(
+                recipient=user,
+                title="Nouvelle ressource",
+                message=f"La ressource « {resource.title} » a été ajoutée à la plateforme."
+            )
         return super().form_valid(form)
     
 class ResourceSearchView(ListView):

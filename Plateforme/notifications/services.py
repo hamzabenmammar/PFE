@@ -6,7 +6,7 @@ from .models import Notification
 
 class NotificationService:
     @staticmethod
-    def create_notification(recipient, notification_type, title, message, related_object=None):
+    def create_notification(recipient, notification_type, title, message, related_object=None, project_id=None, sender_id=None):
         """
         Crée une notification et l'envoie via WebSocket si possible
         
@@ -16,13 +16,17 @@ class NotificationService:
             title: Titre de la notification
             message: Message détaillé
             related_object: Objet associé à la notification (optionnel)
+            project_id: ID du projet concerné (pour les invitations ou demandes)
+            sender_id: ID de l'expéditeur (pour les invitations ou demandes)
         """
         # Créer l'objet notification
         notification = Notification(
             recipient=recipient,
             type=notification_type,
             title=title,
-            message=message
+            message=message,
+            project_id=project_id,
+            sender_id=sender_id
         )
         
         # Ajouter l'objet associé si fourni
@@ -43,6 +47,8 @@ class NotificationService:
             'title': notification.title,
             'message': notification.message,
             'created_at': notification.created_at.isoformat(),
+            'project_id': str(notification.project_id) if notification.project_id else None,
+            'sender_id': str(notification.sender_id) if notification.sender_id else None
         }
         
         try:
@@ -53,20 +59,67 @@ class NotificationService:
                     'notification': notification_data
                 }
             )
-        except:
+        except Exception as e:
             # Gérer le cas où le WebSocket n'est pas disponible
             # La notification est déjà sauvegardée en base de données
+            print(f"Erreur WebSocket: {e}")
             pass
         
         return notification
     
     @staticmethod
-    def notify_group(users, notification_type, title, message, related_object=None):
+    def create_project_invitation(recipient, project, sender):
+        """
+        Crée une notification d'invitation à rejoindre un projet
+        
+        Args:
+            recipient: Utilisateur invité
+            project: Projet auquel l'utilisateur est invité
+            sender: Utilisateur qui envoie l'invitation
+        """
+        title = "Invitation à rejoindre un projet"
+        message = f"Vous avez été invité à rejoindre le projet « {project.name} » par {sender.username}."
+        
+        return NotificationService.create_notification(
+            recipient=recipient,
+            notification_type='PROJECT_INVITATION',  # Assurez-vous que ce type existe dans votre modèle
+            title=title,
+            message=message,
+            related_object=project,
+            project_id=project.id,
+            sender_id=sender.id
+        )
+    
+    @staticmethod
+    def create_membership_request(recipient, project, sender):
+        """
+        Crée une notification de demande d'adhésion à un projet
+        
+        Args:
+            recipient: Responsable du projet (qui reçoit la demande)
+            project: Projet concerné
+            sender: Utilisateur qui demande à rejoindre
+        """
+        title = "Nouvelle demande d'adhésion"
+        message = f"{sender.username} souhaite rejoindre votre projet « {project.title} »."
+        
+        return NotificationService.create_notification(
+            recipient=recipient,
+            notification_type='MEMBERSHIP_REQUEST',  # Assurez-vous que ce type existe dans votre modèle
+            title=title,
+            message=message,
+            related_object=project,
+            project_id=project.id,
+            sender_id=sender.id
+        )
+    
+    @staticmethod
+    def notify_group(users, notification_type, title, message, related_object=None, project_id=None, sender_id=None):
         """Envoie une notification à un groupe d'utilisateurs"""
         notifications = []
         for user in users:
             notification = NotificationService.create_notification(
-                user, notification_type, title, message, related_object
+                user, notification_type, title, message, related_object, project_id, sender_id
             )
             notifications.append(notification)
         return notifications

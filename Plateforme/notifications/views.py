@@ -4,12 +4,21 @@ from django.http import JsonResponse
 from django.utils import timezone
 from .models import Notification
 from .services import NotificationService
+from django.contrib import messages
 
 @login_required
 def notification_list(request):
     """Vue pour afficher la liste des notifications"""
-    return render(request, 'notifications/list.html')
-
+    notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+    
+    # Ajouter du débogage si nécessaire
+    # for notif in notifications:
+    #     print(f"Notification: {notif.title}, Project ID: {notif.project_id}, Sender ID: {notif.sender_id}")
+    
+    return render(request, 'notifications/list.html', {
+        'notifications': notifications,
+        'user': request.user,  # Assurez-vous que l'utilisateur est explicitement passé
+    })
 @login_required
 def api_notification_list(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')[:20]
@@ -83,11 +92,20 @@ def api_notification_list_filtered(request):
     return JsonResponse({'notifications': data})
 
 @login_required
-def count_ajax(request):
-    count = Notification.objects.filter(recipient=request.user, read=False).count()
-    return JsonResponse({'count': count})
+def mark_all_read(request):
+    """Marque toutes les notifications non lues de l'utilisateur comme lues."""
+    request.user.notifications.filter(read=False).update(read=True)
+    messages.success(request, "Toutes les notifications ont été marquées comme lues.")
+    return redirect('notifications:list')
 
 @login_required
-def mark_all_read(request):
-    Notification.objects.filter(recipient=request.user, read=False).update(read=True)
-    return JsonResponse({'success': True})
+def mark_read(request, notification_id):
+    """Marque une notification spécifique comme lue et redirige vers la liste."""
+    notification = get_object_or_404(Notification, id=notification_id, recipient=request.user)
+    notification.read = True
+    notification.read_at = timezone.now()
+    notification.save()
+    messages.success(request, "Notification marquée comme lue.")
+    # Rediriger vers la page d'où la requête provenait, ou par défaut la liste
+    next_url = request.GET.get('next', request.META.get('HTTP_REFERER', redirect('notifications:list').url))
+    return redirect(next_url)

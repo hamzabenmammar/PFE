@@ -8,6 +8,7 @@ from projects.models import Project ,ProjectMember
 from django.contrib.auth import get_user_model
 from forum.models import Topic , ChatRoom
 from django.db.models.functions import TruncDate 
+from notifications.models import Notification
 
 User = get_user_model()
 
@@ -189,7 +190,7 @@ def admin_users(request):
     # Base queryset : tous les utilisateurs
     qs = User.objects.all().order_by('-date_joined')
     
-    # Filtrage “statut”
+    # Filtrage "statut"
     if filter_status == 'active':
         qs = qs.filter(is_active=True)
     elif filter_status == 'pending':
@@ -208,7 +209,7 @@ def admin_users(request):
             Q(last_name__icontains=search)
         )
     
-    # Nombre d’utilisateurs “en attente” pour l’en-tête
+    # Nombre d'utilisateurs "en attente" pour l'en-tête
     pending_users_count = User.objects.filter(
         is_active=False,
         is_email_verified=False
@@ -293,6 +294,13 @@ def admin_user_activate(request, user_id):
         change_date=timezone.now()
     )
     
+    # Notification d'activation
+    Notification.objects.create(
+        recipient=user,
+        title="Compte activé",
+        message="Votre compte a été activé par un administrateur. Vous pouvez maintenant accéder à toutes les fonctionnalités."
+    )
+    
     messages.success(request, f"L'utilisateur {user.full_name} a été activé avec succès.")
     
     # Rediriger vers la page précédente si disponible
@@ -329,6 +337,13 @@ def admin_user_block(request, user_id):
             changed_by=request.user,
             change_date=timezone.now(),
             reason=reason
+        )
+        
+        # Notification de blocage
+        Notification.objects.create(
+            recipient=user,
+            title="Compte bloqué",
+            message="Votre compte a été bloqué par un administrateur. Veuillez contacter le support si besoin."
         )
         
         messages.success(request, f"L'utilisateur {user.full_name} a été bloqué avec succès.")

@@ -23,14 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
     // Connect to the WebSocket
     connectNotificationSocket();
 
-    // Set up the notification badge
-    updateNotificationBadge();
+    // Set up the notification badge and dropdown after a small delay
+    setTimeout(() => {
+      // Set up the notification badge
+      updateNotificationBadge();
 
-    // Set up the dropdown if it exists
-    if (document.querySelector(".notification-dropdown")) {
-      console.log("Setting up notification dropdown...");
-      updateNotificationDropdown();
-    }
+      // Set up the dropdown if it exists
+      if (document.querySelector(".notification-dropdown")) {
+        console.log("Setting up notification dropdown...");
+        updateNotificationDropdown();
+      }
+    }, 100); // Délai de 100ms
 
     // Set up the full notification list if it exists
     if (document.getElementById("notificationList")) {
@@ -188,14 +191,18 @@ function updateNotificationBadge() {
       return response.json();
     })
     .then((data) => {
-      const badge = document.getElementById("notification-badge");
+      console.log("API /notifications/ajax/count/ response data:", data);
+      const badge = document.querySelector(".notification-badge");
       if (badge) {
+        console.log("Notification badge element found:", badge);
         if (data.count > 0) {
           badge.textContent = data.count;
           badge.style.display = "inline-block";
         } else {
           badge.style.display = "none";
         }
+      } else {
+        console.log("Notification badge element not found.");
       }
     })
     .catch((error) => {
