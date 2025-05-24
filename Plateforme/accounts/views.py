@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm  , CustomUserChangeForm, EmailVerificationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -13,17 +13,43 @@ from django.contrib import messages
 from projects.models import Project, ProjectMember
 from notifications.models import Notification
 from notifications.services import NotificationService
+from functools import wraps
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.utils.translation import gettext as _
 
+class LoginAndVerifiedRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not request.user.is_verified and not request.user.is_staff:
+            return redirect('awaiting_verification')
+        return super().dispatch(request, *args, **kwargs)
 
-
-
-
-
+def login_and_verified_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('account_login')
+        if not request.user.is_verified and not request.user.is_staff:
+            return redirect('awaiting_verification')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('accounts:email_verification_prompt')
+    success_url = reverse_lazy('email_verification_prompt')
     template_name = 'account/signup.html'
+
+    def get_form(self, form_class=None):
+        """
+        Retourne une instance du formulaire à utiliser dans cette vue.
+        Surcharge pour ajouter des attributs personnalisés si nécessaire.
+        """
+        form = super().get_form(form_class)
+        # Vous pouvez ajouter des attributs aux widgets du formulaire ici si nécessaire
+        return form
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -40,8 +66,13 @@ class SignUp(CreateView):
         )
 
         self.request.session['user_id_to_verify'] = str(user.pk)
-        return redirect('accounts:email_verification_prompt')  # nouvelle vue
-
+        return redirect('email_verification_prompt')
+        
+    def get_context_data(self, **kwargs):
+        """Ajoute des données supplémentaires au contexte si nécessaire."""
+        context = super().get_context_data(**kwargs)
+        # Vous pouvez ajouter des variables de contexte supplémentaires ici
+        return context
   
 class ProfileView(LoginRequiredMixin,DetailView):
     model = get_user_model()
@@ -53,7 +84,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
    template_name='account/profile_edit.html'
    context_object_name = 'user'
    def get_success_url(self):
-    return reverse_lazy('accounts:profile', kwargs={'pk': self.object.pk})
+    return reverse_lazy('profile', kwargs={'pk': self.object.pk})
 
 
 
@@ -101,16 +132,16 @@ class InviteToProjectView(LoginRequiredMixin, View):
             # Utiliser NotificationService pour envoyer l'invitation
             NotificationService.create_notification(
                 recipient=user_to_invite,
-                notification_type='PROJECT_INVITE', # Ou un type spécifique
+                notification_type='PROJECT_INVITE',
                 title="Invitation à rejoindre un projet",
                 message=f"Vous avez été invité à rejoindre le projet « {project.title} » par {request.user.full_name}.",
                 project_id=project.pk,
-                sender=request.user # Ajouter l'expéditeur
+                sender_id=request.user.id
             )
             messages.success(request, f"Invitation envoyée à {user_to_invite.full_name}.")
         else:
             messages.warning(request, f"{user_to_invite.full_name} est déjà membre ou a déjà une invitation en attente.")
-        return redirect('accounts:profile', pk=pk)
+        return redirect('profile', pk=pk)
 
 class RespondToProjectInviteView(LoginRequiredMixin, View):
     def post(self, request, project_id):
@@ -126,11 +157,11 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
             # Utiliser NotificationService pour la notification d'acceptation
             NotificationService.create_notification(
                 recipient=project.coordinator,
-                notification_type='PROJECT_INVITE_ACCEPTED', # Type spécifique pour l'acceptation
+                notification_type='PROJECT_INVITE_ACCEPTED',
                 title="Invitation acceptée",
                 message=f"{request.user.full_name} a accepté l'invitation à rejoindre le projet « {project.title} ».",
                 project_id=project.pk,
-                sender=request.user # L'utilisateur qui accepte est l'expéditeur ici
+                sender_id=request.user.id
             )
             messages.success(request, f"Vous avez rejoint le projet « {project.title} ».")
         elif response == 'reject':
@@ -139,13 +170,26 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
             # Utiliser NotificationService pour la notification de refus
             NotificationService.create_notification(
                 recipient=project.coordinator,
-                notification_type='PROJECT_INVITE_REJECTED', # Type spécifique pour le refus
+                notification_type='PROJECT_INVITE_REJECTED',
                 title="Invitation refusée",
                 message=f"{request.user.full_name} a refusé l'invitation à rejoindre le projet « {project.title} ».",
                 project_id=project.pk,
-                sender=request.user # L'utilisateur qui refuse est l'expéditeur ici
+                sender_id=request.user.id
             )
             messages.info(request, f"Vous avez refusé l'invitation.")
         return redirect('projects:project_detail', pk=project_id)
+
+def awaiting_verification_view(request):
+    return render(request, 'awaiting_verification.html')
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        logout(request)
+        user.delete()
+        messages.success(request, _('Votre compte a été supprimé avec succès.'))
+        return redirect('pages:home')
+    return render(request, 'accounts/delete_account.html')
 
 

@@ -1,184 +1,939 @@
-{% extends "base.html" %}
-{% load static %}
-
+{% extends "base.html" %} {% load static %} {% load i18n %} 
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+<style>
+  /* Styles supplémentaires pour améliorer l'apparence et la responsivité */
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #3498db;
+    --light-bg: #f8f9fa;
+    --dark-bg: #343a40;
+    --text-color: #333;
+    --light-text: #f8f9fa;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
 
-{% block content %}
+  /* Bannière de bienvenue améliorée */
+  .welcome-banner {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: var(--light-text);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .welcome-banner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url("{% static 'images/pattern.png' %}") repeat;
+    opacity: 0.1;
+    z-index: 1;
+  }
+
+  .welcome-text {
+    flex: 1;
+    z-index: 2;
+  }
+
+  .welcome-banner h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .welcome-banner p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+
+  .welcome-banner img {
+    max-width: 200px;
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+    transform: scale(1.1);
+    transition: var(--transition);
+  }
+
+  .welcome-banner img:hover {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  .welcome-banner .btn-primary {
+    background-color: var(--accent-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: var(--transition);
+  }
+
+  .welcome-banner .btn-primary:hover {
+    background-color: #3498db;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Cartes d'action améliorées */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .action-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    text-decoration: none;
+    color: var(--text-color);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: var(--secondary-color);
+  }
+
+  .action-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: var(--light-bg);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+  }
+
+  .action-card:hover .action-icon {
+    background: var(--secondary-color);
+    color: white;
+  }
+
+  .action-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  /* Statistiques améliorées */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    border-top: 4px solid var(--secondary-color);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-title {
+    font-size: 1rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Sections de contenu améliorées */
+  .dashboard-section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+  .view-all {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+  }
+
+  .view-all:hover {
+    color: var(--primary-color);
+  }
+
+  .view-all::after {
+    content: "→";
+    margin-left: 5px;
+    transition: var(--transition);
+  }
+
+  .view-all:hover::after {
+    transform: translateX(3px);
+  }
+
+  /* Grille de ressources améliorée */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .resource-card {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    background-color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .resource-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+
+  .resource-card-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .resource-title {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .resource-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .resource-title a:hover {
+    color: var(--secondary-color);
+  }
+
+  .resource-content {
+    margin-bottom: 1rem;
+    color: #666;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+
+  .resource-meta {
+    font-size: 0.9rem;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .resource-meta-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .resource-meta i {
+    margin-right: 5px;
+  }
+
+  /* Section événements améliorée */
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .event-card-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .event-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+  }
+
+  .event-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--secondary-color);
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 70px;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+  }
+
+  .event-day {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .event-month {
+    font-size: 1rem;
+  }
+
+  .event-details {
+    flex: 1;
+  }
+
+  .event-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+
+  .event-location {
+    margin-bottom: 0.75rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .resource-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    padding: 0.25rem 0.75rem;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  /* Section communauté améliorée */
+  .community-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .community-col h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+  }
+
+  .member-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+  }
+
+  .member-card:hover {
+    background-color: #f8f9fa;
+  }
+
+  .member-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    overflow: hidden;
+  }
+
+  .member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .member-info {
+    flex: 1;
+  }
+
+  .member-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .member-role {
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .discussion-card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+  }
+
+  .discussion-card:hover {
+    background-color: #f8f9fa;
+  }
+
+  .discussion-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .discussion-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .discussion-title a:hover {
+    color: var(--secondary-color);
+  }
+
+  .discussion-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.75rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .welcome-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .welcome-banner img {
+      margin-top: 1.5rem;
+      max-width: 150px;
+    }
+
+    .welcome-banner h1 {
+      font-size: 2rem;
+    }
+
+    .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .community-section {
+      grid-template-columns: 1fr;
+    }
+
+    .event-card {
+      flex-direction: column;
+    }
+
+    .event-date {
+      flex-direction: row;
+      width: 100%;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .stats-container {
+      grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+      grid-template-columns: 1fr;
+    }
+
+    .welcome-banner h1 {
+      font-size: 1.75rem;
+    }
+  }
+
+  /* Styles pour la section des ressources les plus vues */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .resource-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .resource-type-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1;
+  }
+
+  .resource-content {
+    padding: 1.5rem;
+  }
+
+  .resource-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .resource-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .resource-title a:hover {
+    color: var(--secondary-color);
+  }
+
+  .resource-description {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resource-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.875rem;
+  }
+
+  .meta-item i {
+    color: var(--primary-color);
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    color: #adb5bd;
+    margin-bottom: 1rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .resources-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .resource-content {
+      padding: 1rem;
+    }
+
+    .resource-title {
+      font-size: 1.1rem;
+    }
+
+    .resource-type-badge {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
 <div class="welcome-banner">
-    <div class="welcome-text">
-        <h1>Welcome to Arabic NLP Platform</h1>
-        <p>Explore resources, tools, and corpus for Arabic Natural Language Processing. Collaborate with researchers and developers on innovative projects.</p>
-        <a href="{% url 'resources:list' %}" class="btn btn-primary">Explore Resources</a>
-    </div>
-    <img src="{% static 'images/logo.png' %}" alt="Arabic NLP illustration" />
+  <div class="welcome-text">
+    <h1>{% trans "Welcome to Arabic NLP Platform" %}</h1>
+    <p>
+      {% trans "Explore resources, tools, and corpus for Arabic Natural Language Processing. Collaborate with researchers and developers on innovative projects." %}
+    </p>
+    <a href="{% url 'resources:list' %}" class="btn btn-primary">
+      {% trans "Explore Resources" %}
+    </a>
+  </div>
+  <img src="{% static 'images/logo.png' %}" alt="Arabic NLP illustration" />
 </div>
 
 <div class="quick-actions">
-    <a href="{% url 'resources:corpus_list' %}" class="action-card">
-        <div class="action-icon">📊</div>
-        <h3 class="action-title">Browse Corpus</h3>
-    </a>
-    <a href="{% url 'resources:tool_list' %}" class="action-card">
-        <div class="action-icon">🔧</div>
-        <h3 class="action-title">Use Tools</h3>
-    </a>
-    <a href="{% url 'projects:project_new' %}" class="action-card">
-        <div class="action-icon">📝</div>
-        <h3 class="action-title">Submit Project</h3>
-    </a>
-    <a href="{% url 'forum:topic-list' %}" class="action-card">
-        <div class="action-icon">👥</div>
-        <h3 class="action-title">Join Community</h3>
-    </a>
+  <a href="{% url 'resources:corpus_list' %}" class="action-card">
+    <div class="action-icon">📊</div>
+    <h3 class="action-title">{% trans "Browse Corpus" %}</h3>
+  </a>
+  <a href="{% url 'resources:tool_list' %}" class="action-card">
+    <div class="action-icon">🔧</div>
+    <h3 class="action-title">{% trans "Use Tools" %}</h3>
+  </a>
+  <a href="{% url 'projects:project_new' %}" class="action-card">
+    <div class="action-icon">📝</div>
+    <h3 class="action-title">{% trans "Submit Project" %}</h3>
+  </a>
+  <a href="{% url 'forum:topic-list' %}" class="action-card">
+    <div class="action-icon">👥</div>
+    <h3 class="action-title">{% trans "Join Community" %}</h3>
+  </a>
 </div>
 
 <div class="stats-container">
-    <div class="stat-card">
-        <div class="stat-number">{{ corpus_count }}</div>
-        <div class="stat-title">Available Corpus</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">{{ tools_count }}</div>
-        <div class="stat-title">NLP Tools</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">{{ projects_count }}</div>
-        <div class="stat-title">Active Projects</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">{{ members_count }}+</div>
-        <div class="stat-title">Community Members</div>
-    </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ corpus_count }}</div>
+    <div class="stat-title">{% trans "Available Corpus" %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ tools_count }}</div>
+    <div class="stat-title">{% trans "NLP Tools" %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ projects_count }}</div>
+    <div class="stat-title">{% trans "Active Projects" %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">{{ members_count }}+</div>
+    <div class="stat-title">{% trans "Community Members" %}</div>
+  </div>
 </div>
 
+<!-- Section Populaire -->
 <div class="dashboard-section">
-    <div class="section-header">
-        <h2 class="section-title">News</h2>
-        <a href="{% url 'pages:home' %}" class="view-all">View All</a>
-    </div>
-    <div class="resources-grid">
-        {% for news_item in latest_news %}
-        <div class="resource-card">
-            <h3 class="resource-title">{{ news_item.title }}</h3>
-            <div class="resource-tags">
-                {% for tag in news_item.tags.all %}
-                <span class="tag">{{ tag.name }}</span>
-                {% endfor %}
-            </div>
-            <p>{{ news_item.summary }}</p>
-            <div class="resource-meta">{{ news_item.published_date|date:"d M Y" }}</div>
+  <div class="section-header">
+    <h2 class="section-title">{% trans "Actualités populaires" %}</h2>
+    <a href="{% url 'QA:feed' %}" class="view-all">{% trans "Voir tout" %}</a>
+  </div>
+  <div class="resources-grid">
+    {% for post in popular_posts %}
+    <div class="resource-card">
+      {% if post.image %}
+      <img
+        src="{{ post.image.url }}"
+        alt="{{ post.content|truncatechars:50 }}"
+      />
+      {% endif %}
+      <div class="resource-card-content">
+        <h3 class="resource-title">
+          <a href="{% url 'QA:post_detail' post.slug %}"
+            >{{ post.content|truncatechars:10 }}</a
+          >
+        </h3>
+        <p class="resource-content">{{ post.content|truncatechars:100 }}</p>
+        <div class="resource-meta">
+          <div class="resource-meta-item">
+            <i class="fas fa-heart text-danger"></i> {{ post.total_likes }}
+          </div>
+          <div class="resource-meta-item">
+            <i class="fas fa-user"></i> {{ post.author.full_name }}
+          </div>
+          <div class="resource-meta-item">
+            <i class="fas fa-clock"></i> {{ post.created_at|timesince }}
+          </div>
         </div>
-        {% empty %}
-        <p>No recent news available.</p>
-        {% endfor %}
+      </div>
     </div>
+    {% empty %}
+    <div class="empty-message">
+      <p>{% trans "Aucun post populaire pour le moment." %}</p>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
+
+
+<!-- Nouvelle Section : Ressources les plus vues -->
 <div class="dashboard-section">
-    <div class="section-header">
-        <h2 class="section-title">Popular Resources</h2>
-        <a href="{% url 'resources:list' %}" class="view-all">View All</a>
-    </div>
-    <div class="resources-grid">
-        {% for resource in popular_resources %}
-        <div class="resource-card">
-            <h3 class="resource-title">{{ resource.title }}</h3>
-            <div class="resource-tags">
-                {% for tag in resource.tags.all %}
-                <span class="tag">{{ tag.name }}</span>
-                {% endfor %}
-            </div>
-            <p>{{ resource.description|truncatewords:20 }}</p>
-            <div class="resource-meta">{{ resource.stats }}</div>
+  <div class="section-header">
+    <h2 class="section-title">{% trans "Ressources les plus vues" %}</h2>
+    <a href="{% url 'resources:list' %}" class="view-all"
+      >{% trans "Voir tout" %}</a
+    >
+  </div>
+  <div class="resources-grid">
+    {% for resource in most_viewed_resources %}
+    <div class="resource-card">
+      <div class="resource-type-badge">
+        <i
+          class="bi {% if resource.resource_type_display == 'Corpus' %}bi-database {% elif resource.resource_type_display == 'Outil NLP' %}bi-tools {% elif resource.resource_type_display == 'Article' %}bi-file-text {% elif resource.resource_type_display == 'Thèse' %}bi-journal-richtext {% elif resource.resource_type_display == 'Mémoire' %}bi-book {% else %}bi-mortarboard{% endif %} me-2"
+        ></i>
+        {{ resource.resource_type_display }}
+      </div>
+      <div class="resource-content">
+        <h3 class="resource-title">
+          <a href="{{ resource.get_absolute_url }}"
+            >{{ resource.title|truncatechars:50 }}</a
+          >
+        </h3>
+        <p class="resource-description">
+          {{ resource.description|truncatechars:100 }}
+        </p>
+        <div class="resource-meta">
+          <div class="meta-item">
+            <i class="bi bi-eye-fill"></i>
+            <span>{{ resource.views_count }} vues</span>
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-person-circle"></i>
+            <span>{{ resource.author.full_name }}</span>
+          </div>
+          <div class="meta-item">
+            <i class="bi bi-clock"></i>
+            <span>{{ resource.creation_date|timesince }}</span>
+          </div>
         </div>
-        {% empty %}
-        <p>No popular resources available.</p>
-        {% endfor %}
+      </div>
     </div>
+    {% empty %}
+    <div class="empty-state">
+      <i class="bi bi-archive empty-icon"></i>
+      <p>{% trans "Aucune ressource populaire pour le moment." %}</p>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
+<!-- Section Événements -->
 <div class="dashboard-section">
-    <div class="section-header">
-        <h2 class="section-title">Upcoming Events</h2>
-        <a href="{% url 'events:event_list' %}" class="view-all">View All</a>
-    </div>
-    <div class="events-list">
-        {% for event in events|slice:":3" %}
-        <a href="{% url 'events:event_detail' event.id %}" class="event-card-link">
-            <div class="event-card">
-                <div class="event-date">
-                    <div class="event-day">{{ event.start_date|date:"d" }}</div>
-                    <div class="event-month">{{ event.start_date|date:"M"|upper }}</div>
-                </div>
-                <div class="event-details">
-                    <h3 class="event-title">{{ event.title }}</h3>
-                    <div class="event-location">
-                        {% if event.is_online %}
-                        🌍 Online • {{ event.start_time|date:"H:i" }}-{{ event.end_time|date:"H:i" }} {{ event.timezone }}
-                        {% else %}
-                        📍 {{ event.location }} • {{ event.start_date|date:"d M Y" }}{% if event.end_date %} - {{ event.end_date|date:"d M Y" }}{% endif %}
-                        {% endif %}
-                    </div>
-                    <div class="resource-tags">
-                        {% for tag in event.tags.all %}
-                        <span class="tag">{{ tag.name }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </a>
-        {% empty %}
-        <p>No upcoming events.</p>
-        {% endfor %}
-    </div>
-</div>
-    
-
-<div class="dashboard-section">
-    <div class="section-header">
-        <h2 class="section-title">Our Community</h2>
-        <a href="{% url 'pages:home' %}" class="view-all">View All</a>
-    </div>
-    <div class="community-section">
-        <div class="community-col">
-            <h3>New Members</h3>
-            {% for member in new_members %}
-            <div class="member-card">
-                <div class="member-avatar">
-                    {% if member.profile.avatar %}
-                    <img src="{{ member.profile.avatar.url }}" alt="{{ member.get_full_name }}" />
-                    {% else %}
-                    {{ member.get_initials }}
-                    {% endif %}
-                </div>
-                <div class="member-info">
-                    <div class="member-name">{{ member.get_full_name }}</div>
-                    <div class="member-role">{{ member.profile.position }}{% if member.profile.organization %}, {{ member.profile.organization }}{% endif %}</div>
-                </div>
-            </div>
-            {% empty %}
-            <p>No new members to display.</p>
+  <div class="section-header">
+    <h2 class="section-title">{% trans "Upcoming Events" %}</h2>
+    <a href="{% url 'events:event_list' %}" class="view-all"
+      >{% trans "View All" %}</a
+    >
+  </div>
+  <div class="events-list">
+    {% for event in events|slice:":3" %}
+    <a href="{% url 'events:event_detail' event.id %}" class="event-card-link">
+      <div class="event-card">
+        <div class="event-date">
+          <div class="event-day">{{ event.start_date|date:"d" }}</div>
+          <div class="event-month">{{ event.start_date|date:"M"|upper }}</div>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">{{ event.title }}</h3>
+          <div class="event-location">
+            {% if event.is_online %}
+            <i class="fas fa-globe"></i> {% trans "Online" %} •
+            <i class="fas fa-clock"></i> {{ event.start_time|date:"H:i" }}-{{
+            event.end_time|date:"H:i" }} {{ event.timezone }} {% else %}
+            <i class="fas fa-map-marker-alt"></i> {{ event.location }} •
+            <i class="fas fa-calendar"></i> {{ event.start_date|date:"d M Y" }}
+            {% if event.end_date %} - {{ event.end_date|date:"d M Y" }}{% endif %} {% endif %}
+          </div>
+          <div class="resource-tags">
+            {% for tag in event.tags.all %}
+            <span class="tag">{{ tag.name }}</span>
             {% endfor %}
+          </div>
         </div>
-        <div class="community-col">
-            <h3>Recent Discussions</h3>
-            {% for discussion in recent_discussions %}
-            <div class="discussion-card">
-                <h4 class="discussion-title">
-                    <a href="{% url 'forum:chatroom-detail' discussion.id %}">{{ discussion.title }}</a>
-                </h4>
-                <p>{{ discussion.content|truncatewords:15 }}</p>
-                <div class="discussion-meta">
-                    <div>{{ discussion.reply_count }} replies</div>
-                    <div>{{ discussion.created_at|timesince }} ago</div>
-                </div>
-            </div>
-            {% empty %}
-            <p>No recent discussions.</p>
-            {% endfor %}
-        </div>
+      </div>
+    </a>
+    {% empty %}
+    <div class="empty-message">
+      <p>{% trans "No upcoming events." %}</p>
     </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Section Communauté -->
+<div class="dashboard-section">
+  <div class="section-header">
+    <h2 class="section-title">{% trans "Our Community" %}</h2>
+    <a href="{% url 'pages:home' %}" class="view-all">{% trans "View All" %}</a>
+  </div>
+  <div class="community-section">
+    <div class="community-col">
+      <h3>{% trans "New Members" %}</h3>
+      {% for member in new_members %}
+      <div class="member-card">
+        <div class="member-avatar">
+          {% if member.profile.avatar %}
+          <img
+            src="{{ member.profile.avatar.url }}"
+            alt="{{ member.get_full_name }}"
+          />
+          {% else %} {{ member.get_initials }} {% endif %}
+        </div>
+        <div class="member-info">
+          <div class="member-name">{{ member.get_full_name }}</div>
+          <div class="member-role">
+            {{ member.profile.position }}{% if member.profile.organization %},
+            {{ member.profile.organization }}{% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="empty-message">
+        <p>{% trans "No new members to display." %}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="community-col">
+      <h3>{% trans "Recent Discussions" %}</h3>
+      {% for discussion in recent_discussions %}
+      <div class="discussion-card">
+        <h4 class="discussion-title">
+          <a href="{% url 'forum:chatroom-detail' discussion.id %}"
+            >{{ discussion.title }}</a
+          >
+        </h4>
+        <p>{{ discussion.content|truncatewords:15 }}</p>
+        <div class="discussion-meta">
+          <div>
+            <i class="fas fa-comments"></i> {{ discussion.reply_count }} {%
+            trans "replies" %}
+          </div>
+          <div>
+            <i class="fas fa-clock"></i> {{ discussion.created_at|timesince }}
+            {% trans "ago" %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="empty-message">
+        <p>{% trans "No recent discussions." %}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 {% endblock %}

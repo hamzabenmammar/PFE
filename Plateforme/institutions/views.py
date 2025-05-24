@@ -7,9 +7,12 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from notifications.services import NotificationService
+import logging
 
 from .models import Institution
 from .forms import InstitutionFilterForm, InstitutionForm
+
+logger = logging.getLogger(__name__)
 
 
 class InstitutionListView(ListView):
@@ -68,19 +71,19 @@ class InstitutionCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         return context
     
+    def post(self, request, *args, **kwargs):
+        logger.info("POST request received")
+        logger.info(f"POST data: {request.POST}")
+        logger.info(f"FILES: {request.FILES}")
+        return super().post(request, *args, **kwargs)
+    
     def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        context = self.get_context_data()
-        researcher_formset = context['researcher_formset']
-        project_formset = context['project_formset']
-        
-        if researcher_formset.is_valid() and project_formset.is_valid():
+        try:
+            logger.info("Form is valid")
+            form.instance.created_by = self.request.user
             self.object = form.save()
-            researcher_formset.instance = self.object
-            researcher_formset.save()
-            project_formset.instance = self.object
-            project_formset.save()
-
+            logger.info(f"Institution created with ID: {self.object.id}")
+            
             # NOTIFICATION aux modérateurs lors de la création d'une institution
             User = get_user_model()
             moderators = User.objects.filter(is_staff=True)
@@ -88,17 +91,23 @@ class InstitutionCreateView(LoginRequiredMixin, CreateView):
             for moderator in moderators:
                 NotificationService.create_notification(
                     recipient=moderator,
-                    notification_type='INSTITUTION_PENDING_REVIEW', # Type spécifique
+                    notification_type='INSTITUTION_PENDING_REVIEW',
                     title=f"Nouvelle institution à examiner",
                     message=f"Une nouvelle institution '{form.instance.name}' a été créée par {self.request.user.username} et nécessite votre examen.",
-                    related_object=self.object, # Lier à l'institution créée
-                    # action_url=... # Ajouter un lien vers la page d'admin ou de modération si elle existe
+                    related_object=self.object,
                 )
 
-            messages.success(self.request, _("The institution has been successfully added and will be reviewed by moderators."))
+            messages.success(self.request, _("L'institution a été ajoutée avec succès et sera examinée par les modérateurs."))
             return redirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        except Exception as e:
+            logger.error(f"Error creating institution: {str(e)}")
+            messages.error(self.request, f"Une erreur s'est produite lors de la création de l'institution : {str(e)}")
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        logger.error(f"Form is invalid: {form.errors}")
+        messages.error(self.request, _("Veuillez corriger les erreurs dans le formulaire."))
+        return super().form_invalid(form)
     
     def get_success_url(self):
         return reverse_lazy('institutions:institution_list')
@@ -107,7 +116,7 @@ class InstitutionCreateView(LoginRequiredMixin, CreateView):
 class InstitutionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Institution
     form_class = InstitutionForm
-    template_name = 'institution_form.html'
+    template_name = 'institutions/institution_form.html'
     
     def test_func(self):
         institution = self.get_object()
@@ -118,21 +127,20 @@ class InstitutionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         return context
     
     def form_valid(self, form):
-        context = self.get_context_data()
-        researcher_formset = context['researcher_formset']
-        project_formset = context['project_formset']
-        
-        if researcher_formset.is_valid() and project_formset.is_valid():
+        try:
             self.object = form.save()
-            researcher_formset.instance = self.object
-            researcher_formset.save()
-            project_formset.instance = self.object
-            project_formset.save()
-            
-            messages.success(self.request, _("The institution has been successfully updated."))
+            logger.info(f"Institution mise à jour avec succès - ID: {self.object.id}")
+            messages.success(self.request, "L'institution a été mise à jour avec succès.")
             return redirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
+        except Exception as e:
+            logger.error(f"Erreur lors de la mise à jour de l'institution: {str(e)}")
+            messages.error(self.request, f"Une erreur s'est produite lors de la mise à jour de l'institution : {str(e)}")
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        logger.error(f"Formulaire d'édition invalide - Erreurs: {form.errors}")
+        messages.error(self.request, "Veuillez corriger les erreurs dans le formulaire.")
+        return super().form_invalid(form)
     
     def get_success_url(self):
         return reverse_lazy('institutions:institution_detail', kwargs={'pk': self.object.pk})
@@ -140,9 +148,14 @@ class InstitutionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
 class InstitutionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Institution
-    template_name = 'institution_confirm_delete.html'
+    template_name = 'institutions/institution_confirm_delete.html'
     success_url = reverse_lazy('institutions:institution_list')
     
     def test_func(self):
         institution = self.get_object()
         return self.request.user == institution.created_by or self.request.user.is_staff
+        
+    def delete(self, request, *args, **kwargs):
+        logger.info(f"Suppression de l'institution - ID: {self.get_object().id}")
+        messages.success(self.request, "L'institution a été supprimée avec succès.")
+        return super().delete(request, *args, **kwargs)

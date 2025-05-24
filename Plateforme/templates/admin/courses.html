@@ -1,5 +1,4 @@
 {% extends 'base_admin.html' %}
-
 {% block title %}Gestion des cours{% endblock %}
 
 {% block extra_css %}
@@ -352,6 +351,27 @@
     color: var(--gray-800);
   }
 
+  .stats-trend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .stats-trend.trend-up {
+    color: var(--success-color);
+  }
+
+  .stats-trend.trend-down {
+    color: var(--danger-color);
+  }
+
+  .stats-trend.trend-neutral {
+    color: var(--gray-500);
+  }
+
   .pagination {
     display: flex;
     justify-content: flex-end;
@@ -461,7 +481,7 @@
         </svg>
         Exporter CSV
       </a>
-      <a href="#" class="btn btn-primary">
+      <a href="{%url 'resources:course-create'%}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
@@ -476,16 +496,11 @@
       <div class="stats-value">{{ courses.count }}</div>
     </div>
     <div class="stats-card">
-      <div class="stats-title">Cours publiés</div>
-      <div class="stats-value">{{ courses.published_count|default:"--" }}</div>
-    </div>
-    <div class="stats-card">
-      <div class="stats-title">Niveaux disponibles</div>
-      <div class="stats-value">{{ courses.distinct_levels|default:"--" }}</div>
-    </div>
-    <div class="stats-card">
       <div class="stats-title">Créés ce mois</div>
-      <div class="stats-value">{{ courses.created_this_month|default:"--" }}</div>
+      <div class="stats-value">{{ courses_this_month_count }}</div>
+      <div class="stats-trend {{ courses_growth_class }}">
+        <span>{% if courses_growth > 0 %}+{% endif %}{{ courses_growth }}% vs mois dernier</span>
+      </div>
     </div>
   </div>
 
@@ -503,14 +518,6 @@
           <option value="intermediate" {% if filter_level == 'intermediate' %}selected{% endif %}>Intermédiaire</option>
           <option value="advanced" {% if filter_level == 'advanced' %}selected{% endif %}>Avancé</option>
           <option value="expert" {% if filter_level == 'expert' %}selected{% endif %}>Expert</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="is_public">Visibilité</label>
-        <select id="is_public" name="is_public" class="form-control">
-          <option value="">Tous</option>
-          <option value="true" {% if filter_is_public == 'true' %}selected{% endif %}>Public</option>
-          <option value="false" {% if filter_is_public == 'false' %}selected{% endif %}>Privé</option>
         </select>
       </div>
       <div class="form-group">
@@ -532,7 +539,6 @@
           <th style="width: 40%;">Titre</th>
           <th>Niveau</th>
           <th>Date de création</th>
-          <th>Statut</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -541,16 +547,7 @@
         <tr>
           <td>
             <div class="course-title">
-              {% if course.is_public %}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style="color: var(--success-color);">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-              </svg>
-              {% else %}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style="color: var(--gray-400);">
-                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-              </svg>
-              {% endif %}
-              <a href="#">{{ course.title }}</a>
+              <a href="{%url 'resources:course_detail'  course.id%} ">{{ course.title }}</a>
             </div>
           </td>
           <td>
@@ -568,32 +565,19 @@
           </td>
           <td>{{ course.creation_date|date:"d M Y" }} <span style="color: var(--gray-400); font-size: 0.875em;">{{ course.creation_date|date:"H:i" }}</span></td>
           <td>
-            {% if course.status == 'published' %}
-              <span class="badge badge-success">Publié</span>
-            {% elif course.status == 'draft' %}
-              <span class="badge badge-secondary">Brouillon</span>
-            {% elif course.status == 'under_review' %}
-              <span class="badge badge-warning">En revue</span>
-            {% elif course.status == 'archived' %}
-              <span class="badge badge-danger">Archivé</span>
-            {% else %}
-              {{ course.status }}
-            {% endif %}
-          </td>
-          <td>
             <div class="course-actions">
-              <a href="#" class="action-btn" title="Modifier">
+              <a href="{%url 'resources:resource-update' type='course' pk=course.id%} " class="action-btn" title="Modifier">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
               </a>
-              <a href="#" class="action-btn" title="Aperçu">
+              <a href="{% url 'resources:course_detail'  course.id %}" class="action-btn" title="Aperçu">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </a>
-              <a href="#" class="action-btn" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours?');">
+              <a href="{%url 'resources:resource-delete' type='course' pk=course.id%}" class="action-btn" title="Supprimer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
@@ -615,7 +599,7 @@
       <p class="empty-state-description">
         Il n'y a pas de cours correspondant à vos critères de recherche. Essayez de modifier vos filtres ou créez un nouveau cours.
       </p>
-      <a href="#" class="btn btn-primary">
+      <a href="{%url 'resources:course-create' %}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>

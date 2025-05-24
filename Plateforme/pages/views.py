@@ -6,9 +6,16 @@ from events.models import Event
 from resources.models import Corpus, NLPTool ,Document , Course
 from projects.models import Project ,ProjectMember
 from django.contrib.auth import get_user_model
-from forum.models import Topic , ChatRoom
-from django.db.models.functions import TruncDate 
+from forum.models import Topic , ChatRoom, Message
+from django.db.models.functions import TruncDate, TruncMonth
 from notifications.models import Notification
+from QA.models import Post , Question
+from django.db.models import Count, Sum
+import datetime
+import json
+from datetime import timedelta
+from django.utils import timezone
+from django.core.paginator import Paginator
 
 User = get_user_model()
 
@@ -21,7 +28,7 @@ class HomePageView(TemplateView):
         # Événements à venir
         context['events'] = Event.objects.filter(
             start_date__gte=now()
-        ).order_by('start_date')[:5]
+        ).order_by('start_date')[:3]
         
         # Compteurs pour les statistiques
         context['corpus_count'] = Corpus.objects.count()
@@ -29,19 +36,53 @@ class HomePageView(TemplateView):
         context['projects_count'] = Project.objects.count()
         context['members_count'] = User.objects.count()
         
-      
+        # Posts populaires (les plus likés)
+        context['popular_posts'] = Post.objects.annotate(
+            total_likes=Count('likes')
+        ).order_by('-total_likes', '-created_at')[:3]
 
-            
-        # Utilisez last_updated au lieu de views pour les ressources populaires
-        context['popular_resources'] = NLPTool.objects.order_by('-last_updated')[:3]
-        
+
+
+        # Ressources les plus vues
+        # Récupérer les ressources de chaque type, les combiner et les trier
+        most_viewed_resources = []
+
+        # Récupérer les 5 corpus les plus vus
+        most_viewed_corpus = Corpus.objects.order_by('-views_count')[:3]
+        for resource in most_viewed_corpus:
+             resource.resource_type_display = "Corpus"
+             most_viewed_resources.append(resource)
+
+        # Récupérer les 5 outils NLP les plus vus
+        most_viewed_tools = NLPTool.objects.order_by('-views_count')[:3]
+        for resource in most_viewed_tools:
+             resource.resource_type_display = "Outil NLP"
+             most_viewed_resources.append(resource)
+
+        # Récupérer les 5 documents les plus vus
+        most_viewed_documents = Document.objects.order_by('-views_count')[:3]
+        for resource in most_viewed_documents:
+             resource.resource_type_display = resource.get_document_type_display()
+             most_viewed_resources.append(resource)
+
+        # Récupérer les 5 cours les plus vus
+        most_viewed_courses = Course.objects.order_by('-views_count')[:3]
+        for resource in most_viewed_courses:
+             resource.resource_type_display = "Cours"
+             most_viewed_resources.append(resource)
+
+        # Trier toutes les ressources les plus vues par nombre de vues (décroissant) et prendre les 5 premières au total
+        context['most_viewed_resources'] = sorted(most_viewed_resources, key=lambda x: x.views_count, reverse=True)[:3]
+
+        # Nouveaux membres
         try:
-            context['new_members'] = User.objects.order_by('-date_joined')[:5]
+            context['new_members'] = User.objects.order_by('-date_joined')[:3]
         except:
             context['new_members'] = []
-            
+
+        # Discussions récentes : Utilisation de ChatRoom.objects comme le nom d'URL l'indique
         try:
-            context['recent_discussions'] = Topic.objects.order_by('-creation_date')[:5]
+            context['recent_discussions'] = Topic.objects.order_by('-created_at')[:3]
         except:
             context['recent_discussions'] = []
         
@@ -75,8 +116,8 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def admin_dashboard(request):
     """Main admin dashboard view"""
-    # Get statistics for the dashboard
     today = timezone.now().date()
+    last_year = today - datetime.timedelta(days=365) # Pour les 12 derniers mois
     
     # Recent users
     recent_users = User.objects.filter(
@@ -158,6 +199,53 @@ def admin_dashboard(request):
     else:
         posts_growth = 100 if posts_this_month > 0 else 0
     
+    # Données pour le graphique d'activité récente (nouveaux utilisateurs et ressources par mois)
+    # Nouveaux utilisateurs par mois
+    monthly_users = User.objects.filter(date_joined__date__gte=last_year).annotate(month=TruncMonth('date_joined')).values('month').annotate(count=Count('id')).order_by('month')
+
+    # Nouvelles ressources (Publications, Corpus, Outils) par mois
+    monthly_publications = Document.objects.filter(creation_date__date__gte=last_year).annotate(month=TruncMonth('creation_date')).values('month').annotate(count=Count('id')).order_by('month')
+
+    monthly_corpora = Corpus.objects.filter(creation_date__date__gte=last_year).annotate(month=TruncMonth('creation_date')).values('month').annotate(count=Count('id')).order_by('month')
+
+
+    monthly_tools = NLPTool.objects.filter(creation_date__date__gte=last_year).annotate(month=TruncMonth('creation_date')).values('month').annotate(count=Count('id')).order_by('month')
+
+
+    # Combiner les données mensuelles des ressources
+    # Créez un dictionnaire pour agréger les comptes par mois
+    monthly_resources_dict = {}
+
+    for item in monthly_publications:
+        month_key = item['month'].strftime('%Y-%m')
+        monthly_resources_dict[month_key] = monthly_resources_dict.get(month_key, 0) + item['count']
+
+    for item in monthly_corpora:
+        month_key = item['month'].strftime('%Y-%m')
+        monthly_resources_dict[month_key] = monthly_resources_dict.get(month_key, 0) + item['count']
+        
+    for item in monthly_tools:
+        month_key = item['month'].strftime('%Y-%m')
+        monthly_resources_dict[month_key] = monthly_resources_dict.get(month_key, 0) + item['count']
+
+    # Préparez les labels (mois) et les datasets pour le graphique
+    # Assurez-vous d'avoir tous les mois des 12 derniers mois, même s'il n'y a pas de données
+    all_months = []
+    for i in range(12):
+        month = today - datetime.timedelta(days=30 * i)
+        all_months.append(month.strftime('%Y-%m'))
+    all_months.reverse()
+
+    chart_labels = [datetime.datetime.strptime(month, '%Y-%m').strftime('%b %Y') for month in all_months]
+    users_activity_data = []
+    resources_activity_data = []
+
+    monthly_users_dict = {item['month'].strftime('%Y-%m'): item['count'] for item in monthly_users}
+
+    for month in all_months:
+        users_activity_data.append(monthly_users_dict.get(month, 0))
+        resources_activity_data.append(monthly_resources_dict.get(month, 0))
+
     # Combine all statistics
     context = {
         'recent_users': recent_users,
@@ -174,6 +262,9 @@ def admin_dashboard(request):
         'pubs_growth': pubs_growth,
         'projects_growth': projects_growth,
         'posts_growth': posts_growth,
+        'chart_labels': json.dumps(chart_labels), # Données JSON pour JavaScript
+        'users_activity_data': json.dumps(users_activity_data), # Données JSON pour JavaScript
+        'resources_activity_data': json.dumps(resources_activity_data), # Données JSON pour JavaScript
     }
     
     return render(request, 'admin/dashboard.html', context)
@@ -192,10 +283,10 @@ def admin_users(request):
     
     # Filtrage "statut"
     if filter_status == 'active':
-        qs = qs.filter(is_active=True)
+        qs = qs.filter(is_active=True , is_email_verified=True)
     elif filter_status == 'pending':
         # en attente : non actifs et non vérifiés
-        qs = qs.filter(is_active=False, is_email_verified=False)
+        qs = qs.filter(is_active=False , is_email_verified=True )
     elif filter_status == 'blocked':
         # bloqués : non actifs mais vérifiés (ou autre règle métier)
         qs = qs.filter(is_active=False, is_email_verified=True)
@@ -204,9 +295,7 @@ def admin_users(request):
     if search:
         qs = qs.filter(
             Q(full_name__icontains=search) |
-            Q(email__icontains=search) |
-            Q(first_name__icontains=search) |
-            Q(last_name__icontains=search)
+            Q(email__icontains=search) 
         )
     
     # Nombre d'utilisateurs "en attente" pour l'en-tête
@@ -283,6 +372,7 @@ def admin_user_activate(request, user_id):
     old_status = user.status
     user.is_active = True
     user.status = 'active'
+    user.is_verified = True
     user.save()
     
     # Créer une entrée dans l'historique
@@ -357,13 +447,57 @@ def admin_user_block(request, user_id):
 def admin_user_history(request, user_id):
     """Vue pour afficher l'historique des statuts d'un utilisateur."""
     user = get_object_or_404(User, id=user_id)
-    history = UserStatusHistory.objects.filter(user=user).order_by('-change_date')
     
+    # Récupérer les filtres
+    status_filter = request.GET.get('status_filter', '')
+    admin_filter = request.GET.get('admin_filter', '')
+    period_filter = request.GET.get('period_filter', '')
+
+    # Base queryset pour l'historique de l'utilisateur spécifique
+    history_qs = UserStatusHistory.objects.filter(user=user).order_by('-change_date')
+
+    # Appliquer les filtres
+    if status_filter:
+        history_qs = history_qs.filter(new_status=status_filter)
+    if admin_filter:
+        history_qs = history_qs.filter(changed_by__id=admin_filter)
+
+    # Filtrage par période
+    today = timezone.now().date()
+    if period_filter == 'day':
+        history_qs = history_qs.filter(change_date__date=today)
+    elif period_filter == 'week':
+        start_week = today - datetime.timedelta(days=today.weekday())
+        history_qs = history_qs.filter(change_date__date__gte=start_week)
+    elif period_filter == 'month':
+        start_month = today.replace(day=1)
+        history_qs = history_qs.filter(change_date__date__gte=start_month)
+
+    # Statistiques pour les cartes
+    total_changes = UserStatusHistory.objects.filter(user=user).count()
+    activations = UserStatusHistory.objects.filter(user=user, new_status='active').count()
+    blocks = UserStatusHistory.objects.filter(user=user, new_status='blocked').count()
+
+    # Changements récents (par défaut, les 7 derniers jours)
+    seven_days_ago = timezone.now() - datetime.timedelta(days=7)
+    recent_changes_count = UserStatusHistory.objects.filter(user=user, change_date__gte=seven_days_ago).count()
+    
+    # Récupérer tous les administrateurs pour le filtre
+    all_admins = User.objects.filter(is_staff=True).order_by('full_name')
+
     context = {
         'user_obj': user,
-        'history': history,
+        'recent_history': history_qs, # Renommé history en recent_history
+        'total_changes': total_changes,
+        'activations': activations,
+        'blocks': blocks,
+        'recent_changes': recent_changes_count, # Utilise le compte des 7 derniers jours
+        'status_filter': status_filter,
+        'admin_filter': int(admin_filter) if admin_filter else '', # Convertir en int si non vide
+        'period_filter': period_filter,
+        'all_admins': all_admins,
     }
-    
+
     return render(request, 'admin/history.html', context)
 
 @login_required
@@ -543,14 +677,88 @@ def admin_projects(request):
             Q(objectives__icontains=search) |
             Q(participants__username__icontains=search)
         ).distinct()
-    
+
+    # Statistiques dynamiques
+    total_count = projects.count()
+    in_progress_count = projects.filter(status='ongoing').count()
+    completed_count = projects.filter(status='completed').count()
+
+    # Croissance du nombre de projets ce mois
+    today = timezone.now().date()
+    last_month = today - timedelta(days=30)
+    two_months_ago = today - timedelta(days=60)
+    projects_this_month = projects.filter(created_at__gte=last_month).count()
+    projects_last_month = projects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count()
+    if projects_last_month > 0:
+        projects_growth = ((projects_this_month - projects_last_month) / projects_last_month) * 100
+    else:
+        projects_growth = 100 if projects_this_month > 0 else 0
+
+    # Croissance du nombre de projets terminés ce mois
+    completed_this_month = projects.filter(status='completed', created_at__gte=last_month).count()
+    completed_last_month = projects.filter(status='completed', created_at__gte=two_months_ago, created_at__lt=last_month).count()
+    if completed_last_month > 0:
+        completed_growth = ((completed_this_month - completed_last_month) / completed_last_month) * 100
+    else:
+        completed_growth = 100 if completed_this_month > 0 else 0
+
+    # Calcul de la durée moyenne des projets terminés sur les 30 derniers jours
+    end_date_current = timezone.now().date()
+    start_date_current = end_date_current - timedelta(days=30)
+    completed_current_period = Project.objects.filter(status='completed', date_end__gte=start_date_current, date_end__lte=end_date_current)
+
+    average_duration_current = timedelta(0)
+    if completed_current_period.count() > 0:
+        total_duration_current = sum([(p.date_end - p.date_start) for p in completed_current_period if p.date_start and p.date_end], timedelta(0))
+        # Éviter la division par zéro si date_end == date_start pour tous les projets
+        total_seconds_current = total_duration_current.total_seconds()
+        if total_seconds_current > 0:
+             average_duration_current = total_duration_current / completed_current_period.count()
+
+    # Calcul de la durée moyenne des projets terminés sur les 30 jours précédents
+    end_date_previous = start_date_current - timedelta(days=1)
+    start_date_previous = end_date_previous - timedelta(days=30)
+    completed_previous_period = Project.objects.filter(status='completed', date_end__gte=start_date_previous, date_end__lte=end_date_previous)
+
+    average_duration_previous = timedelta(0)
+    if completed_previous_period.count() > 0:
+        total_duration_previous = sum([(p.date_end - p.date_start) for p in completed_previous_period if p.date_start and p.date_end], timedelta(0))
+         # Éviter la division par zéro si date_end == date_start pour tous les projets
+        total_seconds_previous = total_duration_previous.total_seconds()
+        if total_seconds_previous > 0:
+             average_duration_previous = total_duration_previous / completed_previous_period.count()
+
+    # Calcul de la différence et de la tendance
+    duration_difference = average_duration_current - average_duration_previous
+    duration_difference_days = duration_difference.days
+
+    if duration_difference_days > 0:
+        duration_trend_text = f"+{duration_difference_days}j vs période précédente"
+        duration_trend_class = 'trend-down' # Durée plus longue = tendance négative
+    elif duration_difference_days < 0:
+        duration_trend_text = f"{duration_difference_days}j vs période précédente"
+        duration_trend_class = 'trend-up' # Durée plus courte = tendance positive
+    else:
+        duration_trend_text = "Stable"
+        duration_trend_class = 'trend-neutral'
+
+    # La durée moyenne affichée sera celle de la période actuelle
+    average_duration_display_days = average_duration_current.days if average_duration_current else 0
+
     context = {
         'projects': projects,
         'filter_status': status,
         'filter_visibility': visibility,
         'search': search,
+        'projects_growth': round(projects_growth, 2),
+        'in_progress_count': in_progress_count,
+        'completed_count': completed_count,
+        'total_count': total_count,
+        'completed_growth': round(completed_growth, 2),
+        'average_duration_display_days': average_duration_display_days,
+        'duration_trend_text': duration_trend_text,
+        'duration_trend_class': duration_trend_class,
     }
-    
     return render(request, 'admin/projects.html', context)
 
 
@@ -578,11 +786,39 @@ def admin_courses(request):
             Q(author__username__icontains=search)
         )
     
+    # Statistiques dynamiques pour les cours
+    total_courses_count = courses.count()
+
+    # Nombre de cours créés ce mois (derniers 30 jours)
+    today = timezone.now().date()
+    last_month = today - timedelta(days=30)
+    two_months_ago = today - timedelta(days=60)
+    courses_this_month_count = Course.objects.filter(creation_date__gte=last_month).count()
+    courses_last_month_count = Course.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count()
+
+    # Calcul de la croissance par rapport au mois dernier
+    if courses_last_month_count > 0:
+        courses_growth = ((courses_this_month_count - courses_last_month_count) / courses_last_month_count) * 100
+    else:
+        courses_growth = 100 if courses_this_month_count > 0 else 0
+
+    # Déterminer la classe CSS pour la tendance
+    if courses_growth > 0:
+        courses_growth_class = 'trend-up'
+    elif courses_growth < 0:
+        courses_growth_class = 'trend-down'
+    else:
+        courses_growth_class = 'trend-neutral'
+
     context = {
         'courses': courses,
         'filter_level': level,
         'filter_is_public': is_public,
         'search': search,
+        'total_courses_count': total_courses_count,
+        'courses_this_month_count': courses_this_month_count,
+        'courses_growth': round(courses_growth, 2),
+        'courses_growth_class': courses_growth_class,
     }
     
     return render(request, 'admin/courses.html', context)
@@ -593,35 +829,51 @@ def admin_courses(request):
 def admin_forum(request):
     """Admin forum management"""
     # Filter parameters
-    category = request.GET.get('category', '')
-    is_closed = request.GET.get('is_closed', '')
+    status = request.GET.get('status', '')
+    # category = request.GET.get('category', '') # TODO: Implement category filtering if categories are added
     search = request.GET.get('search', '')
-    
+    page_number = request.GET.get('page')
+
     # Base queryset
-    topics = Topic.objects.all().order_by('-created_at')
-    
+    # Annoter chaque sujet avec le nombre total de messages dans toutes ses chatrooms
+    topics = Topic.objects.annotate(total_messages=Count('chatrooms__messages')).order_by('-created_at')
+
     # Apply filters
-    if category:
-        topics = topics.filter(category_id=category)
-    if is_closed:
-        topics = topics.filter(is_closed=(is_closed == 'true'))
+    if status == 'open':
+        topics = topics.filter(is_closed=False)
+    elif status == 'closed':
+        topics = topics.filter(is_closed=True)
+
     if search:
         topics = topics.filter(
             Q(title__icontains=search) | 
-            Q(content__icontains=search) |
-            Q(author__username__icontains=search)
+            Q(description__icontains=search) | # Adapter si le champ est différent
+            Q(creator__username__icontains=search)
         )
-    
-    # Get categories for filter
-    
-    
+
+    # TODO: Implement category filtering here if categories are added
+
+    # Pagination
+    paginator = Paginator(topics, 10) # 10 sujets par page
+    page_obj = paginator.get_page(page_number)
+
+    # Statistiques dynamiques
+    total_topics_count = Topic.objects.count()
+    open_topics_count = Topic.objects.filter(is_closed=False).count()
+    closed_topics_count = Topic.objects.filter(is_closed=True).count()
+    total_messages_count = Message.objects.count() # Assurez-vous que Message est importé en haut si utilisé ici
+
     context = {
-        'topics': topics,
-        'filter_category': category,
-        'filter_is_closed': is_closed,
+        'topics': page_obj, # Passer l'objet page paginé
+        'total_topics_count': total_topics_count,
+        'open_topics_count': open_topics_count,
+        'closed_topics_count': closed_topics_count,
+        'total_messages_count': total_messages_count,
+        'filter_status': status,
+        # 'filter_category': category, # TODO: Pass filter_category if categories are added
         'search': search,
     }
-    
+
     return render(request, 'admin/forum.html', context)
 
 
@@ -670,28 +922,32 @@ def admin_calls(request):
     # Filter parameters
     call_type = request.GET.get('call_type', '')
     is_active = request.GET.get('is_active', '')
+    is_approved = request.GET.get('is_approved', '')
     search = request.GET.get('search', '')
     
     # Base queryset
-    calls = Event.objects.all().order_by('submission_deadline')
+    calls = Event.objects.all().order_by('-created_at')
     
     # Apply filters
     if call_type:
         calls = calls.filter(call_type=call_type)
     if is_active:
         calls = calls.filter(is_active=(is_active == 'true'))
+    if is_approved:
+        calls = calls.filter(is_approved=(is_approved == 'true'))
     if search:
         calls = calls.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(organizer__icontains=search) |
-            Q(topics__icontains=search)
+            Q(organizer__name__icontains=search) |
+            Q(domains__icontains=search)
         )
     
     context = {
         'calls': calls,
         'filter_call_type': call_type,
         'filter_is_active': is_active,
+        'filter_is_approved': is_approved,
         'search': search,
     }
     
@@ -718,39 +974,84 @@ def admin_statistics(request):
     # 2. Charger les Stats existantes
     stats = Stats.objects.filter(date__gte=start_date, date__lte=end_date).order_by('date')
 
-    # 3. Si aucune ligne, calculer les valeurs "à la volée"
-    if not stats.exists():
-        last = None
-        current_stats = {
-            'users_count': User.objects.count(),
-            'publications_count': Document.objects.count(),
-            'corpora_count': Corpus.objects.count(),
-            'tools_count': NLPTool.objects.count(),
-            'projects_count': Project.objects.count(),
-            'forum_posts_count': Topic.objects.count() + ChatRoom.objects.count(),
-            'visits_count': 0,        # ou calculer si vous avez un modèle Visite
-            'downloads_count': 0,     # pareil pour les téléchargements
-        }
-    else:
-        last = stats.last()
-        current_stats = {
-            'users_count': last.users_count,
-            'publications_count': last.publications_count,
-            'corpora_count': last.corpora_count,
-            'tools_count': last.tools_count,
-            'projects_count': last.projects_count,
-            'forum_posts_count': last.forum_posts_count,
-            'visits_count': last.visits_count,
-            'downloads_count': last.downloads_count,
-        }
+    # 3. Calculer les statistiques actuelles et les taux de croissance
+    today = timezone.now().date()
+    last_month = today - datetime.timedelta(days=30)
+    two_months_ago = today - datetime.timedelta(days=60)
+
+    # Statistiques actuelles
+    # Récupérer les statistiques agrégées du modèle Stats pour la période actuelle
+    stats_current_period = Stats.objects.filter(date__gte=start_date, date__lte=end_date)
+    current_visits_count = stats_current_period.aggregate(total_visits=Sum('visits_count'))['total_visits'] or 0
+
+    # Récupérer les statistiques agrégées du modèle Stats pour la période précédente
+    # Pour simplifier, on prend la période de 30 jours avant le début de la période actuelle
+    start_date_prev = start_date - datetime.timedelta(days=30)
+    end_date_prev = start_date - datetime.timedelta(days=1)
+    stats_previous_period = Stats.objects.filter(date__gte=start_date_prev, date__lte=end_date_prev)
+    previous_visits_count = stats_previous_period.aggregate(total_visits=Sum('visits_count'))['total_visits'] or 0
+
+
+    current_stats = {
+        'users_count': User.objects.count(),
+        'publications_count': Document.objects.count(),
+        'corpora_count': Corpus.objects.count(),
+        'tools_count': NLPTool.objects.count(),
+        'projects_count': Project.objects.count(),
+        'forum_posts_count': Topic.objects.count() + ChatRoom.objects.count(),
+        'visits_count': current_visits_count, # Utilise les vues agrégées du modèle Stats
+        'active_projects_count': Project.objects.filter(status='ongoing').count()
+    }
+
+    # Calcul des taux de croissance
+    # Utilisateurs
+    users_this_month = User.objects.filter(date_joined__gte=last_month).count()
+    users_last_month = User.objects.filter(
+        date_joined__gte=two_months_ago, 
+        date_joined__lt=last_month
+    ).count()
+    current_stats['users_growth'] = ((users_this_month - users_last_month) / users_last_month * 100) if users_last_month > 0 else 100 if users_this_month > 0 else 0
+
+    # Ressources
+    resources_this_month = (
+        Document.objects.filter(creation_date__gte=last_month).count() +
+        Corpus.objects.filter(creation_date__gte=last_month).count() +
+        NLPTool.objects.filter(creation_date__gte=last_month).count()
+    )
+    resources_last_month = (
+        Document.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count() +
+        Corpus.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count() +
+        NLPTool.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count()
+    )
+    current_stats['resources_growth'] = ((resources_this_month - resources_last_month) / resources_last_month * 100) if resources_last_month > 0 else 100 if resources_this_month > 0 else 0
+
+    # Visites
+    current_stats['visits_growth'] = ((current_visits_count - previous_visits_count) / previous_visits_count * 100) if previous_visits_count > 0 else 100 if current_visits_count > 0 else 0
+
+    # Projets
+    projects_this_month = Project.objects.filter(created_at__gte=last_month).count()
+    projects_last_month = Project.objects.filter(
+        created_at__gte=two_months_ago, 
+        created_at__lt=last_month
+    ).count()
+    current_stats['projects_growth'] = ((projects_this_month - projects_last_month) / projects_last_month * 100) if projects_last_month > 0 else 100 if projects_this_month > 0 else 0
+
+    # Forum
+    forum_this_month = (
+        Topic.objects.filter(created_at__gte=last_month).count() + 
+        ChatRoom.objects.filter(created_at__gte=last_month).count()
+    )
+    forum_last_month = (
+        Topic.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count() + 
+        ChatRoom.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count()
+    )
+    current_stats['forum_growth'] = ((forum_this_month - forum_last_month) / forum_last_month * 100) if forum_last_month > 0 else 100 if forum_this_month > 0 else 0
 
     # 4. Préparer les données brutes pour les graphiques
-    # Les dates sont déjà des objets date — on les convertit en string automatiquement au rendu du JSON côté front.
-    chart_dates     = [stat.date for stat in stats]
-    users_data      = [stat.users_count for stat in stats]
-    resources_data  = [stat.publications_count + stat.corpora_count + stat.tools_count for stat in stats]
-    visits_data     = [stat.visits_count for stat in stats]
-    downloads_data  = [stat.downloads_count for stat in stats]
+    chart_dates = [stat.date.strftime('%Y-%m-%d') for stat in stats] # Formatte les dates en chaîne
+    users_data = [stat.users_count for stat in stats]
+    resources_data = [stat.publications_count + stat.corpora_count + stat.tools_count for stat in stats]
+    visits_data = [stat.visits_count for stat in stats]
 
     # 5. Comptage des inscriptions utilisateurs par jour
     user_regs = (
@@ -761,25 +1062,52 @@ def admin_statistics(request):
         .annotate(count=Count('id'))
         .order_by('day')
     )
-    user_reg_dates  = [row['day'] for row in user_regs]
+    user_reg_dates = [row['day'].strftime('%Y-%m-%d') for row in user_regs] # Formatte les dates en chaîne
     user_reg_counts = [row['count'] for row in user_regs]
+
+    # 6. Top 5 des ressources les plus vues
+    top_resources = []
+    
+    # Publications
+    top_publications = Document.objects.order_by('-views_count')[:2]
+    for pub in top_publications:
+        top_resources.append({
+            'title': pub.title,
+            'views': pub.views_count
+        })
+    
+    # Corpus
+    top_corpora = Corpus.objects.order_by('-views_count')[:2]
+    for corpus in top_corpora:
+        top_resources.append({
+            'title': corpus.title,  # Changé de name à title
+            'views': corpus.views_count
+        })
+    
+    # Outils
+    top_tools = NLPTool.objects.order_by('-views_count')[:1]
+    for tool in top_tools:
+        top_resources.append({
+            'title': tool.title,  # Changé de name à title
+            'views': tool.views_count
+        })
+
+    # Trier par nombre de vues
+    top_resources.sort(key=lambda x: x['views'], reverse=True)
+    top_resources = top_resources[:5]
 
     context = {
         'stats': stats,
         'current_stats': current_stats,
         'start_date': start_date,
         'end_date': end_date,
-
-        # Séries pour les graphiques (retournées au template, qui peut les JSONifier)
-        'chart_dates': chart_dates,
-        'users_data': users_data,
-        'resources_data': resources_data,
-        'visits_data': visits_data,
-        'downloads_data': downloads_data,
-
-        # Séries pour le graphique des inscriptions
-        'user_reg_dates':  user_reg_dates,
-        'user_reg_counts': user_reg_counts,
+        'chart_dates': json.dumps(chart_dates),  # Sérialisation en JSON
+        'users_data': json.dumps(users_data),  # Sérialisation en JSON
+        'resources_data': json.dumps(resources_data),  # Sérialisation en JSON
+        'visits_data': json.dumps(visits_data),  # Sérialisation en JSON
+        'user_reg_dates': json.dumps(user_reg_dates),  # Sérialisation en JSON
+        'user_reg_counts': json.dumps(user_reg_counts),  # Sérialisation en JSON
+        'top_resources': top_resources,
     }
 
     return render(request, 'admin/statistics.html', context)
@@ -832,17 +1160,15 @@ def admin_api_stats(request):
     )
     
     resources_this_month = (
-        Document.objects.filter(created_at__gte=last_month).count() +
-        Corpus.objects.filter(created_at__gte=last_month).count() +
-        NLPTool.objects.filter(created_at__gte=last_month).count() +
-        Course.objects.filter(created_at__gte=last_month).count()
+        Document.objects.filter(creation_date__gte=last_month).count() +
+        Corpus.objects.filter(creation_date__gte=last_month).count() +
+        NLPTool.objects.filter(creation_date__gte=last_month).count()
     )
     
     resources_last_month = (
-        Document.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count() +
-        Corpus.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count() +
-        NLPTool.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count() +
-        Course.objects.filter(created_at__gte=two_months_ago, created_at__lt=last_month).count()
+        Document.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count() +
+        Corpus.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count() +
+        NLPTool.objects.filter(creation_date__gte=two_months_ago, creation_date__lt=last_month).count()
     )
     
     if resources_last_month > 0:

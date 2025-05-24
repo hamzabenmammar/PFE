@@ -109,3 +109,4 @@ def mark_read(request, notification_id):
     # Rediriger vers la page d'où la requête provenait, ou par défaut la liste
     next_url = request.GET.get('next', request.META.get('HTTP_REFERER', redirect('notifications:list').url))
     return redirect(next_url)
+

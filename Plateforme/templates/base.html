@@ -21,6 +21,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% block extra_styles %}{% endblock %}
+    <style>
+      /* Assurez-vous que le badge est toujours là pour le JS, masqué par défaut s'il est vide */
+      .notification-badge {
+        display: none; /* Masqué par défaut */
+        /* Styles existants du badge... */
+        position: absolute;
+        top: 0px;
+        right: -5px;
+        padding: 2px 6px;
+        border-radius: 50%;
+        background-color: #dc3545; /* Rouge */
+        color: white;
+        font-size: 0.7em;
+        font-weight: bold;
+        text-align: center;
+        min-width: 18px; /* Largeur minimale pour les nombres à 1 chiffre */
+        height: 18px;
+        line-height: 14px;
+      }
+      /* Afficher le badge uniquement s'il contient du texte (c'est-à-dire si count > 0) */
+      .notification-badge:not(:empty) {
+        display: block; /* Affiché s'il n'est pas vide */
+      }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -38,6 +62,8 @@
     <i class="fas fa-search" aria-hidden="true"></i>
 </button>
             </div>
+            <a >English</a> |
+            <a >Arabic </a>
             
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -47,9 +73,7 @@
         id="notificationDropdownToggle" 
         aria-label="Afficher les notifications">
     <i class="fas fa-bell" aria-hidden="true"></i>
-    {% if unread_notifications_count > 0 %}
-      <span class="notification-badge">{{ unread_notifications_count }}</span>
-    {% endif %}
+    <span class="notification-badge">{% if unread_notifications_count > 0 %}{{ unread_notifications_count }}{% endif %}</span>
 </button>
                         <div class="notification-dropdown" id="notificationDropdown">
                             <div class="notification-header">
@@ -99,7 +123,7 @@
                     </div>
                     <!-- End of Notification Bell -->
                     
-                    <a href="{% url 'accounts:profile' user.id %}" class="btn btn-outline">
+                    <a href="{% url 'profile' user.id %}" class="btn btn-outline">
                         <i class="fas fa-user"></i> Profile
                     </a>
                     <a href="{% url 'account_logout' %}" class="btn btn-primary">
@@ -143,6 +167,9 @@
                     </a></li>
                     <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">
                         <i class="fas fa-users"></i> Community
+                    </a></li>
+                    <li><a {% if page == 'feed' %}class="active"{% endif %} href="{% url 'QA:feed' %}">
+                        <i class="fas fa-newspaper"></i> News
                     </a></li>
                     <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">
                         <i class="fas fa-calendar-alt"></i> Events

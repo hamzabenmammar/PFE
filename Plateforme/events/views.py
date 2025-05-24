@@ -6,12 +6,16 @@ from django.contrib import messages
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
+from notifications.services import NotificationService
+from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse
+import logging
 
 from .models import Event, EventRegistration
 from .forms import EventForm, EventSearchForm
-from django.contrib.auth import get_user_model
-from notifications.models import Notification
-from notifications.services import NotificationService
+
+logger = logging.getLogger(__name__)
 
 
 class EventListView(ListView):
@@ -23,7 +27,10 @@ class EventListView(ListView):
     paginate_by = 10
     
     def get_queryset(self):
-        queryset = Event.objects.all()
+        """Filter events based on user permissions."""
+        queryset = super().get_queryset()
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(is_approved=True)
         form = EventSearchForm(self.request.GET)
         
         if form.is_valid():
@@ -71,8 +78,11 @@ class EventDetailView(DetailView):
     context_object_name = 'event'
 
     def get_queryset(self):
-        """Add related objects to reduce database queries."""
-        return Event.objects.select_related('organizer', 'created_by')
+        """Add related objects and filter based on user permissions."""
+        queryset = Event.objects.select_related('organizer', 'created_by')
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(is_approved=True)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -102,22 +112,31 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         form.instance.is_approved = self.request.user.is_staff
         form.instance.created_by = self.request.user
         response = super().form_valid(form)
+        
         if form.instance.is_approved:
             messages.success(self.request, _('Event created successfully!'))
+            # Notifier tous les utilisateurs actifs
+            User = get_user_model()
+            active_users = User.objects.filter(is_active=True)
+            NotificationService.notify_group(
+                active_users,
+                'EVENT_APPROVED',
+                f"Nouvel événement approuvé : {form.instance.title}",
+                f"Un nouvel événement a été approuvé : {form.instance.title}. Date : {form.instance.date}",
+                form.instance
+            )
         else:
             messages.success(
                 self.request, 
                 _('Event created successfully! It will be visible after admin approval.')
             )
-        # NOTIFICATION à tous les utilisateurs actifs via le service
-        User = get_user_model()
-        for user in User.objects.filter(is_active=True):
+            # Notifier le créateur de l'événement
             NotificationService.create_notification(
-                recipient=user,
-                notification_type='SYSTEM', # Utilise un type SYSTEM pour l'instant, ou crée un type EVENT_CREATED si tu veux plus de granularité
-                title="Nouvel événement",
-                message=f"L'événement « {form.instance.title} » vient d'être publié.",
-                related_object=form.instance # Optionnel: lie la notification à l'objet Event créé
+                recipient=self.request.user,
+                notification_type='EVENT_CREATED',
+                title="Votre événement est en attente d'approbation",
+                message=f"Votre événement '{form.instance.title}' a été créé et est en attente d'approbation par un administrateur.",
+                related_object=form.instance
             )
         return response
 
@@ -209,3 +228,40 @@ def unregister_from_event(request, pk):
     messages.success(request, _('You have unregistered from "{}".').format(event.title))
     
     return redirect('events:event_detail', pk=pk)
+
+
+# Helper function to check if a user is staff
+def is_staff_check(user):
+    return user.is_staff
+
+
+# Vue pour valider un événement
+@user_passes_test(lambda u: u.is_staff)
+def event_validate(request, pk):
+    """Vue pour approuver un événement"""
+    event = get_object_or_404(Event, pk=pk)
+    event.is_approved = True
+    event.save()
+    
+    # Notifier le créateur de l'événement
+    NotificationService.create_notification(
+        recipient=event.created_by,
+        notification_type='EVENT_APPROVED',
+        title="Votre événement a été approuvé",
+        message=f"Votre événement '{event.title}' a été approuvé et est maintenant visible par tous les utilisateurs.",
+        related_object=event
+    )
+    
+    # Notifier tous les utilisateurs actifs
+    User = get_user_model()
+    active_users = User.objects.filter(is_active=True)
+    NotificationService.notify_group(
+        active_users,
+        'EVENT_APPROVED',
+        f"Nouvel événement approuvé : {event.title}",
+        f"Un nouvel événement a été approuvé : {event.title}. Date : {event.date}",
+        event
+    )
+    
+    messages.success(request, _('Event has been approved successfully!'))
+    return redirect('pages:admin_calls')

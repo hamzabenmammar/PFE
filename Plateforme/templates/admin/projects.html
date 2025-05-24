@@ -501,30 +501,30 @@
   <div class="dashboard-summary">
     <div class="summary-card">
       <div class="summary-card-title">Total Projets</div>
-      <div class="summary-card-value">{{ projects.count }}</div>
+      <div class="summary-card-value">{{ total_count }}</div>
       <div class="summary-card-trend trend-up">
-        <span>+12% ce mois</span>
+        <span>{% if projects_growth > 0 %}+{% endif %}{{ projects_growth }}% ce mois</span>
       </div>
     </div>
     <div class="summary-card">
       <div class="summary-card-title">En cours</div>
-      <div class="summary-card-value">{{ projects.in_progress_count|default:"--" }}</div>
+      <div class="summary-card-value">{{ in_progress_count }}</div>
       <div class="summary-card-trend trend-neutral">
         <span>Stable</span>
       </div>
     </div>
     <div class="summary-card">
       <div class="summary-card-title">Terminés</div>
-      <div class="summary-card-value">{{ projects.completed_count|default:"--" }}</div>
+      <div class="summary-card-value">{{ completed_count }}</div>
       <div class="summary-card-trend trend-up">
-        <span>+5% cette semaine</span>
+        <span>{% if completed_growth > 0 %}+{% endif %}{{ completed_growth }}% ce mois</span>
       </div>
     </div>
     <div class="summary-card">
       <div class="summary-card-title">Temps moyen</div>
-      <div class="summary-card-value">21j</div>
-      <div class="summary-card-trend trend-down">
-        <span>-3j vs 2024</span>
+      <div class="summary-card-value">{{ average_duration_display_days }}j</div>
+      <div class="summary-card-trend {{ duration_trend_class }}">
+        <span>{{ duration_trend_text }}</span>
       </div>
     </div>
   </div>
@@ -537,7 +537,7 @@
     <div class="filter-dropdown">
       <select name="status">
         <option value="">Tous les statuts</option>
-        <option value="in_progress" {% if filter_status == 'in_progress' %}selected{% endif %}>En cours</option>
+        <option value="ongoing" {% if filter_status == 'ongoing' %}selected{% endif %}>En cours</option>
         <option value="completed"   {% if filter_status == 'completed'   %}selected{% endif %}>Terminé</option>
         <option value="pending"     {% if filter_status == 'pending'     %}selected{% endif %}>En attente</option>
         <option value="cancelled"   {% if filter_status == 'cancelled'   %}selected{% endif %}>Annulé</option>
@@ -580,7 +580,7 @@
             </div>
           </td>
           <td>
-            {% if project.status == 'in_progress' %}
+            {% if project.status == 'ongoing' %}
               <span class="status-badge status-badge-in-progress">En cours</span>
             {% elif project.status == 'completed' %}
               <span class="status-badge status-badge-completed">Terminé</span>

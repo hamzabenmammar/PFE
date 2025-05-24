@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -68,8 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-    'accounts.middleware.UserActivityMiddleware', 
+    'allauth.account.middleware.AccountMiddleware', 
 ]
 ONLINE_THRESHOLD = 300
 ROOT_URLCONF = 'Plateforme.urls'
@@ -180,7 +180,7 @@ LOGIN_REDIRECT_URL = 'pages:home'
 ACCOUNT_LOGOUT_REDIRECT = "pages:home"
 
 
-
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
@@ -196,3 +196,32 @@ EMAIL_HOST_USER = 'hamzabenmammar2018@gmail.com'
 EMAIL_HOST_PASSWORD = 'tmlg qlxa hlpl atxv'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+ACCOUNT_FORMS = {
+    'signup': 'accounts.forms.CustomUserCreationForm',
+}
+
+GEMINI_API_KEY = 'AIzaSyD3dvvm2P5Ug3GMWuIuoL1q_EXJ6XP9UqM'
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'chatbot': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+

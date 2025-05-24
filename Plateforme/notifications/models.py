@@ -14,6 +14,8 @@ class Notification(models.Model):
         ('PROJECT_UPDATE', 'Mise à jour de projet'),
         ('TASK_ASSIGNED', 'Tâche assignée'),
         ('COMMENT', 'Commentaire'),
+        ('EVENT_CREATED', 'Événement créé'),
+        ('EVENT_APPROVED', 'Événement approuvé'),
     ]
     
     recipient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='notifications')

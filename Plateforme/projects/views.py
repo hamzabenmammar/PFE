@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -11,9 +11,10 @@ from django.contrib.auth import get_user_model
 from notifications.models import Notification
 from django.contrib import messages
 from notifications.services import NotificationService
+from accounts.views import LoginAndVerifiedRequiredMixin
 
 
-class ProjectListView(LoginRequiredMixin, ListView):
+class ProjectListView(LoginAndVerifiedRequiredMixin, ListView):
     model = Project
     template_name = 'project_list.html'
     context_object_name = 'projects'
@@ -28,22 +29,39 @@ class ProjectListView(LoginRequiredMixin, ListView):
         return qs.annotate(is_member=Exists(membership))
 
 
-class ProjectDetailView(LoginRequiredMixin, DetailView):
+class ProjectDetailView(LoginAndVerifiedRequiredMixin, DetailView):
     model = Project
     template_name = 'project_detail.html'
     context_object_name = 'project'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        project = self.object
-        context['is_member'] = ProjectMember.objects.filter(
-            project=project,
-            member=self.request.user
-        ).exists()
+        project = self.get_object()
+        
+        # Récupérer les membres de l'équipe (exclure les rejetés)
+        team_members = project.members.filter(
+            status='accepted'
+        ).select_related('member')
+        
+        # Récupérer les demandes en attente
+        pending_requests = project.members.filter(
+            status='pending'
+        ).select_related('member')
+        
+        context.update({
+            'team_members': [pm.member for pm in team_members],
+            'pending_requests': pending_requests,
+            'is_coordinator': project.coordinator == self.request.user,
+            'is_member': project.members.filter(member=self.request.user, status='accepted').exists(),
+            'has_pending_request': project.members.filter(
+                member=self.request.user,
+                status='pending'
+            ).exists()
+        })
         return context
 
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginAndVerifiedRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm  # Utilisez votre formulaire au lieu de fields
     template_name = 'project_new.html'
@@ -64,7 +82,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):  
+class ProjectUpdateView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, UpdateView):  
     model = Project
     form_class = ProjectForm  
     template_name = 'project_update.html'
@@ -79,7 +97,7 @@ class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     )
 
 
-class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class ProjectDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Project
     template_name = 'project_delete.html'
     success_url = reverse_lazy('projects:project_list')
@@ -93,7 +111,7 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     )
 
 
-class JoinProjectView(LoginRequiredMixin, View):
+class JoinProjectView(LoginAndVerifiedRequiredMixin, View):
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
         # Vérifie si l'utilisateur n'est pas déjà membre
@@ -115,7 +133,7 @@ class JoinProjectView(LoginRequiredMixin, View):
         return redirect('projects:project_detail', pk=pk)
 
 
-class AcceptMemberView(LoginRequiredMixin, UserPassesTestMixin, View):
+class AcceptMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         project = get_object_or_404(Project, pk=self.kwargs['pk'])
         return self.request.user == project.coordinator
@@ -140,7 +158,7 @@ class AcceptMemberView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect('projects:project_members', pk=pk)
 
 
-class RejectMemberView(LoginRequiredMixin, UserPassesTestMixin, View):
+class RejectMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         project = get_object_or_404(Project, pk=self.kwargs['pk'])
         return self.request.user == project.coordinator
@@ -165,7 +183,7 @@ class RejectMemberView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect('projects:project_members', pk=pk)
 
 
-class ProjectMembersView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class ProjectMembersView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DetailView):
     model = Project
     template_name = 'project_members.html'
     context_object_name = 'project'
@@ -183,7 +201,7 @@ class ProjectMembersView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return context
 
 
-class LeaveProjectView(LoginRequiredMixin, View):
+class LeaveProjectView(LoginAndVerifiedRequiredMixin, View):
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
         # Trouver le membre avant suppression
@@ -200,7 +218,7 @@ class LeaveProjectView(LoginRequiredMixin, View):
         return redirect('projects:project_detail', pk=pk)
 
 
-class ProjectSearchView(LoginRequiredMixin, ListView):
+class ProjectSearchView(LoginAndVerifiedRequiredMixin, ListView):
     model = Project
     template_name = 'project_search.html'
     context_object_name = 'projects'
@@ -217,7 +235,7 @@ class ProjectSearchView(LoginRequiredMixin, ListView):
             return Project.objects.all()
 
 
-class RemoveMemberView(LoginRequiredMixin, UserPassesTestMixin, View):
+class RemoveMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         project = get_object_or_404(Project, pk=self.kwargs['pk'])
         return self.request.user == project.coordinator

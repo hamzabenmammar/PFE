@@ -7,9 +7,9 @@ import uuid
 
 class Project(models.Model):
     STATUS_CHOICES = (
-        ( 'En cours' , 'ongoing'),
-        ( 'Réalisé' , 'completed'),
-        ('Planifié' , 'planned'),
+        ( 'En cours' , 'ongoing'  ),
+        ( 'Réalisé' , 'completed' ),
+        ( 'Planifié' , 'planned' ),
     )
     id = models.UUIDField(
         primary_key=True,

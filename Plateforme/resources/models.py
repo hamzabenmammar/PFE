@@ -60,11 +60,31 @@ class ResourceBase(models.Model):
         choices=STATUS_CHOICES,
         default='draft'
     )
-   
+    views_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_("Views Count")
+    )
 
     class Meta:
         abstract = True
         ordering = ['-creation_date']
+
+    def get_absolute_url(self):
+        """
+        Retourne l'URL absolue pour accéder aux détails de la ressource.
+        Cette méthode doit être surchargée par les classes enfants.
+        """
+        model_name = self.__class__.__name__.lower()
+        return reverse(f'resources:{model_name}_detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return self.title
+
+    def increment_views(self):
+        """Incrémente le compteur de vues."""
+        self.views_count += 1
+        self.save(update_fields=['views_count'])
+
 def validate_academic_year(value):
     """
     Validate the academic year format YYYY-YYYY.

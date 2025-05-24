@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% load i18n %} {% block title %}{% trans "En attente
+de vérification" %}{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto text-center">
+      <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">
+          {% trans "Votre profil est en attente de vérification" %}
+        </h4>
+        <p>
+          {% trans "L'accès à certaines sections de la plateforme est restreint
+          en attendant la vérification de votre profil par un administrateur."
+          %}
+        </p>
+        <hr />
+        <p class="mb-0">
+          {% trans "Nous vous remercions de votre patience. Vous recevrez une
+          notification dès que votre profil aura été vérifié." %}
+        </p>
+      </div>
+      <p class="mt-3">
+        {% trans "En attendant, vous pouvez explorer les sections publiques :"
+        %}
+      </p>
+      <p>
+        <a href="{% url 'pages:home' %}" class="btn btn-outline-primary m-1"
+          >{% trans "Accueil" %}</a
+        >
+        <a
+          href="{% url 'events:event_list' %}"
+          class="btn btn-outline-primary m-1"
+          >{% trans "Événements" %}</a
+        >
+        {# Assurez-vous d'avoir une URL nommée 'courses:course_list' ou
+        similaire #} {% comment %}<a
+          href="{% url 'courses:course_list' %}"
+          class="btn btn-outline-primary m-1"
+          >{% trans "Cours" %}</a
+        >{% endcomment %}
+        <a
+          href="{% url 'profile' pk=request.user.pk %}"
+          class="btn btn-outline-primary m-1"
+          >{% trans "Mon Profil" %}</a
+        >
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

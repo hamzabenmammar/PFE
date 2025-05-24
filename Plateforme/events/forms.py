@@ -27,19 +27,7 @@ class EventForm(forms.ModelForm):
             'attachment': forms.FileInput(attrs={'class': 'form-control'}),
         }
     
-    def clean(self):
-        cleaned_data = super().clean()
-        start_date = cleaned_data.get('start_date')
-        end_date = cleaned_data.get('end_date')
-        submission_deadline = cleaned_data.get('submission_deadline')
-        
-        if start_date and end_date and end_date < start_date:
-            self.add_error('end_date', ('End date must be after start date'))
-        
-        if start_date and submission_deadline and submission_deadline > start_date:
-            self.add_error('submission_deadline', ('Submission deadline must be before event start date'))
-        
-        return cleaned_data
+  
 
 
 class EventSearchForm(forms.Form):

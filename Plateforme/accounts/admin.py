@@ -12,8 +12,8 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
     
     # Correction 2: Champs affichés dans la liste
-    list_display = ('email', 'full_name', 'is_staff', 'institution')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'institution')
+    list_display = ('email', 'full_name', 'is_staff', 'institution' , 'is_verified')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'institution' , 'is_verified')
     
     # Correction 3: Champs pour l'édition
     fieldsets = (
