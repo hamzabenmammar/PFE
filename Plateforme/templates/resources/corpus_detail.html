@@ -4,23 +4,20 @@
     <h3 class="h5 border-bottom pb-2 fw-bold"><i class="bi bi-file-earmark-text me-2"></i>Corpus Details</h3>
     <div class="row mt-3">
         <div class="col-md-6">
-            <div class="mb-3">
+             <div class="mb-3">
+                <span class="text-muted">Field:</span>
+                <strong class="ms-2">{{ object.get_field_display }}</strong>
+            </div>
+            
+        </div>
+        <div class="col-md-6">
+           <div class="mb-3">
                 <span class="text-muted">Size:</span>
                 <strong class="ms-2">{{ object.size }} words</strong>
             </div>
             <div class="mb-3">
                 <span class="text-muted">File Format:</span>
                 <strong class="ms-2">{{ object.file_format }}</strong>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                <span class="text-muted">Language:</span>
-                <strong class="ms-2">{{ object.language|default:"Not specified" }}</strong>
-            </div>
-            <div class="mb-3">
-                <span class="text-muted">Titre:</span>
-                <strong class="ms-2">{{ object.titre|default:"Not specified" }}</strong>
             </div>
         </div>
     </div>

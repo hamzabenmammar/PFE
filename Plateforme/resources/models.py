@@ -12,6 +12,11 @@ class ResourceBase(models.Model):
     """
     Base model for all resources.
     """
+
+    class LanguageChoices(models.TextChoices):
+        ARABIC = 'ar', _('Arabic')
+        ENGLISH = 'en', _('English')
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -36,12 +41,11 @@ class ResourceBase(models.Model):
         blank=True,
         null=True
     )
-    # The related_name is set in each subclass
     author = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
         verbose_name=_("Author"),
-        related_name="%(class)s_set"  # This creates a unique related_name for each subclass
+        related_name="%(class)s_set"  
     )
     keywords = models.CharField(
         max_length=255,
@@ -49,31 +53,47 @@ class ResourceBase(models.Model):
         null=True,
         verbose_name=_("Keywords")
     )
-    STATUS_CHOICES = [
-        ('draft', _('Draft')),
-        ('submitted', _('Submitted')),
-        ('published', _('Published')),
-        ('rejected', _('Rejected'))
-    ]
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='draft'
+    update_date = models.DateTimeField(
+        null=True,  
+        blank=True, 
+        verbose_name=_("Update Date"),
+        help_text=_("Last time this resource was updated")
+    )
+    language = models.CharField(
+        max_length=10,
+        choices=LanguageChoices.choices,
+        default=LanguageChoices.ARABIC,
+        verbose_name=_("Language")
     )
     views_count = models.PositiveIntegerField(
         default=0,
         verbose_name=_("Views Count")
     )
 
-    class Meta:
-        abstract = True
-        ordering = ['-creation_date']
+    
+    def get_supported_languages_list(self):
+        """Return supported languages as a list"""
+        if hasattr(self, 'supported_languages') and self.supported_languages:
+            return [lang.strip() for lang in self.supported_languages.split(',')]
+        return []
+    
+    def get_keywords_list(self):
+    
+     if not self.keywords:
+        return []
+        
+     if isinstance(self.keywords, str):
+        keywords = self.keywords.replace('،', ',')
+        return [kw.strip() for kw in keywords.split(',') if kw.strip()]
+     elif isinstance(self.keywords, (list, tuple)):
+        return list(self.keywords)
+     return []
 
+    def get_author_full_name(self):
+        if self.author:
+            return self.author.get_full_name() or self.author.email
+        return ''
     def get_absolute_url(self):
-        """
-        Retourne l'URL absolue pour accéder aux détails de la ressource.
-        Cette méthode doit être surchargée par les classes enfants.
-        """
         model_name = self.__class__.__name__.lower()
         return reverse(f'resources:{model_name}_detail', kwargs={'pk': self.pk})
 
@@ -81,14 +101,14 @@ class ResourceBase(models.Model):
         return self.title
 
     def increment_views(self):
-        """Incrémente le compteur de vues."""
         self.views_count += 1
         self.save(update_fields=['views_count'])
 
+    class Meta:
+        abstract = True
+        ordering = ['-creation_date']
+
 def validate_academic_year(value):
-    """
-    Validate the academic year format YYYY-YYYY.
-    """
     import re
     if not re.match(r'^\d{4}-\d{4}$', value):
         raise ValidationError(
@@ -99,10 +119,41 @@ def validate_academic_year(value):
         raise ValidationError(
             _("The ending year must be the starting year + 1")
         )
-def validate_annee_academique(value):
-   
     return validate_academic_year(value)
 
+class FieldChoices(models.TextChoices):
+        
+        # Domaines principaux
+        COMPUTER_SCIENCE = 'computer_science', _('Computer Science')
+        LINGUISTICS = 'linguistics', _('Linguistics')
+        ARTIFICIAL_INTELLIGENCE = 'ai', _('Artificial Intelligence')
+        NLP = 'nlp', _('Natural Language Processing')
+        MACHINE_LEARNING = 'ml', _('Machine Learning')
+        DATA_SCIENCE = 'data_science', _('Data Science')
+        
+        # Sous-domaines spécifiques
+        COMPUTATIONAL_LINGUISTICS = 'comp_linguistics', _('Computational Linguistics')
+        SPEECH_PROCESSING = 'speech_processing', _('Speech Processing')
+        TEXT_MINING = 'text_mining', _('Text Mining')
+        INFORMATION_RETRIEVAL = 'ir', _('Information Retrieval')
+        
+        # Domaines linguistiques
+        ARABIC_LINGUISTICS = 'arabic_linguistics', _('Arabic Linguistics')
+        MORPHOLOGY = 'morphology', _('Morphology')
+        SYNTAX = 'syntax', _('Syntax')
+        SEMANTICS = 'semantics', _('Semantics')
+        
+        # Domaines d'application
+        TRANSLATION = 'translation', _('Translation')
+        SENTIMENT_ANALYSIS = 'sentiment_analysis', _('Sentiment Analysis')
+        NAMED_ENTITY = 'named_entity', _('Named Entity Recognition')
+        TEXT_CLASSIFICATION = 'text_classification', _('Text Classification')
+
+        # Autres domaines pertinents
+        DIGITAL_HUMANITIES = 'digital_humanities', _('Digital Humanities')
+        CORPUS_LINGUISTICS = 'corpus_linguistics', _('Corpus Linguistics')
+        DOCUMENTATION = 'documentation', _('Documentation')
+        OTHER = 'other', _('Other')
 
 class Course(ResourceBase):
     """
@@ -113,8 +164,11 @@ class Course(ResourceBase):
         MASTER = 'master', _('Master')
         DOCTORATE = 'doctorate', _('Doctorate')
 
+
     field = models.CharField(
         max_length=50,
+        choices=FieldChoices.choices,  # Modifié ici
+        default=FieldChoices.OTHER, 
         verbose_name=_("Field of Study"),
         help_text=_("Primary field of the course")
     )
@@ -171,7 +225,6 @@ class Course(ResourceBase):
             raise PermissionDenied(_("This course requires authentication"))
         return self
 
-
 class Document(ResourceBase):
     class DocumentType(models.TextChoices):
         ARTICLE = 'article', _('Article')
@@ -219,7 +272,6 @@ class Document(ResourceBase):
             return reverse('resources:memoir_detail', kwargs={'pk': self.memoir.pk})
         return reverse('resources:document_detail', kwargs={'pk': self.pk})
 
-
 class Thesis(models.Model):
     document = models.OneToOneField(
         Document,
@@ -254,7 +306,6 @@ class Thesis(models.Model):
     class Meta:  
         verbose_name = _("thesis")
         verbose_name_plural = _("Theses")
-
 
 class Memoir(models.Model):
     document = models.OneToOneField(
@@ -346,6 +397,13 @@ class NLPTool(ResourceBase):
         SENTIMENT_ANALYSIS = 'sentiment_analysis', _('Sentiment Analysis')
         MACHINE_TRANSLATION = 'machine_translation', _('Machine Translation')
 
+    class SupportedLanguages(models.TextChoices):
+        ARABIC = 'ar', _('Arabic')
+        ENGLISH = 'en', _('English')
+        FRENCH = 'fr', _('French')
+        SPANISH = 'es', _('Spanish')
+        
+
     tool_type = models.CharField(
         max_length=50,
         choices=ToolType.choices,
@@ -367,11 +425,12 @@ class NLPTool(ResourceBase):
         auto_now=True,
         verbose_name=_("Last Updated")
     )
-    languages = models.CharField(
+    supported_languages = models.CharField(
         max_length=255,
         verbose_name=_("Supported Languages"),
-        help_text=_("Languages supported by the tool, separated by commas"),
-        default='Arabic'
+        help_text=_("Languages that this tool can process"),
+        choices=SupportedLanguages.choices,
+        default=SupportedLanguages.ARABIC
     )
 
     class Meta:
@@ -388,24 +447,32 @@ class NLPTool(ResourceBase):
 
     def __str__(self):
         return f"{self.title} ({self.get_tool_type_display()})"
+    
+    def get_supported_languages_list(self):
+        """Return supported languages as a list"""
+        if self.supported_languages:
+            return [lang.strip() for lang in self.supported_languages.split(',')]
+        return []
+
+    def get_supported_languages_display(self):
+        """Return human-readable supported languages"""
+        languages = self.get_supported_languages_list()
+        choices_dict = dict(self.SupportedLanguages.choices)
+        return [choices_dict.get(lang, lang) for lang in languages]
 
 
 class Corpus(ResourceBase):
     """
     Model representing a corpus of textual data.
     """
-    language = models.CharField(
-        max_length=50,
-        verbose_name=_("Corpus Language"),
-        help_text=_("Primary language of the corpus"),
-        default='Arabic'
-    )
     size = models.IntegerField(
         verbose_name=_("Corpus Size"),
         help_text=_("Size in number of words or documents")
     )
     field = models.CharField(
         max_length=50,
+        choices=FieldChoices.choices,  
+        default=FieldChoices.OTHER, 
         verbose_name=_("Field of Study"),
         help_text=_("Main field of the corpus")
     )

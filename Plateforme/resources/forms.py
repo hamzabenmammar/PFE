@@ -1,9 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
-from django.contrib.auth import get_user_model
 from crispy_forms.layout import Layout, Fieldset, Submit, Row, Column, HTML
-from .models import Course, NLPTool, Corpus, Document, Article, Thesis, Memoir, ResourceBase
+from .models import Course, NLPTool, Corpus, Document, Article, Thesis, Memoir, ResourceBase ,FieldChoices
 from accounts.models import Institution
 
 class ResourceForm(forms.Form):
@@ -48,15 +47,21 @@ class ResourceForm(forms.Form):
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
+    language = forms.ChoiceField(
+    choices=ResourceBase.LanguageChoices.choices,
+    label=_("Language *"),
+    initial=ResourceBase.LanguageChoices.ARABIC,
+    widget=forms.Select(attrs={'class': 'form-select'})
+    )
 
     # ==================== SPECIFIC FIELDS ====================
     # Course
-    course_field = forms.CharField(
-        label=_("Field of Study *"),
-        max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
+    course_field = forms.ChoiceField(
+    choices=FieldChoices.choices,
+    label=_("Field of Study *"),
+    required=False,
+    widget=forms.Select(attrs={'class': 'form-select'})
+)
     academic_level = forms.ChoiceField(
         choices=Course.Level.choices,
         label=_("Academic Level *"),
@@ -95,33 +100,32 @@ class ResourceForm(forms.Form):
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
-    languages = forms.CharField(
+    supported_languages = forms.MultipleChoiceField(
+        choices=[
+            ('ar', _('Arabic')),
+            ('en', _('English')),
+            ('fr', _('French')),
+            ('es', _('Spanish')),
+            # Ajoutez d'autres langues selon vos besoins
+        ],
         label=_("Supported Languages *"),
-        max_length=255,
         required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        initial='Arabic'
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'list-unstyled'}),
+        help_text=_("Select all languages that this tool can process")
     )
 
     # Corpus
-    corpus_language = forms.CharField(
-        label=_("Primary Language *"),
-        max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        initial='Arabic'
-    )
     corpus_size = forms.IntegerField(
         label=_("Size * (words/documents)"),
         required=False,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
-    corpus_field = forms.CharField(
-        label=_("Field of Study *"),
-        max_length=50,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
+    corpus_field = forms.ChoiceField(
+    choices=FieldChoices.choices,
+    label=_("Field of Study *"),
+    required=False,
+    widget=forms.Select(attrs={'class': 'form-select'})
+)
     corpus_format = forms.CharField(
         label=_("Format * (TXT/CSV/JSON)"),
         max_length=10,
@@ -136,16 +140,16 @@ class ResourceForm(forms.Form):
         required=False,
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    document_format = forms.CharField(
-        label=_("Format * (PDF/DOCX)"),
-        max_length=10,
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
     authors = forms.CharField(
         required=False,
         label=_("Authors"),
         max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    document_format = forms.CharField(
+        label=_("Format * (PDF/DOCX)"),
+        max_length=10,
+        required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
@@ -213,6 +217,13 @@ class ResourceForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         self.is_update = kwargs.pop('is_update', False) 
+        instance = kwargs.get('instance', None)
+    
+    # Si nous avons une instance et des langues supportées
+        if instance and hasattr(instance, 'supported_languages'):
+         if 'initial' not in kwargs:
+            kwargs['initial'] = {}
+         kwargs['initial']['supported_languages'] = self.prepare_supported_languages(instance.supported_languages)
         super().__init__(*args, **kwargs)
         
         self.helper = FormHelper()
@@ -225,6 +236,10 @@ class ResourceForm(forms.Form):
         
         resource_type = self.initial.get('resource_type', 'course')
         document_type = self.initial.get('document_type', 'article')
+        if 'supported_languages' in self.fields:
+         self.fields['supported_languages'].widget.attrs.update({
+            'class': 'checkbox-grid'
+        })
 
         # Build dynamic layout
         self.helper.layout = self._build_layout(resource_type, document_type)
@@ -233,7 +248,11 @@ class ResourceForm(forms.Form):
         layout = Layout(
             Fieldset(
                 _('Basic Information'),
-                Row(Column('resource_type', css_class='col-md-6')),
+                Row(
+                    Column('resource_type', css_class='col-md-6'),
+                    Column('language', css_class='col-md-6'),
+                    ),
+                
                 'title',
                 'description',
                 Row(Column('keywords', css_class='col-md-12')),
@@ -276,7 +295,11 @@ class ResourceForm(forms.Form):
             ),
             Row(
                 Column('documentation', css_class='col-md-6'),
-                Column('languages', css_class='col-md-6')
+                 Fieldset(
+                _('Supported Languages'),
+                'supported_languages',
+                css_class='border p-3 mt-3'
+             )
             )
         )
 
@@ -284,7 +307,6 @@ class ResourceForm(forms.Form):
         return Fieldset(
             _('Corpus Details'),
             Row(
-                Column('corpus_language', css_class='col-md-6'),
                 Column('corpus_size', css_class='col-md-6')
             ),
             Row(
@@ -342,6 +364,18 @@ class ResourceForm(forms.Form):
             ),
             'memoir_defense_year'
         )
+    
+    def clean_supported_languages(self):
+        languages = self.cleaned_data.get('supported_languages')
+        if not languages and self.cleaned_data.get('resource_type') == 'nlp_tool':
+            raise forms.ValidationError(_("Please select at least one supported language"))
+        return ','.join(languages) if languages else ''
+
+    def prepare_supported_languages(self, value):
+        """Convertit une chaîne de langues en liste pour l'affichage initial"""
+        if value:
+            return value.split(',')
+        return []
 
     #
     # ... (votre logique existante de validation et sauvegarde)
@@ -356,7 +390,7 @@ class ResourceForm(forms.Form):
       elif resource_type == 'nlp_tool':
         required_fields = ['tool_type', 'tool_version']
       elif resource_type == 'corpus':
-        required_fields = ['corpus_language', 'corpus_size', 'corpus_field', 'corpus_format']
+        required_fields = ['corpus_size', 'corpus_field', 'corpus_format']
       elif resource_type == 'document':
         required_fields = ['document_type', 'document_format']
         for field in required_fields:
@@ -396,6 +430,22 @@ class ResourceForm(forms.Form):
         except (ValueError, AttributeError):
             self.add_error('academic_year', _("Invalid format (ex: 2023-2024)"))
 
+      if resource_type == 'course':
+        field_value = cleaned_data.get('course_field')
+        if field_value and field_value not in dict(FieldChoices.choices):
+            self.add_error('course_field', _("Invalid field choice"))
+
+      elif resource_type == 'corpus':
+        field_value = cleaned_data.get('corpus_field')
+        if field_value and field_value not in dict(FieldChoices.choices):
+            self.add_error('corpus_field', _("Invalid field choice"))
+
+      language_value = cleaned_data.get('language')
+      if not language_value:
+        self.add_error('language', _("Language is required"))
+      elif language_value not in dict(ResourceBase.LanguageChoices.choices):
+        self.add_error('language', _("Invalid language choice"))
+
       return cleaned_data
     
     def save(self, instance=None):
@@ -406,6 +456,7 @@ class ResourceForm(forms.Form):
             'author': self.user,
             'keywords': self.cleaned_data['keywords'],
             'access_link': self.cleaned_data['access_link'] or None,
+            'language': self.cleaned_data['language'] ,
         }
 
         if self.is_update and instance:
@@ -415,7 +466,7 @@ class ResourceForm(forms.Form):
             instance.save()
             
             if resource_type == 'course':
-                instance.field = self.cleaned_data['course_field']
+                instance.field = self.cleaned_data['course_field'] 
                 instance.academic_level = self.cleaned_data['academic_level']
                 instance.institution = self.cleaned_data['course_institution']
                 instance.academic_year = self.cleaned_data['academic_year']
@@ -424,12 +475,11 @@ class ResourceForm(forms.Form):
                 instance.tool_type = self.cleaned_data['tool_type']
                 instance.version = self.cleaned_data['tool_version']
                 instance.documentation_link = self.cleaned_data['documentation']
-                instance.languages = self.cleaned_data['languages']
+                instance.supported_languages = self.cleaned_data['supported_languages']
                 instance.save()
             elif resource_type == 'corpus':
-                instance.language = self.cleaned_data['corpus_language']
                 instance.size = self.cleaned_data['corpus_size']
-                instance.field = self.cleaned_data['corpus_field']
+                instance.field = self.cleaned_data['corpus_field'] 
                 instance.file_format = self.cleaned_data['corpus_format']
                 instance.save()
             elif resource_type == 'document':
@@ -474,12 +524,11 @@ class ResourceForm(forms.Form):
                     tool_type=self.cleaned_data['tool_type'],
                     version=self.cleaned_data['tool_version'],
                     documentation_link=self.cleaned_data['documentation'],
-                    languages=self.cleaned_data['languages']
+                    supported_languages=self.cleaned_data['supported_languages']
                 )
             elif resource_type == 'corpus':
                 return Corpus.objects.create(
                     **common_data,
-                    language=self.cleaned_data['corpus_language'],
                     size=self.cleaned_data['corpus_size'],
                     field=self.cleaned_data['corpus_field'],
                     file_format=self.cleaned_data['corpus_format']

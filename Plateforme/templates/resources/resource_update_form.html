@@ -2,27 +2,7 @@
 {% load static crispy_forms_tags i18n %}
 
 {% block content %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Empêcher la modification des types de ressource
-        const typeFields = ['resource_type', 'document_type'];
-        typeFields.forEach(fieldName => {
-            const field = document.querySelector(`[name="${fieldName}"]`);
-            if (field) field.disabled = true;
-        });
-        
-        // S'assurer que les champs désactivés sont quand même soumis
-        document.querySelector('form').addEventListener('submit', function() {
-            typeFields.forEach(fieldName => {
-                const field = document.querySelector(`[name="${fieldName}"]`);
-                if (field && field.disabled) field.disabled = false;
-            });
-        });
-    });
-    </script>
 <div class="container py-5">
-    <h1>{{form.initial.document_type}} </h1>
-    <h1>{{form.initial.resource_type}} </h1>
     <h1 class="mb-4">
         {% if form.initial.document_type == 'thesis' %}
             {% trans "Update Thesis" %}
@@ -44,20 +24,22 @@
     <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 
+        <!-- Include resource_type as hidden input -->
+        {{ form.resource_type.as_hidden }}
+        
+        <!-- Include document_type as hidden if resource is document -->
         {% if form.initial.resource_type == 'document' %}
-      {{ form.document_type.as_hidden }}
-      {{ form.document_format.as_hidden }}
-    {% endif %}
-       
+            {{ form.document_type.as_hidden }}
+        {% endif %}
+
         <!-- Common fields -->
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
                 {% trans "Basic Information" %}
             </div>
             <div class="card-body">
-                
-
                 {{ form.title|as_crispy_field }}
+                {{ form.language|as_crispy_field }}
                 {{ form.description|as_crispy_field }}
                 {{ form.keywords|as_crispy_field }}
                 {{ form.access_link|as_crispy_field }}
@@ -86,7 +68,7 @@
                 {{ form.tool_type|as_crispy_field }}
                 {{ form.tool_version|as_crispy_field }}
                 {{ form.documentation|as_crispy_field }}
-                {{ form.languages|as_crispy_field }}
+                {{ form.supported_languages|as_crispy_field }} 
             </div>
         </div>
         {% elif form.initial.resource_type == 'corpus' %}
@@ -95,7 +77,6 @@
                 {% trans "Corpus Details" %}
             </div>
             <div class="card-body">
-                {{ form.corpus_language|as_crispy_field }}
                 {{ form.corpus_size|as_crispy_field }}
                 {{ form.corpus_field|as_crispy_field }}
                 {{ form.corpus_format|as_crispy_field }}
@@ -135,6 +116,4 @@
         </div>
     </form>
 </div>
-
-
 {% endblock %}

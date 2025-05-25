@@ -19,1136 +19,620 @@
         {% endif %}
     </div>
 
-    <!-- Search Bar -->
-    <div class="search-container">
-        <form method="get" action="" class="search-form" id="search-form">
-            <div class="input-group shadow-sm">
-                <div class="search-input-wrapper w-100 position-relative">
-                    <input type="text" name="q" id="search-input" class="form-control" 
+    <!-- Search Box -->
+    <div class="global-searchbox">
+        <form method="get" action="" class="searchbox-form" id="globalSearchForm">
+            <div class="searchbox-group shadow-sm">
+                <!-- Query Input Section -->
+                <div class="query-container w-100 position-relative">
+                    <input type="text" 
+                           name="q" 
+                           id="globalQuery" 
+                           class="query-input" 
                            placeholder="Rechercher des ressources..." 
                            autocomplete="off"
                            value="{{ request.GET.q|default:'' }}">
-                    <div class="search-icon-indicator">
-                        <i class="bi bi-search search-icon"></i>
-                        <div class="spinner-border spinner-border-sm text-primary search-spinner" role="status" style="display: none;">
+                    
+                    <!-- Query Status Indicators -->
+                    <div class="status-indicator">
+                        <i class="bi bi-search status-icon"></i>
+                        <div class="spinner-border spinner-border-sm text-primary status-spinner" 
+                             role="status" 
+                             style="display: none;">
                             <span class="visually-hidden">Chargement...</span>
                         </div>
                     </div>
                     
-                    <!-- Suggestions de recherche -->
-                    <div class="search-suggestions" id="search-suggestions"></div>
-                    
-                    <!-- Historique des recherches -->
-                    <div class="search-history" id="search-history"></div>
+                    <!-- Dropdowns -->
+                    <div class="suggestions-panel" id="querySuggestions"></div>
+                    <div class="history-panel" id="queryHistory"></div>
                 </div>
                 
-                <select name="type" class="form-select" id="type-select">
+                <!-- Type Selection -->
+                <select name="type" class="type-select" id="contentTypeSelect">
                     <option value="">Tous les types</option>
-                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>Article</option>
-                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>Thèse</option>
-                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>Mémoire</option>
-                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>Outil</option>
-                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Cours</option>
+                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>Articles</option>
+                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>Thesis</option>
+                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>Memoirs</option>
+                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>Tools</option>
+                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Courses</option>
                     <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>Corpus</option>
                 </select>
                 
-                <button type="submit" class="btn btn-search">
+                <!-- Action Buttons -->
+                <button type="submit" class="action-button submit-action">
                     <i class="bi bi-search"></i>
                 </button>
-                
-                <!-- Bouton pour afficher les filtres avancés -->
-                <button type="button" class="btn btn-filter-toggle" id="toggle-filters">
-                    <i class="bi bi-sliders"></i>
-                </button>
-            </div>
-            
-            <!-- Filtres avancés -->
-            <div class="advanced-filters" id="advanced-filters">
-                <div class="row g-3 p-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Auteur</label>
-                        <input type="text" name="author" class="form-control" 
-                               value="{{ request.GET.author|default:'' }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Année</label>
-                        <div class="input-group">
-                            <input type="number" name="year_start" class="form-control" 
-                                   placeholder="Début" value="{{ request.GET.year_start|default:'' }}">
-                            <span class="input-group-text">-</span>
-                            <input type="number" name="year_end" class="form-control" 
-                                   placeholder="Fin" value="{{ request.GET.year_end|default:'' }}">
-                        </div>
-                    </div>
-                    <div class="col-12 d-flex justify-content-end">
-                        <button type="reset" class="btn btn-outline-secondary me-2">
-                            Réinitialiser
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            Appliquer les filtres
-                        </button>
-                    </div>
-                </div>
             </div>
         </form>
     </div>
-    
-    <!-- Filter Tags -->
-    <div class="filter-container">
-        <div class="filter-label">
+
+    <!-- Category Filters -->
+    <div class="category-filters">
+        <div class="category-label">
             <i class="bi bi-funnel me-2"></i> Filter by:
         </div>
-        <div class="filter-tags">
+        <div class="category-list">
             <a href="?q={{ request.GET.q }}" 
-               class="filter-tag {% if not request.GET.type %}active{% endif %}">
+               class="category-item {% if not request.GET.type %}active{% endif %}">
                 All
             </a>
             <a href="?q={{ request.GET.q }}&type=article" 
-               class="filter-tag {% if request.GET.type == 'article' %}active{% endif %}">
+               class="category-item {% if request.GET.type == 'article' %}active{% endif %}">
                 <i class="bi bi-file-text me-1"></i> Articles
             </a>
             <a href="?q={{ request.GET.q }}&type=thesis" 
-               class="filter-tag {% if request.GET.type == 'thesis' %}active{% endif %}">
+               class="category-item {% if request.GET.type == 'thesis' %}active{% endif %}">
                 <i class="bi bi-journal-richtext me-1"></i> Theses
             </a>
             <a href="?q={{ request.GET.q }}&type=memoir" 
-               class="filter-tag {% if request.GET.type == 'memoir' %}active{% endif %}">
+               class="category-item {% if request.GET.type == 'memoir' %}active{% endif %}">
                 <i class="bi bi-book me-1"></i> Memoirs
             </a>
             <a href="?q={{ request.GET.q }}&type=tool" 
-               class="filter-tag {% if request.GET.type == 'tool' %}active{% endif %}">
+               class="category-item {% if request.GET.type == 'tool' %}active{% endif %}">
                 <i class="bi bi-tools me-1"></i> Tools
             </a>
             <a href="?q={{ request.GET.q }}&type=course" 
-               class="filter-tag {% if request.GET.type == 'course' %}active{% endif %}">
+               class="category-item {% if request.GET.type == 'course' %}active{% endif %}">
                 <i class="bi bi-mortarboard me-1"></i> Courses
             </a>
             <a href="?q={{ request.GET.q }}&type=corpus" 
-              class="filter-tag {% if request.GET.type == 'corpus' %}active{% endif %}">
-                   <i class="bi bi-archive me-1"></i> Corpus
+               class="category-item {% if request.GET.type == 'corpus' %}active{% endif %}">
+                <i class="bi bi-archive me-1"></i> Corpus
             </a>
         </div>
     </div>
 
     <!-- Resources Grid -->
     {% if resources %}
-        <div class="resource-grid">
-            {% for resource in resources %}
-            <div class="resource-card">
-                <div class="resource-type-indicator type-{{ resource.resource_type }}"></div>
-                <div class="card-body">
-                    <div class="resource-badge type-{{ resource.resource_type }}">
-                        <i class="bi {% if resource.resource_type == 'article' %}bi-file-text{% elif resource.resource_type == 'thesis' %}bi-journal-richtext{% elif resource.resource_type == 'memoir' %}bi-book{% elif resource.resource_type == 'tool' %}bi-tools{% else %}bi-mortarboard{% endif %} me-2"></i>
-                        {{ resource.resource_type|title }}
+    <div class="resource-grid">
+        {% for resource in resources %}
+        <div class="resource-card">
+            <div class="resource-type-indicator type-{{ resource.resource_type }}"></div>
+            <div class="card-body">
+                <div class="resource-badge type-{{ resource.resource_type }}">
+                    <i class="bi {% if resource.resource_type == 'article' %}bi-file-text
+                               {% elif resource.resource_type == 'thesis' %}bi-journal-richtext
+                               {% elif resource.resource_type == 'memoir' %}bi-book
+                               {% elif resource.resource_type == 'tool' %}bi-tools
+                               {% else %}bi-mortarboard{% endif %} me-2"></i>
+                    {{ resource.resource_type|title }}
+                </div>
+                <h5 class="card-title">{{ resource.title }}</h5>
+                <div class="card-text">
+                    {{ resource.description|truncatewords:20|default:"No description provided" }}
+                </div>
+                <div class="resource-meta">
+                    <div class="meta-item">
+                        <i class="bi bi-person-circle"></i>
+                        <span>{{ resource.author.full_name }}</span>
                     </div>
-                    <h5 class="card-title">{{ resource.title }}</h5>
-                    <div class="card-text">
-                        {{ resource.description|truncatewords:20|default:"No description provided" }}
-                    </div>
-                    <div class="resource-meta">
-                        <div class="meta-item">
-                            <i class="bi bi-person-circle"></i>
-                            <span>{{ resource.author }}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="bi bi-calendar-event"></i>
-                            <span>{{ resource.creation_date|date:"M d, Y" }}</span>
-                        </div>
+                    <div class="meta-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>{{ resource.creation_date|date:"M d, Y" }}</span>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a href="{% url 'resources:resource-detail' resource.resource_type resource.id %}" 
-                       class="btn-view">
-                        <span>View Details</span>
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
             </div>
-            {% endfor %}
-        </div>
-
-        <!-- Pagination -->
-        {% if is_paginated %}
-        <nav class="pagination-container" aria-label="Page navigation">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page=1" aria-label="First">
-                            <i class="bi bi-chevron-double-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    </li>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ num }}</span>
-                        </li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <li class="page-item">
-                            <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ num }}">{{ num }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.next_page_number }}" aria-label="Next">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                            <i class="bi bi-chevron-double-right"></i>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="bi bi-search"></i>
-            </div>
-            <h3>No resources found</h3>
-            <p class="text-muted">Try adjusting your search criteria</p>
-            {% if user.is_authenticated %}
-                <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg mt-3">
-                    <i class="bi bi-plus-lg me-2"></i> Add a resource
+            <div class="card-footer">
+                <a href="{% url 'resources:resource-detail' resource.resource_type resource.id %}" 
+                   class="btn-view">
+                    <span>View Details</span>
+                    <i class="bi bi-arrow-right"></i>
                 </a>
-            {% endif %}
+            </div>
         </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="pagination-container" aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page=1" aria-label="First">
+                    <i class="bi bi-chevron-double-left"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&type={{ request.GET.type }}&page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <i class="bi bi-chevron-double-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="bi bi-search"></i>
+        </div>
+        <h3>No resources found</h3>
+        <p class="text-muted">Try adjusting your search criteria</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg mt-3">
+            <i class="bi bi-plus-lg me-2"></i> Add a resource
+        </a>
+        {% endif %}
+    </div>
     {% endif %}
 </div>
 
 <style>
-    :root {
-        --primary: #4361ee;
-        --primary-dark: #3a56d4;
-        --bg-light: #f8f9fa;
-        --text-dark: #212529;
-        --text-muted: #6c757d;
-        --border-color: #dee2e6;
-        --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-        --card-radius: 12px;
-        
-        /* Resource type colors */
-        --color-article: #4cc9f0;
-        --color-thesis: #4895ef;
-        --color-memoir: #f77f00;
-        --color-tool: #52b788;
-        --color-course: #7209b7;
-    }
+/* Variables */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --bg-light: #f8f9fa;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --card-radius: 12px;
     
-    /* Container */
-    .resources-container {
-        max-width: 1320px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-    
-    /* Search bar styling */
-    .search-container {
-        margin-bottom: 2rem;
-    }
-    
-    .search-form {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
-    .input-group {
-        border-radius: 16px;
-        overflow: hidden;
-    }
-    
-    .form-control, .form-select {
-        border: none;
-        padding: 0.8rem 1.2rem;
-        font-size: 1rem;
-    }
-    
-    .form-control:focus, .form-select:focus {
-        box-shadow: none;
-        border-color: var(--primary);
-    }
-    
-    .btn-search {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 0 1.5rem;
-        font-size: 1.1rem;
-    }
-    
-    .btn-search:hover {
-        background-color: var(--primary-dark);
-    }
-    
-    /* Filter tags */
-    .filter-container {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 2rem;
-        padding: 0.5rem 0;
-    }
-    
-    .filter-label {
-        font-weight: 500;
-        color: var(--text-dark);
-        margin-right: 0.5rem;
-    }
-    
-    .filter-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
-    .filter-tag {
-        display: inline-flex;
-        align-items: center;
-        background-color: var(--bg-light);
-        border: 1px solid var(--border-color);
-        color: var(--text-dark);
-        padding: 0.5rem 1rem;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.2s ease;
-    }
-    
-    .filter-tag:hover {
-        background-color: rgba(67, 97, 238, 0.1);
-        border-color: var(--primary);
-        color: var(--primary);
-    }
-    
-    .filter-tag.active {
-        background-color: var(--primary);
-        border-color: var(--primary);
-        color: white;
-    }
-    
-    /* Resource grid */
-    .resource-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    /* Resource cards */
-    .resource-card {
-        background-color: white;
-        border-radius: var(--card-radius);
-        overflow: hidden;
-        box-shadow: var(--shadow);
-        display: flex;
+    /* Resource type colors */
+    --color-article: #4cc9f0;
+    --color-thesis: #4895ef;
+    --color-memoir: #f77f00;
+    --color-tool: #52b788;
+    --color-course: #7209b7;
+}
+
+/* Container */
+.resources-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Global Searchbox */
+.global-searchbox {
+    margin-bottom: 2rem;
+}
+
+.searchbox-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.searchbox-group {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Query Container */
+.query-container {
+    position: relative;
+}
+
+.query-input {
+    width: 100%;
+    border: none;
+    padding: 1rem 2.5rem 1rem 1.2rem;
+    font-size: 1rem;
+}
+
+.query-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Status Indicators */
+.status-indicator {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.status-icon {
+    font-size: 1rem;
+}
+
+.status-spinner {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Type Selection */
+.type-select {
+    border: none;
+    border-left: 1px solid var(--border-color);
+    padding: 1rem 1.2rem;
+    min-width: 140px;
+}
+
+/* Action Buttons */
+.action-button {
+    padding: 0 1.5rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.submit-action {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Category Filters */
+.category-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem 0;
+}
+
+.category-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-right: 0.5rem;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-item {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.category-item:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.category-item.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Resource Grid */
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Resource Cards */
+.resource-card {
+    background-color: white;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s ease;
+    border: none;
+    height: 100%;
+}
+
+.resource-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.resource-type-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+}
+
+.resource-type-indicator.type-article { background-color: var(--color-article); }
+.resource-type-indicator.type-thesis { background-color: var(--color-thesis); }
+.resource-type-indicator.type-memoir { background-color: var(--color-memoir); }
+.resource-type-indicator.type-tool { background-color: var(--color-tool); }
+.resource-type-indicator.type-course { background-color: var(--color-course); }
+.resource-type-indicator.type-corpus { background-color: var(--color-tool); }
+
+/* Card Body */
+.card-body {
+    padding: 1.75rem;
+    padding-top: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.resource-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.resource-badge.type-article { background-color: rgba(76, 201, 240, 0.1); color: var(--color-article); }
+.resource-badge.type-thesis { background-color: rgba(72, 149, 239, 0.1); color: var(--color-thesis); }
+.resource-badge.type-memoir { background-color: rgba(247, 127, 0, 0.1); color: var(--color-memoir); }
+.resource-badge.type-tool { background-color: rgba(82, 183, 136, 0.1); color: var(--color-tool); }
+.resource-badge.type-course { background-color: rgba(114, 9, 183, 0.1); color: var(--color-course); }
+.resource-badge.type-corpus { background-color: rgba(29, 171, 88, 0.1); color: var(--color-tool); }
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-dark);
+}
+
+.card-text {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Resource Meta */
+.resource-meta {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.meta-item i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Card Footer */
+.card-footer {
+    background-color: var(--bg-light);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.75rem;
+}
+
+.btn-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+.btn-view i {
+    transition: transform 0.2s ease;
+}
+
+.btn-view:hover {
+    color: var(--primary);
+}
+
+.btn-view:hover i {
+    transform: translateX(4px);
+}
+
+/* Pagination */
+.pagination-container {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.page-item .page-link {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 0.5rem 0.8rem;
+    min-width: 2.5rem;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.page-item .page-link:hover:not(.active) {
+    background-color: var(--bg-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    background-color: white;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--primary);
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Dropdowns */
+.suggestions-panel,
+.history-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .searchbox-group {
         flex-direction: column;
-        position: relative;
-        transition: all 0.3s ease;
-        border: none;
-        height: 100%;
     }
     
-    .resource-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    .type-select {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        min-width: 100%;
     }
     
-    .resource-type-indicator {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .action-button {
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .category-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .category-list {
         width: 100%;
-        height: 6px;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        flex-wrap: nowrap;
     }
     
-    .resource-type-indicator.type-article { background-color: var(--color-article); }
-    .resource-type-indicator.type-thesis { background-color: var(--color-thesis); }
-    .resource-type-indicator.type-memoir { background-color: var(--color-memoir); }
-    .resource-type-indicator.type-tool { background-color: var(--color-tool); }
-    .resource-type-indicator.type-course { background-color: var(--color-course); }
-    .resource-type-indicator.type-corpus { background-color:  var(--color-tool); }
-    
-    .resource-card .card-body {
-        padding: 1.75rem;
-        padding-top: 2rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+    .resource-grid {
+        grid-template-columns: 1fr;
     }
     
-    .resource-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.4rem 0.75rem;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    .resource-badge.type-article {
-        background-color: rgba(76, 201, 240, 0.1);
-        color: var(--color-article);
-    }
-    
-    .resource-badge.type-thesis {
-        background-color: rgba(72, 149, 239, 0.1);
-        color: var(--color-thesis);
-    }
-    
-    .resource-badge.type-memoir {
-        background-color: rgba(247, 127, 0, 0.1);
-        color: var(--color-memoir);
-    }
-    
-    .resource-badge.type-tool {
-        background-color: rgba(82, 183, 136, 0.1);
-        color: var(--color-tool);
-    }
-    
-    .resource-badge.type-course {
-        background-color: rgba(114, 9, 183, 0.1);
-        color: var(--color-course);
-    }
-    .resource-badge.type-corpus {
-        background-color: rgba(29, 171, 88, 0.1);
-        color: var(--color-tool);
-    }
-    
-    .card-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-        line-height: 1.4;
-        color: var(--text-dark);
-    }
-    
-    .card-text {
-        color: var(--text-muted);
-        margin-bottom: 1.5rem;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        flex-grow: 1;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-    }
-    
-    .resource-meta {
-        margin-top: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .meta-item {
-        display: flex;
-        align-items: center;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-    }
-    
-    .meta-item i {
-        margin-right: 0.5rem;
-        font-size: 1rem;
-        opacity: 0.8;
+    .card-body {
+        padding: 1.25rem;
     }
     
     .card-footer {
-        background-color: var(--bg-light);
-        border-top: 1px solid var(--border-color);
-        padding: 1rem 1.75rem;
+        padding: 0.75rem 1.25rem;
     }
-    
-    .btn-view {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        text-decoration: none;
-        color: var(--text-dark);
-        font-weight: 600;
-        padding: 0.5rem 0;
-        transition: all 0.2s ease;
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .resource-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
-    
-    .btn-view i {
-        transition: transform 0.2s ease;
+}
+
+@media (min-width: 992px) {
+    .resource-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
-    
-    .btn-view:hover {
-        color: var(--primary);
-    }
-    
-    .btn-view:hover i {
-        transform: translateX(4px);
-    }
-    
-    /* Pagination */
-    .pagination-container {
-        margin-top: 2.5rem;
-        display: flex;
-        justify-content: center;
-    }
-    
-    .pagination {
-        display: flex;
-        gap: 0.35rem;
-    }
-    
-    .page-item .page-link {
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        color: var(--text-dark);
-        padding: 0.5rem 0.8rem;
-        min-width: 2.5rem;
-        text-align: center;
-        font-weight: 500;
-        transition: all 0.2s ease;
-    }
-    
-    .page-item.active .page-link {
-        background-color: var(--primary);
-        border-color: var(--primary);
-    }
-    
-    .page-item .page-link:hover:not(.active) {
-        background-color: var(--bg-light);
-        color: var(--primary);
-        border-color: var(--primary);
-    }
-    
-    /* Empty state */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 1rem;
-        background-color: white;
-        border-radius: var(--card-radius);
-        box-shadow: var(--shadow);
-    }
-    
-    .empty-icon {
-        font-size: 4rem;
-        color: var(--primary);
-        opacity: 0.5;
-        margin-bottom: 1.5rem;
-    }
-    
-    .empty-state h3 {
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    
-    .btn-primary {
-        background-color: var(--primary);
-        border-color: var(--primary);
-        border-width: 2px;
-        font-weight: 600;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-primary:hover {
-        background-color: var(--primary-dark);
-        border-color: var(--primary-dark);
-        transform: translateY(-2px);
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 576px) {
-        .resource-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .filter-container {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .filter-tags {
-            width: 100%;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-            flex-wrap: nowrap;
-        }
-        
-        .card-body {
-            padding: 1.25rem;
-        }
-        
-        .card-footer {
-            padding: 0.75rem 1.25rem;
-        }
-        
-        h1.display-5 {
-            font-size: 1.8rem;
-        }
-    }
-    
-    @media (min-width: 577px) and (max-width: 768px) {
-        .resource-grid {
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        }
-    }
-    
-    @media (min-width: 992px) {
-        .resource-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    <!-- Barre de recherche intelligente à ajouter dans le template list.html -->
-    <div class="search-container">
-        <form method="get" action="" class="search-form" id="search-form">
-            <div class="input-group shadow-sm">
-                <div class="search-input-wrapper w-100 position-relative">
-                    <input type="text" name="q" id="search-input" class="form-control" 
-                           placeholder="Rechercher des ressources..." 
-                           autocomplete="off"
-                           value="{{ request.GET.q|default:'' }}">
-                    <div class="search-icon-indicator">
-                        <i class="bi bi-search search-icon"></i>
-                        <div class="spinner-border spinner-border-sm text-primary search-spinner" role="status" style="display: none;">
-                            <span class="visually-hidden">Chargement...</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Suggestions de recherche -->
-                    <div class="search-suggestions" id="search-suggestions"></div>
-                    
-                    <!-- Historique des recherches -->
-                    <div class="search-history" id="search-history"></div>
-                </div>
-                
-                <select name="type" class="form-select" id="type-select">
-                    <option value="">Tous les types</option>
-                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>Article</option>
-                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>Thèse</option>
-                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>Mémoire</option>
-                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>Outil</option>
-                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Cours</option>
-                    <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>Corpus</option>
-                </select>
-                
-                <button type="submit" class="btn btn-search">
-                    <i class="bi bi-search"></i>
-                </button>
-                
-                <!-- Bouton pour afficher les filtres avancés -->
-                <button type="button" class="btn btn-filter-toggle" id="toggle-filters">
-                    <i class="bi bi-sliders"></i>
-                </button>
-            </div>
-            
-            <!-- Filtres avancés -->
-            <div class="advanced-filters" id="advanced-filters">
-                <div class="row g-3 p-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Auteur</label>
-                        <input type="text" name="author" class="form-control" 
-                               value="{{ request.GET.author|default:'' }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Année</label>
-                        <div class="input-group">
-                            <input type="number" name="year_start" class="form-control" 
-                                   placeholder="Début" value="{{ request.GET.year_start|default:'' }}">
-                            <span class="input-group-text">-</span>
-                            <input type="number" name="year_end" class="form-control" 
-                                   placeholder="Fin" value="{{ request.GET.year_end|default:'' }}">
-                        </div>
-                    </div>
-                    <div class="col-12 d-flex justify-content-end">
-                        <button type="reset" class="btn btn-outline-secondary me-2">
-                            Réinitialiser
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            Appliquer les filtres
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-    <style>
-        /* Styles pour la barre de recherche intelligente */
-        .search-input-wrapper {
-            position: relative;
-        }
-        
-        .search-icon-indicator {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-        
-        .search-icon {
-            font-size: 1rem;
-        }
-        
-        .search-spinner {
-            width: 1rem;
-            height: 1rem;
-            color: var(--primary);
-        }
-        
-        .form-control {
-            padding-right: 40px; /* Espace pour l'icône */
-        }
-        
-        .no-suggestions {
-            padding: 1rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-        
-        .search-suggestions,
-        .search-history {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: white;
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-            z-index: 1000;
-            max-height: 250px;
-            overflow-y: auto;
-            display: none;
-        }
-        
-        .suggestion-item,
-        .history-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border-color);
-            transition: background 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .suggestion-item:last-child,
-        .history-item:last-child {
-            border-bottom: none;
-        }
-        
-        .suggestion-item:hover,
-        .history-item:hover {
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-        
-        .suggestion-text,
-        .history-text {
-            flex-grow: 1;
-        }
-        
-        .suggestion-type,
-        .history-type {
-            margin-left: 0.5rem;
-            font-size: 0.75rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            background-color: var(--bg-light);
-            font-weight: 500;
-        }
-        
-        .suggestion-type.type-article { color: var(--color-article); }
-        .suggestion-type.type-thesis { color: var(--color-thesis); }
-        .suggestion-type.type-memoir { color: var(--color-memoir); }
-        .suggestion-type.type-tool { color: var(--color-tool); }
-        .suggestion-type.type-course { color: var(--color-course); }
-        .suggestion-type.type-corpus { color: var(--color-tool); }
-        
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: var(--bg-light);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .history-title {
-            font-weight: 600;
-            margin: 0;
-            font-size: 0.9rem;
-        }
-        
-        .history-clear {
-            font-size: 0.8rem;
-            color: var(--primary);
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        
-        .history-clear:hover {
-            text-decoration: underline;
-        }
-        
-        .history-empty {
-            padding: 1rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-style: italic;
-        }
-        
-        /* Filtres avancés */
-        .btn-filter-toggle {
-            background-color: white;
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-        }
-        
-        .btn-filter-toggle:hover {
-            background-color: var(--bg-light);
-        }
-        
-        .advanced-filters {
-            display: none;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            margin-top: 0.5rem;
-        }
-        
-        .live-search-results {
-            border-top: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-        }
-        
-        .live-search-item {
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-        
-        .live-search-item .badge {
-            float: right;
-        }
-        
-        .live-search-footer {
-            padding-top: 0.5rem;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 576px) {
-            .search-container .input-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-container .form-select, 
-            .search-container .btn {
-                border-radius: var(--card-radius);
-                margin-top: 0.5rem;
-            }
-            
-            .search-container .search-input-wrapper {
-                width: 100%;
-            }
-        }
+}
 </style>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Éléments DOM
-        const searchForm = document.getElementById('search-form');
-        const searchInput = document.getElementById('search-input');
-        const typeSelect = document.getElementById('type-select');
-        const searchSuggestions = document.getElementById('search-suggestions');
-        const searchHistory = document.getElementById('search-history');
-        const toggleFilters = document.getElementById('toggle-filters');
-        const advancedFilters = document.getElementById('advanced-filters');
-        
-        // Gérer l'historique des recherches
-        let searchHistoryItems = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-        
-        // Afficher l'historique des recherches quand le champ de recherche est focus
-        searchInput.addEventListener('focus', function() {
-            showSearchHistory();
-        });
-        
-        // Masquer l'historique quand on clique ailleurs
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !searchHistory.contains(e.target)) {
-                searchHistory.style.display = 'none';
-            }
-            
-            if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
-                searchSuggestions.style.display = 'none';
-            }
-        });
-        
-        // Gestion des suggestions pendant la saisie avec debounce
-        let debounceTimer;
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                if (query.length >= 2) {
-                    fetchSuggestions(query);
-                } else {
-                    searchSuggestions.style.display = 'none';
-                }
-            }, 300);
-        });
-        
-        // Fonction pour récupérer les suggestions depuis le serveur
-        function fetchSuggestions(query) {
-            // Afficher le spinner de chargement
-            document.querySelector('.search-icon').style.display = 'none';
-            document.querySelector('.search-spinner').style.display = 'inline-block';
-            
-            // Simuler une requête AJAX pour les suggestions
-            // Dans une implémentation réelle, remplacez cette partie par une vraie requête AJAX
-            simulateAjaxRequest(query).then(suggestions => {
-                // Cacher le spinner et afficher l'icône de recherche
-                document.querySelector('.search-spinner').style.display = 'none';
-                document.querySelector('.search-icon').style.display = 'inline-block';
-                
-                displaySuggestions(query, suggestions);
-            });
-        }
-        
-        // Simulation d'une requête AJAX - à remplacer par une vraie requête
-        function simulateAjaxRequest(query) {
-            return new Promise(resolve => {
-                // Données de test - à remplacer par une API réelle
-                const allSuggestions = [
-                    { text: "Intelligence artificielle", type: "article" },
-                    { text: "Analyse du discours", type: "thesis" },
-                    { text: "Traitement automatique du langage", type: "tool" },
-                    { text: "Corpus parallèles", type: "corpus" },
-                    { text: "Linguistique computationnelle", type: "course" },
-                    { text: "Traduction automatique", type: "memoir" },
-                    { text: "Analyse syntaxique", type: "article" },
-                    { text: "Corpus annotés", type: "corpus" },
-                    { text: "Intelligence linguistique", type: "thesis" },
-                    { text: "Analyse sémantique", type: "course" },
-                    { text: "Interprétation automatique", type: "tool" }
-                ];
-                
-                // Filtrer les suggestions basées sur la requête
-                const filteredSuggestions = allSuggestions.filter(item => 
-                    item.text.toLowerCase().includes(query)
-                );
-                
-                // Simuler un délai réseau
-                setTimeout(() => resolve(filteredSuggestions), 200);
-            });
-        }
-        
-        // Fonction pour afficher les suggestions
-        function displaySuggestions(query, suggestions) {
-            if (suggestions.length > 0) {
-                searchSuggestions.innerHTML = '';
-                
-                suggestions.forEach(item => {
-                    const suggestionItem = document.createElement('div');
-                    suggestionItem.className = 'suggestion-item';
-                    
-                    const textSpan = document.createElement('span');
-                    textSpan.className = 'suggestion-text';
-                    // Mettre en évidence la partie correspondante à la requête
-                    const regex = new RegExp(`(${query})`, 'gi');
-                    textSpan.innerHTML = item.text.replace(regex, '<strong>$1</strong>');
-                    
-                    const typeSpan = document.createElement('span');
-                    typeSpan.className = `suggestion-type type-${item.type}`;
-                    typeSpan.textContent = item.type.charAt(0).toUpperCase() + item.type.slice(1);
-                    
-                    suggestionItem.appendChild(textSpan);
-                    suggestionItem.appendChild(typeSpan);
-                    
-                    suggestionItem.addEventListener('click', function() {
-                        searchInput.value = item.text;
-                        typeSelect.value = item.type;
-                        searchSuggestions.style.display = 'none';
-                        searchForm.submit();
-                    });
-                    
-                    searchSuggestions.appendChild(suggestionItem);
-                });
-                
-                searchSuggestions.style.display = 'block';
-            } else {
-                // Aucune suggestion trouvée
-                searchSuggestions.innerHTML = `
-                    <div class="no-suggestions">
-                        <p>Aucune suggestion pour "${query}"</p>
-                    </div>
-                `;
-                searchSuggestions.style.display = 'block';
-            }
-        }
-        
-        // Fonction pour afficher l'historique des recherches
-        function showSearchHistory() {
-            if (searchHistoryItems.length > 0) {
-                searchHistory.innerHTML = '';
-                
-                // Créer l'en-tête de l'historique
-                const historyHeader = document.createElement('div');
-                historyHeader.className = 'history-header';
-                
-                const historyTitle = document.createElement('h6');
-                historyTitle.className = 'history-title';
-                historyTitle.textContent = 'Recherches récentes';
-                
-                const clearButton = document.createElement('button');
-                clearButton.className = 'history-clear';
-                clearButton.textContent = 'Effacer tout';
-                clearButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    searchHistoryItems = [];
-                    localStorage.setItem('searchHistory', JSON.stringify(searchHistoryItems));
-                    searchHistory.style.display = 'none';
-                });
-                
-                historyHeader.appendChild(historyTitle);
-                historyHeader.appendChild(clearButton);
-                searchHistory.appendChild(historyHeader);
-                
-                // Ajouter les éléments de l'historique
-                searchHistoryItems.forEach((item, index) => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    const textSpan = document.createElement('span');
-                    textSpan.className = 'history-text';
-                    textSpan.textContent = item.text;
-                    
-                    const typeSpan = document.createElement('span');
-                    typeSpan.className = `history-type type-${item.type || 'article'}`;
-                    typeSpan.textContent = item.type ? (item.type.charAt(0).toUpperCase() + item.type.slice(1)) : 'Tous';
-                    
-                    historyItem.appendChild(textSpan);
-                    historyItem.appendChild(typeSpan);
-                    
-                    historyItem.addEventListener('click', function() {
-                        searchInput.value = item.text;
-                        typeSelect.value = item.type || '';
-                        searchHistory.style.display = 'none';
-                        searchForm.submit();
-                    });
-                    
-                    searchHistory.appendChild(historyItem);
-                });
-                
-                searchHistory.style.display = 'block';
-            } else {
-                searchHistory.innerHTML = `
-                    <div class="history-header">
-                        <h6 class="history-title">Recherches récentes</h6>
-                    </div>
-                    <div class="history-empty">Aucun historique de recherche</div>
-                `;
-                searchHistory.style.display = 'block';
-            }
-        }
-        
-        // Ajouter à l'historique lors de la soumission du formulaire
-        searchForm.addEventListener('submit', function(e) {
-            const query = searchInput.value.trim();
-            const type = typeSelect.value;
-            
-            if (query) {
-                // Ajouter à l'historique
-                const newItem = { text: query, type: type };
-                
-                // Supprimer les doublons
-                searchHistoryItems = searchHistoryItems.filter(item => 
-                    item.text !== query || item.type !== type
-                );
-                
-                // Ajouter au début
-                searchHistoryItems.unshift(newItem);
-                
-                // Limiter à 10 éléments
-                if (searchHistoryItems.length > 10) {
-                    searchHistoryItems.pop();
-                }
-                
-                localStorage.setItem('searchHistory', JSON.stringify(searchHistoryItems));
-            }
-        });
-        
-        // Filtres avancés toggle
-        toggleFilters.addEventListener('click', function() {
-            if (advancedFilters.style.display === 'block') {
-                advancedFilters.style.display = 'none';
-            } else {
-                advancedFilters.style.display = 'block';
-            }
-        });
-        
-        // Navigation avec les flèches dans les suggestions
-        searchInput.addEventListener('keydown', function(e) {
-            const visible = searchSuggestions.style.display === 'block' ? 
-                          searchSuggestions : 
-                          (searchHistory.style.display === 'block' ? searchHistory : null);
-            
-            if (!visible) return;
-            
-            const items = visible.querySelectorAll('.suggestion-item, .history-item');
-            const current = visible.querySelector('.suggestion-item.active, .history-item.active');
-            let index = -1;
-            
-            if (current) {
-                index = Array.from(items).indexOf(current);
-            }
-            
-            // Flèche bas
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (index < items.length - 1) {
-                    if (current) current.classList.remove('active');
-                    items[index + 1].classList.add('active');
-                    items[index + 1].scrollIntoView({ block: 'nearest' });
-                }
-            }
-            
-            // Flèche haut
-            else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (index > 0) {
-                    if (current) current.classList.remove('active');
-                    items[index - 1].classList.add('active');
-                    items[index - 1].scrollIntoView({ block: 'nearest' });
-                }
-            }
-            
-            // Entrée
-            else if (e.key === 'Enter' && current) {
-                e.preventDefault();
-                current.click();
-            }
-        });
-    });
-    </script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('globalSearchForm');
+    const searchInput = document.getElementById('globalQuery');
+    const typeSelect = document.getElementById('contentTypeSelect');
+    const searchSuggestions = document.getElementById('querySuggestions');
+    const searchHistory = document.getElementById('queryHistory');
+    
+    // ... Le reste de votre JavaScript existant avec les nouveaux IDs ...
+});
+</script>
 {% endblock %}

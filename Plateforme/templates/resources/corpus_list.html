@@ -2,10 +2,9 @@
 {% block title %}Corpus{% endblock title %}
 {% block content %}
 <div class="container py-5">
-    <!-- Header Section -->
     <div class="row header-section">
         <div class="col-lg-8 col-md-7">
-            <h1 class="display-5 fw-bold mb-2">Corpus Collection</h1>
+            <h1 class="display-5 fw-bold mb-2">Corpus Collection :</h1>
             <p class="text-muted fs-5">{{ total_count }} corpora available</p>
         </div>
         <div class="col-lg-4 col-md-5 d-flex align-items-center justify-content-md-end justify-content-start mt-3 mt-md-0">
@@ -16,12 +15,33 @@
             {% else %}
             <div class="alert alert-info d-flex align-items-center mb-0 py-3 px-4 shadow-sm">
                 <i class="bi bi-info-circle fs-5 me-2"></i>
-                <span>You need to be logged in to add a new corpus</span>
+                <span>You need to be logged in to add a new corpus.</span>
             </div>
             {% endif %}
         </div>
     </div>
+     <div class="global-searchbox">
+        <form method="get" action="" class="searchbox-form" id="globalSearchForm">
+            <div class="searchbox-group shadow-sm">
+                <div class="query-container w-100 position-relative">
+                    <input type="text" 
+                           name="q" 
+                           id="globalQuery" 
+                           class="query-input" 
+                           placeholder="Rechercher des ressources..." 
+                           autocomplete="off"
+                           value="{{ request.GET.q|default:'' }}">
+                    
+                </div>
+                
+                <button type="submit" class="action-button submit-action">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
 
+<br>
     <div class="position-relative mb-5">
         <hr class="my-4">
         <div class="position-absolute top-0 start-50 translate-middle">
@@ -30,7 +50,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Corpus Grid -->
     {% if corpora %}
     <div class="corpus-grid">
@@ -48,32 +68,62 @@
                     <span class="info-value">{{ corpus.title }}</span>
                 </div>
                 <div class="info-row">
+                    <span class="info-label">Type:</span>
+                    <span class="info-value">{{ corpus.get_field_display }}</span>
+                </div>
+                <div class="info-row">
                     <span class="info-label">Created:</span>
                     <span class="info-value">{{ corpus.creation_date|date:"d/m/Y H:i" }}</span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Author:</span>
-                    <span class="info-value">{{ corpus.author }}</span>
-                </div>
+                  <div class="info-row">
+                        <span class="info-label">Author:</span>
+                        <span class="info-value">
+        {% if corpus.author%}
+            {{ corpus.author.full_name }}
+        {% else %}
+            Unknown
+        {% endif %}
+    </span>
+</div>
             </div>
+
             <div class="corpus-footer">
-                <div class="corpus-stats d-flex gap-2 mb-3">
-                    <div class="stat-item">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <span>{{ corpus.file_format }}</span>
-                    </div>
-                    <div class="stat-item">
-                        <i class="bi bi-keyboard"></i>
-                        <span>{{ corpus.size }} words</span>
-                    </div>
-                </div>
-                <div class="corpus-actions text-end">
+    <div class="corpus-stats d-flex gap-2 mb-3">
+        {% if corpus.file_format %}
+        <span class="stat-item">
+            <i class="bi bi-file-earmark-text"></i>
+            <span>{{ corpus.file_format }}</span>
+        </span>
+        {% endif %}
+        
+        {% if corpus.language %}
+        <span class="stat-item">
+            <i class="bi bi-translate"></i>
+            {% if corpus.get_language_display %}
+                {{ corpus.get_language_display }}
+            {% else %}
+                {{ corpus.language }}
+            {% endif %}
+        </span>
+        {% endif %}
+
+        {% if corpus.keywords %}
+        <span class="stat-item">
+            <i class="bi bi-tags"></i>
+            {% if corpus.keywords %}
+                {{ corpus.get_keywords_list.0 }}
+            {% endif %}
+        </span>
+        {% endif %}
+    </div>
+
+     <div class="corpus-actions text-end">
                     <a href="{% url 'resources:corpus_detail' corpus.id %}" class="btn-view-details">
                         <span>View Details</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
-            </div>
+</div>
         </div>
         {% endfor %}
     </div>
@@ -85,7 +135,7 @@
         <h3>No corpora available</h3>
         <p class="text-muted">Corpora you add will appear here</p>
         {% if user.is_authenticated %}
-        <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg mt-3">
+        <a href="{% url 'resources:corpus-create' %}" class="btn btn-primary btn-lg mt-3">
             <i class="bi bi-plus-lg me-2"></i> Add Your First Corpus
         </a>
         {% endif %}
@@ -177,5 +227,144 @@
 @media (min-width: 992px) {
     .corpus-grid { grid-template-columns: repeat(3, 1fr); }
 }
+.global-searchbox {
+    margin-bottom: 2rem;
+}
+
+.searchbox-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.searchbox-group {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Query Container */
+.query-container {
+    position: relative;
+}
+
+.query-input {
+    width: 100%;
+    border: none;
+    padding: 1rem 2.5rem 1rem 1.2rem;
+    font-size: 1rem;
+}
+
+.query-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Status Indicators */
+.status-indicator {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.status-icon {
+    font-size: 1rem;
+}
+
+.status-spinner {
+    width: 1rem;
+    height: 1rem;
+}
+
+
+/* Action Buttons */
+.action-button {
+    padding: 10px 1.5rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.submit-action {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Category Filters */
+.category-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem 0;
+}
+
+.category-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-right: 0.5rem;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-item {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.category-item:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.category-item.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('globalSearchForm');
+    const searchInput = document.getElementById('globalQuery');
+
+    // Gestionnaire de soumission du formulaire
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        window.location.href = `?q=${encodeURIComponent(query)}`;
+    });
+
+    // Recherche en temps réel après un délai
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            searchForm.submit();
+        }, 500); // Délai de 500ms
+    });
+});
+</script>
 {% endblock content %}

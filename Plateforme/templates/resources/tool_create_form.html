@@ -19,6 +19,7 @@
                     </div>
                     <div class="card-body">
                         {{ form.title|as_crispy_field }}
+                        {{ form.language|as_crispy_field }}
                         {{ form.description|as_crispy_field }}
                         {{ form.keywords|as_crispy_field }}
                         {{ form.access_link|as_crispy_field }}
@@ -46,7 +47,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                {{ form.languages|as_crispy_field }}
+                                {{ form.supported_languages|as_crispy_field }}
                             </div>
                         </div>
                     </div>
@@ -63,7 +64,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Masquer les champs non pertinents pour un outil
         const nonToolFields = [
             'course_field', 'academic_level', 'course_institution', 'academic_year',
             'document_type', 'document_format',

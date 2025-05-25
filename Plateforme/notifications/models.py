@@ -6,7 +6,6 @@ import uuid
 
 class Notification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # Types de notifications possibles
     NOTIFICATION_TYPES = [
         ('SYSTEM', 'Système'),
         ('PROJECT_INVITATION', 'Invitation à un projet'),
@@ -28,7 +27,7 @@ class Notification(models.Model):
     
     # Champs pour lier à n'importe quel modèle (ContentType framework)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
-    object_id = models.CharField(max_length=255, null=True, blank=True)
+    object_id = models.UUIDField(max_length=255, null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     
     # Champs spécifiques pour les actions liées aux projets

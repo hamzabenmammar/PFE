@@ -13,9 +13,9 @@
         <!-- Champs communs -->
         <div class="common-fields">
             {{ form.resource_type|as_crispy_field }}
+            {{ form.language|as_crispy_field }}
             {{ form.title|as_crispy_field }}
             {{ form.description|as_crispy_field }}
-            
             {{ form.keywords|as_crispy_field }}
             {{ form.access_link|as_crispy_field }}
         </div>
@@ -35,13 +35,12 @@
             {{ form.tool_type|as_crispy_field }}
             {{ form.tool_version|as_crispy_field }}
             {{ form.documentation|as_crispy_field }}
-            {{ form.languages|as_crispy_field }}
+            {{ form.supported_languages|as_crispy_field }}
         </div>
         
         <!-- Champs spécifiques aux corpus -->
         <div id="corpus-fields" class="specific-field">
             <h3>{% trans "Corpus Details" %}</h3>
-            {{ form.corpus_language|as_crispy_field }}
             {{ form.corpus_size|as_crispy_field }}
             {{ form.corpus_field|as_crispy_field }}
             {{ form.corpus_format|as_crispy_field }}
@@ -52,7 +51,6 @@
             <h3>{% trans "Document Details" %}</h3>
             {{ form.document_type|as_crispy_field }}
             {{ form.document_format|as_crispy_field }}
-            {{ form.authors|as_crispy_field }}
             
             <!-- Sous-types de documents -->
             <div id="article-fields" class="specific-field sub-document-field">

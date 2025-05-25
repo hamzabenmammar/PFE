@@ -32,6 +32,7 @@ urlpatterns = [
     path('institutions/', include('institutions.urls', namespace='institutions')),
     path('QA/', include('QA.urls')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('search/', include('search.urls', namespace='search')),
     path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:
