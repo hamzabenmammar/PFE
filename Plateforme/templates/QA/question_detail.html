@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load i18n %}
+{% block content %}
 <!-- CSS personnalisé -->
 <style>
   .question-card {
@@ -103,7 +105,7 @@
           <div class="empty-answers text-center py-4 bg-white rounded">
             <i class="bi bi-chat-left text-muted display-6 mb-3"></i>
             <p class="text-muted">
-              Aucune réponse pour le moment. Soyez le premier à répondre!
+              {% trans "Aucune réponse pour le moment. Soyez le premier à répondre!" %}
             </p>
           </div>
           {% endfor %}
@@ -112,14 +114,14 @@
 
       <!-- Formulaire de réponse -->
       <div class="answer-form p-4 bg-white rounded">
-        <h3 class="section-title h5 fw-bold mb-3">Ajouter une réponse</h3>
+        <h3 class="section-title h5 fw-bold mb-3">{% trans "Ajouter une réponse" %}</h3>
 
         <form method="post" class="mt-3">
           {% csrf_token %}
 
           <div class="mb-3">
             <label for="{{ form.content.id_for_label }}" class="form-label"
-              >Votre réponse</label
+              >{% trans "Votre réponse" %}</label
             >
             <div class="input-group">
               <span class="input-group-text">
@@ -136,10 +138,10 @@
 
           <div class="d-flex justify-content-between align-items-center mt-4">
             <a href="{% url 'QA:qa_list' %}" class="btn btn-outline-secondary">
-              <i class="bi bi-arrow-left me-1"></i> Retour aux questions
+              <i class="bi bi-arrow-left me-1"></i> {% trans "Retour aux questions" %}
             </a>
             <button type="submit" class="btn btn-primary submit-btn">
-              <i class="bi bi-send me-1"></i> Envoyer
+              <i class="bi bi-send me-1"></i> {% trans "Envoyer" %}
             </button>
           </div>
         </form>

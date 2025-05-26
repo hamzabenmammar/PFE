@@ -1,5 +1,6 @@
 {% extends 'base_admin.html' %}
-{% block title %}Gestion des publications{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Gestion des publications" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -191,37 +192,37 @@
 
 {% block content %}
 <div class="publications-header">
-  <h1>Gestion des publications {% if pending_publications_count > 0 %}<span class="pending-badge">{{ pending_publications_count }} en attente</span>{% endif %}</h1>
-  <a href="{% url 'resources:create' %}" class="btn btn-primary">Ajouter une publication</a>
+  <h1>{% trans "Gestion des publications" %} {% if pending_publications_count > 0 %}<span class="pending-badge">{{ pending_publications_count }} en attente</span>{% endif %}</h1>
+  <a href="{% url 'resources:create' %}" class="btn btn-primary">{% trans "Ajouter une publication" %}</a>
 </div>
 
 <form method="get" class="filter-form">
   <div class="form-row">
     <div class="form-group">
-      <label for="search">Recherche</label>
+      <label for="search">{% trans "Recherche" %}</label>
       <input type="text" id="search" name="search" value="{{ request.GET.search }}" placeholder="Titre, auteur...">
     </div>
     <div class="form-group">
-      <label for="status">Statut</label>
+      <label for="status">{% trans "Statut" %}</label>
       <select id="status" name="status">
-        <option value="">Tous</option>
-        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>En attente</option>
-        <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>Approuvé</option>
-        <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>Rejeté</option>
+        <option value="">{% trans "Tous" %}</option>
+        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>{% trans "En attente" %} </option>
+        <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>{% trans "Approuvé" %}</option>
+        <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>{% trans "Rejeté" %}</option>
       </select>
     </div>
     <div class="form-group">
-      <label for="date_from">Date début</label>
+      <label for="date_from">{% trans "Date début" %}</label>
       <input type="date" id="date_from" name="date_from" value="{{ request.GET.date_from }}">
     </div>
     <div class="form-group">
-      <label for="date_to">Date fin</label>
+      <label for="date_to">{% trans "Date fin" %}</label>
       <input type="date" id="date_to" name="date_to" value="{{ request.GET.date_to }}">
     </div>
   </div>
   <div class="buttons">
-    <button type="button" class="btn btn-outline" onclick="resetFilters()">Réinitialiser</button>
-    <button type="submit" class="btn btn-primary">Filtrer</button>
+    <button type="button" class="btn btn-outline" onclick="resetFilters()">{% trans "Réinitialiser" %}</button>
+    <button type="submit" class="btn btn-primary">{% trans "Filtrer" %}</button>
   </div>
 </form>
 
@@ -229,11 +230,11 @@
 <table class="publications-table">
   <thead>
     <tr>
-      <th>Titre</th>
-      <th>Auteur(s)</th>
-      <th>Date de soumission</th>
-      <th>Statut</th>
-      <th>Actions</th>
+      <th>{% trans "Titre" %}</th>
+      <th>{% trans "Auteur" %}(s)</th>
+      <th>{% trans "Date de soumission" %}</th>
+      <th>{% trans "Statut" %}</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -246,18 +247,18 @@
       <td>{{ publication.submission_date|date:"d/m/Y H:i" }}</td>
       <td>
         {% if publication.status == 'pending' %}
-          <span class="status-badge status-pending">En attente</span>
+          <span class="status-badge status-pending">{% trans "En attente" %}</span>
         {% elif publication.status == 'approved' %}
-          <span class="status-badge status-approved">Approuvé</span>
+          <span class="status-badge status-approved">{% trans "Approuvé" %}</span>
         {% elif publication.status == 'rejected' %}
-          <span class="status-badge status-rejected">Rejeté</span>
+          <span class="status-badge status-rejected">{% trans "Rejeté" %}</span>
         {% endif %}
       </td>
       <td class="action-buttons">
-        <a href="{% url 'resources:resource-update' publication.document_type publication.id  %}" class="btn btn-sm btn-outline">Modifier</a>
+        <a href="{% url 'resources:resource-update' publication.document_type publication.id  %}" class="btn btn-sm btn-outline">{% trans "Modifier" %}</a>
         {% if publication.status == 'pending' %}
-          <a href="{% url 'admin:approve_publication' publication.id %}" class="btn btn-sm btn-primary">Approuver</a>
-          <a href="{% url 'admin:reject_publication' publication.id %}" class="btn btn-sm btn-outline" style="color: #dc3545;">Rejeter</a>
+          <a href="{% url 'admin:approve_publication' publication.id %}" class="btn btn-sm btn-primary">{% trans "Approuver" %}</a>
+          <a href="{% url 'admin:reject_publication' publication.id %}" class="btn btn-sm btn-outline" style="color: #dc3545;">{% trans "Rejeter" %}</a>
         {% endif %}
       </td>
     </tr>
@@ -268,8 +269,8 @@
 {% if is_paginated %}
 <div class="pagination">
   {% if page_obj.has_previous %}
-    <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo; Première</a>
-    <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Précédente</a>
+    <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo; {% trans "Première" %}</a>
+    <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Précédente" %}</a>
   {% endif %}
 
   {% for num in page_obj.paginator.page_range %}
@@ -281,16 +282,16 @@
   {% endfor %}
 
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Suivante</a>
-    <a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Dernière &raquo;</a>
+    <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Suivante" %}</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{% trans "Dernière" %} &raquo;</a>
   {% endif %}
 </div>
 {% endif %}
 
 {% else %}
 <div class="empty-state">
-  <h3>Aucune publication trouvée</h3>
-  <p>Modifiez vos critères de recherche ou ajoutez de nouvelles publications.</p>
+  <h3>{% trans "Aucune publication trouvée" %}</h3>
+  <p>{% trans "Modifiez vos critères de recherche ou ajoutez de nouvelles publications." %}</p>
 </div>
 {% endif %}
 

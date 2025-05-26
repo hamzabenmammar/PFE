@@ -1,0 +1,5004 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-26 09:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: .\Plateforme\settings.py:253 .\resources\forms.py:106
+#: .\resources\models.py:18 .\resources\models.py:402 .\templates\base.html:73
+#: .\templates\resources\resource_detail.html:113
+msgid "English"
+msgstr "الانجليزية"
+
+#: .\Plateforme\settings.py:254 .\resources\forms.py:105
+#: .\resources\models.py:17 .\resources\models.py:401 .\templates\base.html:74
+#: .\templates\resources\resource_detail.html:111
+msgid "Arabic"
+msgstr "العربية"
+
+#: .\accounts\views.py:191
+msgid "Votre compte a été supprimé avec succès."
+msgstr "لقد تم حذف حسابك بنجاح."
+
+#: .\events\models.py:20
+msgid "Conference"
+msgstr "مؤتمر"
+
+#: .\events\models.py:21
+msgid "Workshop"
+msgstr "ورشة عمل"
+
+#: .\events\models.py:22
+msgid "Seminar"
+msgstr "ندوة"
+
+#: .\events\models.py:23
+msgid "Call for Papers"
+msgstr "دعوة"
+
+#: .\events\models.py:24
+msgid "Hackathon"
+msgstr "هاكاثون"
+
+#: .\events\models.py:25 .\events\models.py:37 .\resources\models.py:156
+msgid "Other"
+msgstr "اخرى"
+
+#: .\events\models.py:29 .\resources\models.py:130
+msgid "Natural Language Processing"
+msgstr "معالجة اللغات الطبيعية"
+
+#: .\events\models.py:30 .\resources\models.py:136
+msgid "Speech Processing"
+msgstr "معالجة الكلام"
+
+#: .\events\models.py:31 .\resources\models.py:129
+msgid "Artificial Intelligence"
+msgstr "الذكاء الاصطناعي"
+
+#: .\events\models.py:32
+msgid "Arabic Language"
+msgstr "اللغة العربية"
+
+#: .\events\models.py:33 .\resources\models.py:128
+msgid "Linguistics"
+msgstr "اللغويات"
+
+#: .\events\models.py:34 .\resources\models.py:398
+msgid "Machine Translation"
+msgstr "الترجمة الآلية"
+
+#: .\events\models.py:35 .\resources\models.py:148 .\resources\models.py:397
+msgid "Sentiment Analysis"
+msgstr "تحليل المشاعر"
+
+#: .\events\models.py:36
+msgid "Text Summarization"
+msgstr "تلخيص النص"
+
+#: .\events\models.py:40 .\resources\models.py:28
+msgid "Title"
+msgstr "عنوان"
+
+#: .\events\models.py:41 .\institutions\forms.py:64 .\institutions\models.py:57
+#: .\resources\models.py:32 .\templates\admin\corpora.html:433
+#: .\templates\forum\chatroom_new.html:37
+#: .\templates\forum\chatroom_update.html:29
+#: .\templates\forum\topic_new.html:35 .\templates\forum\topic_update.html:36
+#: .\templates\institutions\institution_form.html:253
+#: .\templates\resources\resource_detail.html:52
+msgid "Description"
+msgstr "الوصف"
+
+#: .\events\models.py:42
+msgid "Event Type"
+msgstr "نوع الحدث"
+
+#: .\events\models.py:43
+msgid "Domains"
+msgstr "المجالات"
+
+#: .\events\models.py:43
+msgid "Comma-separated domains"
+msgstr ""
+
+#: .\events\models.py:44
+msgid "Location"
+msgstr "الموقع"
+
+#: .\events\models.py:44
+msgid "Leave blank for virtual events"
+msgstr "اتركه فارغًا للأحداث الافتراضية"
+
+#: .\events\models.py:45
+msgid "Approved"
+msgstr "موافقة"
+
+#: .\events\models.py:46 .\templates\events\event_list.html:49
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#: .\events\models.py:47
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#: .\events\models.py:48 .\templates\events\event_detail.html:336
+msgid "Submission Deadline"
+msgstr "الموعد النهائي للتقديم"
+
+#: .\events\models.py:49 .\institutions\models.py:53
+#: .\templates\events\event_detail.html:356
+msgid "Website"
+msgstr "الموقع إلكتروني"
+
+#: .\events\models.py:50 .\templates\events\event_confirm_delete.html:27
+#: .\templates\events\event_detail.html:308
+msgid "Organizer"
+msgstr "المنظم"
+
+#: .\events\models.py:51
+msgid "Contact Email"
+msgstr "البريد الإلكتروني للاتصال"
+
+#: .\events\models.py:55
+msgid "Attachment"
+msgstr "مرفق"
+
+#: .\events\models.py:59 .\templates\events\event_form.html:199
+msgid "Supported formats: PDF, DOC/DOCX, PPT/PPTX (Max 5MB)"
+msgstr "التنسيقات المدعومة: PDF، DOC/DOCX، PPT/PPTX (الحد الأقصى 5 ميجابايت)"
+
+#: .\events\models.py:69
+msgid "Event"
+msgstr "الحدث"
+
+#: .\events\models.py:70 .\templates\base.html:183 .\templates\base.html:256
+#: .\templates\events\event_confirm_delete.html:10
+#: .\templates\events\event_detail.html:2
+#: .\templates\events\event_detail.html:230
+#: .\templates\events\event_form.html:17
+#: .\templates\institutions\institution_detail.html:161
+msgid "Events"
+msgstr "الاحداث"
+
+#: .\events\models.py:116
+msgid "End date must be after start date"
+msgstr "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء"
+
+#: .\events\models.py:120
+msgid "Submission deadline must be before event start date"
+msgstr "يجب أن يكون الموعد النهائي للتقديم قبل تاريخ بدء الحدث"
+
+#: .\events\models.py:130
+msgid "Event Registration"
+msgstr "تسجيل الحدث"
+
+#: .\events\models.py:131
+msgid "Event Registrations"
+msgstr "تسجيلات الأحداث"
+
+#: .\events\views.py:117
+msgid "Event created successfully!"
+msgstr "تم إنشاء الحدث بنجاح!"
+
+#: .\events\views.py:131
+msgid "Event created successfully! It will be visible after admin approval."
+msgstr "تم إنشاء الحدث بنجاح! سيظهر بعد موافقة الإدارة."
+
+#: .\events\views.py:162
+msgid "Your changes will be reviewed before becoming visible."
+msgstr "سيتم مراجعة التغييرات التي أجريتها قبل أن تصبح مرئية."
+
+#: .\events\views.py:165
+msgid "Event updated successfully!"
+msgstr "تم تحديث الحدث بنجاح!"
+
+#: .\events\views.py:184
+msgid "Event \"{}\" deleted successfully."
+msgstr "تم حذف الحدث \"{}\" بنجاح."
+
+#: .\events\views.py:192
+msgid "You must be logged in to register for events."
+msgstr "يجب عليك تسجيل الدخول للتسجيل في الأحداث."
+
+#: .\events\views.py:199
+msgid "Registration for past events is not allowed."
+msgstr "لا يسمح بالتسجيل للأحداث الماضية."
+
+#: .\events\views.py:204
+msgid "You are already registered for this event."
+msgstr "لقد قمت بالتسجيل بالفعل لهذا الحدث."
+
+#: .\events\views.py:207
+msgid "You have successfully registered for \"{}\"."
+msgstr "لقد قمت بالتسجيل بنجاح في \"{}\"."
+
+#: .\events\views.py:222
+msgid "Unregistering from past events is not allowed."
+msgstr "لا يسمح بإلغاء التسجيل من الأحداث الماضية."
+
+#: .\events\views.py:228
+msgid "You have unregistered from \"{}\"."
+msgstr "لقد قمت بإلغاء التسجيل من \"{}\"."
+
+#: .\events\views.py:266
+msgid "Event has been approved successfully!"
+msgstr "تمت الموافقة على الحدث بنجاح!"
+
+#: .\institutions\forms.py:7 .\institutions\forms.py:20
+#: .\institutions\forms.py:29 .\templates\resources\list.html:78
+msgid "All"
+msgstr "الكل"
+
+#: .\institutions\forms.py:12
+msgid "Institution Type"
+msgstr "نوع المؤسسة"
+
+#: .\institutions\forms.py:21 .\institutions\models.py:13
+#: .\institutions\models.py:49
+msgid "Country"
+msgstr "البلد"
+
+#: .\institutions\forms.py:30 .\institutions\models.py:26
+msgid "Specialty"
+msgstr "التخصص"
+
+#: .\institutions\forms.py:37
+msgid "Search Term"
+msgstr "مصطلح البحث"
+
+#: .\institutions\forms.py:40
+msgid "Enter institution name or keyword..."
+msgstr "أدخل اسم المؤسسة أو الكلمة الرئيسية..."
+
+#: .\institutions\forms.py:48
+#: .\templates\institutions\institution_form.html:222
+msgid "Nom de l'institution"
+msgstr "اسم المؤسسة"
+
+#: .\institutions\forms.py:49 .\templates\admin\institutions.html:640
+#: .\templates\institutions\institution_form.html:232
+msgid "Sigle"
+msgstr "اختصار"
+
+#: .\institutions\forms.py:50
+#: .\templates\institutions\institution_form.html:244
+msgid "Type d'institution"
+msgstr "نوع المؤسسة"
+
+#: .\institutions\forms.py:51 .\templates\admin\institutions.html:593
+#: .\templates\admin\institutions.html:609
+#: .\templates\admin\institutions.html:641
+#: .\templates\institutions\institution_form.html:293
+msgid "Pays"
+msgstr "البلد"
+
+#: .\institutions\forms.py:52
+#: .\templates\institutions\institution_form.html:302
+msgid "Ville"
+msgstr "المدينة"
+
+#: .\institutions\forms.py:57
+#: .\templates\institutions\institution_form.html:262
+msgid "Spécialités"
+msgstr "التخصص"
+
+#: .\institutions\forms.py:59 .\institutions\models.py:52
+#: .\templates\institutions\institution_form.html:274
+msgid "Logo"
+msgstr "شعار"
+
+#: .\institutions\forms.py:60
+#: .\templates\institutions\institution_form.html:327
+msgid "Site web"
+msgstr "الموقع الالكتروني"
+
+#: .\institutions\forms.py:61 .\institutions\models.py:54
+#: .\templates\account\profile.html:55 .\templates\admin\users.html:165
+#: .\templates\admin\users_new.html:189
+#: .\templates\events\event_detail.html:512
+#: .\templates\institutions\institution_form.html:336
+msgid "Email"
+msgstr "بريد إلكتروني"
+
+#: .\institutions\forms.py:62
+#: .\templates\institutions\institution_form.html:345
+msgid "Téléphone"
+msgstr "الهاتف"
+
+#: .\institutions\forms.py:63
+#: .\templates\institutions\institution_form.html:311
+msgid "Adresse"
+msgstr "العنوان"
+
+#: .\institutions\forms.py:85
+msgid "Veuillez fournir au moins un moyen de contact (site web, email ou téléphone)."
+msgstr "يرجى توفير وسيلة اتصال قليلة (موقع الويب أو البريد الإلكتروني أو الهاتف)."
+
+#: .\institutions\models.py:9
+msgid "Country Name"
+msgstr "اسم البلد"
+
+#: .\institutions\models.py:10
+msgid "Country Code"
+msgstr "رمز البلد"
+
+#: .\institutions\models.py:14
+msgid "Countries"
+msgstr "البلدان"
+
+#: .\institutions\models.py:22
+msgid "Specialty Name"
+msgstr "اسم التخصص"
+
+#: .\institutions\models.py:23
+msgid "Specialty Code"
+msgstr "رمز التخصص"
+
+#: .\institutions\models.py:27 .\institutions\models.py:51
+msgid "Specialties"
+msgstr "التخصصات"
+
+#: .\institutions\models.py:46
+msgid "Institution Name"
+msgstr "اسم المؤسسة"
+
+#: .\institutions\models.py:47
+msgid "Acronym"
+msgstr "اختصار"
+
+#: .\institutions\models.py:50
+msgid "City"
+msgstr "المدينة"
+
+#: .\institutions\models.py:55
+msgid "Phone"
+msgstr "الهاتف"
+
+#: .\institutions\models.py:56
+msgid "Address"
+msgstr "العنوان"
+
+#: .\institutions\models.py:59
+msgid "Created At"
+msgstr "تم الإنشاء في"
+
+#: .\institutions\models.py:60
+msgid "Updated At"
+msgstr "تم التحديث في"
+
+#: .\institutions\models.py:65
+msgid "Created By"
+msgstr "تم الإنشاء بواسطة"
+
+#: .\institutions\models.py:72 .\resources\models.py:194
+#: .\resources\models.py:294 .\resources\models.py:334
+#: .\templates\admin\institutions.html:639 .\templates\admin\users_new.html:201
+msgid "Institution"
+msgstr "المؤسسة"
+
+#: .\institutions\models.py:73 .\templates\base.html:190
+#: .\templates\base_admin.html:70
+msgid "Institutions"
+msgstr "المؤسسات"
+
+#: .\institutions\views.py:100
+msgid "L'institution a été ajoutée avec succès et sera examinée par les modérateurs."
+msgstr "تمت إضافة المؤسسة بنجاح وسيتم مراجعتها من قبل المشرفين."
+
+#: .\institutions\views.py:109
+msgid "Veuillez corriger les erreurs dans le formulaire."
+msgstr "يرجى تصحيح أي أخطاء في النموذج."
+
+#: .\pages\models.py:8
+msgid "date"
+msgstr "التاريخ"
+
+#: .\pages\models.py:9
+msgid "nombre d'utilisateurs"
+msgstr "عدد المستخدمين"
+
+#: .\pages\models.py:10
+msgid "nombre de publications"
+msgstr "عدد المنشورات"
+
+#: .\pages\models.py:11
+msgid "nombre de corpus"
+msgstr "عدد المجموعات"
+
+#: .\pages\models.py:12
+msgid "nombre d'outils"
+msgstr "عدد الأدوات"
+
+#: .\pages\models.py:13
+msgid "nombre de projets"
+msgstr "عدد المشاريع"
+
+#: .\pages\models.py:14
+msgid "nombre de messages forum"
+msgstr "عدد مشاركات المنتدى"
+
+#: .\pages\models.py:15
+msgid "nombre de visites"
+msgstr "عدد الزيارات"
+
+#: .\pages\models.py:16
+msgid "nombre de téléchargements"
+msgstr "عدد التنزيلات"
+
+#: .\pages\models.py:19
+msgid "statistique"
+msgstr "إحصائية"
+
+#: .\pages\models.py:20
+msgid "statistiques"
+msgstr "إحصائيات"
+
+#: .\resources\forms.py:10 .\resources\models.py:206
+#: .\templates\resources\course_list.html:62
+msgid "Course"
+msgstr "دورة"
+
+#: .\resources\forms.py:11 .\resources\models.py:437
+msgid "NLP Tool"
+msgstr "أداة البرمجة اللغوية"
+
+#: .\resources\forms.py:12 .\templates\base.html:165 .\templates\base.html:245
+#: .\templates\base_admin.html:45 .\templates\resources\corpus_list.html:3
+#: .\templates\resources\list.html:59 .\templates\resources\list.html:102
+msgid "Corpus"
+msgstr "مجموعة"
+
+#: .\resources\forms.py:13 .\resources\models.py:252
+msgid "Document"
+msgstr "وثيقة"
+
+#: .\resources\forms.py:17 .\resources\models.py:230
+msgid "Article"
+msgstr "مقالة"
+
+#: .\resources\forms.py:18 .\resources\models.py:231
+#: .\templates\resources\list.html:55
+msgid "Thesis"
+msgstr "أُطرُوحَة"
+
+#: .\resources\forms.py:19 .\resources\models.py:232
+msgid "Memoir"
+msgstr "مذكرة"
+
+#: .\resources\forms.py:25
+msgid "Resource Type *"
+msgstr "نوع المورد"
+
+#: .\resources\forms.py:29
+msgid "Title *"
+msgstr "العنوان"
+
+#: .\resources\forms.py:34
+msgid "Description *"
+msgstr "الوصف"
+
+#: .\resources\forms.py:39 .\resources\models.py:54
+#: .\templates\events\event_list.html:31
+msgid "Keywords"
+msgstr "الكلمات الرئيسية"
+
+#: .\resources\forms.py:43
+msgid "Comma-separated"
+msgstr ""
+
+#: .\resources\forms.py:46 .\resources\models.py:40
+msgid "Access Link"
+msgstr "رابط الوصول"
+
+#: .\resources\forms.py:52
+msgid "Language *"
+msgstr "لغة"
+
+#: .\resources\forms.py:61 .\resources\forms.py:125
+msgid "Field of Study *"
+msgstr "مجال الدراسة"
+
+#: .\resources\forms.py:67 .\resources\forms.py:201
+msgid "Academic Level *"
+msgstr "المستوى الأكاديمي"
+
+#: .\resources\forms.py:73 .\resources\forms.py:188 .\resources\forms.py:207
+msgid "Institution *"
+msgstr "مؤسسة"
+
+#: .\resources\forms.py:78
+msgid "Academic Year * (YYYY-YYYY)"
+msgstr "السنة الدراسية *"
+
+#: .\resources\forms.py:82 .\resources\models.py:201
+msgid "Format: 2023-2024"
+msgstr "الصيغة: 2023-2024"
+
+#: .\resources\forms.py:88
+msgid "Tool Type *"
+msgstr "نوع الأداة *"
+
+#: .\resources\forms.py:93
+msgid "Version *"
+msgstr "إصدار *"
+
+#: .\resources\forms.py:99 .\resources\models.py:155
+msgid "Documentation"
+msgstr "التوثيق"
+
+#: .\resources\forms.py:107 .\resources\models.py:403
+msgid "French"
+msgstr "الفرنسية"
+
+#: .\resources\forms.py:108 .\resources\models.py:404
+msgid "Spanish"
+msgstr "الاسبانية"
+
+#: .\resources\forms.py:111
+msgid "Supported Languages *"
+msgstr "اللغات المدعومة *"
+
+#: .\resources\forms.py:114
+msgid "Select all languages that this tool can process"
+msgstr "حدد جميع اللغات التي يمكن لهذه الأداة معالجتها"
+
+#: .\resources\forms.py:119
+msgid "Size * (words/documents)"
+msgstr "الحجم * (كلمات/مستندات)"
+
+#: .\resources\forms.py:130
+msgid "Format * (TXT/CSV/JSON)"
+msgstr "التنسيق * (TXT/CSV/JSON)"
+
+#: .\resources\forms.py:139
+msgid "Document Type *"
+msgstr "نوع الوثيقة *"
+
+#: .\resources\forms.py:145
+msgid "Authors"
+msgstr "المؤلفون"
+
+#: .\resources\forms.py:150
+msgid "Format * (PDF/DOCX)"
+msgstr "الصيغة * (PDF/DOCX)"
+
+#: .\resources\forms.py:158 .\resources\models.py:366
+msgid "DOI"
+msgstr "معرّف الأغراض الرقمي"
+
+#: .\resources\forms.py:162
+msgid "e.g., 10.1234/abcd"
+msgstr "على سبيل المثال، 10.1234/abcd"
+
+#: .\resources\forms.py:165
+msgid "Journal *"
+msgstr "المجلة *"
+
+#: .\resources\forms.py:171
+msgid "Publication Date *"
+msgstr "تاريخ النشر *"
+
+#: .\resources\forms.py:181
+msgid "Supervisor *"
+msgstr "مشرف *"
+
+#: .\resources\forms.py:193 .\resources\forms.py:212
+msgid "Defense Year *"
+msgstr "سنة الدفاع *"
+
+#: .\resources\forms.py:250 .\templates\resources\corpus_create_form.html:18
+#: .\templates\resources\course_create_form.html:18
+#: .\templates\resources\resource_update_form.html:38
+#: .\templates\resources\tool_create_form.html:18
+msgid "Basic Information"
+msgstr "المعلومات الأساسية"
+
+#: .\resources\forms.py:273 .\templates\account\password_change.html:108
+#: .\templates\account\profile_edit.html:45
+msgid "Save"
+msgstr "حفظ"
+
+#: .\resources\forms.py:278 .\templates\resources\course_create_form.html:32
+#: .\templates\resources\course_detail.html:5
+#: .\templates\resources\resource_form.html:25
+#: .\templates\resources\resource_update_form.html:53
+msgid "Course Details"
+msgstr "تفاصيل الدورة"
+
+#: .\resources\forms.py:291 .\templates\resources\resource_update_form.html:65
+#: .\templates\resources\tool_create_form.html:32
+#: .\templates\resources\tool_detail.html:7
+msgid "Tool Details"
+msgstr "تفاصيل الأداة"
+
+#: .\resources\forms.py:299 .\resources\models.py:430
+msgid "Supported Languages"
+msgstr "اللغات المدعومة"
+
+#: .\resources\forms.py:308 .\templates\resources\corpus_create_form.html:32
+#: .\templates\resources\corpus_detail.html:5
+#: .\templates\resources\resource_form.html:43
+#: .\templates\resources\resource_update_form.html:77
+msgid "Corpus Details"
+msgstr "تفاصيل المجموعة"
+
+#: .\resources\forms.py:321 .\resources\models.py:237
+msgid "Document Type"
+msgstr "نوع الوثيقة"
+
+#: .\resources\forms.py:340 .\templates\resources\article_detail.html:6
+#: .\templates\resources\resource_form.html:57
+msgid "Article Details"
+msgstr " تفاصيل المقالة"
+
+#: .\resources\forms.py:350 .\templates\resources\resource_form.html:64
+#: .\templates\resources\thesis_detail.html:6
+msgid "Thesis Details"
+msgstr "تفاصيل الاطروحة"
+
+#: .\resources\forms.py:360 .\templates\resources\memoir_detail.html:6
+#: .\templates\resources\resource_form.html:71
+msgid "Memoir Details"
+msgstr "تفاصيل المذكرات"
+
+#: .\resources\forms.py:371
+msgid "Please select at least one supported language"
+msgstr "الرجاء تحديد لغة واحدة مدعومة على الأقل"
+
+#: .\resources\forms.py:403
+msgid "This field is required for this resource type"
+msgstr "هذا الحقل مطلوب لهذا النوع من الموارد"
+
+#: .\resources\forms.py:422
+msgid "This field is required for this document type"
+msgstr "هذا الحقل مطلوب لهذا النوع من المستندات"
+
+#: .\resources\forms.py:429
+msgid "End year must be start year + 1"
+msgstr "يجب أن تكون سنة النهاية هي سنة البداية + 1"
+
+#: .\resources\forms.py:431
+msgid "Invalid format (ex: 2023-2024)"
+msgstr "تنسيق غير صالح (مثال: 2023-2024)"
+
+#: .\resources\forms.py:436 .\resources\forms.py:441
+msgid "Invalid field choice"
+msgstr "اختيار الحقل غير صالح"
+
+#: .\resources\forms.py:445
+msgid "Language is required"
+msgstr "اللغة مطلوبة"
+
+#: .\resources\forms.py:447
+msgid "Invalid language choice"
+msgstr "اختيار اللغة غير صالح"
+
+#: .\resources\models.py:29
+msgid "Descriptive title of the resource"
+msgstr "العنوان الوصفي للمورد"
+
+#: .\resources\models.py:33
+msgid "Detailed description of the resource"
+msgstr "وصف مفصل للمورد"
+
+#: .\resources\models.py:37
+msgid "Creation Date"
+msgstr "تاريخ الإنشاء"
+
+#: .\resources\models.py:47 .\templates\resources\resource_detail.html:89
+msgid "Author"
+msgstr "مؤلف"
+
+#: .\resources\models.py:59
+msgid "Update Date"
+msgstr "تاريخ التحديث"
+
+#: .\resources\models.py:60
+msgid "Last time this resource was updated"
+msgstr "آخر مرة تم فيها تحديث هذا المورد"
+
+#: .\resources\models.py:66 .\templates\resources\resource_detail.html:109
+msgid "Language"
+msgstr "اللغة"
+
+#: .\resources\models.py:70
+msgid "Views Count"
+msgstr "عدد المشاهدات"
+
+#: .\resources\models.py:115
+msgid "Invalid academic year format. Use the format: 2023-2024"
+msgstr "صيغة العام الدراسي غير صحيحة. استخدم الصيغة: 2023-2024"
+
+#: .\resources\models.py:120
+msgid "The ending year must be the starting year + 1"
+msgstr "يجب أن تكون السنة النهائية هي السنة الأولية + 1"
+
+#: .\resources\models.py:127
+msgid "Computer Science"
+msgstr "علوم الكمبيوتر"
+
+#: .\resources\models.py:131
+msgid "Machine Learning"
+msgstr "التعلم الآلي"
+
+#: .\resources\models.py:132
+msgid "Data Science"
+msgstr "علم البيانات"
+
+#: .\resources\models.py:135
+msgid "Computational Linguistics"
+msgstr "اللغويات الحاسوبية"
+
+#: .\resources\models.py:137
+msgid "Text Mining"
+msgstr "التعدين النص"
+
+#: .\resources\models.py:138
+msgid "Information Retrieval"
+msgstr "استرجاع المعلومات"
+
+#: .\resources\models.py:141
+msgid "Arabic Linguistics"
+msgstr "اللغويات العربية"
+
+#: .\resources\models.py:142
+msgid "Morphology"
+msgstr "مورفولوجيا"
+
+#: .\resources\models.py:143
+msgid "Syntax"
+msgstr "بناء الجملة"
+
+#: .\resources\models.py:144
+msgid "Semantics"
+msgstr "دلالات"
+
+#: .\resources\models.py:147
+msgid "Translation"
+msgstr "ترجمة"
+
+#: .\resources\models.py:149 .\resources\models.py:395
+msgid "Named Entity Recognition"
+msgstr "التعرف على الكيان المسمى"
+
+#: .\resources\models.py:150
+msgid "Text Classification"
+msgstr "تصنيف النص"
+
+#: .\resources\models.py:153
+msgid "Digital Humanities"
+msgstr "العلوم الإنسانية الرقمية"
+
+#: .\resources\models.py:154
+msgid "Corpus Linguistics"
+msgstr "علم لغويات النصوص"
+
+#: .\resources\models.py:163 .\resources\models.py:325
+msgid "Bachelor"
+msgstr "بكالوريوس"
+
+#: .\resources\models.py:164 .\resources\models.py:326
+msgid "Master"
+msgstr "الماجستير"
+
+#: .\resources\models.py:165 .\resources\models.py:327
+msgid "Doctorate"
+msgstr "دكتوراه"
+
+#: .\resources\models.py:172 .\resources\models.py:476
+msgid "Field of Study"
+msgstr "مجال الدراسة"
+
+#: .\resources\models.py:173
+msgid "Primary field of the course"
+msgstr "المجال الأساسي للدورة"
+
+#: .\resources\models.py:179 .\resources\models.py:329
+msgid "Academic Level"
+msgstr "المستوى الأكاديمي"
+
+#: .\resources\models.py:180
+msgid "Required level of study"
+msgstr "المستوى الدراسي المطلوب"
+
+#: .\resources\models.py:186
+msgid "Responsible Teacher"
+msgstr "المعلم المسؤول"
+
+#: .\resources\models.py:187
+msgid "Full name of the teacher"
+msgstr "الاسم الكامل للمعلم"
+
+#: .\resources\models.py:195
+msgid "University or school offering the course"
+msgstr "الجامعة أو المدرسة التي تقدم الدورة"
+
+#: .\resources\models.py:200
+msgid "Academic Year"
+msgstr "السنة الدراسية"
+
+#: .\resources\models.py:207 .\templates\base.html:186
+#: .\templates\base.html:248 .\templates\resources\course_list.html:3
+#: .\templates\resources\list.html:58 .\templates\resources\list.html:98
+msgid "Courses"
+msgstr "الدورات"
+
+#: .\resources\models.py:225
+msgid "This course requires authentication"
+msgstr "هذه الدورة تتطلب المصادقة"
+
+#: .\resources\models.py:241 .\resources\models.py:481
+msgid "Format"
+msgstr "شكل"
+
+#: .\resources\models.py:242
+msgid "PDF, DOCX, TXT, etc."
+msgstr "PDF، DOCX، TXT، وما إلى ذلك."
+
+#: .\resources\models.py:253
+msgid "Documents"
+msgstr "الوثيقة"
+
+#: .\resources\models.py:289
+msgid "Thesis Supervisor"
+msgstr "مشرف الاطروحة"
+
+#: .\resources\models.py:297 .\resources\models.py:337
+msgid "Defense Year"
+msgstr "سنة الدفاع"
+
+#: .\resources\models.py:307
+msgid "thesis"
+msgstr "الاطروحة"
+
+#: .\resources\models.py:308 .\templates\resources\list.html:86
+msgid "Theses"
+msgstr "الأطروحات"
+
+#: .\resources\models.py:348
+msgid "memoir"
+msgstr "مذكرة"
+
+#: .\resources\models.py:349 .\templates\resources\list.html:56
+#: .\templates\resources\list.html:90
+msgid "Memoirs"
+msgstr "مذكرات"
+
+#: .\resources\models.py:368
+msgid "Digital Object Identifier (e.g., 10.1234/abcd)"
+msgstr "معرف الكائن الرقمي (على سبيل المثال، 10.1234/abcd)"
+
+#: .\resources\models.py:372 .\templates\admin\calls.html:589
+msgid "Journal"
+msgstr "مجلة"
+
+#: .\resources\models.py:375
+msgid "Publication Date"
+msgstr "تاريخ النشر"
+
+#: .\resources\models.py:387
+msgid "article"
+msgstr "مقالة"
+
+#: .\resources\models.py:388
+msgid "Scientific Articles"
+msgstr "المقالات العلمية"
+
+#: .\resources\models.py:393
+msgid "Tokenization"
+msgstr "الترميز"
+
+#: .\resources\models.py:394
+msgid "Stemming"
+msgstr "الجذعية"
+
+#: .\resources\models.py:396
+msgid "Part-of-Speech Tagging"
+msgstr "وسم أجزاء الكلام"
+
+#: .\resources\models.py:410
+msgid "Tool Type"
+msgstr "نوع الاداة"
+
+#: .\resources\models.py:411
+msgid "Type of NLP tool"
+msgstr "نوع من أدوات معالجة اللغة الطبيعية"
+
+#: .\resources\models.py:415
+msgid "Version"
+msgstr "اصدار"
+
+#: .\resources\models.py:416
+msgid "Tool version (e.g., 1.0.0)"
+msgstr "إصدار الأداة (على سبيل المثال، 1.0.0)"
+
+#: .\resources\models.py:419
+msgid "Documentation Link"
+msgstr "رابط التوثيق"
+
+#: .\resources\models.py:422
+msgid "URL of the official documentation"
+msgstr "رابط الوثائق الرسمية"
+
+#: .\resources\models.py:426 .\templates\resources\resource_detail.html:97
+msgid "Last Updated"
+msgstr "آخر تحديث"
+
+#: .\resources\models.py:431
+msgid "Languages that this tool can process"
+msgstr "اللغات التي تستطيع هذه الأداة معالجتها"
+
+#: .\resources\models.py:438 .\templates\home.html:726
+#: .\templates\resources\tool_list.html:3
+#: .\templates\resources\tool_list.html:9
+msgid "NLP Tools"
+msgstr "أدوات البرمجة اللغوية"
+
+#: .\resources\models.py:445
+msgid "A machine translation tool must specify supported languages."
+msgstr "يجب على أداة الترجمة الآلية تحديد اللغات المدعومة."
+
+#: .\resources\models.py:469
+msgid "Corpus Size"
+msgstr "حجم المجموعة"
+
+#: .\resources\models.py:470
+msgid "Size in number of words or documents"
+msgstr "الحجم في عدد الكلمات أو المستندات"
+
+#: .\resources\models.py:477
+msgid "Main field of the corpus"
+msgstr "المجال الرئيسي للمجموعة"
+
+#: .\resources\models.py:482
+msgid "Format of the corpus (e.g., TXT, CSV, JSON)"
+msgstr "تنسيق المجموعة (على سبيل المثال، TXT، CSV، JSON)"
+
+#: .\templates\QA\ask_question.html:55 .\templates\QA\qa_list.html:65
+#: .\templates\QA\qa_list.html:167
+msgid "Poser une question"
+msgstr "اطرح سؤالا"
+
+#: .\templates\QA\ask_question.html:69
+msgid "Titre de votre question"
+msgstr "موضوع سؤالك"
+
+#: .\templates\QA\ask_question.html:83
+msgid "Soyez clair et précis pour obtenir les meilleures réponses"
+msgstr "نصيحة واضحة ودقيقة للحصول على أفضل الإجابات"
+
+#: .\templates\QA\ask_question.html:89
+msgid "Détails de votre question"
+msgstr "تفاصيل سؤالك"
+
+#: .\templates\QA\ask_question.html:103
+msgid "Ajoutez tous les détails nécessaires pour comprendre votre question"
+msgstr "أضف جميع التفاصيل الضرورية لفهم سؤالك"
+
+#: .\templates\QA\ask_question.html:109
+#: .\templates\forum\chatroom_detail.html:22
+#: .\templates\forum\chatroom_update.html:45
+msgid "Retour"
+msgstr "العودة"
+
+#: .\templates\QA\ask_question.html:112
+msgid "Publier la question"
+msgstr "نشر السؤال"
+
+#: .\templates\QA\duplicate_found.html:5
+msgid "Des questions similaires existent déjà :"
+msgstr "الأسئلة المشابهة الموجودة سابقًا:"
+
+#: .\templates\QA\edit_post.html:3 .\templates\QA\edit_post.html:11
+msgid "Modifier la publication"
+msgstr "تعديل النشر"
+
+#: .\templates\QA\edit_post.html:19 .\templates\QA\feed.html:18
+#: .\templates\admin\forum.html:549
+msgid "Contenu"
+msgstr "المحتوى"
+
+#: .\templates\QA\edit_post.html:30 .\templates\QA\feed.html:32
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:420
+msgid "Image"
+msgstr "صورة"
+
+#: .\templates\QA\edit_post.html:42
+msgid "Supprimer l'image"
+msgstr "حذف الصورة"
+
+#: .\templates\QA\edit_post.html:55
+msgid "Fichier"
+msgstr "ملف"
+
+#: .\templates\QA\edit_post.html:59
+msgid "Fichier actuel :"
+msgstr "الملف الحالي :"
+
+#: .\templates\QA\edit_post.html:69
+msgid "Supprimer le fichier"
+msgstr "حذف الملف"
+
+#: .\templates\QA\edit_post.html:90 .\templates\QA\post_detail.html:151
+#: .\templates\account\profile.html:172 .\templates\admin\block_confirm.html:42
+#: .\templates\admin\forum.html:555 .\templates\admin\user_edit.html:165
+#: .\templates\admin\users_new.html:229 .\templates\forum\ban_user.html:48
+#: .\templates\forum\chatroom_delete.html:28
+#: .\templates\forum\chatroom_new.html:54
+#: .\templates\forum\message_update.html:44
+#: .\templates\forum\topic_delete.html:29 .\templates\forum\topic_new.html:52
+#: .\templates\forum\topic_update.html:53 .\templates\forum\unban_user.html:35
+#: .\templates\institutions\institution_confirm_delete.html:25
+#: .\templates\institutions\institution_form.html:361
+msgid "Annuler"
+msgstr "ابطال"
+
+#: .\templates\QA\feed.html:5
+msgid "Fil d'actualités"
+msgstr "ملف الأخبار"
+
+#: .\templates\QA\feed.html:46
+msgid "Ajouter un fichier"
+msgstr "اضافة ملف"
+
+#: .\templates\QA\feed.html:50
+msgid "Publier"
+msgstr "نشر"
+
+#: .\templates\QA\feed.html:79 .\templates\QA\post_detail.html:33
+#: .\templates\QA\post_detail.html:126 .\templates\admin\calls.html:648
+#: .\templates\admin\calls.html:698 .\templates\admin\publications.html:258
+#: .\templates\forum\topic_list.html:48
+msgid "Modifier"
+msgstr "تعديل"
+
+#: .\templates\QA\feed.html:83 .\templates\QA\post_detail.html:37
+msgid "Êtes-vous sûr de vouloir supprimer cette publication ?"
+msgstr "هل ترغب في حذف هذا المنشور ?"
+
+#: .\templates\QA\feed.html:84 .\templates\QA\post_detail.html:38
+#: .\templates\QA\post_detail.html:131 .\templates\admin\calls.html:649
+#: .\templates\admin\calls.html:701 .\templates\forum\topic_list.html:51
+#: .\templates\institutions\institution_confirm_delete.html:20
+msgid "Supprimer"
+msgstr "حذف"
+
+#: .\templates\QA\feed.html:99
+msgid "Télécharger le fichier"
+msgstr "تحميل الملف"
+
+#: .\templates\QA\feed.html:144
+msgid "Voir tous les commentaires"
+msgstr "شاهد جميع التعليقات"
+
+#: .\templates\QA\feed.html:153
+msgid "Aucune publication pour le moment"
+msgstr "لا توجد منشورات حتى الآن"
+
+#: .\templates\QA\feed.html:154
+msgid "Soyez le premier à partager quelque chose !"
+msgstr "كن أول من يشارك شيئًا!"
+
+#: .\templates\QA\post_detail.html:5
+msgid "Détail de la publication"
+msgstr "تفاصيل النشر"
+
+#: .\templates\QA\post_detail.html:70
+msgid "Commentaires"
+msgstr "التعليقات"
+
+#: .\templates\QA\post_detail.html:87
+msgid "Commenter"
+msgstr "تعليق"
+
+#: .\templates\QA\post_detail.html:116
+msgid "Répondre"
+msgstr "إجابة"
+
+#: .\templates\QA\post_detail.html:130
+msgid "Êtes-vous sûr de vouloir supprimer ce commentaire ?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا التعليق؟"
+
+#: .\templates\QA\post_detail.html:148
+msgid "Enregistrer"
+msgstr "يحفظ"
+
+#: .\templates\QA\post_detail.html:181
+msgid "Êtes-vous sûr de vouloir supprimer cette réponse ?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه الإجابة؟"
+
+#: .\templates\QA\post_detail.html:198
+msgid "Aucun commentaire pour le moment"
+msgstr "لا توجد تعليقات حتى الآن"
+
+#: .\templates\QA\post_detail.html:199
+msgid "Soyez le premier à commenter !"
+msgstr "كن أول من يعلق!"
+
+#: .\templates\QA\qa_list.html:63
+msgid "Toutes les questions"
+msgstr "كل الأسئلة"
+
+#: .\templates\QA\qa_list.html:106
+msgid "Voir les réponses"
+msgstr "شاهد الردود"
+
+#: .\templates\QA\qa_list.html:161
+msgid "Aucune question trouvée"
+msgstr "لا يوجد سؤال مطروح"
+
+#: .\templates\QA\qa_list.html:164
+msgid "Afficher toutes les questions"
+msgstr "عرض جميع الأسئلة"
+
+#: .\templates\QA\question_detail.html:108
+msgid "Aucune réponse pour le moment. Soyez le premier à répondre!"
+msgstr "!لا يوجد رد حتى الآن. كن أول من يرد"
+
+#: .\templates\QA\question_detail.html:117
+msgid "Ajouter une réponse"
+msgstr "أضف ردا"
+
+#: .\templates\QA\question_detail.html:124
+msgid "Votre réponse"
+msgstr "إجابتك"
+
+#: .\templates\QA\question_detail.html:141
+msgid "Retour aux questions"
+msgstr "العودة إلى الأسئلة"
+
+#: .\templates\QA\question_detail.html:144 .\templates\chatbot\chatbot.html:133
+msgid "Envoyer"
+msgstr "ارسال"
+
+#: .\templates\account\delete_account.html:4
+#: .\templates\account\delete_account.html:12
+#: .\templates\account\delete_account.html:27
+msgid "Supprimer mon compte"
+msgstr "حذف حسابي الشخصي"
+
+#: .\templates\account\delete_account.html:16
+#: .\templates\forum\chatroom_delete.html:18
+msgid "Attention !"
+msgstr "!انتباه "
+
+#: .\templates\account\delete_account.html:17
+msgid "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et supprimera toutes vos données."
+msgstr "هل أنت متأكد أنك تريد حذف حسابك؟ هذا الإجراء لا رجعة فيه وسوف يؤدي إلى حذف جميع بياناتك"
+
+#: .\templates\account\delete_account.html:24
+msgid "Retour au profil"
+msgstr "العودة للحساب"
+
+#: .\templates\account\delete_account.html:26
+msgid "Êtes-vous vraiment sûr de vouloir supprimer votre compte ?"
+msgstr "هل أنت متأكد أنك تريد حذف حسابك؟"
+
+#: .\templates\account\email_verification.html:58
+msgid "Vérifiez votre email"
+msgstr "تحقق من بريدك الإلكتروني"
+
+#: .\templates\account\email_verification.html:59
+msgid "Un code de vérification vous a été envoyé par email. Entrez-le ci-dessous :"
+msgstr ":لقد تم إرسال رمز التحقق إليك عبر البريد الإلكتروني. أدخله أدناه"
+
+#: .\templates\account\email_verification.html:68
+msgid "Vérifier"
+msgstr "التحقق"
+
+#: .\templates\account\login.html:6 .\templates\account\login.html:24
+#: .\templates\account\signup.html:31
+msgid "Log In"
+msgstr "تسجيل الدخول"
+
+#: .\templates\account\login.html:14
+msgid "Welcome Back"
+msgstr "مرحبًا بعودتك"
+
+#: .\templates\account\login.html:32
+msgid "Or continue with"
+msgstr "أو الاستمرار مع"
+
+#: .\templates\account\login.html:50
+msgid "Forgot Password?"
+msgstr "هل نسيت كلمة السر؟"
+
+#: .\templates\account\login.html:54
+msgid "Don't have an account? "
+msgstr "ليس لديك حساب؟"
+
+#: .\templates\account\login.html:56 .\templates\account\signup.html:5
+#: .\templates\account\signup.html:22
+msgid "Sign Up"
+msgstr "اشتراك"
+
+#: .\templates\account\logout.html:4 .\templates\account\logout.html:12
+msgid "Log Out"
+msgstr "تسجيل الخروج"
+
+#: .\templates\account\logout.html:16
+msgid "Are you sure you want to log out?"
+msgstr "هل أنت متأكد أنك تريد تسجيل الخروج؟"
+
+#: .\templates\account\logout.html:24
+msgid "Confirm Log Out"
+msgstr "تأكيد تسجيل الخروج"
+
+#: .\templates\account\logout.html:27
+#: .\templates\account\password_change.html:101
+#: .\templates\account\profile_edit.html:37
+#: .\templates\events\event_confirm_delete.html:38
+#: .\templates\events\event_form.html:222
+#: .\templates\resources\corpus_create_form.html:52
+#: .\templates\resources\course_create_form.html:55
+#: .\templates\resources\resource_confirm_delete.html:15
+#: .\templates\resources\resource_form.html:79
+#: .\templates\resources\resource_update_form.html:112
+#: .\templates\resources\tool_create_form.html:57
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: .\templates\account\password_change.html:77
+msgid "Edit my profil"
+msgstr "تحرير حسابي الشخصي"
+
+#: .\templates\account\password_change_done.html:3
+msgid "Password Change Successful"
+msgstr "تم تغيير كلمة المرور بنجاح"
+
+#: .\templates\account\password_change_done.html:5
+msgid "Password change successful"
+msgstr "تم تغيير كلمة المرور بنجاح"
+
+#: .\templates\account\password_change_done.html:6
+msgid "Your password was changed."
+msgstr "تم تغيير كلمة المرور الخاصة بك"
+
+#: .\templates\account\password_reset.html:3
+msgid "Forgot Your Password?"
+msgstr "نسيت كلمة السر؟"
+
+#: .\templates\account\password_reset.html:11
+msgid "Forgot your password?"
+msgstr "نسيت كلمة السر؟"
+
+#: .\templates\account\password_reset.html:12
+msgid "Enter your email address below, and we'll email instructions for setting a new one."
+msgstr "أدخل عنوان بريدك الإلكتروني أدناه، وسنرسل إليك عبر البريد الإلكتروني تعليمات لإعداد عنوان جديد"
+
+#: .\templates\account\password_reset.html:22
+msgid "Send me instructions"
+msgstr " أرسل لي التعليمات"
+
+#: .\templates\account\password_reset.html:29
+msgid "Back to login"
+msgstr "العودة لتسجيل الدخول"
+
+#: .\templates\account\password_reset_complete.html:3
+#: .\templates\account\password_reset_complete.html:5
+msgid "Password reset complete"
+msgstr "اكتملت إعادة تعيين كلمة المرور"
+
+#: .\templates\account\password_reset_complete.html:6
+msgid "Your new password has been set. You can log in now on the"
+msgstr "تم تعيين كلمة مرورك الجديدة. يمكنك تسجيل الدخول الآن على"
+
+#: .\templates\account\password_reset_complete.html:7
+msgid "Log In page"
+msgstr "صفحة تسجيل الدخول"
+
+#: .\templates\account\password_reset_confirm.html:3
+msgid "Enter new password"
+msgstr "أدخل كلمة المرور الجديدة"
+
+#: .\templates\account\password_reset_confirm.html:5
+msgid "Set a new password!"
+msgstr "!تعيين كلمة مرور جديدة"
+
+#: .\templates\account\password_reset_done.html:3
+msgid "Email Sent"
+msgstr "اٍرسال بريد إلكتروني"
+
+#: .\templates\account\password_reset_done.html:14
+msgid "Check your inbox"
+msgstr "تحقق من البريد الوارد الخاص بك"
+
+#: .\templates\account\password_reset_done.html:15
+msgid ""
+"We've emailed you instructions for setting your password. You should receive "
+"the email shortly!"
+msgstr ""
+"!لقد أرسلنا إليك تعليماتٍ لتعيين كلمة مرورك عبر البريد الإلكتروني. ستصلك "
+"الرسالة قريبًا"
+
+#: .\templates\account\password_reset_done.html:25
+msgid "Return to Login"
+msgstr "العودة إلى تسجيل الدخول"
+
+#: .\templates\account\password_reset_done.html:29
+msgid "Try Again"
+msgstr "حاول ثانية"
+
+#: .\templates\account\password_reset_done.html:34
+msgid "Don't see the email? Check your spam folder or"
+msgstr "لم تجد البريد الإلكتروني؟ تحقق من مجلد البريد العشوائي أو"
+
+#: .\templates\account\password_reset_done.html:34
+msgid "try again"
+msgstr "حاول ثانية"
+
+#: .\templates\account\profile.html:3 .\templates\base.html:135
+msgid "Profile"
+msgstr "حساب الشخصي"
+
+#: .\templates\account\profile.html:39
+msgid "Profil vérifié"
+msgstr "حساب موثق"
+
+#: .\templates\account\profile.html:65
+msgid "Affiliation"
+msgstr "انتساب"
+
+#: .\templates\account\profile.html:75
+msgid "Spécialité en IA"
+msgstr "التخصص في الذكاء الاصطناعي"
+
+#: .\templates\account\profile.html:77
+msgid "Non spécifiée"
+msgstr "غير محدد"
+
+#: .\templates\account\profile.html:87
+msgid "Bio"
+msgstr "السيرة الذاتية"
+
+#: .\templates\account\profile.html:88
+msgid "No bio provided"
+msgstr "لم يتم تقديم السيرة الذاتية"
+
+#: .\templates\account\profile.html:98
+msgid "Réseaux Sociaux"
+msgstr "الشبكات الاجتماعية"
+
+#: .\templates\account\profile.html:125
+msgid "Aucun réseau social lié"
+msgstr "لا توجد شبكات اجتماعية مرتبطة"
+
+#: .\templates\account\profile.html:140
+#: .\templates\account\profile_edit.html:13
+msgid "Edit Profile"
+msgstr "تعديل الحساب"
+
+#: .\templates\account\profile.html:147 .\templates\base.html:138
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: .\templates\account\profile.html:156
+msgid "Supprimer le compte"
+msgstr "حذف الحساب"
+
+#: .\templates\account\profile.html:165
+#: .\templates\forum\chatroom_delete.html:31
+#: .\templates\forum\topic_delete.html:32
+msgid "Confirmer la suppression"
+msgstr "تأكيد الحذف"
+
+#: .\templates\account\profile.html:169
+msgid ""
+"Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est "
+"irréversible."
+msgstr "هل أنت متأكد أنك تريد حذف حسابك؟ هذا الإجراء لا رجعة فيه."
+
+#: .\templates\account\profile.html:175
+msgid "Supprimer définitivement"
+msgstr "حذف نهائيا"
+
+#: .\templates\account\profile.html:192
+msgid "Select project"
+msgstr "حدد المشروع"
+
+#: .\templates\account\profile.html:198
+msgid "Add to project"
+msgstr "أضف إلى المشروع"
+
+#: .\templates\account\profile.html:607
+msgid "Please select a project"
+msgstr "الرجاء تحديد المشروع"
+
+#: .\templates\account\profile_edit.html:41
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+#: .\templates\account\signup.html:13
+msgid "Create Your Account"
+msgstr " قم بإنشاء حسابك "
+
+#: .\templates\account\signup.html:29
+msgid "Already have an account?"
+msgstr "هل لديك حساب بالفعل؟"
+
+#: .\templates\admin\block_confirm.html:3
+#: .\templates\admin\block_confirm.html:13
+msgid "Bloquer l'utilisateur"
+msgstr "حظر المستخدم"
+
+#: .\templates\admin\block_confirm.html:27
+msgid "Vous êtes sur le point de"
+msgstr "نت على وشك القيام ب"
+
+#: .\templates\admin\block_confirm.html:27
+msgid "bloquer cet utilisateur"
+msgstr "حظر هذا المستخدم"
+
+#: .\templates\admin\block_confirm.html:27
+msgid ""
+". Il ne pourra plus se connecter ni utiliser les fonctionnalités du site "
+"jusqu'à ce qu'il soit réactivé."
+msgstr ""
+"لن يتمكن بعد الآن من تسجيل الدخول أو استخدام ميزات الموقع حتى يتم إعادة "
+"تنشيطه."
+
+#: .\templates\admin\block_confirm.html:34
+msgid "Raison du blocage"
+msgstr "سبب الحظر"
+
+#: .\templates\admin\block_confirm.html:36
+msgid "Cette information sera enregistrée dans l'historique de l'utilisateur."
+msgstr "سيتم تسجيل هذه المعلومات في سجل المستخدم."
+
+#: .\templates\admin\block_confirm.html:46
+msgid "Confirmer le blocage"
+msgstr "تأكيد الحظر"
+
+#: .\templates\admin\calls.html:566
+msgid "Gestion des Appels à Communications"
+msgstr "إدارة دعوات تقديم الأوراق البحثية"
+
+#: .\templates\admin\calls.html:572
+msgid "Nouveau appel"
+msgstr "مكالمة جديدة"
+
+#: .\templates\admin\calls.html:579 .\templates\admin\institutions.html:605
+#: .\templates\admin\publications.html:202
+msgid "Recherche"
+msgstr "البحث"
+
+#: .\templates\admin\calls.html:584
+msgid "Type d'appel"
+msgstr "نوع المكالمة"
+
+#: .\templates\admin\calls.html:586
+msgid "Tous types"
+msgstr "كل الأنواع"
+
+#: .\templates\admin\calls.html:587
+msgid "Conférence"
+msgstr "مؤتمر"
+
+#: .\templates\admin\calls.html:588
+msgid "Atelier"
+msgstr "ورشة عمل"
+
+#: .\templates\admin\calls.html:598 .\templates\admin\forum.html:369
+#: .\templates\admin\projects.html:539 .\templates\admin\users.html:115
+msgid "Tous les statuts"
+msgstr "جميع الحالات"
+
+#: .\templates\admin\calls.html:599
+msgid "Approuvés"
+msgstr "موافقة"
+
+#: .\templates\admin\calls.html:600 .\templates\admin\calls.html:643
+#: .\templates\admin\calls.html:691 .\templates\admin\dashboard.html:482
+#: .\templates\admin\projects.html:476 .\templates\admin\projects.html:542
+#: .\templates\admin\projects.html:588 .\templates\admin\publications.html:209
+#: .\templates\admin\publications.html:250 .\templates\admin\users.html:117
+#: .\templates\admin\users.html:189
+msgid "En attente"
+msgstr "في الأنتظار"
+
+#: .\templates\admin\calls.html:608
+msgid "Appliquer les filtres"
+msgstr "تطبيق المرشحات"
+
+#: .\templates\admin\calls.html:618 .\templates\admin\corpora.html:432
+#: .\templates\admin\courses.html:540 .\templates\admin\dashboard.html:534
+#: .\templates\admin\dashboard.html:594 .\templates\admin\publications.html:233
+#: .\templates\admin\tools.html:410 .\templates\forum\topic_new.html:18
+#: .\templates\forum\topic_update.html:19
+msgid "Titre"
+msgstr "العنوان"
+
+#: .\templates\admin\calls.html:619 .\templates\admin\tools.html:411
+#: .\templates\events\event_confirm_delete.html:25
+#: .\templates\events\event_list.html:37
+#: .\templates\resources\resource_detail.html:105
+msgid "Type"
+msgstr "النوع"
+
+#: .\templates\admin\calls.html:620 .\templates\admin\calls.html:676
+msgid "Date limite"
+msgstr "موعد التسليم"
+
+#: .\templates\admin\calls.html:621 .\templates\admin\calls.html:683
+msgid "Organisateur"
+msgstr "المنظم"
+
+#: .\templates\admin\calls.html:622 .\templates\admin\calls.html:686
+#: .\templates\admin\dashboard.html:451 .\templates\admin\dashboard.html:596
+#: .\templates\admin\projects.html:557 .\templates\admin\publications.html:206
+#: .\templates\admin\publications.html:236 .\templates\admin\users.html:166
+msgid "Statut"
+msgstr "حالة"
+
+#: .\templates\admin\calls.html:623 .\templates\admin\corpora.html:435
+#: .\templates\admin\courses.html:543 .\templates\admin\forum.html:406
+#: .\templates\admin\institutions.html:643 .\templates\admin\projects.html:559
+#: .\templates\admin\publications.html:237 .\templates\admin\tools.html:413
+#: .\templates\admin\users.html:168
+msgid "Actions"
+msgstr "الأجراءات"
+
+#: .\templates\admin\calls.html:641 .\templates\admin\calls.html:689
+#: .\templates\admin\publications.html:210
+#: .\templates\admin\publications.html:252
+msgid "Approuvé"
+msgstr "موافقة"
+
+#: .\templates\admin\calls.html:653 .\templates\admin\calls.html:707
+#: .\templates\admin\publications.html:260
+msgid "Approuver"
+msgstr "موافقة"
+
+#: .\templates\admin\calls.html:745
+msgid ""
+"Aucun appel à communication trouvé. Veuillez modifier vos filtres ou ajouter "
+"un nouvel appel."
+msgstr ""
+"لم يتم العثور على طلب لتقديم أوراق. يرجى تعديل المرشحات الخاصة بك أو إضافة "
+"مكالمة جديدة"
+
+#: .\templates\admin\calls.html:746
+msgid "Créer un appel à communication"
+msgstr "إنشاء دعوة لتقديم أوراق بحثية"
+
+#: .\templates\admin\corpora.html:362
+msgid "Gestion des Corpus"
+msgstr "إدارة المجموعات"
+
+#: .\templates\admin\corpora.html:380 .\templates\admin\projects.html:489
+#: .\templates\admin\tools.html:377
+msgid "Exporter"
+msgstr "مصدر"
+
+#: .\templates\admin\corpora.html:397
+msgid "Nouveau corpus"
+msgstr "مجموعة جديدة"
+
+#: .\templates\admin\corpora.html:434 .\templates\admin\courses.html:542
+msgid "Date de création"
+msgstr "تاريخ الإنشاء"
+
+#: .\templates\admin\corpora.html:555 .\templates\admin\tools.html:491
+msgid "Premier"
+msgstr "الاول"
+
+#: .\templates\admin\corpora.html:556 .\templates\admin\tools.html:492
+msgid "Précédent"
+msgstr "السابق"
+
+#: .\templates\admin\corpora.html:562 .\templates\admin\tools.html:504
+msgid "Suivant"
+msgstr "القادم"
+
+#: .\templates\admin\corpora.html:563 .\templates\admin\tools.html:505
+msgid "Dernier"
+msgstr "الاخير"
+
+#: .\templates\admin\corpora.html:583
+msgid "Aucun corpus disponible"
+msgstr "لا يوجد مجموعة متاحة"
+
+#: .\templates\admin\corpora.html:585
+msgid ""
+"Vous n'avez pas encore créé de corpus ou aucun ne correspond à vos critères "
+"de recherche."
+msgstr ""
+"لم تقم بإنشاء مجموعة بعد أو لا يوجد أي منها يتطابق مع معايير البحث الخاصة بك"
+
+#: .\templates\admin\corpora.html:602
+msgid "Créer un corpus"
+msgstr "إنشاء مجموعة"
+
+#: .\templates\admin\courses.html:3 .\templates\admin\courses.html:477
+msgid "Gestion des cours"
+msgstr "إدارة الدورة"
+
+#: .\templates\admin\courses.html:483
+msgid "Exporter CSV"
+msgstr "مصدر"
+
+#: .\templates\admin\courses.html:489
+msgid "Nouveau cours"
+msgstr "دورة جديدة"
+
+#: .\templates\admin\courses.html:496
+msgid "Total des cours"
+msgstr "مجموع الدورات"
+
+#: .\templates\admin\courses.html:500
+msgid "Créés ce mois"
+msgstr "تم إنشاؤها هذا الشهر"
+
+#: .\templates\admin\courses.html:503
+msgid "vs mois dernier"
+msgstr "مقابل الشهر الماضي"
+
+#: .\templates\admin\courses.html:511 .\templates\admin\institutions.html:619
+msgid "Rechercher"
+msgstr "البحث"
+
+#: .\templates\admin\courses.html:515
+msgid "Niveau académique"
+msgstr "المستوى الأكاديمي"
+
+#: .\templates\admin\courses.html:517
+msgid "Tous les niveaux"
+msgstr "جميع المستويات"
+
+#: .\templates\admin\courses.html:518 .\templates\admin\courses.html:556
+msgid "Débutant"
+msgstr "مبتدىء"
+
+#: .\templates\admin\courses.html:519 .\templates\admin\courses.html:558
+msgid "Intermédiaire"
+msgstr "متوسط"
+
+#: .\templates\admin\courses.html:520 .\templates\admin\courses.html:560
+msgid "Avancé"
+msgstr "متقدم"
+
+#: .\templates\admin\courses.html:521 .\templates\admin\courses.html:562
+msgid "Expert"
+msgstr "خبير"
+
+#: .\templates\admin\courses.html:529 .\templates\admin\forum.html:377
+#: .\templates\admin\projects.html:547 .\templates\admin\publications.html:225
+#: .\templates\admin\statistics.html:181 .\templates\admin\users.html:123
+msgid "Filtrer"
+msgstr "ترشيح"
+
+#: .\templates\admin\courses.html:541
+msgid "Niveau"
+msgstr "المستوى"
+
+#: .\templates\admin\courses.html:599
+msgid "Aucun cours trouvé"
+msgstr "لم يتم العثور على دورات"
+
+#: .\templates\admin\courses.html:601
+msgid ""
+"Il n'y a pas de cours correspondant à vos critères de recherche. Essayez de "
+"modifier vos filtres ou créez un nouveau cours."
+msgstr ""
+"لا توجد دورات تطابق معايير البحث الخاصة بك. حاول تغيير المرشحات الخاصة بك أو "
+"إنشاء دورة جديدة"
+
+#: .\templates\admin\courses.html:607
+msgid "Créer un cours"
+msgstr "إنشاء دورة"
+
+#: .\templates\admin\dashboard.html:3
+msgid "Tableau de bord administrateur"
+msgstr "لوحة تحكم المشرف"
+
+#: .\templates\admin\dashboard.html:4 .\templates\base_admin.html:30
+#, fuzzy
+#| msgid "Tableau de bord "
+msgid "Tableau de bord"
+msgstr "لوحة تحكم"
+
+#: .\templates\admin\dashboard.html:304 .\templates\admin\statistics.html:191
+#: .\templates\admin\users_new.html:165 .\templates\base_admin.html:35
+msgid "Utilisateurs"
+msgstr "المستخدمين"
+
+#: .\templates\admin\dashboard.html:308 .\templates\admin\dashboard.html:331
+#: .\templates\admin\dashboard.html:377
+msgid "/ mois"
+msgstr "/ شهر"
+
+#: .\templates\admin\dashboard.html:327 .\templates\admin\statistics.html:204
+msgid "Ressources"
+msgstr "الموارد"
+
+#: .\templates\admin\dashboard.html:350
+msgid "Projets en cours"
+msgstr "المشاريع الحالية"
+
+#: .\templates\admin\dashboard.html:354
+msgid " / mois"
+msgstr "/ شهر"
+
+#: .\templates\admin\dashboard.html:373
+msgid "Messages forum"
+msgstr "منتدى الرسائل"
+
+#: .\templates\admin\dashboard.html:399
+msgid "Activité récente"
+msgstr "النشاط الأخير"
+
+#: .\templates\admin\dashboard.html:408
+msgid "Voir les détails"
+msgstr "انظر التفاصيل"
+
+#: .\templates\admin\dashboard.html:412
+msgid "Actualiser"
+msgstr "تحديث"
+
+#: .\templates\admin\dashboard.html:431
+msgid "Nouveaux utilisateurs"
+msgstr "مستخدمين جدد"
+
+#: .\templates\admin\dashboard.html:440
+msgid "Voir tous les utilisateurs"
+msgstr "عرض كافة المستخدمين"
+
+#: .\templates\admin\dashboard.html:450 .\templates\admin\users.html:164
+msgid "Utilisateur"
+msgstr "مستخدم"
+
+#: .\templates\admin\dashboard.html:452 .\templates\admin\dashboard.html:536
+#: .\templates\admin\forum.html:404
+msgid "Date"
+msgstr "تاريخ "
+
+#: .\templates\admin\dashboard.html:480 .\templates\admin\users.html:187
+msgid "Actif"
+msgstr "مفعل"
+
+#: .\templates\admin\dashboard.html:484
+msgid "Inactif"
+msgstr "غير مفعل"
+
+#: .\templates\admin\dashboard.html:486 .\templates\admin\users.html:191
+msgid "Bloqué"
+msgstr "محظور"
+
+#: .\templates\admin\dashboard.html:495
+msgid "Aucun utilisateur récent"
+msgstr "لا يوجد مستخدمين حديثين"
+
+#: .\templates\admin\dashboard.html:515
+msgid "Publications récentes"
+msgstr "المنشورات الحديثة"
+
+#: .\templates\admin\dashboard.html:524
+msgid "Voir toutes les publications"
+msgstr "رؤية جميع المشاركات"
+
+#: .\templates\admin\dashboard.html:535 .\templates\admin\forum.html:403
+#: .\templates\admin\publications.html:234
+msgid "Auteur"
+msgstr "المؤلف"
+
+#: .\templates\admin\dashboard.html:558
+msgid "Aucune publication récente"
+msgstr "لا توجد منشورات حديثة"
+
+#: .\templates\admin\dashboard.html:575
+msgid "Projets récents"
+msgstr "المشاريع الأخيرة"
+
+#: .\templates\admin\dashboard.html:584
+msgid "Voir tous les projets"
+msgstr "شاهد جميع المشاريع"
+
+#: .\templates\admin\dashboard.html:595
+msgid "Participants"
+msgstr "المشاركين"
+
+#: .\templates\admin\dashboard.html:609 .\templates\admin\projects.html:599
+msgid "Aucun participant"
+msgstr "لا يوجد مشاركين"
+
+#: .\templates\admin\dashboard.html:617 .\templates\admin\projects.html:468
+#: .\templates\admin\projects.html:510 .\templates\admin\projects.html:540
+#: .\templates\admin\projects.html:584
+msgid "En cours"
+msgstr "في تَقَدم"
+
+#: .\templates\admin\dashboard.html:619 .\templates\admin\projects.html:472
+#: .\templates\admin\projects.html:541 .\templates\admin\projects.html:586
+msgid "Terminé"
+msgstr "تم"
+
+#: .\templates\admin\dashboard.html:621
+msgid "Planification"
+msgstr "نخطيط"
+
+#: .\templates\admin\dashboard.html:623 .\templates\admin\projects.html:480
+#: .\templates\admin\projects.html:543 .\templates\admin\projects.html:590
+msgid "Annulé"
+msgstr "تم الإلغاء"
+
+#: .\templates\admin\dashboard.html:631
+msgid "Aucun projet récent"
+msgstr "لا توجد مشاريع حديثة"
+
+#: .\templates\admin\forum.html:303
+msgid "Administration des Forums"
+msgstr "إدارة المنتديات"
+
+#: .\templates\admin\forum.html:305
+msgid "Gérez tous vos sujets de discussion en un clin d'œil"
+msgstr "إدارة جميع مواضيع المناقشة الخاصة بك في لمحة واحدة"
+
+#: .\templates\admin\forum.html:309 .\templates\forum\topic_list.html:12
+msgid "Nouveau sujet"
+msgstr "موضوع جديد"
+
+#: .\templates\admin\forum.html:321
+msgid "Sujets totaux"
+msgstr "مجموع المواضيع"
+
+#: .\templates\admin\forum.html:327
+msgid "Sujets actifs"
+msgstr "مواضيع نشطة"
+
+#: .\templates\admin\forum.html:333
+msgid "Sujets fermés"
+msgstr "المواضيع المغلقة"
+
+#: .\templates\admin\forum.html:339 .\templates\admin\forum.html:405
+msgid "Réponses"
+msgstr "الإجابات"
+
+#: .\templates\admin\forum.html:350
+msgid "RECHERCHE"
+msgstr "البحث"
+
+#: .\templates\admin\forum.html:353
+msgid "Rechercher un sujet..."
+msgstr "ابحث عن موضوع..."
+
+#: .\templates\admin\forum.html:357
+msgid "CATÉGORIE"
+msgstr "الفئة"
+
+#: .\templates\admin\forum.html:359
+msgid "Toutes les catégories"
+msgstr "جميع الفئات"
+
+#: .\templates\admin\forum.html:361 .\templates\admin\forum.html:543
+msgid "Général"
+msgstr "عام"
+
+#: .\templates\admin\forum.html:362 .\templates\admin\forum.html:544
+msgid "Technique"
+msgstr "تقني"
+
+#: .\templates\admin\forum.html:363 .\templates\admin\forum.html:545
+msgid "Support"
+msgstr "الدعم"
+
+#: .\templates\admin\forum.html:367
+msgid "STATUT"
+msgstr "الحالة"
+
+#: .\templates\admin\forum.html:370
+msgid "Ouvert"
+msgstr "مفتوحة"
+
+#: .\templates\admin\forum.html:371
+msgid "Fermé"
+msgstr "مغلقة"
+
+#: .\templates\admin\forum.html:391
+msgid "Sujets du forum"
+msgstr "مواضيع المنتدى"
+
+#: .\templates\admin\forum.html:393
+msgid "sujets"
+msgstr "مواضيع"
+
+#: .\templates\admin\forum.html:401
+msgid "Sujet"
+msgstr "موضوع"
+
+#: .\templates\admin\forum.html:402 .\templates\admin\forum.html:420
+#: .\templates\admin\forum.html:539
+msgid "Catégorie"
+msgstr "الفئة"
+
+#: .\templates\admin\forum.html:473
+msgid "Aucun sujet de forum trouvé"
+msgstr "لم يتم العثور على مواضيع المنتدى"
+
+#: .\templates\admin\forum.html:474
+msgid "Il n'y a pas de sujets correspondant à vos critères de recherche."
+msgstr "لا توجد مواضيع تطابق معايير البحث الخاصة بك"
+
+#: .\templates\admin\forum.html:501
+#, fuzzy
+#| msgid "(current)"
+msgid "(current"
+msgstr "(حاضِر)"
+
+#: .\templates\admin\forum.html:527
+msgid "Ajouter un nouveau sujet"
+msgstr "إضافة موضوع جديد"
+
+#: .\templates\admin\forum.html:535
+msgid "Titre du sujet"
+msgstr "عنوان الموضوع"
+
+#: .\templates\admin\forum.html:541
+msgid "Sélectionner une catégorie"
+msgstr "حدد فئة"
+
+#: .\templates\admin\forum.html:557 .\templates\forum\topic_new.html:55
+msgid "Créer le sujet"
+msgstr "إنشاء الموضوع"
+
+#: .\templates\admin\history.html:3
+msgid "Panneau d'administration - Historique des statuts"
+msgstr "لوحة الإدارة - سجل الحالة"
+
+#: .\templates\admin\history.html:123
+msgid "Historique des Statuts Utilisateurs"
+msgstr "سجل حالة المستخدم"
+
+#: .\templates\admin\history.html:125
+msgid "Retour au tableau de bord"
+msgstr "العودة إلى لوحة القيادة"
+
+#: .\templates\admin\history.html:140
+msgid "Total des modifications"
+msgstr "إجمالي التغييرات"
+
+#: .\templates\admin\history.html:147
+msgid "Depuis la création du site"
+msgstr "منذ إنشاء الموقع"
+
+#: .\templates\admin\history.html:157
+msgid "Activations"
+msgstr "التنشيطات"
+
+#: .\templates\admin\history.html:164
+msgid "Utilisateurs activés"
+msgstr "المستخدمين المنشطين"
+
+#: .\templates\admin\history.html:174
+msgid "Blocages"
+msgstr "الحظر"
+
+#: .\templates\admin\history.html:181
+msgid "Utilisateurs bloqués"
+msgstr "المستخدمين المحظورين"
+
+#: .\templates\admin\history.html:191 .\templates\admin\history.html:262
+msgid "Changements récents"
+msgstr "التغييرات الأخيرة"
+
+#: .\templates\admin\history.html:198
+msgid "Ces 7 derniers jours"
+msgstr "هذه الأيام السبعة الماضية"
+
+#: .\templates\admin\history.html:209
+msgid "Activité des administrateurs"
+msgstr "نشاط المسؤول"
+
+#: .\templates\admin\history.html:216 .\templates\admin\history.html:281
+msgid "Administrateur"
+msgstr "المسؤول"
+
+#: .\templates\admin\history.html:217
+msgid "Modifications"
+msgstr "التعديلات"
+
+#: .\templates\admin\history.html:218
+msgid "Dernière action"
+msgstr "الإجراء الأخير"
+
+#: .\templates\admin\history.html:238
+msgid "Aucune activité d'administrateur enregistrée"
+msgstr "لم يتم تسجيل أي نشاط للمسؤول"
+
+#: .\templates\admin\history.html:250
+msgid "Types de changements"
+msgstr "أنواع التغييرات"
+
+#: .\templates\admin\history.html:264
+msgid "Filtres"
+msgstr "الترشيحات"
+
+#: .\templates\admin\history.html:272
+msgid "Type de changement"
+msgstr "نوع التغيير"
+
+#: .\templates\admin\history.html:274 .\templates\admin\history.html:283
+#: .\templates\admin\publications.html:208
+msgid "Tous"
+msgstr "الكل"
+
+#: .\templates\admin\history.html:275
+msgid "Activation"
+msgstr "التفعيل"
+
+#: .\templates\admin\history.html:276
+msgid "Mise en attente"
+msgstr "في الانتظار"
+
+#: .\templates\admin\history.html:277
+msgid "Blocage"
+msgstr "الحظر"
+
+#: .\templates\admin\history.html:290
+msgid "Période"
+msgstr "الفترة"
+
+#: .\templates\admin\history.html:292
+msgid "Toute période"
+msgstr "جميع الفترة"
+
+#: .\templates\admin\history.html:293
+msgid "Aujourd'hui"
+msgstr "اليوم"
+
+#: .\templates\admin\history.html:294
+msgid "Cette semaine"
+msgstr "هذا الاسبوع"
+
+#: .\templates\admin\history.html:295
+msgid "Ce mois"
+msgstr "هذا الشهر"
+
+#: .\templates\admin\history.html:299
+msgid "Appliquer"
+msgstr "تطبيق"
+
+#: .\templates\admin\history.html:300 .\templates\admin\publications.html:224
+#: .\templates\admin\users.html:128
+msgid "Réinitialiser"
+msgstr "إعادة ضبط"
+
+#: .\templates\admin\history.html:334
+msgid "Utilisateur:"
+msgstr ":المستخدم"
+
+#: .\templates\admin\history.html:346
+msgid "Modifié par:"
+msgstr ":تم التعديل بواسطة"
+
+#: .\templates\admin\history.html:358
+msgid "Raison:"
+msgstr ":السبب"
+
+#: .\templates\admin\history.html:369
+msgid "Aucun historique disponible"
+msgstr "لا يوجد تاريخ متاح"
+
+#: .\templates\admin\history.html:370
+msgid "Aucun changement de statut n'a été enregistré pour cette période."
+msgstr "لم يتم تسجيل أي تغييرات في الحالة خلال هذه الفترة"
+
+#: .\templates\admin\institutions.html:3
+#: .\templates\admin\institutions.html:564
+msgid "Gestion des Institutions"
+msgstr "اٍدارة المؤسسات "
+
+#: .\templates\admin\institutions.html:567
+msgid ""
+"Administrez facilement toutes vos institutions académiques et partenaires"
+msgstr "إدارة جميع مؤسساتك الأكاديمية والشريكة بسهولة"
+
+#: .\templates\admin\institutions.html:572
+msgid "Nouvelle Institution"
+msgstr " مؤسسة جديدة"
+
+#: .\templates\admin\institutions.html:586
+msgid "Total Institutions"
+msgstr "مجموع المؤسسات "
+
+#: .\templates\admin\institutions.html:601
+msgid "Filtres de recherche"
+msgstr "مرشحات البحث"
+
+#: .\templates\admin\institutions.html:606
+msgid "Nom ou sigle de l'institution..."
+msgstr " ...اسم أو اختصار المؤسسة"
+
+#: .\templates\admin\institutions.html:611
+msgid "Tous les pays"
+msgstr "جميع البلدان"
+
+#: .\templates\admin\institutions.html:629
+msgid "Liste des institutions"
+msgstr " قائمة المؤسسات"
+
+#: .\templates\admin\institutions.html:631
+msgid "institutions"
+msgstr "المؤسسات"
+
+#: .\templates\admin\institutions.html:672
+msgid "Aucune institution trouvée."
+msgstr "لم يتم العثور على أي مؤسسات"
+
+#: .\templates\admin\institutions.html:698
+msgid "Sigle :"
+msgstr "اختصار"
+
+#: .\templates\admin\institutions.html:700
+msgid "Pays :"
+msgstr "البلد"
+
+#: .\templates\admin\institutions.html:707
+msgid "Aucune institution trouvée"
+msgstr "لم يتم العثور على أي مؤسسات"
+
+#: .\templates\admin\institutions.html:708
+msgid "Essayez d'ajuster vos filtres ou d'ajouter une nouvelle institution."
+msgstr "حاول تعديل المرشحات الخاصة بك أو إضافة مؤسسة جديدة"
+
+#: .\templates\admin\institutions.html:719
+#: .\templates\admin\publications.html:272
+msgid "Première"
+msgstr "الاولى"
+
+#: .\templates\admin\institutions.html:720
+#: .\templates\admin\publications.html:273
+msgid "Précédente"
+msgstr "السابقة"
+
+#: .\templates\admin\institutions.html:726
+#: .\templates\admin\publications.html:285
+msgid "Suivante"
+msgstr "القادمة"
+
+#: .\templates\admin\institutions.html:727
+#: .\templates\admin\publications.html:286
+msgid "Dernière"
+msgstr "الاخيرة"
+
+#: .\templates\admin\projects.html:3 .\templates\admin\projects.html:464
+msgid "Gestion des Projets"
+msgstr "اٍدارة المشاريع"
+
+#: .\templates\admin\projects.html:495
+msgid "Nouveau projet"
+msgstr "مشروع جديد"
+
+#: .\templates\admin\projects.html:503
+msgid "Total Projets"
+msgstr "إجمالي المشاريع"
+
+#: .\templates\admin\projects.html:506 .\templates\admin\projects.html:520
+msgid "ce mois"
+msgstr "هذا الشهر"
+
+#: .\templates\admin\projects.html:513
+msgid "Stable"
+msgstr "مستقر"
+
+#: .\templates\admin\projects.html:517
+msgid "Terminés"
+msgstr "مكتمل"
+
+#: .\templates\admin\projects.html:524
+msgid "Temps moyen"
+msgstr "متوسط ​​الوقت"
+
+#: .\templates\admin\projects.html:535
+msgid "Rechercher un projet..."
+msgstr "ابحث عن مشروع..."
+
+#: .\templates\admin\projects.html:556
+msgid "Projet"
+msgstr "المشروع"
+
+#: .\templates\admin\projects.html:558
+msgid "Équipe"
+msgstr "الفريق"
+
+#: .\templates\admin\projects.html:569
+msgid "Créé:"
+msgstr ":تم الإنشاء"
+
+#: .\templates\admin\projects.html:571
+msgid "Échéance :"
+msgstr ":تاريخ الاستحقاق "
+
+#: .\templates\admin\projects.html:577
+msgid "Non définie"
+msgstr "غير محدد"
+
+#: .\templates\admin\projects.html:628
+msgid "Aucun projet trouvé"
+msgstr "لم يتم العثور على مشاريع"
+
+#: .\templates\admin\projects.html:629
+msgid ""
+"Commencez par créer un nouveau projet ou modifiez vos critères de recherche."
+msgstr "ابدأ بإنشاء مشروع جديد أو تعديل معايير البحث الخاصة بك"
+
+#: .\templates\admin\projects.html:630
+msgid "Créer un projet"
+msgstr "إنشاء مشروع"
+
+#: .\templates\admin\publications.html:3
+#: .\templates\admin\publications.html:195
+msgid "Gestion des publications"
+msgstr "إدارة المنشورات"
+
+#: .\templates\admin\publications.html:196
+msgid "Ajouter une publication"
+msgstr "أضف مشاركة"
+
+#: .\templates\admin\publications.html:211
+#: .\templates\admin\publications.html:254
+msgid "Rejeté"
+msgstr "رفض"
+
+#: .\templates\admin\publications.html:215
+msgid "Date début"
+msgstr "تاريخ البدء"
+
+#: .\templates\admin\publications.html:219
+msgid "Date fin"
+msgstr "تاريخ الانتهاء"
+
+#: .\templates\admin\publications.html:235
+msgid "Date de soumission"
+msgstr "تاريخ التقديم"
+
+#: .\templates\admin\publications.html:261
+msgid "Rejeter"
+msgstr "رفض"
+
+#: .\templates\admin\publications.html:293
+msgid "Aucune publication trouvée"
+msgstr "لم يتم العثور على منشورات"
+
+#: .\templates\admin\publications.html:294
+msgid ""
+"Modifiez vos critères de recherche ou ajoutez de nouvelles publications."
+msgstr "تغيير معايير البحث الخاصة بك أو إضافة منشورات جديدة"
+
+#: .\templates\admin\security.html:4 .\templates\admin\security.html:6
+#: .\templates\base_admin.html:90
+msgid "Sécurité"
+msgstr "الحماية"
+
+#: .\templates\admin\security.html:7 .\templates\admin\settings.html:6
+msgid "À implémenter."
+msgstr "ليتم تنفيذها."
+
+#: .\templates\admin\settings.html:3 .\templates\admin\settings.html:5
+#: .\templates\base_admin.html:85
+msgid "Paramètres"
+msgstr "الاٍعدادات"
+
+#: .\templates\admin\statistics.html:3 .\templates\base_admin.html:80
+msgid "Statistiques"
+msgstr "الاٍحصائيات"
+
+#: .\templates\admin\statistics.html:161
+msgid "Date de début"
+msgstr "تاريخ البدء"
+
+#: .\templates\admin\statistics.html:171
+msgid "Date de fin"
+msgstr "تاريخ الانتهاء"
+
+#: .\templates\admin\statistics.html:217
+msgid "Projets actifs"
+msgstr "مشاريع نشطة"
+
+#: .\templates\admin\statistics.html:234
+msgid "Inscriptions utilisateurs"
+msgstr "تسجيلات المستخدم"
+
+#: .\templates\admin\statistics.html:242
+msgid "Ressources par catégorie"
+msgstr "الموارد حسب الفئة"
+
+#: .\templates\admin\statistics.html:254
+msgid "Top 5 des ressources les plus vues"
+msgstr "أفضل 5 مصادر الأكثر مشاهدة"
+
+#: .\templates\admin\statistics.html:260 .\templates\home.html:812
+msgid "vues"
+msgstr "المشاهدات"
+
+#: .\templates\admin\statistics.html:271
+msgid "Activité par catégorie"
+msgstr "النشاط حسب الفئة"
+
+#: .\templates\admin\tools.html:3 .\templates\admin\tools.html:370
+msgid "Gestion des Outils"
+msgstr "اٍدارة الادوات"
+
+#: .\templates\admin\tools.html:383
+msgid "Nouvel outil"
+msgstr "أداة جديدة"
+
+#: .\templates\admin\tools.html:397 .\templates\resources\list.html:53
+msgid "Tous les types"
+msgstr "جميع الانواع"
+
+#: .\templates\admin\tools.html:398 .\templates\admin\tools.html:428
+msgid "Analyse"
+msgstr "تحليل"
+
+#: .\templates\admin\tools.html:399 .\templates\admin\tools.html:435
+msgid "Extraction"
+msgstr "اِستِخلاص"
+
+#: .\templates\admin\tools.html:400 .\templates\admin\tools.html:443
+msgid "Visualisation"
+msgstr "تصوير"
+
+#: .\templates\admin\tools.html:401 .\templates\admin\tools.html:450
+msgid "Transformation"
+msgstr "تحويل "
+
+#: .\templates\admin\tools.html:412
+msgid "Date d'ajout"
+msgstr "تاريخ الإضافة"
+
+#: .\templates\admin\tools.html:518
+msgid "Aucun outil disponible"
+msgstr "لا توجد أدوات متاحة"
+
+#: .\templates\admin\tools.html:519
+msgid ""
+"Vous n'avez pas encore créé d'outils ou aucun ne correspond à vos critères "
+"de recherche."
+msgstr ""
+"لم تقم بإنشاء أي أدوات بعد أو لا يوجد أي منها يتطابق مع معايير البحث الخاصة "
+"بك"
+
+#: .\templates\admin\tools.html:524
+msgid "Créer un outil"
+msgstr "إنشاء أداة"
+
+#: .\templates\admin\user_edit.html:3
+msgid "Éditer utilisateur"
+msgstr "تعديل المستخدم"
+
+#: .\templates\admin\user_edit.html:143 .\templates\admin\users.html:198
+msgid "Éditer"
+msgstr "تعديل"
+
+#: .\templates\admin\user_edit.html:166
+msgid "Sauvegarder"
+msgstr "الحفظ"
+
+#: .\templates\admin\users.html:3
+msgid "Gestion des utilisateurs"
+msgstr "اٍدارة المستخدمين"
+
+#: .\templates\admin\users.html:82
+msgid "Gestion des Utilisateurs"
+msgstr "اٍدارة المستخدمين"
+
+#: .\templates\admin\users.html:86
+msgid "utilisateur(s) en attente"
+msgstr "مستخدمين في الانتظار"
+
+#: .\templates\admin\users.html:90 .\templates\admin\users_new.html:4
+msgid "Nouvel utilisateur"
+msgstr "مستخدم جديد"
+
+#: .\templates\admin\users.html:107
+msgid "Rechercher par nom ou email..."
+msgstr "البحث حسب الاسم أو البريد الإلكتروني..."
+
+#: .\templates\admin\users.html:116
+msgid "Actifs"
+msgstr "المفعلين"
+
+#: .\templates\admin\users.html:118
+msgid "Bloqués"
+msgstr "المحظورين"
+
+#: .\templates\admin\users.html:135
+msgid "Filtres actifs:"
+msgstr ":المرشحات النشطة"
+
+#: .\templates\admin\users.html:138
+msgid "Recherche:"
+msgstr ":البحث"
+
+#: .\templates\admin\users.html:144
+msgid "Statut:"
+msgstr ":الحالة"
+
+#: .\templates\admin\users.html:167
+msgid "Date d'inscription"
+msgstr "تاريخ التسجيل"
+
+#: .\templates\admin\users.html:206
+msgid "Activer"
+msgstr "تفعيل"
+
+#: .\templates\admin\users.html:209
+msgid "Bloquer"
+msgstr "حظر"
+
+#: .\templates\admin\users.html:212
+msgid "Historique"
+msgstr "سجل"
+
+#: .\templates\admin\users.html:269
+msgid "Aucun utilisateur trouvé"
+msgstr "لم يتم العثور على مستخدمين"
+
+#: .\templates\admin\users.html:270
+msgid "Aucun utilisateur ne correspond à vos critères de recherche."
+msgstr "لا يوجد مستخدمين يتطابقون مع معايير البحث الخاصة بك."
+
+#: .\templates\admin\users.html:272
+msgid "Réinitialiser les filtres"
+msgstr "إعادة تعيين المرشحات"
+
+#: .\templates\admin\users_new.html:160
+msgid "Créer un nouvel utilisateur"
+msgstr "إنشاء مستخدم جديد"
+
+#: .\templates\admin\users_new.html:164
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+#: .\templates\admin\users_new.html:166
+msgid "Nouveau"
+msgstr "المستوى"
+
+#: .\templates\admin\users_new.html:180
+msgid "Nom complet"
+msgstr "الاسم الكام"
+
+#: .\templates\admin\users_new.html:192
+msgid "L'email doit se terminer par: usthb.dz"
+msgstr ":يجب أن ينتهي البريد الإلكتروني بـ"
+
+#: .\templates\admin\users_new.html:209 .\templates\admin\users_new.html:210
+msgid "Mot de passe"
+msgstr "كلمة المرور"
+
+#: .\templates\admin\users_new.html:222
+msgid "Confirmation du mot de passe"
+msgstr "تأكيد كلمة المرور"
+
+#: .\templates\admin\users_new.html:232
+msgid "Créer l'utilisateur"
+msgstr "إنشاء مستخدم"
+
+#: .\templates\awaiting_verification.html:8
+msgid "Votre profil est en attente de vérification"
+msgstr "ملفك الشخصي في انتظار التحقق"
+
+#: .\templates\awaiting_verification.html:27
+msgid "Accueil"
+msgstr "الرئيسية"
+
+#: .\templates\awaiting_verification.html:32
+msgid "Événements"
+msgstr "الاحداث"
+
+#: .\templates\awaiting_verification.html:44
+msgid "Mon Profil"
+msgstr "حسابي الشخصي"
+
+#: .\templates\base.html:8 .\templates\base.html:233
+#: .\templates\events\event_list.html:4
+msgid "Arabic NLP Platform"
+msgstr "منصة البرمجة اللغوية العربية"
+
+#: .\templates\base.html:55
+#, fuzzy
+#| msgid "Arabic"
+msgid "Arabic NLP"
+msgstr "العربية"
+
+#: .\templates\base.html:88 .\templates\notifications\list.html:5
+#: .\templates\notifications\list.html:15
+msgid "Notifications"
+msgstr "الاشعارات"
+
+#: .\templates\base.html:91
+msgid "Mark all as read"
+msgstr "وضع علامة على الكل كمقروءة"
+
+#: .\templates\base.html:123
+
+msgid " No notifications yet"
+msgstr "لا توجد إخطارات حتى الآن"
+
+#: .\templates\base.html:128
+
+msgid "View all notifications"
+msgstr "عرض جميع الاٍشعارات"
+
+#: .\templates\base.html:143
+
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+#: .\templates\base.html:146
+
+msgid "Sign up"
+msgstr "اشتراك"
+
+#: .\templates\base.html:162
+msgid "Home"
+msgstr "الرئيسية"
+
+#: .\templates\base.html:168 .\templates\base.html:246
+#: .\templates\resources\list.html:57 .\templates\resources\list.html:94
+msgid "Tools"
+msgstr "أدوات"
+
+#: .\templates\base.html:171 .\templates\resources\resource_detail.html:13
+msgid "Resources"
+msgstr "موارد"
+
+#: .\templates\base.html:174 .\templates\base.html:255
+
+msgid "Research Projects"
+msgstr "المشاريع البحثية"
+
+#: .\templates\base.html:177 .\templates\base.html:252
+
+msgid "Community"
+msgstr "مجتمع"
+
+#: .\templates\base.html:180
+msgid "News"
+msgstr "أخبار"
+
+#: .\templates\base.html:198
+msgid "Admin"
+msgstr "مسؤول"
+
+#: .\templates\base.html:234
+msgid "platform dedicated to advancing Arabic natural language processing through shared resources, tools, and community collaboration."
+msgstr "منصة مخصصة لتطوير معالجة اللغة الطبيعية العربية من خلال الموارد والأدوات المشتركة والتعاون المجتمعي"
+
+#: .\templates\base.html:247 .\templates\resources\list.html:3
+msgid "All Resources"
+msgstr "جميع الموارد"
+
+#: .\templates\base.html:254 .\templates\base_admin.html:65
+msgid "Forum"
+msgstr "المنتدى"
+
+#: .\templates\base.html:257
+
+msgid "Contributors"
+msgstr "المساهمين"
+
+#: .\templates\base.html:261
+
+msgid "Contact Us"
+msgstr "  تواصل معنا"
+
+#: .\templates\base.html:265
+msgid "Digital Campus, Tech University"
+msgstr "الحرم الجامعي الرقمي، جامعة التكنولوجيا"
+
+#: .\templates\base.html:273
+
+msgid "Arabic NLP Platform. All rights reserved."
+msgstr ".منصة معالجة اللغة الطبيعية العربية. جميع الحقوق محفوظة   "
+
+#: .\templates\base.html:275
+msgid "Privacy Policy"
+msgstr "سياسة الخصوصية"
+
+#: .\templates\base.html:276
+msgid "Terms of Service"
+msgstr "شروط الخدمة"
+
+#: .\templates\base.html:277
+msgid "About Us"
+msgstr "معلومات عنا"
+
+#: .\templates\base_admin.html:8 .\templates\base_admin.html:115
+msgid "Administration"
+msgstr " الإدارة"
+
+#: .\templates\base_admin.html:25
+msgid "Panneau d'administration"
+msgstr "لوحة الإدارة"
+
+#: .\templates\base_admin.html:40
+#: .\templates\institutions\institution_detail.html:135
+msgid "Publications"
+msgstr "المنشورات"
+
+#: .\templates\base_admin.html:50
+msgid "Outils NLP"
+msgstr "أدوات معالجة اللغة العربية"
+
+#: .\templates\base_admin.html:55
+msgid "Projets"
+msgstr "المشاريع"
+
+#: .\templates\base_admin.html:60
+msgid "Cours"
+msgstr "الدورات"
+
+#: .\templates\base_admin.html:75
+msgid "Appels à comm."
+msgstr "مكالمات للاتصال."
+
+#: .\templates\base_admin.html:99
+msgid "Retour au site"
+msgstr "العودة للموقع"
+
+#: .\templates\base_admin.html:104
+msgid "Déconnexion"
+msgstr "قطع الاتصال"
+
+#: .\templates\chatbot\chatbot.html:121
+msgid "💬 Chat AI"
+msgstr " دردشة الذكاء الاصطناعي💬"
+
+#: .\templates\chatbot\chatbot.html:122
+msgid "← Accueil"
+msgstr " الرئيسية←"
+
+#: .\templates\events\event_confirm_delete.html:4
+#: .\templates\events\event_confirm_delete.html:18
+#: .\templates\events\event_confirm_delete.html:41
+msgid "Delete Event"
+msgstr "حذف الحدث"
+
+#: .\templates\events\event_confirm_delete.html:12
+#: .\templates\events\event_detail.html:421
+#: .\templates\resources\resource_confirm_delete.html:16
+#: .\templates\resources\resource_detail.html:41
+#: .\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr "الحذف"
+
+#: .\templates\events\event_confirm_delete.html:21
+msgid "Are you sure you want to delete this event?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا الحدث؟"
+
+#: .\templates\events\event_confirm_delete.html:26
+msgid "Dates"
+msgstr "التواريخ"
+
+#: .\templates\events\event_confirm_delete.html:31
+msgid "This action cannot be undone!"
+msgstr "!لا يمكن التراجع عن هذا الإجراء"
+
+#: .\templates\events\event_detail.html:262
+msgid "Virtual Event"
+msgstr "حدث افتراضي"
+
+#: .\templates\events\event_detail.html:268
+#: .\templates\events\event_list.html:80
+msgid "Ongoing"
+msgstr "مستمر"
+
+#: .\templates\events\event_detail.html:272
+#: .\templates\events\event_list.html:82
+msgid "Upcoming"
+msgstr "القادمة"
+
+#: .\templates\events\event_detail.html:276
+msgid "Ended"
+msgstr "انتهى"
+
+#: .\templates\events\event_detail.html:292
+msgid "About This Event"
+msgstr "حول هذا الحدث"
+
+#: .\templates\events\event_detail.html:320
+#: .\templates\institutions\institution_detail.html:192
+#: .\templates\institutions\institution_form.html:322
+msgid "Contact"
+msgstr "تواصل"
+
+#: .\templates\events\event_detail.html:415
+#: .\templates\resources\resource_detail.html:38
+msgid "Edit"
+msgstr "تعديل"
+
+#: .\templates\events\event_detail.html:432
+msgid "Unregister"
+msgstr "إلغاء التسجيل"
+
+#: .\templates\events\event_detail.html:447
+msgid "Event Status"
+msgstr "حالة الحدث"
+
+#: .\templates\events\event_detail.html:458
+msgid "This event is currently ongoing"
+msgstr "هذا الحدث مستمر حاليا"
+
+#: .\templates\events\event_detail.html:460
+msgid "Event in progress"
+msgstr "الحدث قيد التقدم"
+
+#: .\templates\events\event_detail.html:470
+msgid "This is an upcoming event"
+msgstr "هذا حدث قادم"
+
+#: .\templates\events\event_detail.html:471
+msgid "Mark your calendar"
+msgstr "ضع علامة على التقويم الخاص بك"
+
+#: .\templates\events\event_detail.html:481
+msgid "This event has ended"
+msgstr "لقد انتهى هذا الحدث"
+
+#: .\templates\events\event_detail.html:482
+msgid "Event completed"
+msgstr "اكتمل الحدث"
+
+#: .\templates\events\event_detail.html:493
+msgid "You are registered for this event"
+msgstr "لقد تم تسجيلك لهذا الحدث"
+
+#: .\templates\events\event_detail.html:504
+msgid "Share This Event"
+msgstr "شارك هذا الحدث"
+
+#: .\templates\events\event_detail.html:519
+msgid "Twitter"
+msgstr "تويتر"
+
+#: .\templates\events\event_detail.html:526
+msgid "LinkedIn"
+msgstr "لينكدين"
+
+#: .\templates\events\event_detail.html:542
+msgid "This event is pending approval."
+msgstr "هذا الحدث في انتظار الموافقة"
+
+#: .\templates\events\event_detail.html:555
+msgid "Approve Event"
+msgstr "الموافقة على الحدث"
+
+#: .\templates\events\event_form.html:6 .\templates\events\event_form.html:19
+#: .\templates\events\event_form.html:30
+msgid "Edit Event"
+msgstr "تعديل الحدث"
+
+#: .\templates\events\event_form.html:8 .\templates\events\event_form.html:32
+msgid "Submit New Event"
+msgstr "ارسال حدث جديد"
+
+#: .\templates\events\event_form.html:19
+msgid "New Event"
+msgstr "حدث جديد"
+
+#: .\templates\events\event_form.html:56
+msgid "Fields marked with * are required"
+msgstr "الحقول التي تحمل علامة * مطلوبة"
+
+#: .\templates\events\event_form.html:99
+msgid "Comma-separated domains (e.g., NLP, Speech Processing)"
+msgstr "المجالات (على سبيل المثال، معالجة اللغة الطبيعية، ومعالجة الكلام)"
+
+#: .\templates\events\event_form.html:189
+msgid "Current file:"
+msgstr ":الملف الحالي"
+
+#: .\templates\events\event_form.html:212
+msgid "Your event will be published immediately upon submission."
+msgstr "سيتم نشر الحدث الخاص بك فور تقديمه"
+
+#: .\templates\events\event_form.html:214
+msgid "Your event submission will be reviewed by our team before publication."
+msgstr "سيتم مراجعة مشاركتك في الحدث من قبل فريقنا قبل النشر"
+
+#: .\templates\events\event_form.html:226
+msgid "Save Event"
+msgstr "حفظ الحدث"
+
+#: .\templates\events\event_form.html:228 .\templates\events\event_list.html:18
+msgid "Submit Event"
+msgstr "إرسال الحدث"
+
+#: .\templates\events\event_list.html:4 .\templates\events\event_list.html:11
+msgid "Scientific Events"
+msgstr "الأحداث العلمية"
+
+#: .\templates\events\event_list.html:12
+msgid ""
+"Discover conferences, workshops, and calls for papers in Arabic NLP, Speech "
+"Processing, and AI."
+msgstr ""
+"اكتشف المؤتمرات وورش العمل والدعوات لتقديم أوراق بحثية في مجال معالجة اللغة "
+"الطبيعية باللغة العربية ومعالجة الكلام والذكاء الاصطناعي"
+
+#: .\templates\events\event_list.html:13
+msgid "events found"
+msgstr "وجدت الأحداث"
+
+#: .\templates\events\event_list.html:43
+msgid "Domain"
+msgstr "الميدان"
+
+#: .\templates\events\event_list.html:55
+msgid "Include Past"
+msgstr "تضمين الماضي"
+
+#: .\templates\events\event_list.html:60
+msgid "Filter"
+msgstr "ترشيح"
+
+#: .\templates\events\event_list.html:63
+#: .\venv\Lib\site-packages\django\forms\widgets.py:461
+msgid "Clear"
+msgstr "تصفية"
+
+#: .\templates\events\event_list.html:84
+msgid "Past"
+msgstr "الماضي"
+
+#: .\templates\events\event_list.html:96
+msgid "Virtual"
+msgstr "افتراضي"
+
+#: .\templates\events\event_list.html:109
+msgid "Deadline:"
+msgstr ":موعد التسليم"
+
+#: .\templates\events\event_list.html:110
+msgid "days left"
+msgstr "الأيام المتبقية"
+
+#: .\templates\events\event_list.html:117
+msgid "Details"
+msgstr "تفاصيل"
+
+#: .\templates\events\event_list.html:150
+msgid "No events found"
+msgstr "لم يتم العثور على أي أحداث"
+
+#: .\templates\events\event_list.html:151
+msgid "Try changing filters or check back later."
+msgstr "حاول تغيير المرشحات أو التحقق مرة أخرى لاحقًا"
+
+#: .\templates\events\event_list.html:153
+#: .\templates\institutions\institution_list.html:40
+msgid "Reset"
+msgstr "إعادة ضبط"
+
+#: .\templates\forum\ban_user.html:9
+msgid "Bannir un utilisateur"
+msgstr "حظر المستخدم"
+
+#: .\templates\forum\ban_user.html:16 .\templates\forum\topic_delete.html:22
+msgid "Attention :"
+msgstr " :انتباه "
+
+#: .\templates\forum\ban_user.html:16
+msgid ""
+"Cette action empêchera l'utilisateur d'accéder à cette salle de discussion."
+msgstr "سيؤدي هذا الإجراء إلى منع المستخدم من الوصول إلى غرفة الدردشة هذه"
+
+#: .\templates\forum\ban_user.html:25
+msgid "Raison du bannissement"
+msgstr "سبب الحظر"
+
+#: .\templates\forum\ban_user.html:51
+msgid "Confirmer le bannissement"
+msgstr "تأكيد الحظر"
+
+#: .\templates\forum\chatroom_delete.html:3
+#: .\templates\forum\chatroom_delete.html:12
+msgid "Supprimer la salle de discussion"
+msgstr "حذف غرفة الدردشة"
+
+#: .\templates\forum\chatroom_delete.html:18
+msgid "Vous êtes sur le point de supprimer la salle de discussion"
+msgstr "أنت على وشك حذف غرفة الدردشة"
+
+#: .\templates\forum\chatroom_delete.html:18
+msgid ". Cette action est"
+msgstr "هذا العمل "
+
+#: .\templates\forum\chatroom_delete.html:19
+msgid "irréversible et supprimera également tous les messages associés."
+msgstr "لا يمكن الرجوع فيه وسيؤدي أيضًا إلى حذف جميع الرسائل المرتبطة به"
+
+#: .\templates\forum\chatroom_detail.html:43
+#: .\templates\forum\chatroom_detail.html:62
+msgid "Utilisateurs bannis"
+msgstr "المستخدمين المحظورين"
+
+#: .\templates\forum\chatroom_detail.html:82
+msgid "Banni le"
+msgstr "حظر في"
+
+#: .\templates\forum\chatroom_detail.html:86
+msgid "Raison :"
+msgstr ":السبب "
+
+#: .\templates\forum\chatroom_detail.html:105
+msgid "Aucun utilisateur banni"
+msgstr "لم يتم حظر أي مستخدمين"
+
+#: .\templates\forum\chatroom_detail.html:143
+msgid "(modifié)"
+msgstr "(معدل)"
+
+#: .\templates\forum\chatroom_detail.html:175
+msgid "Aucun message dans cette salle"
+msgstr "لا توجد رسائل في هذه الغرفة"
+
+#: .\templates\forum\chatroom_detail.html:176
+msgid "Soyez le premier à démarrer la conversation!"
+msgstr "كن أول من يبدأ المحادثة!"
+
+#: .\templates\forum\chatroom_detail.html:208
+msgid "Votre message..."
+msgstr "رسالتك..."
+
+#: .\templates\forum\chatroom_list.html:5
+msgid "Salles de discussion | Arabic NLP Platform"
+msgstr "غرف الدردشة | منصة البرمجة اللغوية العربية"
+
+#: .\templates\forum\chatroom_list.html:10
+msgid "Salles de discussion"
+msgstr "غرف الدردشة"
+
+#: .\templates\forum\chatroom_list.html:12
+msgid "Voir les sujets"
+msgstr "عرض المواضيع"
+
+#: .\templates\forum\chatroom_list.html:43
+msgid "Rejoindre la discussion"
+msgstr "انضم إلى المناقشة"
+
+#: .\templates\forum\chatroom_list.html:55
+msgid "Aucune salle de discussion n'est disponible"
+msgstr "لا توجد غرفة دردشة متاحة"
+
+#: .\templates\forum\chatroom_list.html:56
+msgid "Revenez aux sujets pour créer une nouvelle salle de discussion"
+msgstr "العودة إلى المواضيع لإنشاء غرفة دردشة جديدة"
+
+#: .\templates\forum\chatroom_list.html:58
+msgid "Retour aux sujets"
+msgstr "العودة إلى المواضيع"
+
+#: .\templates\forum\chatroom_new.html:9
+msgid "Créer une nouvelle salle de discussion"
+msgstr "إنشاء غرفة دردشة جديدة"
+
+#: .\templates\forum\chatroom_new.html:13
+msgid "Sujet:"
+msgstr ":الموضوع"
+
+#: .\templates\forum\chatroom_new.html:14
+msgid ""
+"Veuillez remplir les informations ci-dessous pour créer votre salle de "
+"discussion."
+msgstr "يرجى ملء المعلومات أدناه لإنشاء غرفة الدردشة الخاصة بك"
+
+#: .\templates\forum\chatroom_new.html:20
+#: .\templates\forum\chatroom_update.html:18
+msgid "Nom de la salle"
+msgstr "اسم الغرفة"
+
+#: .\templates\forum\chatroom_new.html:57
+msgid "Créer la salle"
+msgstr "قم بإنشاء الغرفة"
+
+#: .\templates\forum\chatroom_update.html:3
+#: .\templates\forum\chatroom_update.html:11
+msgid "Modifier la salle de discussion"
+msgstr "تعديل غرفة الدردشة"
+
+#: .\templates\forum\chatroom_update.html:48
+#: .\templates\forum\message_update.html:47
+#: .\templates\forum\topic_update.html:56
+msgid "Enregistrer les modifications"
+msgstr "حفظ التعديلات"
+
+#: .\templates\forum\message_update.html:10
+msgid "Modifier le message"
+msgstr "تعديل الرسالة"
+
+#: .\templates\forum\message_update.html:21
+#: .\templates\notifications\list.html:68
+msgid "Message"
+msgstr "رسالة"
+
+#: .\templates\forum\topic_delete.html:9
+msgid "Supprimer le sujet"
+msgstr "حذف الموضوع"
+
+#: .\templates\forum\topic_delete.html:16
+msgid "Êtes-vous sûr de vouloir supprimer le sujet :"
+msgstr ":هل أنت متأكد أنك تريد حذف الموضوع"
+
+#: .\templates\forum\topic_delete.html:22
+msgid ""
+"Cette action est irréversible et supprimera toutes les salles de discussion "
+"et messages associés."
+msgstr ""
+"هذا الإجراء لا رجعة فيه وسوف يؤدي إلى حذف جميع غرف الدردشة والرسائل المرتبطة "
+"به"
+
+#: .\templates\forum\topic_list.html:5
+msgid "Sujets de discussion | Arabic NLP Platform"
+msgstr "مواضيع المناقشة | منصة البرمجة اللغوية العربية"
+
+#: .\templates\forum\topic_list.html:10
+msgid "Sujets de discussion"
+msgstr "مواضيع للمناقشة"
+
+#: .\templates\forum\topic_list.html:42
+msgid "Créer une salle de discussion"
+msgstr "إنشاء غرفة دردشة"
+
+#: .\templates\forum\topic_list.html:65
+msgid "Aucun sujet n'a été créé"
+msgstr "لم يتم إنشاء أي مواضيع"
+
+#: .\templates\forum\topic_list.html:66
+msgid "Soyez le premier à lancer une discussion !"
+msgstr "!كن أول من يبدأ المناقشة"
+
+#: .\templates\forum\topic_list.html:68
+msgid "Créer un sujet"
+msgstr "إنشاء موضوع"
+
+#: .\templates\forum\topic_new.html:9
+msgid "Créer un nouveau sujet"
+msgstr "إنشاء موضوع جديد"
+
+#: .\templates\forum\topic_new.html:13
+msgid "Créez un nouveau sujet de discussion pour la communauté."
+msgstr "إنشاء موضوع نقاش جديد للمجتمع"
+
+#: .\templates\forum\topic_update.html:10
+msgid "Modifier le sujet"
+msgstr "تعديل الموضوع"
+
+#: .\templates\forum\topic_update.html:14
+msgid "Mettez à jour les informations de votre sujet de discussion."
+msgstr "قم بتحديث معلومات موضوع المناقشة الخاص بك."
+
+#: .\templates\forum\unban_user.html:10
+msgid "Débannir un utilisateur"
+msgstr "قم بإلغاء الحظر على مستخدم"
+
+#: .\templates\forum\unban_user.html:19
+msgid "Êtes-vous sûr de vouloir débannir :"
+msgstr ":هل أنت متأكد أنك تريد إلغاء الحظر"
+
+#: .\templates\forum\unban_user.html:22
+msgid "de la salle de discussion"
+msgstr "من غرفة الدردشة"
+
+#: .\templates\forum\unban_user.html:38
+msgid "Confirmer le débannissement"
+msgstr "تأكيد إلغاء الحظر"
+
+#: .\templates\home.html:689
+msgid "Welcome to Arabic NLP Platform"
+msgstr "مرحباً بكم في منصة معالجة اللغة العربية"
+
+#: .\templates\home.html:691
+msgid ""
+"Explore resources, tools, and corpus for Arabic Natural Language Processing. "
+"Collaborate with researchers and developers on innovative projects."
+msgstr ""
+"استكشف الموارد والأدوات والمجموعات البرمجية لمعالجة اللغة العربية الطبيعية. "
+"تعاون مع الباحثين والمطورين في مشاريع مبتكرة."
+
+#: .\templates\home.html:694
+msgid "Explore Resources"
+msgstr "اكتشف الموارد"
+
+#: .\templates\home.html:703
+msgid "Browse Corpus"
+msgstr "تصفح المجموعات"
+
+#: .\templates\home.html:707
+msgid "Use Tools"
+msgstr "استخدم الأدوات"
+
+#: .\templates\home.html:711
+msgid "Submit Project"
+msgstr "إرسال المشروع"
+
+#: .\templates\home.html:715
+msgid "Join Community"
+msgstr "انضم إلى المجتمع"
+
+#: .\templates\home.html:722
+msgid "Available Corpus"
+msgstr "المجموعة المتاحة"
+
+#: .\templates\home.html:730
+msgid "Active Projects"
+msgstr "Active Projects"
+
+#: .\templates\home.html:734
+msgid "Community Members"
+msgstr "أعضاء المجتمع"
+
+#: .\templates\home.html:741
+msgid "Actualités populaires"
+msgstr "أخبار الشائعة"
+
+#: .\templates\home.html:742 .\templates\home.html:788
+msgid "Voir tout"
+msgstr "شاهد الكل"
+
+#: .\templates\home.html:775
+msgid "Aucun post populaire pour le moment."
+msgstr "لا توجد مشاركات شائعة حتى الآن."
+
+#: .\templates\home.html:786
+msgid "Ressources les plus vues"
+msgstr "الموارد الأكثر مشاهدة"
+
+#: .\templates\home.html:828
+msgid "Aucune ressource populaire pour le moment."
+msgstr "لا توجد مصادر شائعة حتى الآن."
+
+#: .\templates\home.html:837
+msgid "Upcoming Events"
+msgstr "الأحداث القادمة"
+
+#: .\templates\home.html:839 .\templates\home.html:881
+msgid "View All"
+msgstr "عرض الكل"
+
+#: .\templates\home.html:854
+msgid "Online"
+msgstr "متصل"
+
+#: .\templates\home.html:871
+msgid "No upcoming events."
+msgstr "لا توجد أحداث قادمة."
+
+#: .\templates\home.html:880
+msgid "Our Community"
+msgstr "مجتمعنا"
+
+#: .\templates\home.html:885
+msgid "New Members"
+msgstr "الأعضاء الجدد"
+
+#: .\templates\home.html:906
+msgid "No new members to display."
+msgstr "لا يوجد أعضاء جدد لعرضهم."
+
+#: .\templates\home.html:911
+msgid "Recent Discussions"
+msgstr "المناقشات الأخيرة"
+
+#: .\templates\home.html:922
+msgid "replies"
+msgstr "الردود"
+
+#: .\templates\home.html:926
+msgid "ago"
+msgstr "منذ"
+
+#: .\templates\home.html:932
+msgid "No recent discussions."
+msgstr "لا توجد مناقشات الأخيرة."
+
+#: .\templates\institutions\institution_confirm_delete.html:8
+msgid "Confirmer la suppression de l'institution"
+msgstr "تأكيد حذف المؤسسة"
+
+#: .\templates\institutions\institution_confirm_delete.html:12
+msgid "Êtes-vous sûr de vouloir supprimer l'institution"
+msgstr "هل أنت متأكد أنك تريد حذف المؤسسة؟"
+
+#: .\templates\institutions\institution_confirm_delete.html:15
+msgid "Cette action est irréversible."
+msgstr "هذا الإجراء لا رجعة فيه."
+
+#: .\templates\institutions\institution_detail.html:5
+#: .\templates\institutions\institution_list.html:5
+msgid "Institution Directory"
+msgstr "دليل المؤسسات"
+
+#: .\templates\institutions\institution_detail.html:31
+#: .\templates\resources\corpus_list.html:72
+#: .\templates\resources\tool_list.html:74
+msgid "Type:"
+msgstr ":النوع"
+
+#: .\templates\institutions\institution_detail.html:32
+msgid "Country:"
+msgstr ":البلد"
+
+#: .\templates\institutions\institution_detail.html:33
+msgid "City:"
+msgstr ":المدينة"
+
+#: .\templates\institutions\institution_detail.html:37
+msgid "Website:"
+msgstr ":موقع إلكتروني"
+
+#: .\templates\institutions\institution_detail.html:40
+msgid "Email:"
+msgstr ":بريد إلكتروني"
+
+#: .\templates\institutions\institution_detail.html:43
+msgid "Phone:"
+msgstr ":الهاتف"
+
+#: .\templates\institutions\institution_detail.html:48
+msgid "Address:"
+msgstr ":العنوان"
+
+#: .\templates\institutions\institution_detail.html:51
+#: .\templates\search\search_results.html:152
+msgid "Specialties:"
+msgstr ":التخصصات"
+
+#: .\templates\institutions\institution_detail.html:61
+msgid "About the Institution"
+msgstr "عن المؤسسة"
+
+#: .\templates\institutions\institution_detail.html:72
+msgid "Researchers"
+msgstr "الباحثون"
+
+#: .\templates\institutions\institution_detail.html:86
+msgid "Personal Website"
+msgstr "موقع شخصي"
+
+#: .\templates\institutions\institution_detail.html:101
+msgid "Projects"
+msgstr "المشاريع"
+
+#: .\templates\institutions\institution_detail.html:111
+msgid "Start Date:"
+msgstr ":تاريخ البدء"
+
+#: .\templates\institutions\institution_detail.html:114
+msgid "End Date:"
+msgstr ":تاريخ النهاية"
+
+#: .\templates\institutions\institution_detail.html:120
+msgid "More Details"
+msgstr "مزيد من التفاصيل"
+
+#: .\templates\institutions\institution_detail.html:142
+msgid "Authors:"
+msgstr ":المؤلفون"
+
+#: .\templates\institutions\institution_detail.html:143
+msgid "Year of Publication:"
+msgstr ":سنة النشر"
+
+#: .\templates\institutions\institution_detail.html:145
+#: .\templates\resources\article_detail.html:14
+msgid "Journal:"
+msgstr ":مجلة"
+
+#: .\templates\institutions\institution_detail.html:178
+msgid "Register"
+msgstr "يسجل"
+
+#: .\templates\institutions\institution_detail.html:197
+msgid "Contact Information"
+msgstr "معلومات الاتصال"
+
+#: .\templates\institutions\institution_detail.html:214
+msgid "Social Media"
+msgstr "وسائل التواصل الاجتماعي"
+
+#: .\templates\institutions\institution_form.html:173
+msgid "Modifier l'institution"
+msgstr "تعديل المؤسسة"
+
+#: .\templates\institutions\institution_form.html:174
+msgid "Nouvelle institution"
+msgstr "مؤسسة جديدة"
+
+#: .\templates\institutions\institution_form.html:217
+msgid "Informations générales"
+msgstr "معلومات علامة"
+
+#: .\templates\institutions\institution_form.html:227
+msgid "Le nom complet de l'institution"
+msgstr "اسم الكامل المؤسسة"
+
+#: .\templates\institutions\institution_form.html:238
+msgid "Le sigle ou l'abréviation de l'institution"
+msgstr "اختصار أو اسم المؤسسة"
+
+#: .\templates\institutions\institution_form.html:268
+msgid "Sélectionnez les spécialités de l'institution"
+msgstr "حدد تخصصات المؤسسة"
+
+#: .\templates\institutions\institution_form.html:280
+msgid "Téléchargez le logo de l'institution (format recommandé : PNG ou JPG)"
+msgstr "قم بتحميل شعار المؤسسة (الصيغة الموصى بها: PNG أو JPG)   "
+
+#: .\templates\institutions\institution_form.html:288
+msgid "Localisation"
+msgstr "الموقع"
+
+#: .\templates\institutions\institution_list.html:5
+msgid "Arabic Language Technology Platform"
+msgstr "منصة تكنولوجيا اللغة العربية"
+
+#: .\templates\institutions\institution_list.html:12
+msgid "Directory of Research Institutions in Arabic Language Processing"
+msgstr "دليل مؤسسات البحث في معالجة اللغة العربية"
+
+#: .\templates\institutions\institution_list.html:15
+msgid ""
+"Discover leading organizations in Arabic language technology research and "
+"development"
+msgstr ""
+"اكتشف المنظمات الرائدة في مجال البحث والتطوير في مجال تكنولوجيا اللغة العربية"
+
+#: .\templates\institutions\institution_list.html:43
+msgid "Search"
+msgstr "البحث"
+
+#: .\templates\institutions\institution_list.html:84
+#: .\templates\resources\corpus_list.html:123
+#: .\templates\resources\course_list.html:104
+#: .\templates\resources\list.html:140 .\templates\resources\tool_list.html:122
+msgid "View Details"
+msgstr "رؤية التفاصيل"
+
+#: .\templates\institutions\institution_list.html:95
+msgid "No institutions match your search criteria."
+msgstr "لا توجد مؤسسات تطابق معايير البحث الخاصة بك."
+
+#: .\templates\institutions\institution_list.html:98
+msgid "View All Institutions"
+msgstr "عرض جميع المؤسسات"
+
+#: .\templates\institutions\institution_list.html:108
+msgid "Page Navigation"
+msgstr "التنقل في الصفحة"
+
+#: .\templates\institutions\institution_list.html:113
+msgid "First"
+msgstr "الاول"
+
+#: .\templates\institutions\institution_list.html:118
+msgid "Previous"
+msgstr "السابق"
+
+#: .\templates\institutions\institution_list.html:136
+msgid "Next"
+msgstr "القادم"
+
+#: .\templates\institutions\institution_list.html:141
+msgid "Last"
+msgstr "الاخير"
+
+#: .\templates\notifications\list.html:19
+msgid "Marquer tout comme lu"
+msgstr "وضع علامة على الكل كمقروءة"
+
+#: .\templates\notifications\list.html:62
+msgid "Invitation"
+msgstr "دعوة"
+
+#: .\templates\notifications\list.html:64
+msgid "Demande d'adhésion"
+msgstr "طلب العضوية"
+
+#: .\templates\notifications\list.html:66
+msgid "Tâche assignée"
+msgstr "المهمة المعينة"
+
+#: .\templates\notifications\list.html:70
+msgid "Système"
+msgstr "نظام"
+
+#: .\templates\notifications\list.html:89
+#: .\templates\notifications\list.html:99
+msgid "Accepter"
+msgstr "قبول"
+
+#: .\templates\notifications\list.html:92
+#: .\templates\notifications\list.html:102
+msgid "Refuser"
+msgstr "رفض"
+
+#: .\templates\notifications\list.html:111
+msgid "Lu"
+msgstr "قرأ"
+
+#: .\templates\notifications\list.html:115
+msgid "Marquer comme lu"
+msgstr "وضع علامة كمقروءة"
+
+#: .\templates\notifications\list.html:128
+msgid "Aucune notification"
+msgstr "لا الإخطارات"
+
+#: .\templates\notifications\list.html:129
+msgid "Vous n'avez pas de notifications pour le moment."
+msgstr "ليس لديك أي إشعارات في الوقت الحالي."
+
+#: .\templates\resources\article_detail.html:10
+msgid "Digital Object Identifier (DOI):"
+msgstr "معرف الكائن الرقمي (DOI):"
+
+#: .\templates\resources\article_detail.html:18
+msgid "Publication Date:"
+msgstr "تاريخ النشر:"
+
+#: .\templates\resources\corpus_create_form.html:6
+msgid "Create New Corpus"
+msgstr "إنشاء مجموعة جديدة"
+
+#: .\templates\resources\corpus_create_form.html:53
+msgid "Save Corpus"
+msgstr "حفظ المجموعة"
+
+#: .\templates\resources\corpus_detail.html:9
+#: .\templates\resources\course_detail.html:9
+msgid "Field:"
+msgstr "الميدان"
+
+#: .\templates\resources\corpus_detail.html:16
+msgid "Size:"
+msgstr "الحجم"
+
+#: .\templates\resources\corpus_detail.html:17
+msgid "words"
+msgstr "الكلمات"
+
+#: .\templates\resources\corpus_detail.html:20
+msgid "File Format:"
+msgstr "تنسيق الملف:"
+
+#: .\templates\resources\corpus_list.html:8
+msgid "Corpus Collection :"
+msgstr ":المجموعات"
+
+#: .\templates\resources\corpus_list.html:9
+msgid "corpora available"
+msgstr "المجموعات المتاحة"
+
+#: .\templates\resources\corpus_list.html:14
+msgid "Add New Corpus"
+msgstr "إضافة مجموعة جديدة"
+
+#: .\templates\resources\corpus_list.html:19
+msgid "You need to be logged in to add a new corpus."
+msgstr "يجب عليك تسجيل الدخول للتسجيل في المجموعات."
+
+#: .\templates\resources\corpus_list.html:50
+msgid "Explore Corpora"
+msgstr "استكشاف المجموعات"
+
+#: .\templates\resources\corpus_list.html:68
+#: .\templates\resources\tool_list.html:70
+msgid "Title:"
+msgstr "عنوان"
+
+#: .\templates\resources\corpus_list.html:76
+#: .\templates\resources\tool_list.html:82
+msgid "Created:"
+msgstr "تم الإنشاء "
+
+#: .\templates\resources\corpus_list.html:80
+#: .\templates\resources\tool_list.html:78
+msgid "Author:"
+msgstr "مؤلف:"
+
+#: .\templates\resources\corpus_list.html:85
+#: .\venv\Lib\site-packages\django\forms\widgets.py:800
+msgid "Unknown"
+msgstr "مجهول"
+
+#: .\templates\resources\corpus_list.html:136
+msgid "No corpora available"
+msgstr "لا توجد مجموعات بيانات متاحة"
+
+#: .\templates\resources\corpus_list.html:137
+msgid "Corpora you add will appear here"
+msgstr "ستظهر المجموعات التي تضيفها هنا"
+
+#: .\templates\resources\corpus_list.html:140
+msgid "Add Your First Corpus"
+msgstr "أضف مجموعتك الأولى"
+
+#: .\templates\resources\course_create_form.html:6
+msgid "Create New Course"
+msgstr "اٍنشاء دورة جديدة"
+
+#: .\templates\resources\course_create_form.html:56
+msgid "Save Course"
+msgstr "حفظ الدورة"
+
+#: .\templates\resources\course_detail.html:13
+msgid "Teacher:"
+msgstr "مدرس:"
+
+#: .\templates\resources\course_detail.html:18
+#: .\templates\resources\memoir_detail.html:10
+msgid "Academic Level:"
+msgstr "المستوى الأكاديمي"
+
+#: .\templates\resources\course_detail.html:24
+#: .\templates\resources\memoir_detail.html:14
+#: .\templates\resources\thesis_detail.html:10
+msgid "Institution:"
+msgstr ": المؤسسة"
+
+#: .\templates\resources\course_detail.html:28
+msgid "Academic Year:"
+msgstr "العام الدراسي:"
+
+#: .\templates\resources\course_list.html:9
+msgid "Course Collection"
+msgstr "مجموعة الدورة"
+
+#: .\templates\resources\course_list.html:10
+msgid "courses available"
+msgstr "الدورات المتاحة"
+
+#: .\templates\resources\course_list.html:15
+msgid "Add New Course"
+msgstr "اٍضافة دورة جديدة"
+
+#: .\templates\resources\course_list.html:20
+msgid "You need to be logged in to add new courses"
+msgstr "يجب عليك تسجيل الدخول  للاٍضافة في الدورات ."
+
+#: .\templates\resources\course_list.html:50
+msgid "Explore Courses"
+msgstr "استكشاف الدورات"
+
+#: .\templates\resources\course_list.html:115
+msgid "No courses available"
+msgstr "لا توجد دورات متاحة"
+
+#: .\templates\resources\course_list.html:116
+msgid "Courses you add will appear here"
+msgstr "ستظهر هنا الدورات التي تضيفها"
+
+#: .\templates\resources\course_list.html:119
+msgid "Add Your First Course"
+msgstr "أضف دورتك الأولى"
+
+#: .\templates\resources\list.html:10
+msgid "Research Resources"
+msgstr "موارد البحث"
+
+#: .\templates\resources\list.html:11
+msgid "resources available"
+msgstr "الموارد المتاحة"
+
+#: .\templates\resources\list.html:16
+msgid "Add Resource"
+msgstr "إضافة الموارد"
+
+#: .\templates\resources\list.html:42
+msgid "Chargement..."
+msgstr "تحميل..."
+
+#: .\templates\resources\list.html:54 .\templates\resources\list.html:82
+msgid "Articles"
+msgstr "مقالات"
+
+#: .\templates\resources\list.html:73
+msgid "Filter by:"
+msgstr "التصفية حسب:"
+
+#: .\templates\resources\list.html:197
+msgid "No resources found"
+msgstr "لم يتم العثور على الموارد"
+
+#: .\templates\resources\list.html:198
+msgid "Try adjusting your search criteria"
+msgstr "حاول تعديل معايير البحث الخاصة بك"
+
+#: .\templates\resources\list.html:201
+msgid "Add a resource"
+msgstr "إضافة مورد"
+
+#: .\templates\resources\memoir_detail.html:18
+#: .\templates\resources\thesis_detail.html:15
+msgid "Defense Year:"
+msgstr "سنة الدفاع:"
+
+#: .\templates\resources\resource_confirm_delete.html:8
+msgid "Confirm Deletion"
+msgstr "تأكيد الحذف"
+
+#: .\templates\resources\resource_confirm_delete.html:11
+msgid "Are you sure you want to delete"
+msgstr "هل أنت متأكد أنك تريد الحذف؟"
+
+#: .\templates\resources\resource_detail.html:58
+msgid "Keywords:"
+msgstr "الكلمات الرئيسية:"
+
+#: .\templates\resources\resource_detail.html:73
+msgid "Notes"
+msgstr "علامات"
+
+#: .\templates\resources\resource_detail.html:85
+msgid "Resource Details"
+msgstr "تفاصيل المورد"
+
+#: .\templates\resources\resource_detail.html:93
+msgid "Created"
+msgstr "تم الإنشاء "
+
+#: .\templates\resources\resource_detail.html:101
+msgid "has never updated"
+msgstr "لم يتم تحديثه أبدًا"
+
+#: .\templates\resources\resource_detail.html:119
+msgid "Views"
+msgstr "المشاهدات"
+
+#: .\templates\resources\resource_detail.html:128
+msgid "Download Corpus"
+msgstr "تحميل المجموعة"
+
+#: .\templates\resources\resource_detail.html:135
+msgid "Access Resource"
+msgstr "الوصول إلى الموارد"
+
+#: .\templates\resources\resource_form.html:4
+#: .\templates\resources\resource_form.html:8
+msgid "Create New Resource"
+msgstr "اٍنشاء مورد جديد"
+
+#: .\templates\resources\resource_form.html:34
+msgid "NLP Tool Details"
+msgstr "تفاصيل أداة معالجة اللغة العربية"
+
+#: .\templates\resources\resource_form.html:51
+#: .\templates\resources\resource_update_form.html:88
+msgid "Document Details"
+msgstr "تفاصيل الوثيقة"
+
+#: .\templates\resources\resource_form.html:80
+msgid "Create"
+msgstr "اٍنشاء"
+
+#: .\templates\resources\resource_update_form.html:8
+msgid "Update Thesis"
+msgstr "تعديل الاطروحة"
+
+#: .\templates\resources\resource_update_form.html:10
+msgid "Update Article"
+msgstr "تعديل المقالة"
+
+#: .\templates\resources\resource_update_form.html:12
+msgid "Update Memoir"
+msgstr "تعديل المذكرة"
+
+#: .\templates\resources\resource_update_form.html:14
+msgid "Update NLP Tool"
+msgstr "تعديل أدوات معالجة اللغة العربية"
+
+#: .\templates\resources\resource_update_form.html:16
+msgid "Update Course"
+msgstr "تعديل الدورات"
+
+#: .\templates\resources\resource_update_form.html:18
+msgid "Update Corpus"
+msgstr "تعديل المجموعات"
+
+#: .\templates\resources\resource_update_form.html:20
+msgid "Update Resource"
+msgstr "تعديل الموارد"
+
+#: .\templates\resources\resource_update_form.html:114
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: .\templates\resources\thesis_detail.html:19
+msgid "Supervisor:"
+msgstr "مشرف:"
+
+#: .\templates\resources\tool_create_form.html:6
+msgid "Create New Tool"
+msgstr "اٍنشاء أداة جديدة"
+
+#: .\templates\resources\tool_create_form.html:58
+msgid "Save Tool"
+msgstr "حفظ الأداة"
+
+#: .\templates\resources\tool_detail.html:11
+msgid "Tool Type:"
+msgstr "نوع الأداة:"
+
+#: .\templates\resources\tool_detail.html:15
+msgid "Version:"
+msgstr "إصدار:"
+
+#: .\templates\resources\tool_detail.html:21
+msgid "Supported Languages:"
+msgstr "اللغات المدعومة:"
+
+#: .\templates\resources\tool_list.html:10
+msgid "tools available"
+msgstr "الأدوات المتاحة"
+
+#: .\templates\resources\tool_list.html:15
+msgid "Add a new NLP Tool"
+msgstr "إضافة أداة معالجة اللغة الطبيعية جديدة"
+
+#: .\templates\resources\tool_list.html:20
+msgid "You need to be logged in to add new tools"
+msgstr "يجب عليك تسجيل  لاٍضافة الأدوات."
+
+#: .\templates\resources\tool_list.html:33
+msgid "Rechercher des ressources..."
+msgstr "البحث عن الموارد..."
+
+#: .\templates\resources\tool_list.html:51
+msgid "Explore Tools"
+msgstr "استكشاف الأدوات"
+
+#: .\templates\resources\tool_list.html:135
+msgid "No NLP tools available"
+msgstr "لا تتوفر أدوات معالجة اللغة الطبيعية"
+
+#: .\templates\resources\tool_list.html:136
+msgid "Tools you add will appear here"
+msgstr "ستظهر هنا الأدوات التي تضيفها"
+
+#: .\templates\resources\tool_list.html:139
+msgid "Add Your First Tool"
+msgstr "أضف أداتك الأولى"
+
+#: .\templates\search\search_results.html:9
+msgid "Results for"
+msgstr "نتائج ل"
+
+#: .\templates\search\search_results.html:79
+#, fuzzy
+#| msgid "Arabic Language"
+msgid "Languages:"
+msgstr "اللغة العربية"
+
+#: .\templates\search\search_results.html:167
+msgid "No results found"
+msgstr "لم يتم العثور على نتائج"
+
+#: .\templates\search\search_results.html:168
+msgid "Try different keywords or check your spelling"
+msgstr "جرب كلمات رئيسية مختلفة أو تحقق من تهجئتك"
+
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
+msgid "Messages"
+msgstr "الرسائل"
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr "خرائط الموقع"
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr "ملف ثابت"
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr "النقابة"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:32
+msgid "That page number is not an integer"
+msgstr "رقم الصفحة هذا ليس عددًا صحيحًا"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:33
+msgid "That page number is less than 1"
+msgstr "رقم الصفحة أقل من 1"
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:34
+msgid "That page contains no results"
+msgstr "هذه الصفحة لا تحتوي على أي نتائج"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr "أدخل قيمة صالحة."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:70
+msgid "Enter a valid domain name."
+msgstr "أدخل اسم المجال صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:155
+#: .\venv\Lib\site-packages\django\forms\fields.py:768
+msgid "Enter a valid URL."
+msgstr "أدخل عنوان URL صالحًا."
+
+#: .\venv\Lib\site-packages\django\core\validators.py:216
+msgid "Enter a valid integer."
+msgstr "أدخل عددًا صحيحًا صالحًا"
+
+#: .\venv\Lib\site-packages\django\core\validators.py:227
+msgid "Enter a valid email address."
+msgstr "أدخل عنوان بريد إلكتروني صالحًا."
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:310
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:318
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:330
+#: .\venv\Lib\site-packages\django\core\validators.py:339
+#: .\venv\Lib\site-packages\django\core\validators.py:353
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2215
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:332
+msgid "IPv4"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:341
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:43
+msgid "IPv6"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:355
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:396
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:402
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:437
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:446
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:455
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:462
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:494
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:512
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:535
+#: .\venv\Lib\site-packages\django\forms\fields.py:359
+#: .\venv\Lib\site-packages\django\forms\fields.py:398
+msgid "Enter a number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:537
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:542
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:547
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:618
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:680
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1572
+#: .\venv\Lib\site-packages\django\forms\models.py:908
+msgid "and"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1574
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1156
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1157
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1159
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1209
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1211
+msgid "String (unlimited)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1320
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1421
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1425
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1560
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1429
+msgid "Date (without time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1556
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1564
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1569
+msgid "Date (with time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1696
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1698
+msgid "Decimal number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1859
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1863
+msgid "Duration"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1915
+msgid "Email address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1940
+msgid "File path"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2018
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2020
+msgid "Floating point number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2060
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2062
+msgid "Integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2158
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2175
+msgid "Small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2183
+msgid "IPv4 address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2214
+msgid "IP address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2305
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2306
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2308
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2359
+msgid "Positive big integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2374
+msgid "Positive integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2389
+msgid "Positive small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2405
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2441
+msgid "Text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2521
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2525
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2529
+msgid "Time"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2637
+msgid "URL"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2661
+msgid "Raw binary data"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2726
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2728
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:244
+msgid "File"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:932
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:934
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1228
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1285
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1287
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1335
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:308
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:479
+#: .\venv\Lib\site-packages\django\forms\fields.py:1260
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:502
+#: .\venv\Lib\site-packages\django\forms\fields.py:1261
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:529
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:563
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:564
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:633
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:634
+msgid "No file was submitted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:635
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:637
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:642
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:710
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:882
+#: .\venv\Lib\site-packages\django\forms\fields.py:968
+#: .\venv\Lib\site-packages\django\forms\models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:970
+#: .\venv\Lib\site-packages\django\forms\fields.py:1089
+#: .\venv\Lib\site-packages\django\forms\models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1090
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1332
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1362
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:94
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:230
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:484
+#: .\venv\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr "القيمة المضمنة لم تتطابق مع المثيل الرئيسي."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr "اختر خيارًا صحيحًا. هذا الخيار ليس من الخيارات المتاحة."
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:227
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:462
+msgid "Currently"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:463
+msgid "Change"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:801
+msgid "Yes"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:802
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:903
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:35
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:36
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgid "mar"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgid "may"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:67
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:278
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:297
+#: .\venv\Lib\site-packages\django\utils\timesince.py:135
+msgid ", "
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:64
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:115
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:349
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:380
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:652
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:692
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:169
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:68
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:8
+#: .\venv\Lib\site-packages\django\views\templates\directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""

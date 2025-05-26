@@ -809,7 +809,7 @@
         <div class="resource-meta">
           <div class="meta-item">
             <i class="bi bi-eye-fill"></i>
-            <span>{{ resource.views_count }} vues</span>
+            <span>{{ resource.views_count }} {% trans "vues" %}</span>
           </div>
           <div class="meta-item">
             <i class="bi bi-person-circle"></i>
@@ -919,8 +919,7 @@
         <p>{{ discussion.content|truncatewords:15 }}</p>
         <div class="discussion-meta">
           <div>
-            <i class="fas fa-comments"></i> {{ discussion.reply_count }} {%
-            trans "replies" %}
+            <i class="fas fa-comments"></i> {{ discussion.reply_count }} {% trans "replies" %}
           </div>
           <div>
             <i class="fas fa-clock"></i> {{ discussion.created_at|timesince }}

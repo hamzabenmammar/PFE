@@ -214,34 +214,34 @@ Nouvelle institution
       <div class="form-section">
         <h2 class="form-section-title">
           <i class="fas fa-info-circle"></i>
-          Informations générales
+          {% trans "Informations générales" %}
         </h2>
 
         <div class="form-group">
           <label for="{{ form.name.id_for_label }}" class="form-label"
-            >Nom de l'institution *</label
+            >{% trans "Nom de l'institution" %} *</label
           >
           {{ form.name }} {% if form.name.errors %}
           <div class="error-message">{{ form.name.errors }}</div>
           {% endif %}
-          <div class="form-text">Le nom complet de l'institution</div>
+          <div class="form-text">{% trans "Le nom complet de l'institution" %}</div>
         </div>
 
         <div class="form-group">
           <label for="{{ form.acronym.id_for_label }}" class="form-label"
-            >Sigle</label
+            >{% trans "Sigle" %}</label
           >
           {{ form.acronym }} {% if form.acronym.errors %}
           <div class="error-message">{{ form.acronym.errors }}</div>
           {% endif %}
           <div class="form-text">
-            Le sigle ou l'abréviation de l'institution
+            {% trans "Le sigle ou l'abréviation de l'institution" %}
           </div>
         </div>
 
         <div class="form-group">
           <label for="{{ form.type.id_for_label }}" class="form-label"
-            >Type d'institution *</label
+            >{% trans "Type d'institution" %} *</label
           >
           {{ form.type }} {% if form.type.errors %}
           <div class="error-message">{{ form.type.errors }}</div>
@@ -250,7 +250,7 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.description.id_for_label }}" class="form-label"
-            >Description</label
+            >{% trans "Description" %}</label
           >
           {{ form.description }} {% if form.description.errors %}
           <div class="error-message">{{ form.description.errors }}</div>
@@ -259,26 +259,25 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.specialties.id_for_label }}" class="form-label"
-            >Spécialités</label
+            >{% trans "Spécialités" %}</label
           >
           {{ form.specialties }} {% if form.specialties.errors %}
           <div class="error-message">{{ form.specialties.errors }}</div>
           {% endif %}
           <div class="form-text">
-            Sélectionnez les spécialités de l'institution
+            {% trans "Sélectionnez les spécialités de l'institution" %}
           </div>
         </div>
 
         <div class="form-group">
           <label for="{{ form.logo.id_for_label }}" class="form-label"
-            >Logo</label
+            >{% trans "Logo" %}</label
           >
           {{ form.logo }} {% if form.logo.errors %}
           <div class="error-message">{{ form.logo.errors }}</div>
           {% endif %}
           <div class="form-text">
-            Téléchargez le logo de l'institution (format recommandé : PNG ou
-            JPG)
+            {% trans "Téléchargez le logo de l'institution (format recommandé : PNG ou JPG)" %}
           </div>
         </div>
       </div>
@@ -286,12 +285,12 @@ Nouvelle institution
       <div class="form-section">
         <h2 class="form-section-title">
           <i class="fas fa-map-marker-alt"></i>
-          Localisation
+          {% trans "Localisation" %}
         </h2>
 
         <div class="form-group">
           <label for="{{ form.country.id_for_label }}" class="form-label"
-            >Pays *</label
+            >{% trans "Pays" %} *</label
           >
           {{ form.country }} {% if form.country.errors %}
           <div class="error-message">{{ form.country.errors }}</div>
@@ -300,7 +299,7 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.city.id_for_label }}" class="form-label"
-            >Ville *</label
+            >{% trans "Ville" %} *</label
           >
           {{ form.city }} {% if form.city.errors %}
           <div class="error-message">{{ form.city.errors }}</div>
@@ -309,7 +308,7 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.address.id_for_label }}" class="form-label"
-            >Adresse</label
+            >{% trans "Adresse" %}</label
           >
           {{ form.address }} {% if form.address.errors %}
           <div class="error-message">{{ form.address.errors }}</div>
@@ -320,12 +319,12 @@ Nouvelle institution
       <div class="form-section">
         <h2 class="form-section-title">
           <i class="fas fa-globe"></i>
-          Contact
+          {% trans "Contact" %}
         </h2>
 
         <div class="form-group">
           <label for="{{ form.website.id_for_label }}" class="form-label"
-            >Site web</label
+            >{% trans "Site web" %}</label
           >
           {{ form.website }} {% if form.website.errors %}
           <div class="error-message">{{ form.website.errors }}</div>
@@ -334,7 +333,7 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.email.id_for_label }}" class="form-label"
-            >Email</label
+            >{% trans "Email" %}</label
           >
           {{ form.email }} {% if form.email.errors %}
           <div class="error-message">{{ form.email.errors }}</div>
@@ -343,7 +342,7 @@ Nouvelle institution
 
         <div class="form-group">
           <label for="{{ form.phone.id_for_label }}" class="form-label"
-            >Téléphone</label
+            >{% trans "Téléphone" %}</label
           >
           {{ form.phone }} {% if form.phone.errors %}
           <div class="error-message">{{ form.phone.errors }}</div>

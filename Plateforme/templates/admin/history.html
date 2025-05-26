@@ -1,5 +1,6 @@
 {% extends 'base_admin.html' %}
-{% block title %}Panneau d'administration - Historique des statuts{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Panneau d'administration - Historique des statuts" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -119,9 +120,9 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
-            <h1 class="h3 mb-0">Historique des Statuts Utilisateurs</h1>
+            <h1 class="h3 mb-0">{% trans "Historique des Statuts Utilisateurs" %}</h1>
             <a href="{% url 'pages:admin_dashboard' %}" class="btn btn-secondary">
-              <i class="fas fa-arrow-left me-1"></i> Retour au tableau de bord
+              <i class="fas fa-arrow-left me-1"></i> {% trans "Retour au tableau de bord" %}
             </a>
           </div>
         </div>
@@ -136,14 +137,14 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <div>
-              <h6 class="text-white-50">Total des modifications</h6>
+              <h6 class="text-white-50">{% trans "Total des modifications" %}</h6>
               <h2 class="mb-0">{{ total_changes }}</h2>
             </div>
             <div class="stat-icon">
               <i class="fas fa-history"></i>
             </div>
           </div>
-          <small>Depuis la création du site</small>
+          <small>{% trans "Depuis la création du site" %}</small>
         </div>
       </div>
     </div>
@@ -153,14 +154,14 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <div>
-              <h6 class="text-white-50">Activations</h6>
+              <h6 class="text-white-50">{% trans "Activations" %}</h6>
               <h2 class="mb-0">{{ activations }}</h2>
             </div>
             <div class="stat-icon">
               <i class="fas fa-check-circle"></i>
             </div>
           </div>
-          <small>Utilisateurs activés</small>
+          <small>{% trans "Utilisateurs activés" %} </small>
         </div>
       </div>
     </div>
@@ -170,14 +171,14 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <div>
-              <h6 class="text-white-50">Blocages</h6>
+              <h6 class="text-white-50">{% trans "Blocages" %}</h6>
               <h2 class="mb-0">{{ blocks }}</h2>
             </div>
             <div class="stat-icon">
               <i class="fas fa-ban"></i>
             </div>
           </div>
-          <small>Utilisateurs bloqués</small>
+          <small>{% trans "Utilisateurs bloqués" %}</small>
         </div>
       </div>
     </div>
@@ -187,14 +188,14 @@
         <div class="card-body">
           <div class="d-flex justify-content-between">
             <div>
-              <h6 class="text-white-50">Changements récents</h6>
+              <h6 class="text-white-50">{% trans "Changements récents" %}</h6>
               <h2 class="mb-0">{{ recent_changes }}</h2>
             </div>
             <div class="stat-icon">
               <i class="fas fa-calendar-alt"></i>
             </div>
           </div>
-          <small>Ces 7 derniers jours</small>
+          <small>{% trans "Ces 7 derniers jours" %}</small>
         </div>
       </div>
     </div>
@@ -205,16 +206,16 @@
     <div class="col-md-5">
       <div class="card mb-4">
         <div class="card-header">
-          <h5 class="mb-0">Activité des administrateurs</h5>
+          <h5 class="mb-0">{% trans "Activité des administrateurs" %}</h5>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Administrateur</th>
-                  <th>Modifications</th>
-                  <th>Dernière action</th>
+                  <th>{% trans "Administrateur" %}</th>
+                  <th>{% trans "Modifications" %}</th>
+                  <th>{% trans "Dernière action" %}</th>
                 </tr>
               </thead>
               <tbody>
@@ -234,7 +235,7 @@
                 {% empty %}
                 <tr>
                   <td colspan="3" class="text-center py-4">
-                    <p class="text-muted mb-0">Aucune activité d'administrateur enregistrée</p>
+                    <p class="text-muted mb-0">{% trans "Aucune activité d'administrateur enregistrée" %}</p>
                   </td>
                 </tr>
                 {% endfor %}
@@ -246,7 +247,7 @@
       
       <div class="card">
         <div class="card-header">
-          <h5 class="mb-0">Types de changements</h5>
+          <h5 class="mb-0">{% trans "Types de changements" %}</h5>
         </div>
         <div class="card-body">
           <canvas id="statusChangesChart" height="250"></canvas>
@@ -258,9 +259,9 @@
     <div class="col-md-7">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Changements récents</h5>
+          <h5 class="mb-0">{% trans "Changements récents" %}</h5>
           <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false">
-            <i class="fas fa-filter me-1"></i> Filtres
+            <i class="fas fa-filter me-1"></i> {% trans "Filtres" %}
           </button>
         </div>
         
@@ -268,35 +269,35 @@
           <div class="card-body border-bottom">
             <form method="get" class="row g-3">
               <div class="col-md-4">
-                <label class="form-label">Type de changement</label>
+                <label class="form-label">{% trans "Type de changement" %}</label>
                 <select name="status_filter" class="form-select">
-                  <option value="">Tous</option>
-                  <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Activation</option>
-                  <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Mise en attente</option>
-                  <option value="blocked" {% if status_filter == 'blocked' %}selected{% endif %}>Blocage</option>
+                  <option value="">{% trans "Tous" %}</option>
+                  <option value="active" {% if status_filter == 'active' %}selected{% endif %}>{% trans "Activation" %}</option>
+                  <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>{% trans "Mise en attente" %}</option>
+                  <option value="blocked" {% if status_filter == 'blocked' %}selected{% endif %}>{% trans "Blocage" %}</option>
                 </select>
               </div>
               <div class="col-md-4">
-                <label class="form-label">Administrateur</label>
+                <label class="form-label">{% trans "Administrateur" %}</label>
                 <select name="admin_filter" class="form-select">
-                  <option value="">Tous</option>
+                  <option value="">{% trans "Tous" %}</option>
                   {% for admin in all_admins %}
                   <option value="{{ admin.id }}" {% if admin_filter == admin.id %}selected{% endif %}>{{ admin.username }}</option>
                   {% endfor %}
                 </select>
               </div>
               <div class="col-md-4">
-                <label class="form-label">Période</label>
+                <label class="form-label">{% trans "Période" %}</label>
                 <select name="period_filter" class="form-select">
-                  <option value="">Toute période</option>
-                  <option value="day" {% if period_filter == 'day' %}selected{% endif %}>Aujourd'hui</option>
-                  <option value="week" {% if period_filter == 'week' %}selected{% endif %}>Cette semaine</option>
-                  <option value="month" {% if period_filter == 'month' %}selected{% endif %}>Ce mois</option>
+                  <option value="">{% trans "Toute période" %}</option>
+                  <option value="day" {% if period_filter == 'day' %}selected{% endif %}>{% trans "Aujourd'hui" %}</option>
+                  <option value="week" {% if period_filter == 'week' %}selected{% endif %}>{% trans "Cette semaine" %}</option>
+                  <option value="month" {% if period_filter == 'month' %}selected{% endif %}>{% trans "Ce mois" %}</option>
                 </select>
               </div>
               <div class="col-12 text-end">
-                <button type="submit" class="btn btn-sm btn-primary">Appliquer</button>
-                <a href="{% url 'pages:admin_user_history' user_obj.id %}" class="btn btn-sm btn-outline-secondary">Réinitialiser</a>
+                <button type="submit" class="btn btn-sm btn-primary">{% trans "Appliquer" %}</button>
+                <a href="{% url 'pages:admin_user_history' user_obj.id %}" class="btn btn-sm btn-outline-secondary">{% trans "Réinitialiser" %}</a>
               </div>
             </form>
           </div>
@@ -330,7 +331,7 @@
                 
                 <div class="row">
                   <div class="col-md-6">
-                    <small class="text-muted">Utilisateur:</small>
+                    <small class="text-muted">{% trans "Utilisateur:" %}</small>
                     <div class="d-flex align-items-center mt-1">
                       <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #495057; margin-right: 8px; font-size: 0.75rem;">
                         {{ entry.user.username|slice:":1"|upper }}
@@ -342,7 +343,7 @@
                   </div>
                   
                   <div class="col-md-6">
-                    <small class="text-muted">Modifié par:</small>
+                    <small class="text-muted">{% trans "Modifié par:" %}</small>
                     <div class="d-flex align-items-center mt-1">
                       <div style="width: 24px; height: 24px; border-radius: 50%; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #495057; margin-right: 8px; font-size: 0.75rem;">
                         {{ entry.changed_by.username|slice:":1"|upper }}
@@ -354,7 +355,7 @@
                 
                 {% if entry.reason %}
                 <div class="mt-2">
-                  <small class="text-muted">Raison:</small>
+                  <small class="text-muted">{% trans "Raison:" %}</small>
                   <p class="mb-0 mt-1 small">{{ entry.reason }}</p>
                 </div>
                 {% endif %}
@@ -365,8 +366,8 @@
           {% else %}
           <div class="text-center py-5">
             <i class="fas fa-history fa-4x text-muted mb-3"></i>
-            <h5>Aucun historique disponible</h5>
-            <p class="text-muted">Aucun changement de statut n'a été enregistré pour cette période.</p>
+            <h5>{% trans "Aucun historique disponible" %}</h5>
+            <p class="text-muted">{% trans "Aucun changement de statut n'a été enregistré pour cette période." %}</p>
           </div>
           {% endif %}
         </div>

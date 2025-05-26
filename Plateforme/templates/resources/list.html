@@ -1,19 +1,19 @@
 {% extends "base.html" %}
-
-{% block title %}All Resources{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "All Resources" %}{% endblock %}
 
 {% block content %}
 <div class="resources-container container py-5">
     <!-- Header Section -->
     <div class="row mb-4 align-items-center">
         <div class="col-lg-8 col-md-7">
-            <h1 class="display-5 fw-bold mb-2">Research Resources</h1>
-            <p class="text-muted fs-5">{{ total_count }} resources available</p>
+            <h1 class="display-5 fw-bold mb-2">{% trans "Research Resources" %}</h1>
+            <p class="text-muted fs-5">{{ total_count }} {% trans "resources available" %}</p>
         </div>
         {% if user.is_authenticated %}
         <div class="col-lg-4 col-md-5 d-flex justify-content-md-end justify-content-start mt-3 mt-md-0">
             <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg shadow-sm">
-                <i class="bi bi-plus-lg me-2"></i> Add Resource
+                <i class="bi bi-plus-lg me-2"></i> {% trans "Add Resource" %}
             </a>
         </div>
         {% endif %}
@@ -39,7 +39,7 @@
                         <div class="spinner-border spinner-border-sm text-primary status-spinner" 
                              role="status" 
                              style="display: none;">
-                            <span class="visually-hidden">Chargement...</span>
+                            <span class="visually-hidden">{% trans "Chargement..." %}</span>
                         </div>
                     </div>
                     
@@ -50,13 +50,13 @@
                 
                 <!-- Type Selection -->
                 <select name="type" class="type-select" id="contentTypeSelect">
-                    <option value="">Tous les types</option>
-                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>Articles</option>
-                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>Thesis</option>
-                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>Memoirs</option>
-                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>Tools</option>
-                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>Courses</option>
-                    <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>Corpus</option>
+                    <option value="">{% trans "Tous les types" %}</option>
+                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>{% trans "Articles" %}</option>
+                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>{% trans "Thesis" %}</option>
+                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>{% trans "Memoirs" %}</option>
+                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>{% trans "Tools" %}</option>
+                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>{% trans "Courses" %}</option>
+                    <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>{% trans "Corpus" %}</option>
                 </select>
                 
                 <!-- Action Buttons -->
@@ -70,36 +70,36 @@
     <!-- Category Filters -->
     <div class="category-filters">
         <div class="category-label">
-            <i class="bi bi-funnel me-2"></i> Filter by:
+            <i class="bi bi-funnel me-2"></i> {% trans "Filter by:" %}
         </div>
         <div class="category-list">
             <a href="?q={{ request.GET.q }}" 
                class="category-item {% if not request.GET.type %}active{% endif %}">
-                All
+                {% trans "All" %}
             </a>
             <a href="?q={{ request.GET.q }}&type=article" 
                class="category-item {% if request.GET.type == 'article' %}active{% endif %}">
-                <i class="bi bi-file-text me-1"></i> Articles
+                <i class="bi bi-file-text me-1"></i> {% trans "Articles" %}
             </a>
             <a href="?q={{ request.GET.q }}&type=thesis" 
                class="category-item {% if request.GET.type == 'thesis' %}active{% endif %}">
-                <i class="bi bi-journal-richtext me-1"></i> Theses
+                <i class="bi bi-journal-richtext me-1"></i>{% trans "Theses" %} 
             </a>
             <a href="?q={{ request.GET.q }}&type=memoir" 
                class="category-item {% if request.GET.type == 'memoir' %}active{% endif %}">
-                <i class="bi bi-book me-1"></i> Memoirs
+                <i class="bi bi-book me-1"></i> {% trans "Memoirs" %}
             </a>
             <a href="?q={{ request.GET.q }}&type=tool" 
                class="category-item {% if request.GET.type == 'tool' %}active{% endif %}">
-                <i class="bi bi-tools me-1"></i> Tools
+                <i class="bi bi-tools me-1"></i>{% trans "Tools" %} 
             </a>
             <a href="?q={{ request.GET.q }}&type=course" 
                class="category-item {% if request.GET.type == 'course' %}active{% endif %}">
-                <i class="bi bi-mortarboard me-1"></i> Courses
+                <i class="bi bi-mortarboard me-1"></i> {% trans "Courses" %}
             </a>
             <a href="?q={{ request.GET.q }}&type=corpus" 
                class="category-item {% if request.GET.type == 'corpus' %}active{% endif %}">
-                <i class="bi bi-archive me-1"></i> Corpus
+                <i class="bi bi-archive me-1"></i> {% trans "Corpus" %}
             </a>
         </div>
     </div>
@@ -137,7 +137,7 @@
             <div class="card-footer">
                 <a href="{% url 'resources:resource-detail' resource.resource_type resource.id %}" 
                    class="btn-view">
-                    <span>View Details</span>
+                    <span>{% trans "View Details" %}</span>
                     <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
@@ -194,11 +194,11 @@
         <div class="empty-icon">
             <i class="bi bi-search"></i>
         </div>
-        <h3>No resources found</h3>
-        <p class="text-muted">Try adjusting your search criteria</p>
+        <h3>{% trans "No resources found" %}</h3>
+        <p class="text-muted">{% trans "Try adjusting your search criteria" %}</p>
         {% if user.is_authenticated %}
         <a href="{% url 'resources:create' %}" class="btn btn-primary btn-lg mt-3">
-            <i class="bi bi-plus-lg me-2"></i> Add a resource
+            <i class="bi bi-plus-lg me-2"></i> {% trans "Add a resource" %}
         </a>
         {% endif %}
     </div>

@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Administration{% endblock %}</title>
+    <title>{% block title %}{% trans "Administration" %}{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -21,72 +22,72 @@
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
                         <img src="{% static 'images/admin (2).png' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
-                        <h5 class="text-white mt-2">Panneau d'administration</h5>
+                        <h5 class="text-white mt-2">{% trans "Panneau d'administration" %}</h5>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'pages:admin_dashboard' %}">
-                                <i class="fas fa-tachometer-alt me-2"></i> Tableau de bord
+                                <i class="fas fa-tachometer-alt me-2"></i> {% trans "Tableau de bord" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_users' %}active{% endif %}" href="{% url 'pages:admin_users' %}">
-                                <i class="fas fa-users me-2"></i> Utilisateurs
+                                <i class="fas fa-users me-2"></i> {% trans "Utilisateurs" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_publications' %}active{% endif %}" href="{% url 'pages:admin_publications' %}">
-                                <i class="fas fa-book me-2"></i> Publications
+                                <i class="fas fa-book me-2"></i>{% trans "Publications" %} 
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_corpora' %}active{% endif %}" href="{% url 'pages:admin_corpora' %}">
-                                <i class="fas fa-database me-2"></i> Corpus
+                                <i class="fas fa-database me-2"></i> {% trans "Corpus" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_tools' %}active{% endif %}" href="{% url 'pages:admin_tools' %}">
-                                <i class="fas fa-tools me-2"></i> Outils NLP
+                                <i class="fas fa-tools me-2"></i>{% trans "Outils NLP" %} 
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_projects' %}active{% endif %}" href="{% url 'pages:admin_projects' %}">
-                                <i class="fas fa-project-diagram me-2"></i> Projets
+                                <i class="fas fa-project-diagram me-2"></i>{% trans "Projets" %} 
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_courses' %}active{% endif %}" href="{% url 'pages:admin_courses' %}">
-                                <i class="fas fa-graduation-cap me-2"></i> Cours
+                                <i class="fas fa-graduation-cap me-2"></i> {% trans "Cours" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_forum' %}active{% endif %}" href="{% url 'pages:admin_forum' %}">
-                                <i class="fas fa-comments me-2"></i> Forum
+                                <i class="fas fa-comments me-2"></i> {% trans "Forum" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_institutions' %}active{% endif %}" href="{% url 'pages:admin_institutions' %}">
-                                <i class="fas fa-university me-2"></i> Institutions
+                                <i class="fas fa-university me-2"></i> {% trans "Institutions" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_calls' %}active{% endif %}" href="{% url 'pages:admin_calls' %}">
-                                <i class="fas fa-bullhorn me-2"></i> Appels à comm.
+                                <i class="fas fa-bullhorn me-2"></i> {% trans "Appels à comm." %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_statistics' %}active{% endif %}" href="{% url 'pages:admin_statistics' %}">
-                                <i class="fas fa-chart-bar me-2"></i> Statistiques
+                                <i class="fas fa-chart-bar me-2"></i> {% trans "Statistiques" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_settings' %}active{% endif %}" href="{% url 'pages:admin_settings' %}">
-                                <i class="fas fa-cog me-2"></i> Paramètres
+                                <i class="fas fa-cog me-2"></i> {% trans "Paramètres" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_security' %}active{% endif %}" href="{% url 'pages:admin_security' %}">
-                                <i class="fas fa-shield-alt me-2"></i> Sécurité
+                                <i class="fas fa-shield-alt me-2"></i> {% trans "Sécurité" %}
                             </a>
                         </li>
                     </ul>
@@ -95,12 +96,12 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'pages:home' %}">
-                                    <i class="fas fa-home me-2"></i> Retour au site
+                                    <i class="fas fa-home me-2"></i> {% trans "Retour au site" %}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'account_logout' %}">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
+                                    <i class="fas fa-sign-out-alt me-2"></i> {% trans "Déconnexion" %}
                                 </a>
                             </li>
                         </ul>
@@ -111,7 +112,7 @@
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">{% block page_title %}Administration{% endblock %}</h1>
+                    <h1 class="h2">{% block page_title %}{% trans "Administration" %}{% endblock %}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
                             {% block page_actions %}{% endblock %}

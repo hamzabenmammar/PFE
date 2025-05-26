@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Sujets de discussion | Arabic NLP Platform{% endblock %}
+{% block title %}{% trans "Sujets de discussion | Arabic NLP Platform" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="forum-header">
-        <h1 class="forum-title">Sujets de discussion</h1>
+        <h1 class="forum-title">{% trans "Sujets de discussion" %}</h1>
         <a href="{% url 'forum:topic-new' %}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> Nouveau sujet
+            <i class="fas fa-plus-circle"></i> {% trans "Nouveau sujet" %}
         </a>
     </div>
     
@@ -38,16 +39,16 @@
             
             <div class="topic-card-footer">
                 <a href="{% url 'forum:chatroom-new' topic.id %}" class="btn btn-outline btn-sm">
-                    <i class="fas fa-comments"></i> Créer une salle de discussion
+                    <i class="fas fa-comments"></i> {% trans "Créer une salle de discussion" %}
                 </a>
                 
                 {% if topic.creator == user %}
                 <div class="topic-actions">
                     <a href="{% url 'forum:topic-update' topic.id %}" class="btn btn-outline btn-sm">
-                        <i class="fas fa-edit"></i> Modifier
+                        <i class="fas fa-edit"></i> {% trans "Modifier" %}
                     </a>
                     <a href="{% url 'forum:topic-delete' topic.id %}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i> Supprimer
+                        <i class="fas fa-trash"></i>{% trans "Supprimer" %} 
                     </a>
                 </div>
                 {% endif %}
@@ -61,10 +62,10 @@
         <div class="empty-state-icon">
             <i class="fas fa-comments-alt"></i>
         </div>
-        <h3>Aucun sujet n'a été créé</h3>
-        <p>Soyez le premier à lancer une discussion !</p>
+        <h3>{% trans "Aucun sujet n'a été créé" %}</h3>
+        <p>{% trans "Soyez le premier à lancer une discussion !" %}</p>
         <a href="{% url 'forum:topic-new' %}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> Créer un sujet
+            <i class="fas fa-plus-circle"></i> {% trans "Créer un sujet" %}
         </a>
     </div>
     {% endif %}

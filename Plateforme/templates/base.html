@@ -1,11 +1,12 @@
 {% load static %}
-
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Arabic NLP Platform{% endblock %}</title>
+    <title>{% block title %} {% trans "Arabic NLP Platform" %}  {% endblock %}</title>
     <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
 <!-- Charge HTMX core -->
 <script src="https://unpkg.com/htmx.org"></script>
@@ -52,14 +53,14 @@
             <div class="logo-container">
                 <a href="{% url 'pages:home' %}" class="logo-link d-flex align-items-center gap-2">
                     <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" style="height: 40px;">
-                    <span class="logo-text fw-bold fs-4">Arabic NLP</span>
+                    <span class="logo-text fw-bold fs-4 ">{% trans "Arabic NLP" %}  </span>
                 </a>
             </div>
             <div class="search-container">
     <div class="search-bar">
         <form id="global-search-form" action="{% url 'search:global_search' %}" method="get">
             <div class="input-group">
-                <input type="text" name="q" placeholder="Search resources, tools, corpus..." 
+                <input type="text" name="q" placeholder="Search resources,tools,corpus..." 
                        id="search-input" class="form-control" />
                 <button type="submit" class="btn btn-primary search-button">
                     <i class="fas fa-search"></i>
@@ -70,8 +71,8 @@
     
 </div>
   <div id="search-results" class="search-results-dropdown"></div>
-            <a class="language-link">English</a> |
-            <a class="language-link">Arabic </a>
+           <a href="{% url 'translate:switch_language' %}?language=en">{% trans "English" %}</a> |
+           <a href="{% url 'translate:switch_language' %}?language=ar">{% trans "Arabic" %}</a>
 
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -85,10 +86,10 @@
 </button>
                         <div class="notification-dropdown" id="notificationDropdown">
                             <div class="notification-header">
-                                <h6>Notifications</h6>
+                                <h6>{% trans "Notifications" %} </h6>
                                 {% if unread_notifications_count > 0 %}
                                 <a href="{% url 'notifications:mark_all_read' %}" class="mark-all-read">
-                                    Mark all as read
+                                    {% trans "Mark all as read" %} 
                                 </a>
                                 {% endif %}
                             </div>
@@ -120,30 +121,30 @@
                                     {% endfor %}
                                 {% else %}
                                     <div class="empty-notifications">
-                                        <p>No notifications yet</p>
+                                        <p>{% trans " No notifications yet" %}</p>
                                     </div>
                                 {% endif %}
                             </div>
                             <div class="notification-footer">
-                                <a href="{% url 'notifications:list' %}">View all notifications</a>
+                                <a href="{% url 'notifications:list' %}">{% trans "View all notifications" %} </a>
                             </div>
                         </div>
                     </div>
                     <!-- End of Notification Bell -->
                     
                     <a href="{% url 'profile' user.id %}" class="btn btn-outline">
-                        <i class="fas fa-user"></i> Profile
+                        <i class="fas fa-user"></i>{% trans "Profile" %}  
                     </a>
                     <a href="{% url 'account_logout' %}" class="btn btn-primary">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> {% trans "Logout" %} 
                     </a>
                     
                 {% else %}
                     <a href="{% url 'account_login' %}" class="btn btn-outline">
-                        <i class="fas fa-sign-in-alt"></i> Log in
+                        <i class="fas fa-sign-in-alt"></i>{% trans "Log in" %}  
                     </a>
                     <a href="{% url 'account_signup' %}" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Sign up
+                        <i class="fas fa-user-plus"></i> {% trans "Sign up" %} 
                     </a>
                 {% endif %}
             </div>
@@ -159,35 +160,35 @@
             <nav class="sidebar-nav">
                 <ul class="sidebar-menu">
                     <li><a {% if page == 'pages:home' %}class="active"{% endif %} href="{% url 'pages:home' %}">
-                        <i class="fas fa-home"></i> Home
+                        <i class="fas fa-home"></i> {% trans "Home" %} 
                     </a></li>
                     <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
-                        <i class="fas fa-database"></i> Corpus
+                        <i class="fas fa-database"></i>{% trans "Corpus" %}  
                     </a></li>
                     <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">
-                        <i class="fas fa-tools"></i> Tools
+                        <i class="fas fa-tools"></i> {% trans "Tools" %} 
                     </a></li>
                     <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'resources:list' %}">
-                        <i class="fas fa-archive"></i> Resources
+                        <i class="fas fa-archive"></i> {% trans "Resources" %} 
                     </a></li>
                     <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">
-                        <i class="fas fa-flask"></i> Research Projects
+                        <i class="fas fa-flask"></i> {% trans "Research Projects" %} 
                     </a></li>
                     <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">
-                        <i class="fas fa-users"></i> Community
+                        <i class="fas fa-users"></i> {% trans "Community" %} 
                     </a></li>
                     <li><a {% if page == 'feed' %}class="active"{% endif %} href="{% url 'QA:feed' %}">
-                        <i class="fas fa-newspaper"></i> News
+                        <i class="fas fa-newspaper"></i> {% trans "News" %} 
                     </a></li>
                     <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">
-                        <i class="fas fa-calendar-alt"></i> Events
+                        <i class="fas fa-calendar-alt"></i> {% trans "Events" %} 
                     </a></li>
                     <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">
-                        <i class="fas fa-graduation-cap"></i> Courses
+                        <i class="fas fa-graduation-cap"></i> {% trans "Courses" %} 
                     </a></li>
                     <li>
                         <a {% if page == 'institutions' %}class="active"{% endif %} href="{% url 'institutions:institution_list' %}" aria-label="Institutions">
-                          <i class="fas fa-university"></i> Institutions
+                          <i class="fas fa-university"></i> {% trans "Institutions" %} 
                         </a>
                       </li>
                                         {% if user.is_staff %}
@@ -195,7 +196,7 @@
                         <a {% if page == 'Admin' %}class="active"{% endif %}
                         href="{% url 'pages:admin_dashboard' %}"
                         aria-label="Admin">
-                        <i class="fas fa-tools"></i> Admin
+                        <i class="fas fa-tools"></i>{% trans "Admin" %}  
                         </a>
                     </li>
                     {% endif %}
@@ -230,8 +231,8 @@
             <div class="container">
                 <div class="footer-grid">
                     <div class="footer-column">
-                        <h4>Arabic NLP Platform</h4>
-                        <p>A platform dedicated to advancing Arabic natural language processing through shared resources, tools, and community collaboration.</p>
+                        <h4>{% trans "Arabic NLP Platform" %} </h4>
+                        <p>A {% trans "platform dedicated to advancing Arabic natural language processing through shared resources, tools, and community collaboration." %} platform dedicated to advancing Arabic natural language processing through shared resources, tools, and community collaboration.</p>
                         <div class="social-links">
                             <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -242,27 +243,27 @@
                     <div class="footer-column">
                         <h4>Resources</h4>
                         <ul class="footer-links">
-                            <li><a href="{% url 'resources:corpus_list' %}">Corpus</a></li>
-                            <li><a href="{% url 'resources:tool_list' %}">Tools</a></li>
-                            <li><a href="{% url 'resources:list' %}">All Resources</a></li>
-                            <li><a href="{% url 'resources:course_list' %}">Courses</a></li>
+                            <li><a href="{% url 'resources:corpus_list' %}">{% trans "Corpus" %} </a></li>
+                            <li><a href="{% url 'resources:tool_list' %}">{% trans "Tools" %}</a></li>
+                            <li><a href="{% url 'resources:list' %}">{% trans "All Resources" %}</a></li>
+                            <li><a href="{% url 'resources:course_list' %}">{% trans "Courses" %}</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4>Community</h4>
+                        <h4>{% trans "Community" %}</h4>
                         <ul class="footer-links">
-                            <li><a href="{% url 'forum:topic-list' %}">Forum</a></li>
-                            <li><a href="{% url 'projects:project_list' %}">Research Projects</a></li>
-                            <li><a href="{% url 'events:event_list' %}">Events</a></li>
-                            <li><a href="{% url 'pages:home' %}#contributors">Contributors</a></li>
+                            <li><a href="{% url 'forum:topic-list' %}">{% trans "Forum" %}</a></li>
+                            <li><a href="{% url 'projects:project_list' %}">{% trans "Research Projects" %}</a></li>
+                            <li><a href="{% url 'events:event_list' %}">{% trans "Events" %}</a></li>
+                            <li><a href="{% url 'pages:home' %}#contributors">{% trans "Contributors" %}</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
-                        <h4>Contact Us</h4>
+                        <h4>{% trans "Contact Us" %}</h4>
                         <ul class="contact-info">
                             <li><i class="fas fa-envelope"></i> contact@arabicnlp.org</li>
                             <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
-                            <li><i class="fas fa-map-marker-alt"></i> Digital Campus, Tech University</li>
+                            <li><i class="fas fa-map-marker-alt"></i> {% trans "Digital Campus, Tech University" %}</li>
                         </ul>
                     </div>
                 </div>
@@ -270,11 +271,11 @@
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <p class="copyright">© {% now "Y" %} Arabic NLP Platform. All rights reserved.</p>
+                <p class="copyright">© {% now "Y" %}{% trans "Arabic NLP Platform. All rights reserved." %} </p>
                 <div class="legal-links">
-                    <a href="{% url 'pages:home' %}">Privacy Policy</a>
-                    <a href="{% url 'pages:home' %}">Terms of Service</a>
-                    <a href="{% url 'pages:home' %}">About Us</a>
+                    <a href="{% url 'pages:home' %}">{% trans "Privacy Policy" %}</a>
+                    <a href="{% url 'pages:home' %}">{% trans "Terms of Service" %}</a>
+                    <a href="{% url 'pages:home' %}">{% trans "About Us" %}</a>
                 </div>
             </div>
         </div>
@@ -335,6 +336,23 @@
             });
         });
     </script>
+      <!-- En bas de ton body -->
+<a href="{% url 'chatbot:chatbot_interface' %}" style="
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #007bff; /* bleu */
+    color: white;
+    padding: 15px 18px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 24px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: 0.3s;
+" title="Assistant intelligent">
+    💬
+</a>
     {% block extra_scripts %}{% endblock %}
 </body>
 {% load static %}

@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load i18n %}
+{% block content %}
 <!-- CSS personnalisé -->
 <style>
   .form-container {
@@ -50,7 +52,7 @@
 <div class="container py-5">
   <div class="form-container bg-white p-4 p-md-5">
     <div class="form-header pb-3 mb-4 text-center">
-      <h2 class="h3 fw-bold text-primary">Poser une question</h2>
+      <h2 class="h3 fw-bold text-primary">{% trans "Poser une question" %}</h2>
     </div>
 
     <form method="post" class="needs-validation">
@@ -64,7 +66,7 @@
 
       <div class="mb-4">
         <label for="{{ form.title.id_for_label }}" class="form-label">
-          Titre de votre question
+          {% trans "Titre de votre question" %}
         </label>
         <div class="input-group">
           <span class="input-group-text">
@@ -78,13 +80,13 @@
         </div>
         {% endif %}
         <small class="form-text text-muted"
-          >Soyez clair et précis pour obtenir les meilleures réponses</small
+          >{% trans "Soyez clair et précis pour obtenir les meilleures réponses" %}</small
         >
       </div>
 
       <div class="mb-4">
         <label for="{{ form.description.id_for_label }}" class="form-label">
-          Détails de votre question
+          {% trans "Détails de votre question" %}
         </label>
         <div class="input-group">
           <span class="input-group-text">
@@ -98,17 +100,16 @@
         </div>
         {% endif %}
         <small class="form-text text-muted"
-          >Ajoutez tous les détails nécessaires pour comprendre votre
-          question</small
+          >{% trans "Ajoutez tous les détails nécessaires pour comprendre votre question" %}</small
         >
       </div>
 
       <div class="d-flex justify-content-between align-items-center mt-4 pt-2">
         <a href="{% url 'QA:qa_list' %}" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-left me-1"></i> Retour
+          <i class="bi bi-arrow-left me-1"></i> {% trans "Retour" %}
         </a>
         <button type="submit" class="btn btn-primary submit-btn">
-          <i class="bi bi-send me-1"></i> Publier la question
+          <i class="bi bi-send me-1"></i>{% trans "Publier la question" %}
         </button>
       </div>
     </form>

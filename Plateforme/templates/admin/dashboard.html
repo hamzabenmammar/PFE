@@ -1,7 +1,7 @@
 {% extends "base_admin.html" %}
-
-{% block title %}Tableau de bord administrateur{% endblock %}
-{% block page_title %}Tableau de bord{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Tableau de bord administrateur" %}{% endblock %}
+{% block page_title %}{% trans "Tableau de bord" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -301,11 +301,11 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center w-100">
                             <div class="col mr-2">
-                                <div class="stat-label">Utilisateurs</div>
+                                <div class="stat-label">{% trans "Utilisateurs" %}</div>
                                 <div class="stat-number">{{ users_count }}</div>
                                 <div class="growth-indicator {% if user_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
                                     <i class="fas fa-{% if user_growth >= 0 %}trend-up{% else %}trend-down{% endif %}"></i>
-                                    {{ user_growth|floatformat:1 }}% / mois
+                                    {{ user_growth|floatformat:1 }}% {% trans "/ mois" %}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -324,11 +324,11 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center w-100">
                             <div class="col mr-2">
-                                <div class="stat-label">Ressources</div>
+                                <div class="stat-label">{% trans "Ressources" %}</div>
                                 <div class="stat-number">{{ resources_count }}</div>
                                 <div class="growth-indicator {% if pubs_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
                                     <i class="fas fa-{% if pubs_growth >= 0 %}trend-up{% else %}trend-down{% endif %}"></i>
-                                    {{ pubs_growth|floatformat:1 }}% / mois
+                                    {{ pubs_growth|floatformat:1 }}% {% trans "/ mois" %}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -347,11 +347,11 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center w-100">
                             <div class="col mr-2">
-                                <div class="stat-label">Projets en cours</div>
+                                <div class="stat-label">{% trans "Projets en cours" %}</div>
                                 <div class="stat-number">{{ projects_count }}</div>
                                 <div class="growth-indicator {% if projects_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
                                     <i class="fas fa-{% if projects_growth >= 0 %}trend-up{% else %}trend-down{% endif %}"></i>
-                                    {{ projects_growth|floatformat:1 }}% / mois
+                                    {{ projects_growth|floatformat:1 }}%{% trans " / mois" %}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -370,11 +370,11 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center w-100">
                             <div class="col mr-2">
-                                <div class="stat-label">Messages forum</div>
+                                <div class="stat-label">{% trans "Messages forum" %}</div>
                                 <div class="stat-number">{{ forum_posts_count }}</div>
                                 <div class="growth-indicator {% if posts_growth >= 0 %}text-success{% else %}text-danger{% endif %}">
                                     <i class="fas fa-{% if posts_growth >= 0 %}trend-up{% else %}trend-down{% endif %}"></i>
-                                    {{ posts_growth|floatformat:1 }}% / mois
+                                    {{ posts_growth|floatformat:1 }}% {% trans "/ mois" %}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -396,7 +396,7 @@
                     <div class="card-header-modern">
                         <h6 class="card-title">
                             <i class="fas fa-chart-line mr-2 text-primary"></i>
-                            Activité récente
+                            {% trans "Activité récente" %}
                         </h6>
                         <div class="dropdown dropdown-modern no-arrow">
                             <a class="btn btn-link text-muted p-0" href="#" role="button" data-bs-toggle="dropdown">
@@ -405,11 +405,11 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{% url 'pages:admin_statistics' %}">
                                     <i class="fas fa-chart-bar mr-2"></i>
-                                    Voir les détails
+                                    {% trans "Voir les détails" %}
                                 </a>
                                 <a class="dropdown-item" href="#" onclick="refreshChart()">
                                     <i class="fas fa-sync-alt mr-2"></i>
-                                    Actualiser
+                                    {% trans "Actualiser" %}
                                 </a>
                             </div>
                         </div>
@@ -428,7 +428,7 @@
                     <div class="card-header-modern">
                         <h6 class="card-title">
                             <i class="fas fa-user-plus mr-2 text-success"></i>
-                            Nouveaux utilisateurs
+                            {% trans "Nouveaux utilisateurs" %}
                         </h6>
                         <div class="dropdown dropdown-modern no-arrow">
                             <a class="btn btn-link text-muted p-0" href="#" role="button" data-bs-toggle="dropdown">
@@ -437,7 +437,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{% url 'pages:admin_users' %}">
                                     <i class="fas fa-users mr-2"></i>
-                                    Voir tous les utilisateurs
+                                    {% trans "Voir tous les utilisateurs" %}
                                 </a>
                             </div>
                         </div>
@@ -447,9 +447,9 @@
                             <table class="table table-modern mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Utilisateur</th>
-                                        <th>Statut</th>
-                                        <th>Date</th>
+                                        <th>{% trans "Utilisateur" %}</th>
+                                        <th>{% trans "Statut" %}</th>
+                                        <th>{% trans "Date" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -477,13 +477,13 @@
                                         </td>
                                         <td>
                                             {% if user.status == 'active' %}
-                                                <span class="badge badge-modern bg-success">Actif</span>
+                                                <span class="badge badge-modern bg-success">{% trans "Actif" %}</span>
                                             {% elif user.status == 'pending' %}
-                                                <span class="badge badge-modern bg-warning">En attente</span>
+                                                <span class="badge badge-modern bg-warning">{% trans "En attente" %}</span>
                                             {% elif user.status == 'inactive' %}
-                                                <span class="badge badge-modern bg-secondary">Inactif</span>
+                                                <span class="badge badge-modern bg-secondary">{% trans "Inactif" %}</span>
                                             {% elif user.status == 'blocked' %}
-                                                <span class="badge badge-modern bg-danger">Bloqué</span>
+                                                <span class="badge badge-modern bg-danger">{% trans "Bloqué" %}</span>
                                             {% endif %}
                                         </td>
                                         <td class="text-muted">{{ user.date_joined|date:"d/m/Y" }}</td>
@@ -492,7 +492,7 @@
                                     <tr>
                                         <td colspan="3" class="text-center text-muted py-4">
                                             <i class="fas fa-users fa-2x mb-3 text-muted opacity-50"></i>
-                                            <br>Aucun utilisateur récent
+                                            <br>{% trans "Aucun utilisateur récent" %}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -512,7 +512,7 @@
                     <div class="card-header-modern">
                         <h6 class="card-title">
                             <i class="fas fa-file-alt mr-2 text-info"></i>
-                            Publications récentes
+                            {% trans "Publications récentes" %}
                         </h6>
                         <div class="dropdown dropdown-modern no-arrow">
                             <a class="btn btn-link text-muted p-0" href="#" role="button" data-bs-toggle="dropdown">
@@ -521,7 +521,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{% url 'pages:admin_publications' %}">
                                     <i class="fas fa-book mr-2"></i>
-                                    Voir toutes les publications
+                                    {% trans "Voir toutes les publications" %}
                                 </a>
                             </div>
                         </div>
@@ -531,9 +531,9 @@
                             <table class="table table-modern mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Titre</th>
-                                        <th>Auteur(s)</th>
-                                        <th>Date</th>
+                                        <th>{% trans "Titre" %}</th>
+                                        <th>{% trans "Auteur" %}(s)</th>
+                                        <th>{% trans "Date" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -555,7 +555,7 @@
                                     <tr>
                                         <td colspan="3" class="text-center text-muted py-4">
                                             <i class="fas fa-file-alt fa-2x mb-3 text-muted opacity-50"></i>
-                                            <br>Aucune publication récente
+                                            <br>{% trans "Aucune publication récente" %}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -572,7 +572,7 @@
                     <div class="card-header-modern">
                         <h6 class="card-title">
                             <i class="fas fa-project-diagram mr-2 text-warning"></i>
-                            Projets récents
+                            {% trans "Projets récents" %}
                         </h6>
                         <div class="dropdown dropdown-modern no-arrow">
                             <a class="btn btn-link text-muted p-0" href="#" role="button" data-bs-toggle="dropdown">
@@ -581,7 +581,7 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{% url 'pages:admin_projects' %}">
                                     <i class="fas fa-tasks mr-2"></i>
-                                    Voir tous les projets
+                                    {% trans "Voir tous les projets" %}
                                 </a>
                             </div>
                         </div>
@@ -591,9 +591,9 @@
                             <table class="table table-modern mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Titre</th>
-                                        <th>Participants</th>
-                                        <th>Statut</th>
+                                        <th>{% trans "Titre" %}</th>
+                                        <th>{% trans "Participants" %}</th>
+                                        <th>{% trans "Statut" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -606,7 +606,7 @@
                                             {% for pm in project.members.all|slice:":2" %}
                                                 {{ pm.member.get_full_name|default:pm.member.full_name }}{% if not forloop.last %}, {% endif %}
                                             {% empty %}
-                                                <em>Aucun participant</em>
+                                                <em>{% trans "Aucun participant" %}</em>
                                             {% endfor %}
                                             {% if project.members.count > 2 %}
                                                 <small class="text-primary">+{{ project.members.count|add:"-2" }}</small>
@@ -614,13 +614,13 @@
                                         </td>
                                         <td>
                                             {% if project.status == 'ongoing' %}
-                                                <span class="badge badge-modern bg-primary">En cours</span>
+                                                <span class="badge badge-modern bg-primary">{% trans "En cours" %}</span>
                                             {% elif project.status == 'completed' %}
-                                                <span class="badge badge-modern bg-success">Terminé</span>
+                                                <span class="badge badge-modern bg-success">{% trans "Terminé" %}</span>
                                             {% elif project.status == 'planning' %}
-                                                <span class="badge badge-modern bg-info">Planification</span>
+                                                <span class="badge badge-modern bg-info">{% trans "Planification" %}</span>
                                             {% elif project.status == 'cancelled' %}
-                                                <span class="badge badge-modern bg-danger">Annulé</span>
+                                                <span class="badge badge-modern bg-danger">{% trans "Annulé" %}</span>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -628,7 +628,7 @@
                                     <tr>
                                         <td colspan="3" class="text-center text-muted py-4">
                                             <i class="fas fa-project-diagram fa-2x mb-3 text-muted opacity-50"></i>
-                                            <br>Aucun projet récent
+                                            <br>{% trans "Aucun projet récent" %}
                                         </td>
                                     </tr>
                                     {% endfor %}

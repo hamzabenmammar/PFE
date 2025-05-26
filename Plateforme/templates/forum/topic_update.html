@@ -1,22 +1,22 @@
 <!-- forum/topic_update.html -->
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
 <div class="container mt-4 mb-5">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="h3 mb-0"><i class="fas fa-edit me-2"></i>Modifier le sujet</h2>
+                    <h2 class="h3 mb-0"><i class="fas fa-edit me-2"></i>{% trans "Modifier le sujet" %}</h2>
                 </div>
                 
                 <div class="card-body p-4">
-                    <p class="text-muted mb-4">Mettez à jour les informations de votre sujet de discussion.</p>
+                    <p class="text-muted mb-4">{% trans "Mettez à jour les informations de votre sujet de discussion." %}</p>
                     
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-4">
-                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">Titre</label>
+                            <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">{% trans "Titre" %}</label>
                             <input 
                                 type="text" 
                                 name="{{ form.title.name }}" 
@@ -33,7 +33,7 @@
                         </div>
                         
                         <div class="mb-4">
-                            <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">Description</label>
+                            <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">{% trans "Description" %}</label>
                             <textarea 
                                 name="{{ form.description.name }}" 
                                 class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
@@ -50,10 +50,10 @@
                         
                         <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mt-4">
                             <a href="{% url 'forum:topic-list' %}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-1"></i>Annuler
+                                <i class="fas fa-times me-1"></i>{% trans "Annuler" %}
                             </a>
                             <button type="submit" class="btn btn-success px-4">
-                                <i class="fas fa-save me-1"></i>Enregistrer les modifications
+                                <i class="fas fa-save me-1"></i>{% trans "Enregistrer les modifications" %}
                             </button>
                         </div>
                     </form>

@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Salles de discussion | Arabic NLP Platform{% endblock %}
+{% block title %}{% trans "Salles de discussion | Arabic NLP Platform" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="forum-header">
-        <h1 class="forum-title">Salles de discussion</h1>
+        <h1 class="forum-title">{% trans "Salles de discussion" %}</h1>
         <a href="{% url 'forum:topic-list' %}" class="btn btn-outline">
-            <i class="fas fa-arrow-left"></i> Voir les sujets
+            <i class="fas fa-arrow-left"></i> {% trans "Voir les sujets" %}
         </a>
     </div>
     
@@ -39,7 +40,7 @@
             
             <div class="chatroom-card-footer">
                 <a href="{% url 'forum:chatroom-detail' chatroom.id %}" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Rejoindre la discussion
+                    <i class="fas fa-sign-in-alt"></i> {% trans "Rejoindre la discussion" %}
                 </a>
             </div>
         </div>
@@ -51,10 +52,10 @@
         <div class="empty-state-icon">
             <i class="fas fa-comments"></i>
         </div>
-        <h3>Aucune salle de discussion n'est disponible</h3>
-        <p>Revenez aux sujets pour créer une nouvelle salle de discussion</p>
+        <h3>{% trans "Aucune salle de discussion n'est disponible" %}</h3>
+        <p>{% trans "Revenez aux sujets pour créer une nouvelle salle de discussion" %}</p>
         <a href="{% url 'forum:topic-list' %}" class="btn btn-primary">
-            <i class="fas fa-arrow-left"></i> Retour aux sujets
+            <i class="fas fa-arrow-left"></i> {% trans "Retour aux sujets" %}
         </a>
     </div>
     {% endif %}

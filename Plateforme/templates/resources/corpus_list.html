@@ -1,21 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Corpus{% endblock title %}
+{% load i18n %}
+{% block title %}{% trans "Corpus" %}{% endblock title %}
 {% block content %}
 <div class="container py-5">
     <div class="row header-section">
         <div class="col-lg-8 col-md-7">
-            <h1 class="display-5 fw-bold mb-2">Corpus Collection :</h1>
-            <p class="text-muted fs-5">{{ total_count }} corpora available</p>
+            <h1 class="display-5 fw-bold mb-2">{% trans "Corpus Collection :" %}</h1>
+            <p class="text-muted fs-5">{{ total_count }} {% trans "corpora available" %}</p>
         </div>
         <div class="col-lg-4 col-md-5 d-flex align-items-center justify-content-md-end justify-content-start mt-3 mt-md-0">
             {% if user.is_authenticated %}
             <a href="{% url 'resources:corpus-create' %}" class="btn btn-primary btn-lg shadow-sm">
-                <i class="bi bi-plus-lg me-2"></i> Add New Corpus
+                <i class="bi bi-plus-lg me-2"></i> {% trans "Add New Corpus" %}
             </a>
             {% else %}
             <div class="alert alert-info d-flex align-items-center mb-0 py-3 px-4 shadow-sm">
                 <i class="bi bi-info-circle fs-5 me-2"></i>
-                <span>You need to be logged in to add a new corpus.</span>
+                <span>{% trans "You need to be logged in to add a new corpus." %}</span>
             </div>
             {% endif %}
         </div>
@@ -46,7 +47,7 @@
         <hr class="my-4">
         <div class="position-absolute top-0 start-50 translate-middle">
             <div class="px-4 py-2 bg-white border rounded-pill shadow-sm">
-                <i class="bi bi-folder2-open me-2 text-primary"></i> <span class="fw-medium">Explore Corpora</span>
+                <i class="bi bi-folder2-open me-2 text-primary"></i> <span class="fw-medium">{% trans "Explore Corpora" %}</span>
             </div>
         </div>
     </div>
@@ -64,24 +65,24 @@
             </div>
             <div class="corpus-content flex-grow-1">
                 <div class="info-row">
-                    <span class="info-label">Title:</span>
+                    <span class="info-label">{% trans "Title:" %}</span>
                     <span class="info-value">{{ corpus.title }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Type:</span>
+                    <span class="info-label">{% trans "Type:" %}</span>
                     <span class="info-value">{{ corpus.get_field_display }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Created:</span>
+                    <span class="info-label">{% trans "Created:" %}</span>
                     <span class="info-value">{{ corpus.creation_date|date:"d/m/Y H:i" }}</span>
                 </div>
                   <div class="info-row">
-                        <span class="info-label">Author:</span>
+                        <span class="info-label">{% trans "Author:" %}</span>
                         <span class="info-value">
         {% if corpus.author%}
             {{ corpus.author.full_name }}
         {% else %}
-            Unknown
+            {% trans "Unknown" %}
         {% endif %}
     </span>
 </div>
@@ -119,7 +120,7 @@
 
      <div class="corpus-actions text-end">
                     <a href="{% url 'resources:corpus_detail' corpus.id %}" class="btn-view-details">
-                        <span>View Details</span>
+                        <span>{% trans "View Details" %}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -132,11 +133,11 @@
         <div class="empty-icon">
             <i class="bi bi-folder2-open"></i>
         </div>
-        <h3>No corpora available</h3>
-        <p class="text-muted">Corpora you add will appear here</p>
+        <h3>{% trans "No corpora available" %}</h3>
+        <p class="text-muted">{% trans "Corpora you add will appear here" %}</p>
         {% if user.is_authenticated %}
         <a href="{% url 'resources:corpus-create' %}" class="btn btn-primary btn-lg mt-3">
-            <i class="bi bi-plus-lg me-2"></i> Add Your First Corpus
+            <i class="bi bi-plus-lg me-2"></i> {% trans "Add Your First Corpus" %}
         </a>
         {% endif %}
     </div>

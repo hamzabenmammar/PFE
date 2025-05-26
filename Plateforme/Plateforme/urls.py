@@ -34,6 +34,8 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('search/', include('search.urls', namespace='search')),
     path('admin/', admin.site.urls),
+    path('chatbot/', include('chatbot.urls')),
+    path('', include('translate.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

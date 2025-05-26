@@ -1,4 +1,6 @@
-{% extends 'base_admin.html' %} {% block title %}Statistiques{% endblock %}
+{% extends 'base_admin.html' %}
+{% load i18n %}
+{% block title %}{% trans "Statistiques" %}{% endblock %}
  {% block extra_css %}
 <style>
   /* Container général */
@@ -156,7 +158,7 @@
   <div class="filters mb-4">
     <form method="get" class="row g-3">
       <div class="col-md-4">
-        <label for="start_date" class="form-label">Date de début</label>
+        <label for="start_date" class="form-label">{% trans "Date de début" %}</label>
         <input
           type="date"
           class="form-control"
@@ -166,7 +168,7 @@
         />
       </div>
       <div class="col-md-4">
-        <label for="end_date" class="form-label">Date de fin</label>
+        <label for="end_date" class="form-label">{% trans "Date de fin" %}</label>
         <input
           type="date"
           class="form-control"
@@ -176,7 +178,7 @@
         />
       </div>
       <div class="col-md-4 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary">Filtrer</button>
+        <button type="submit" class="btn btn-primary">{% trans "Filtrer" %}</button>
       </div>
     </form>
   </div>
@@ -186,7 +188,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Utilisateurs</h5>
+          <h5 class="card-title">{% trans "Utilisateurs" %}</h5>
           <h2 class="card-text">{{ current_stats.users_count }}</h2>
           <p
             class="trend {% if current_stats.users_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -199,7 +201,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Ressources</h5>
+          <h5 class="card-title">{% trans "Ressources" %}</h5>
           <h2 class="card-text">{{ current_stats.resources_count }}</h2>
           <p
             class="trend {% if current_stats.resources_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -212,7 +214,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Projets actifs</h5>
+          <h5 class="card-title">{% trans "Projets actifs" %}</h5>
           <h2 class="card-text">{{ current_stats.active_projects_count }}</h2>
           <p
             class="trend {% if current_stats.projects_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -229,7 +231,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Inscriptions utilisateurs</h5>
+          <h5 class="card-title">{% trans "Inscriptions utilisateurs" %}</h5>
           <canvas id="usersChart"></canvas>
         </div>
       </div>
@@ -237,7 +239,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Ressources par catégorie</h5>
+          <h5 class="card-title">{% trans "Ressources par catégorie" %}</h5>
           <canvas id="resourcesChart"></canvas>
         </div>
       </div>
@@ -249,13 +251,13 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Top 5 des ressources les plus vues</h5>
+          <h5 class="card-title">{% trans "Top 5 des ressources les plus vues" %}</h5>
           <div class="list-group">
             {% for resource in top_resources %}
             <div class="list-group-item">
               <div class="d-flex w-100 justify-content-between">
                 <h6 class="mb-1">{{ resource.title }}</h6>
-                <small>{{ resource.views }} vues</small>
+                <small>{{ resource.views }} {% trans "vues" %}</small>
               </div>
             </div>
             {% endfor %}
@@ -266,7 +268,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Activité par catégorie</h5>
+          <h5 class="card-title">{% trans "Activité par catégorie" %}</h5>
           <canvas id="activityChart"></canvas>
         </div>
       </div>

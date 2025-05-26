@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container py-4">
     <!-- Résultats de recherche -->
     <div class="search-results">
-        <h3 class="mb-4">Results for "{{ request.GET.q }}"</h3>
+        <h3 class="mb-4">{% trans "Results for" %} "{{ request.GET.q }}"</h3>
         
         <div class="row">
             {% for result in results %}
@@ -75,7 +76,7 @@
                             {% endif %}
                             {% if result.supported_languages %}
                             <div class="mt-1">
-                                <small class="text-muted">Languages: 
+                                <small class="text-muted">{% trans "Languages:" %} 
                                     {% for lang in result.supported_languages %}
                                         <span class="badge bg-light text-dark me-1">{{ lang }}</span>
                                     {% endfor %}
@@ -148,7 +149,7 @@
                     {% endif %}
                     {% if result.specialties %}
                         <div class="mt-2">
-                            <small class="text-muted">Specialties:
+                            <small class="text-muted">{% trans "Specialties:" %}
                                 {% for specialty in result.specialties %}
                                     <span class="badge bg-light text-dark me-1">{{ specialty }}</span>
                                 {% endfor %}
@@ -163,8 +164,8 @@
     {% empty %}
     <div class="col-12 text-center py-5">
         <i class="fas fa-search fa-3x text-muted mb-3"></i>
-        <h4>No results found</h4>
-        <p class="text-muted">Try different keywords or check your spelling</p>
+        <h4>{% trans "No results found" %}</h4>
+        <p class="text-muted">{% trans "Try different keywords or check your spelling" %}</p>
     </div>
     {% endfor %}
 </div>

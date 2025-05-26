@@ -1,5 +1,6 @@
 {% extends 'base_admin.html' %}
-{% block title %}Gestion des Outils{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Gestion des Outils" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -366,20 +367,20 @@
 {% block content %}
 <div class="tools-header">
   <div style="display: flex; align-items: center;">
-    <h1>Gestion des Outils</h1>
+    <h1>{% trans "Gestion des Outils" %}</h1>
   </div>
   <div class="tools-actions">
     <a href="{% url 'pages:home' %}" class="btn btn-outline">
       <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
       </svg>
-      Exporter
+      {% trans "Exporter" %}
     </a>
     <a href="{% url 'resources:tool-create' %}" class="btn btn-primary">
       <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
-      Nouvel outil
+      {% trans "Nouvel outil" %}
     </a>
   </div>
 </div>
@@ -393,11 +394,11 @@
   </div>
   <div class="filter-dropdown">
     <select id="type-filter">
-      <option value="">Tous les types</option>
-      <option value="analysis">Analyse</option>
-      <option value="extraction">Extraction</option>
-      <option value="visualization">Visualisation</option>
-      <option value="transformation">Transformation</option>
+      <option value="">{% trans "Tous les types" %}</option>
+      <option value="analysis">{% trans "Analyse" %}</option>
+      <option value="extraction">{% trans "Extraction" %}</option>
+      <option value="visualization">{% trans "Visualisation" %}</option>
+      <option value="transformation">{% trans "Transformation" %}</option>
     </select>
   </div>
 </div>
@@ -406,10 +407,10 @@
 <table class="tools-table" id="tools-table">
   <thead>
     <tr>
-      <th>Titre</th>
-      <th>Type</th>
-      <th>Date d'ajout</th>
-      <th>Actions</th>
+      <th>{% trans "Titre" %}</th>
+      <th>{% trans "Type" %}</th>
+      <th>{% trans "Date d'ajout" %}</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -424,14 +425,14 @@
               <svg class="tool-type-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
-              Analyse
+              {% trans "Analyse" %}
             </span>
           {% elif tool.tool_type == 'extraction' %}
             <span class="tool-type tool-type-extraction">
               <svg class="tool-type-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
               </svg>
-              Extraction
+              {% trans "Extraction" %}
             </span>
           {% elif tool.tool_type == 'visualization' %}
             <span class="tool-type tool-type-visualization">
@@ -439,14 +440,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
               </svg>
-              Visualisation
+              {% trans "Visualisation" %}
             </span>
           {% elif tool.tool_type == 'transformation' %}
             <span class="tool-type tool-type-transformation">
               <svg class="tool-type-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
-              Transformation
+              {% trans "Transformation" %}
             </span>
           {% else %}
             <span class="tool-type">{{ tool.tool_type }}</span>
@@ -487,8 +488,8 @@
 {% if is_paginated %}
 <div class="pagination">
   {% if page_obj.has_previous %}
-    <a href="?page=1">&laquo; Premier</a>
-    <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+    <a href="?page=1">&laquo; {% trans "Premier" %}</a>
+    <a href="?page={{ page_obj.previous_page_number }}">{% trans "Précédent" %}</a>
   {% endif %}
 
   {% for num in page_obj.paginator.page_range %}
@@ -500,8 +501,8 @@
   {% endfor %}
 
   {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">Suivant</a>
-    <a href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a>
+    <a href="?page={{ page_obj.next_page_number }}">{% trans "Suivant" %}</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Dernier" %} &raquo;</a>
   {% endif %}
 </div>
 {% endif %}
@@ -514,13 +515,13 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   </div>
-  <h3>Aucun outil disponible</h3>
-  <p>Vous n'avez pas encore créé d'outils ou aucun ne correspond à vos critères de recherche.</p>
+  <h3>{% trans "Aucun outil disponible" %}</h3>
+  <p>{% trans "Vous n'avez pas encore créé d'outils ou aucun ne correspond à vos critères de recherche." %}</p>
   <a href="{% url 'admin:create_tool' %}" class="btn btn-primary">
     <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
     </svg>
-    Créer un outil
+    {% trans "Créer un outil" %}
   </a>
 </div>
 {% endif %}

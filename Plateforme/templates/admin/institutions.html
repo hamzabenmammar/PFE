@@ -1,6 +1,6 @@
 {% extends 'base_admin.html' %}
-
-{% block title %}Gestion des Institutions{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Gestion des Institutions" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -561,15 +561,15 @@
             <div class="row align-items-center">
                 <div class="col-12 col-md-8">
                     <h1 class="hero-title">
-                        <i class="fas fa-university me-3"></i>Gestion des Institutions
+                        <i class="fas fa-university me-3"></i>{% trans "Gestion des Institutions" %}
                     </h1>
                     <p class="hero-subtitle">
-                        Administrez facilement toutes vos institutions académiques et partenaires
+                        {% trans "Administrez facilement toutes vos institutions académiques et partenaires" %}
                     </p>
                 </div>
                 <div class="col-12 col-md-4 text-md-end">
                     <a href="{% url 'institutions:institution_create' %}" class="btn btn-add">
-                        <i class="fas fa-plus me-2"></i>Nouvelle Institution
+                        <i class="fas fa-plus me-2"></i>{% trans "Nouvelle Institution" %}
                     </a>
                 </div>
             </div>
@@ -583,14 +583,14 @@
                 <i class="fas fa-university"></i>
             </div>
             <div class="stat-number">{{ total_institutions }}</div>
-            <div class="stat-label">Total Institutions</div>
+            <div class="stat-label">{% trans "Total Institutions" %}</div>
         </div>
         <div class="stat-card">
             <div class="stat-icon countries">
                 <i class="fas fa-globe"></i>
             </div>
             <div class="stat-number">{{ total_countries }}</div>
-            <div class="stat-label">Pays</div>
+            <div class="stat-label">{% trans "Pays" %}</div>
         </div>
     </div>
 
@@ -598,17 +598,17 @@
     <div class="filter-section animate-fade-in">
         <div class="filter-title">
             <i class="fas fa-filter"></i>
-            Filtres de recherche
+            {% trans "Filtres de recherche" %}
         </div>
         <form class="filter-form" method="get">
             <div class="form-group">
-                <label class="form-label">Recherche</label>
-                <input type="text" class="form-control" name="search" value="{{ request.GET.search }}" placeholder="Nom ou sigle de l'institution...">
+                <label class="form-label">{% trans "Recherche" %}</label>
+                <input type="text" class="form-control" name="search" value="{{ request.GET.search }}" placeholder="{% trans "Nom ou sigle de l'institution..." %}">
             </div>
             <div class="form-group">
-                <label class="form-label">Pays</label>
+                <label class="form-label">{% trans "Pays" %}</label>
                 <select class="form-control" name="country">
-                    <option value="">Tous les pays</option>
+                    <option value="">{% trans "Tous les pays" %}</option>
                     {% for country in countries %}
                     <option value="{{ country }}" {% if request.GET.country == country %}selected{% endif %}>{{ country }}</option>
                     {% endfor %}
@@ -616,7 +616,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn-filter">
-                    <i class="fas fa-search me-2"></i>Rechercher
+                    <i class="fas fa-search me-2"></i>{% trans "Rechercher" %}
                 </button>
             </div>
         </form>
@@ -626,9 +626,9 @@
     <div class="table-section animate-fade-in">
         <div class="table-header">
             <h3 class="table-title">
-                <i class="fas fa-list me-2"></i>Liste des institutions
+                <i class="fas fa-list me-2"></i>{% trans "Liste des institutions" %}
             </h3>
-            <div class="table-count">{{ institutions|length }} institutions</div>
+            <div class="table-count">{{ institutions|length }} {% trans "institutions" %}</div>
         </div>
 
         <!-- Vue Table (Desktop) -->
@@ -636,11 +636,11 @@
             <table class="custom-table">
                 <thead>
                     <tr>
-                        <th>Institution</th>
-                        <th>Sigle</th>
-                        <th>Pays</th>
+                        <th>{% trans "Institution" %}</th>
+                        <th>{% trans "Sigle" %}</th>
+                        <th>{% trans "Pays" %}</th>
                         
-                        <th class="text-center">Actions</th>
+                        <th class="text-center">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
                 <tbody id="institutionsTableBody">
@@ -669,7 +669,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center">Aucune institution trouvée.</td>
+                        <td colspan="5" class="text-center">{% trans "Aucune institution trouvée." %}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -695,17 +695,17 @@
                     </div>
                 </div>
                 <div class="card-details">
-                    <div class="detail-label">Sigle :</div>
+                    <div class="detail-label">{% trans "Sigle :" %}</div>
                     <div class="detail-value">{{ institution.acronym }}</div>
-                    <div class="detail-label">Pays :</div>
+                    <div class="detail-label">{% trans "Pays :" %}</div>
                     <div class="detail-value">{{ institution.country }}</div>
                 </div>
             </div>
             {% empty %}
             <div class="empty-state">
                 <div class="empty-icon"><i class="fas fa-university"></i></div>
-                <div class="empty-title">Aucune institution trouvée</div>
-                <div class="empty-message">Essayez d'ajuster vos filtres ou d'ajouter une nouvelle institution.</div>
+                <div class="empty-title">{% trans "Aucune institution trouvée" %}</div>
+                <div class="empty-message">{% trans "Essayez d'ajuster vos filtres ou d'ajouter une nouvelle institution." %}</div>
             </div>
             {% endfor %}
         </div>
@@ -716,15 +716,15 @@
     <div class="pagination-container">
         <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">&laquo; Première</a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">Précédente</a>
+                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">&laquo; {% trans "Première" %}</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">{% trans "Précédente" %}</a>
             {% endif %}
 
             <span class="page-item active">{{ page_obj.number }}</span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">Suivante</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">Dernière &raquo;</a>
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">{% trans "Suivante" %}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.country %}&country={{ request.GET.country }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" class="page-item">{% trans "Dernière" %} &raquo;</a>
             {% endif %}
         </div>
     </div>

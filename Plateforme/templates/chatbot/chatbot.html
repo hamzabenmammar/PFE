@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<style>
+.chat-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 700px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-top: 5px solid #007bff;
+    position: relative;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.chat-header h2 {
+    color: #007bff;
+    margin: 0;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.back-button {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.back-button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.chat-box {
+    height: 350px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    margin-bottom: 15px;
+    scroll-behavior: smooth;
+}
+
+.bubble {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 20px;
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.bubble.user {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+    border-bottom-right-radius: 4px;
+}
+
+.bubble.bot {
+    background-color: #e9ecef;
+    color: #000;
+    align-self: flex-start;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.input-row button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.input-row button:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<div class="chat-wrapper">
+    <div class="chat-container">
+
+        <div class="chat-header">
+            <h2>{% trans "💬 Chat AI" %}</h2>
+            <a href="{% url 'pages:home' %}" class="back-button">{% trans "← Accueil" %}</a>
+
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            <!-- Messages affichés ici -->
+        </div>
+
+        <form onsubmit="event.preventDefault(); askQuestion();">
+            <div class="input-row">
+                <input type="text" id="question" placeholder="Pose ta question..." autocomplete="off" />
+                <button type="submit">{% trans "Envoyer" %}</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+function askQuestion() {
+    const input = document.getElementById("question");
+    const question = input.value.trim();
+    if (!question) return;
+
+    addMessage(question, "user");
+    input.value = "";
+    input.disabled = true;
+
+    fetch("/chatbot/ask/?question=" + encodeURIComponent(question))
+        .then(res => res.json())
+        .then(data => {
+            const response = data.answer || data.duckduckgo_answer || data.error || "Aucune réponse.";
+            addMessage(response, "bot");
+        })
+        .catch(err => {
+            addMessage("Erreur : " + err, "bot");
+        })
+        .finally(() => {
+            input.disabled = false;
+            input.focus();
+        });
+}
+
+function addMessage(text, sender) {
+    const box = document.getElementById("chat-box");
+    const bubble = document.createElement("div");
+    bubble.classList.add("bubble", sender);
+    bubble.innerText = text;
+    box.appendChild(bubble);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
+{% endblock %}

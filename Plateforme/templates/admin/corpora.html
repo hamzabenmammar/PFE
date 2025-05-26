@@ -1,4 +1,5 @@
 {% extends 'base_admin.html' %} {% block title %}Gestion des Corpus{% endblock %} 
+{% load i18n %}
 {% block extra_css %}
 <style>
   .corpus-header {
@@ -358,7 +359,7 @@
 {% endblock %} {% block content %}
 <div class="corpus-header">
   <div style="display: flex; align-items: center">
-    <h1>Gestion des Corpus</h1>
+    <h1>{% trans "Gestion des Corpus" %}</h1>
   </div>
   <div class="corpus-actions">
     <a href="{% url 'pages:home' %}" class="btn btn-outline">
@@ -376,7 +377,7 @@
           d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
         />
       </svg>
-      Exporter
+      {% trans "Exporter" %}
     </a>
     <a href="{% url 'resources:corpus-create' %}" class="btn btn-primary">
       <svg
@@ -393,7 +394,7 @@
           d="M12 4v16m8-8H4"
         />
       </svg>
-      Nouveau corpus
+      {% trans "Nouveau corpus" %}
     </a>
   </div>
 </div>
@@ -428,10 +429,10 @@
 <table class="corpus-table" id="corpus-table">
   <thead>
     <tr>
-      <th>Titre</th>
-      <th>Description</th>
-      <th>Date de création</th>
-      <th>Actions</th>
+      <th>{% trans "Titre" %}</th>
+      <th>{% trans "Description" %}</th>
+      <th>{% trans "Date de création" %}</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -551,15 +552,15 @@
 {% if is_paginated %}
 <div class="pagination">
   {% if page_obj.has_previous %}
-  <a href="?page=1">&laquo; Premier</a>
-  <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+  <a href="?page=1">&laquo; {% trans "Premier" %}</a>
+  <a href="?page={{ page_obj.previous_page_number }}">{% trans "Précédent" %}</a>
   {% endif %} {% for num in page_obj.paginator.page_range %} {% if num == page_obj.number %}
   <a class="active" href="#!">{{ num }}</a>
   {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
   <a href="?page={{ num }}">{{ num }}</a>
   {% endif %} {% endfor %} {% if page_obj.has_next %}
-  <a href="?page={{ page_obj.next_page_number }}">Suivant</a>
-  <a href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a>
+  <a href="?page={{ page_obj.next_page_number }}">{% trans "Suivant" %}</a>
+  <a href="?page={{ page_obj.paginator.num_pages }}">{% trans "Dernier" %} &raquo;</a>
   {% endif %}
 </div>
 {% endif %} {% else %}
@@ -579,10 +580,9 @@
       />
     </svg>
   </div>
-  <h3>Aucun corpus disponible</h3>
+  <h3>{% trans "Aucun corpus disponible" %}</h3>
   <p>
-    Vous n'avez pas encore créé de corpus ou aucun ne correspond à vos critères
-    de recherche.
+    {% trans "Vous n'avez pas encore créé de corpus ou aucun ne correspond à vos critères de recherche." %}
   </p>
   <a href="{% url 'resources:corpus-create' %}" class="btn btn-primary">
     <svg
@@ -599,7 +599,7 @@
         d="M12 4v16m8-8H4"
       />
     </svg>
-    Créer un corpus
+    {% trans "Créer un corpus" %}
   </a>
 </div>
 {% endif %}

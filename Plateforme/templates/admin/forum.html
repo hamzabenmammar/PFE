@@ -1,5 +1,5 @@
 {% extends 'base_admin.html' %}
-
+{% load i18n %}
 {% block title %}Gestion des Forums{% endblock %}
 
 {% block extra_css %}
@@ -300,13 +300,13 @@
       <div class="row align-items-center">
         <div class="col-12 col-md-8">
           <h1 class="fs-2 fw-bold mb-2">
-            <i class="fas fa-comments me-3"></i>Administration des Forums
+            <i class="fas fa-comments me-3"></i>{% trans "Administration des Forums" %}
           </h1>
-          <p class="mb-0 opacity-90">Gérez tous vos sujets de discussion en un clin d'œil</p>
+          <p class="mb-0 opacity-90">{% trans "Gérez tous vos sujets de discussion en un clin d'œil" %}</p>
         </div>
         <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0">
           <button class="btn btn-light btn-lg px-4 py-2" data-bs-toggle="modal" data-bs-target="#addTopicModal" style="border-radius: 12px;">
-            <i class="fas fa-plus me-2"></i>Nouveau sujet
+            <i class="fas fa-plus me-2"></i>{% trans "Nouveau sujet" %}
           </button>
         </div>
       </div>
@@ -318,25 +318,25 @@
     <div class="col-6 col-md-3 mb-3">
       <div class="stats-card h-100 p-3 text-center">
         <div class="fs-2 fw-bold text-primary mb-1">{{ total_topics_count }}</div>{# Total Sujets #}
-        <div class="text-muted small">Sujets totaux</div>
+        <div class="text-muted small">{% trans "Sujets totaux" %}</div>
       </div>
     </div>
     <div class="col-6 col-md-3 mb-3">
       <div class="stats-card h-100 p-3 text-center">
         <div class="fs-2 fw-bold text-success mb-1">{{ open_topics_count }}</div>{# Sujets actifs/ouverts #}
-        <div class="text-muted small">Sujets actifs</div>
+        <div class="text-muted small">{% trans "Sujets actifs" %}</div>
       </div>
     </div>
     <div class="col-6 col-md-3 mb-3">
       <div class="stats-card h-100 p-3 text-center">
         <div class="fs-2 fw-bold text-warning mb-1">{{ closed_topics_count }}</div>{# Sujets fermés #}
-        <div class="text-muted small">Sujets fermés</div>
+        <div class="text-muted small">{% trans "Sujets fermés" %}</div>
       </div>
     </div>
     <div class="col-6 col-md-3 mb-3">
       <div class="stats-card h-100 p-3 text-center">
         <div class="fs-2 fw-bold text-info mb-1">{{ total_messages_count }}</div>{# Réponses totales #}
-        <div class="text-muted small">Réponses</div>
+        <div class="text-muted small">{% trans "Réponses" %}</div>
       </div>
     </div>
   </div>
@@ -347,34 +347,34 @@
       <form method="get" id="filterForm">
         <div class="row g-3 align-items-end">
           <div class="col-12 col-md-6 col-lg-4">
-            <label class="form-label fw-semibold text-muted small mb-2">RECHERCHE</label>
+            <label class="form-label fw-semibold text-muted small mb-2">{% trans "RECHERCHE" %}</label>
             <div class="position-relative">
               <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-              <input type="text" class="form-control search-input ps-5" placeholder="Rechercher un sujet..." name="search" value="{{ search|default:'' }}">
+              <input type="text" class="form-control search-input ps-5" placeholder="{% trans "Rechercher un sujet..." %}" name="search" value="{{ search|default:'' }}">
             </div>
           </div>
           <div class="col-12 col-md-6 col-lg-3">
-            <label class="form-label fw-semibold text-muted small mb-2">CATÉGORIE</label>
+            <label class="form-label fw-semibold text-muted small mb-2">{% trans "CATÉGORIE" %}</label>
             <select class="form-select search-input" name="category">
-              <option value="">Toutes les catégories</option>
+              <option value="">{% trans "Toutes les catégories" %}</option>
               {# TODO: Afficher les catégories dynamiquement #}
-              <option value="general">Général</option>
-              <option value="tech">Technique</option>
-              <option value="support">Support</option>
+              <option value="general">{% trans "Général" %}</option>
+              <option value="tech">{% trans "Technique" %}</option>
+              <option value="support">{% trans "Support" %}</option>
             </select>
           </div>
           <div class="col-12 col-md-6 col-lg-3">
-            <label class="form-label fw-semibold text-muted small mb-2">STATUT</label>
+            <label class="form-label fw-semibold text-muted small mb-2">{% trans "STATUT" %}</label>
             <select class="form-select search-input" name="status">
-              <option value="">Tous les statuts</option>
-              <option value="open" {% if filter_status == 'open' %}selected{% endif %}>Ouvert</option>
-              <option value="closed" {% if filter_status == 'closed' %}selected{% endif %}>Fermé</option>
+              <option value="">{% trans "Tous les statuts" %}</option>
+              <option value="open" {% if filter_status == 'open' %}selected{% endif %}>{% trans "Ouvert" %}</option>
+              <option value="closed" {% if filter_status == 'closed' %}selected{% endif %}>{% trans "Fermé" %}</option>
             </select>
           </div>
           <div class="col-12 col-md-6 col-lg-2">
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-filter me-2"></i>Filtrer
+                <i class="fas fa-filter me-2"></i>{% trans "Filtrer" %}
               </button>
             </div>
           </div>
@@ -388,9 +388,9 @@
     <div class="table-header">
       <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0 fw-semibold">
-          <i class="fas fa-list me-2"></i>Sujets du forum
+          <i class="fas fa-list me-2"></i>{% trans "Sujets du forum" %}
         </h5>
-        <span class="badge bg-white text-primary px-3 py-2 rounded-pill">{{ total_topics_count }} sujets</span>{# Nombre total de sujets #}
+        <span class="badge bg-white text-primary px-3 py-2 rounded-pill">{{ total_topics_count }}{% trans "sujets" %} </span>{# Nombre total de sujets #}
       </div>
     </div>
 
@@ -398,12 +398,12 @@
       <table class="custom-table table align-middle">
         <thead>
           <tr>
-            <th style="width: 40%;">Sujet</th>
-            <th style="width: 15%;">Catégorie</th>{# TODO: Afficher dynamiquement #}
-            <th style="width: 15%;">Auteur</th>
-            <th style="width: 12%;">Date</th>
-            <th style="width: 8%;">Réponses</th>
-            <th style="width: 10%;" class="text-center">Actions</th>
+            <th style="width: 40%;">{% trans "Sujet" %}</th>
+            <th style="width: 15%;">{% trans "Catégorie" %}</th>{# TODO: Afficher dynamiquement #}
+            <th style="width: 15%;">{% trans "Auteur" %}</th>
+            <th style="width: 12%;">{% trans "Date" %}</th>
+            <th style="width: 8%;">{% trans "Réponses" %}</th>
+            <th style="width: 10%;" class="text-center">{% trans "Actions" %}</th>
           </tr>
         </thead>
         <tbody>
@@ -417,7 +417,7 @@
             </td>
             <td class="p-3">
               {# TODO: Afficher la catégorie dynamique #}
-              <span class="status-badge" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46;">Catégorie</span>
+              <span class="status-badge" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46;">{% trans "Catégorie" %}</span>
             </td>
             <td class="p-3">
               <div class="author-info">
@@ -470,8 +470,8 @@
             <td colspan="6">
               <div class="empty-state">
                 <i class="fas fa-comments"></i>
-                <h3 class="empty-state-title">Aucun sujet de forum trouvé</h3>
-                <p class="empty-state-description">Il n'y a pas de sujets correspondant à vos critères de recherche.</p>
+                <h3 class="empty-state-title">{% trans "Aucun sujet de forum trouvé" %}</h3>
+                <p class="empty-state-description">{% trans "Il n'y a pas de sujets correspondant à vos critères de recherche." %}</p>
               </div>
             </td>
           </tr>
@@ -498,7 +498,7 @@
 
       {% for i in topics.paginator.page_range %}
         {% if topics.number == i %}
-          <li class="page-item active"><span class="page-link">{{ i }} <span class="visually-hidden">(current)</span></span></li>
+          <li class="page-item active"><span class="page-link">{{ i }} <span class="visually-hidden">{% trans "(current" %})</span></span></li>
         {% else %}
           <li class="page-item"><a class="page-link" href="?page={{ i }}{% if search %}&search={{ search }}{% endif %}{% if filter_status %}&status={{ filter_status }}{% endif %}">{{ i }}</a></li>
         {% endif %}
@@ -524,7 +524,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <i class="fas fa-plus me-2"></i>Ajouter un nouveau sujet
+            <i class="fas fa-plus me-2"></i>{% trans "Ajouter un nouveau sujet" %}
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
@@ -532,29 +532,29 @@
           <form id="addTopicForm" method="post" action="{% url 'forum:topic-new' %}">
             {% csrf_token %}
             <div class="mb-3">
-              <label for="title" class="form-label fw-semibold">Titre du sujet <span class="text-danger">*</span></label>
+              <label for="title" class="form-label fw-semibold">{% trans "Titre du sujet" %} <span class="text-danger">*</span></label>
               <input type="text" class="form-control search-input" id="title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="category" class="form-label fw-semibold">Catégorie <span class="text-danger">*</span></label>
+              <label for="category" class="form-label fw-semibold">{% trans "Catégorie" %} <span class="text-danger">*</span></label>
               <select class="form-select search-input" id="category" name="category" required>
-                <option value="">Sélectionner une catégorie</option>
+                <option value="">{% trans "Sélectionner une catégorie" %}</option>
                 {# TODO: Afficher les catégories dynamiquement #}
-                <option value="general">Général</option>
-                <option value="tech">Technique</option>
-                <option value="support">Support</option>
+                <option value="general">{% trans "Général" %}</option>
+                <option value="tech">{% trans "Technique" %}</option>
+                <option value="support">{% trans "Support" %}</option>
               </select>
             </div>
             <div class="mb-3">
-              <label for="content" class="form-label fw-semibold">Contenu <span class="text-danger">*</span></label>
+              <label for="content" class="form-label fw-semibold">{% trans "Contenu" %} <span class="text-danger">*</span></label>
               <textarea class="form-control search-input" id="content" name="content" rows="6" required placeholder="Décrivez votre sujet en détail..."></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{% trans "Annuler" %}</button>
           <button type="submit" form="addTopicForm" class="btn btn-primary">
-            <i class="fas fa-save me-2"></i>Créer le sujet
+            <i class="fas fa-save me-2"></i>{% trans "Créer le sujet" %}
           </button>
         </div>
       </div>

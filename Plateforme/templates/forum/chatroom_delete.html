@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block title %}Supprimer la salle de discussion
+{% extends 'base.html' %} 
+{% load i18n %}
+{% block title %}{% trans "Supprimer la salle de discussion" %}
 {% endblock %} {% block content %}
 {% endblock %} {% block content %}
 <div class="container py-5">
@@ -7,15 +9,14 @@
       <div class="card shadow-sm">
         <div class="card-header bg-danger text-white">
           <h4 class="mb-0">
-            <i class="fas fa-trash me-2"></i>Supprimer la salle de discussion
+            <i class="fas fa-trash me-2"></i>{% trans "Supprimer la salle de discussion" %}
           </h4>
         </div>
         <div class="card-body">
           <div class="alert alert-warning">
             <i class="fas fa-exclamation-triangle me-2"></i>
-            <strong>Attention !</strong> Vous êtes sur le point de supprimer la
-            salle de discussion "{{ chatroom.name }}". Cette action est
-            irréversible et supprimera également tous les messages associés.
+            <strong>{% trans "Attention !" %}</strong>{% trans "Vous êtes sur le point de supprimer la salle de discussion" %}  "{{ chatroom.name }}"{% trans ". Cette action est" %}
+           {% trans "irréversible et supprimera également tous les messages associés." %} 
           </div>
           <form method="post">
             {% csrf_token %}
@@ -24,10 +25,10 @@
                 href="{% url 'forum:chatroom-detail' pk=chatroom.pk %}"
                 class="btn btn-secondary"
               >
-                <i class="fas fa-arrow-left me-2"></i>Annuler
+                <i class="fas fa-arrow-left me-2"></i>{% trans "Annuler" %}
               </a>
               <button type="submit" class="btn btn-danger">
-                <i class="fas fa-trash me-2"></i>Confirmer la suppression
+                <i class="fas fa-trash me-2"></i>{% trans "Confirmer la suppression" %}
               </button>
             </div>
           </form>
