@@ -459,6 +459,10 @@ class NLPTool(ResourceBase):
         languages = self.get_supported_languages_list()
         choices_dict = dict(self.SupportedLanguages.choices)
         return [choices_dict.get(lang, lang) for lang in languages]
+    
+    def get_absolute_url(self):
+        model_name = self.__class__.__name__.lower()
+        return reverse(f'resources:tool_detail', kwargs={'pk': self.pk})
 
 
 class Corpus(ResourceBase):
