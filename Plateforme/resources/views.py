@@ -19,6 +19,9 @@ from django.contrib.auth import get_user_model
 from notifications.models import Notification
 
 from django.db.models import Q
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ResourceListView(LoginAndVerifiedRequiredMixin, ListView):
     template_name = 'resources/list.html'
@@ -668,16 +671,21 @@ class ResourceCreateView(LoginAndVerifiedRequiredMixin, FormView):
         return kwargs
     
     def form_valid(self, form):
-        resource = form.save()
-        messages.success(self.request, f"Resource '{resource.title}' created successfully!")
-        User = get_user_model()
-        for user in User.objects.filter(is_active=True):
-            Notification.objects.create(
-                recipient=user,
-                title="Nouvelle ressource",
-                message=f"La ressource « {resource.title} » a été ajoutée à la plateforme."
-            )
-        return super().form_valid(form)
+        try:
+            resource = form.save()
+            messages.success(self.request, f"Resource '{resource.title}' created successfully!")
+            User = get_user_model()
+            for user in User.objects.filter(is_active=True):
+                Notification.objects.create(
+                    recipient=user,
+                    title="Nouvelle ressource",
+                    message=f"La ressource « {resource.title} » a été ajoutée à la plateforme."
+                )
+            return super().form_valid(form)
+        except Exception as e:
+            logger.error(f"Error creating resource: {str(e)}")
+            messages.error(self.request, f"Une erreur est survenue lors de la création de la ressource: {str(e)}")
+            return self.form_invalid(form)
     
 class CourseCreateView(LoginAndVerifiedRequiredMixin, FormView):
     template_name = 'resources/course_create_form.html'

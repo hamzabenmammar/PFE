@@ -603,6 +603,8 @@ class CorpusDocument(Document):
         fields = [
             'id',
             'creation_date',
+            'size',
+            'file_format'
         ]
 
 @registry.register_document

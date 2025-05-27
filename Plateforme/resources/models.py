@@ -6,8 +6,12 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError, PermissionDenied
 from institutions.models import Institution
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django_elasticsearch_dsl.registries import registry
+import logging
 
-
+logger = logging.getLogger(__name__)
 
 class ResourceBase(models.Model):
     """
@@ -104,6 +108,14 @@ class ResourceBase(models.Model):
     def increment_views(self):
         self.views_count += 1
         self.save(update_fields=['views_count'])
+
+    def save(self, *args, **kwargs):
+        try:
+            super().save(*args, **kwargs)
+            logger.info(f"Resource {self.title} saved successfully")
+        except Exception as e:
+            logger.error(f"Error saving resource {self.title}: {str(e)}")
+            raise
 
     class Meta:
         abstract = True
@@ -459,6 +471,10 @@ class NLPTool(ResourceBase):
         languages = self.get_supported_languages_list()
         choices_dict = dict(self.SupportedLanguages.choices)
         return [choices_dict.get(lang, lang) for lang in languages]
+    
+    def get_absolute_url(self):
+        model_name = self.__class__.__name__.lower()
+        return reverse(f'resources:tool_detail', kwargs={'pk': self.pk})
 
     def get_absolute_url(self):
         """Override to use the correct URL name for tools"""
@@ -487,4 +503,15 @@ class Corpus(ResourceBase):
 
     class Meta:
         db_table = 'resources_corpus' 
-    
+
+@receiver(post_save, sender=Course)
+@receiver(post_save, sender=NLPTool)
+@receiver(post_save, sender=Corpus)
+@receiver(post_save, sender=Document)
+def index_resource(sender, instance, **kwargs):
+    try:
+        registry.update(instance)
+        logger.info(f"Resource {instance.title} indexed successfully")
+    except Exception as e:
+        logger.error(f"Error indexing resource {instance.title}: {str(e)}")
+        raise 

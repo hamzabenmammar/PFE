@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'forum',
     'events',
     'QA',
+    'django_elasticsearch_dsl',
     'notifications',
     'channels',
     'search',
@@ -63,13 +64,16 @@ INSTALLED_APPS = [
     'translate',
 ]
 
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': 'http://localhost:9200'   
-#     },
-# }
-# ELASTICSEARCH_DSL_AUTOSYNC = True
-# ELASTICSEARCH_DSL_AUTO_REFRESH = True
+ELASTICSEARCH_DSL = {
+   'default': {
+       # Ajout du schéma http:// devant l'hôte
+       'hosts': 'http://localhost:9200',
+       'timeout': 120,
+       'sniff_on_start': True,
+    },
+}
+ELASTICSEARCH_DSL_AUTOSYNC = True
+ELASTICSEARCH_DSL_AUTO_REFRESH = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
