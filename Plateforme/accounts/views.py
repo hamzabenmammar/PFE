@@ -4,7 +4,7 @@ from .forms import CustomUserCreationForm  , CustomUserChangeForm, EmailVerifica
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views import View
@@ -24,7 +24,7 @@ class LoginAndVerifiedRequiredMixin(LoginRequiredMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if not request.user.is_verified and not request.user.is_staff:
-            return redirect('awaiting_verification')
+            return redirect('accounts:awaiting_verification')
         return super().dispatch(request, *args, **kwargs)
 
 def login_and_verified_required(view_func):
@@ -33,27 +33,17 @@ def login_and_verified_required(view_func):
         if not request.user.is_authenticated:
             return redirect('account_login')
         if not request.user.is_verified and not request.user.is_staff:
-            return redirect('awaiting_verification')
+            return redirect('accounts:awaiting_verification')
         return view_func(request, *args, **kwargs)
     return _wrapped_view
 
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy('email_verification_prompt')
+    success_url = reverse_lazy('accounts:email_verification_prompt')
     template_name = 'account/signup.html'
 
-    def get_form(self, form_class=None):
-        """
-        Retourne une instance du formulaire à utiliser dans cette vue.
-        Surcharge pour ajouter des attributs personnalisés si nécessaire.
-        """
-        form = super().get_form(form_class)
-        # Vous pouvez ajouter des attributs aux widgets du formulaire ici si nécessaire
-        return form
-
     def form_valid(self, form):
-        response = super().form_valid(form)
-        user = self.object
+        user, _ = form.save(self.request)  # Déballage du tuple
         user.is_active = False  # désactive le compte temporairement
         user.generate_verification_code()
         
@@ -66,18 +56,13 @@ class SignUp(CreateView):
         )
 
         self.request.session['user_id_to_verify'] = str(user.pk)
-        return redirect('email_verification_prompt')
-        
-    def get_context_data(self, **kwargs):
-        """Ajoute des données supplémentaires au contexte si nécessaire."""
-        context = super().get_context_data(**kwargs)
-        # Vous pouvez ajouter des variables de contexte supplémentaires ici
-        return context
-  
+        return redirect('accounts:email_verification_prompt')  # nouvelle vue
+
 class ProfileView(LoginRequiredMixin,DetailView):
     model = get_user_model()
     template_name = 'account/profile.html'
     context_object_name = 'user'
+
 class ProfileEditView(LoginRequiredMixin, UpdateView):
    model = get_user_model()
    form_class = CustomUserChangeForm
@@ -85,11 +70,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
    context_object_name = 'user'
    def get_success_url(self):
     return reverse_lazy('profile', kwargs={'pk': self.object.pk})
-
-
-
-
-
 
 class EmailVerificationView(View):
     form_class = EmailVerificationForm
@@ -111,7 +91,7 @@ class EmailVerificationView(View):
                 user.email_verification_code = ''
                 user.save()
                 messages.success(request, "Email vérifié avec succès. Vous pouvez maintenant vous connecter.")
-                return redirect('account_login')
+                return redirect('account_login')  # Changé de 'auth:account_login' à 'account_login'
             else:
                 messages.error(request, "Code incorrect. Réessayez.")
         return render(request, self.template_name, {'form': form})
@@ -191,5 +171,3 @@ def delete_account(request):
         messages.success(request, _('Votre compte a été supprimé avec succès.'))
         return redirect('pages:home')
     return render(request, 'accounts/delete_account.html')
-
-

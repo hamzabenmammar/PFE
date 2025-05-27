@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% load i18n %} {% block title %}{{ event.title }} |
-{% trans "Events" %}{% endblock %} {% block extra_css %}
+{% extends "base.html" %} {% load i18n %} {% block title %}{{ event.title }} | {% trans "Events" %}{% endblock %} {% block extra_css %}
 <style>
   /* Custom CSS for enhanced event detail page */
   .event-hero {
@@ -259,8 +258,7 @@
             <i
               class="fas {% if event.is_virtual %}fa-video{% else %}fa-map-marker-alt{% endif %} me-1"
             ></i>
-            {% if event.is_virtual %}{% trans "Virtual Event" %}{% else %}{{
-            event.location|truncatechars:20 }}{% endif %}
+            {% if event.is_virtual %}{% trans "Virtual Event" %}{% else %}{{ event.location|truncatechars:20 }}{% endif %}
           </span>
 
           {% if event.is_ongoing %}
@@ -338,8 +336,7 @@
                   <p class="fw-bold">
                     {{ event.submission_deadline|date:"M d, Y" }} {% if event.days_until_deadline != None %}
                     <span class="badge bg-warning text-dark ms-2"
-                      >{{ event.days_until_deadline }} {% trans "days left"
-                      %}</span
+                      >{{ event.days_until_deadline }} {% trans "days left" %}</span
                     >
                     {% endif %}
                   </p>
@@ -373,8 +370,7 @@
           <!-- Research domains -->
           <div class="mb-4">
             <h3 class="h6 mb-3">
-              <i class="fas fa-tags text-muted me-2"></i> {% trans "Research
-              Domains" %}
+              <i class="fas fa-tags text-muted me-2"></i> {% trans "Research Domains" %}
             </h3>
             <div class="event-domains">
               {% for domain in event.domain_list %}
@@ -391,8 +387,7 @@
               class="btn btn-outline-secondary"
               target="_blank"
             >
-              <i class="fas fa-download me-2"></i> {% trans "Download
-              Attachment" %}
+              <i class="fas fa-download me-2"></i> {% trans "Download Attachment" %}
             </a>
           </div>
           {% endif %}
@@ -530,34 +525,6 @@
       </div>
 
       <!-- Admin actions -->
-      {% if user.is_staff and not event.is_approved %}
-      <div class="card rounded-3 mb-4 border-warning">
-        <div class="card-header bg-warning text-dark py-3">
-          <h5 class="mb-0">
-            <i class="fas fa-exclamation-triangle me-2"></i>{% trans "Admin
-            Actions" %}
-          </h5>
-        </div>
-        <div class="card-body p-4">
-          <p class="mb-3">{% trans "This event is pending approval." %}</p>
-          <form
-            method="post"
-            action="{% url 'admin:events_event_changelist' %}"
-          >
-            {% csrf_token %}
-            <input type="hidden" name="action" value="approve_events" />
-            <input
-              type="hidden"
-              name="_selected_action"
-              value="{{ event.id }}"
-            />
-            <button type="submit" class="btn btn-success w-100">
-              <i class="fas fa-check me-2"></i> {% trans "Approve Event" %}
-            </button>
-          </form>
-        </div>
-      </div>
-      {% endif %}
     </div>
   </div>
 </div>

@@ -47,7 +47,7 @@ class Event(models.Model):
     end_date = models.DateField(_('End Date'))
     submission_deadline = models.DateField(_('Submission Deadline'), null=True, blank=True)
     website = models.URLField(_('Website'), blank=True)
-    organizer = models.ForeignKey(Institution, on_delete=models.CASCADE, verbose_name=_('Organizer'))
+    organizer = models.ForeignKey(Institution, on_delete=models.CASCADE, verbose_name=_('Organizer'), related_name='events')
     contact_email = models.EmailField(_('Contact Email'))
     
     # File attachments for call for papers, etc.
@@ -118,6 +118,7 @@ class Event(models.Model):
         if self.submission_deadline and self.start_date:
             if self.submission_deadline > self.start_date:
                 raise ValidationError(_('Submission deadline must be before event start date'))
+
 class EventRegistration(models.Model):
     """Model to track users who registered for events."""
     

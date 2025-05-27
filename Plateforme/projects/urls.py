@@ -3,7 +3,8 @@ from .views import (
     ProjectListView, ProjectDetailView, ProjectCreateView, 
     ProjectUpdateView, ProjectDeleteView, JoinProjectView, 
     LeaveProjectView, ProjectSearchView, AcceptMemberView,
-    RejectMemberView, ProjectMembersView, RemoveMemberView
+    RejectMemberView, ProjectMembersView, RemoveMemberView,
+    RespondToRequestView
 )
 
 app_name = 'projects'
@@ -22,5 +23,6 @@ urlpatterns = [
     path('<uuid:pk>/members/<uuid:member_id>/accept/', AcceptMemberView.as_view(), name='accept_member'),
     path('<uuid:pk>/members/<uuid:member_id>/reject/', RejectMemberView.as_view(), name='reject_member'),
     path('<uuid:pk>/members/<uuid:member_id>/remove/', RemoveMemberView.as_view(), name='remove_member'),
+    path('<uuid:pk>/request/<uuid:request_id>/respond/', RespondToRequestView.as_view(), name='respond_to_request'),
 ]
 

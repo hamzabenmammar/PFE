@@ -5,7 +5,7 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['title', 'institution', 'description', 
-                  'status', 'date_start', 'date_end']
+                  'status', 'date_start', 'date_end', 'attachment']
         widgets = {
             'date_start': forms.DateInput(attrs={'type': 'date'}),
             'date_end': forms.DateInput(attrs={'type': 'date'}),

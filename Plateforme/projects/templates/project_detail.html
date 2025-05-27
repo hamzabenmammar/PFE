@@ -77,6 +77,37 @@
             {{ project.date_start }} - {{ project.date_end }}
           </div>
         </div>
+        {% if project.attachment %}
+        <div class="info-item">
+          <div class="info-label">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"
+              ></path>
+            </svg>
+            Attachment
+          </div>
+          <div class="info-value">
+            <a
+              href="{{ project.attachment.url }}"
+              target="_blank"
+              class="attachment-link"
+            >
+              {{ project.attachment.name|slice:"19:" }}
+            </a>
+          </div>
+        </div>
+        {% endif %}
         <div class="info-item">
           <div class="info-label">
             <svg
@@ -172,14 +203,31 @@
       {% if project.coordinator == user %}
       <div class="button-container">
         <a
-          href="{% url 'projects:project_update' project.pk %}"
-          class="btn update-btn"
+          href="{% url 'projects:project_members' project.pk %}"
+          class="btn btn-outline-primary btn-action"
         >
-          <a
-            href="{% url 'projects:project_members' project.pk %}"
-            class="btn btn-outline-primary"
-            >Gérer les membres du projet</a
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           >
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 010 7.75"></path>
+          </svg>
+          Gérer les membres du projet
+        </a>
+        <a
+          href="{% url 'projects:project_update' project.pk %}"
+          class="btn btn-primary btn-action"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -199,7 +247,7 @@
         </a>
         <a
           href="{% url 'projects:project_delete' project.pk %}"
-          class="btn delete-btn"
+          class="btn btn-danger btn-action"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -221,34 +269,68 @@
         </a>
       </div>
       {% else %} {% if project.status != 'completed' %} {% if is_member %}
-      <form
-        action="{% url 'projects:leave_project' project.pk %}"
-        method="post"
-      >
-        {% csrf_token %}
-        <button type="submit" class="btn leave-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          Leave Project
-        </button>
-      </form>
+      <div class="button-container">
+        <form
+          action="{% url 'projects:leave_project' project.pk %}"
+          method="post"
+          class="w-100"
+        >
+          {% csrf_token %}
+          <button type="submit" class="btn btn-warning btn-action w-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Leave Project
+          </button>
+        </form>
+      </div>
+      {% else %} {% if not has_pending_request %}
+      <div class="button-container">
+        <form
+          action="{% url 'projects:join_project' project.pk %}"
+          method="post"
+          class="w-100"
+        >
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success btn-action w-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Join Project
+          </button>
+        </form>
+      </div>
       {% else %}
-      <form action="{% url 'projects:join_project' project.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn join-btn">
+      <div class="button-container">
+        <button
+          type="button"
+          class="btn btn-secondary btn-action w-100"
+          disabled
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -260,14 +342,13 @@
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"></path>
-            <polyline points="10 17 15 12 10 7"></polyline>
-            <line x1="15" y1="12" x2="3" y2="12"></line>
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
           </svg>
-          Join Project
+          Demande en attente
         </button>
-      </form>
-      {% endif %} {% else %}
+      </div>
+      {% endif %} {% endif %} {% else %}
       <div class="project-completed-message">
         This project is completed and no longer accepting new members.
       </div>
@@ -306,9 +387,13 @@
               {% endif %}
             </div>
             <div class="user-info">
-              <div class="user-name">{{ request.member.full_name }}</div>
+              <a
+                href="{% url 'accounts:profile' request.member.pk %}"
+                class="user-name"
+                >{{ request.member.full_name }}</a
+              >
               {% if request.member.speciality %}
-              <div class="user-title">
+              <div class="user-speciality">
                 {{ request.member.get_speciality_display }}
               </div>
               {% endif %}
@@ -316,12 +401,13 @@
           </div>
           <div class="request-actions">
             <form
-              action="{% url 'projects:accept_member' project.pk request.member.pk %}"
+              action="{% url 'projects:respond_to_request' project.pk request.pk %}"
               method="post"
               class="d-inline"
             >
               {% csrf_token %}
-              <button type="submit" class="btn accept-btn">
+              <input type="hidden" name="response" value="accept" />
+              <button type="submit" class="accept-btn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -333,18 +419,19 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  <polyline points="20 6 9 17 4 12"></polyline>
+                  <path d="M20 6L9 17l-5-5"></path>
                 </svg>
                 Accepter
               </button>
             </form>
             <form
-              action="{% url 'projects:reject_member' project.pk request.member.pk %}"
+              action="{% url 'projects:respond_to_request' project.pk request.pk %}"
               method="post"
               class="d-inline"
             >
               {% csrf_token %}
-              <button type="submit" class="btn reject-btn">
+              <input type="hidden" name="response" value="reject" />
+              <button type="submit" class="reject-btn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -356,14 +443,16 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                  <path d="M18 6L6 18"></path>
+                  <path d="M6 6l12 12"></path>
                 </svg>
-                Rejeter
+                Refuser
               </button>
             </form>
           </div>
         </div>
+        {% empty %}
+        <div class="empty-message">Aucune demande en attente.</div>
         {% endfor %}
       </div>
     </div>
@@ -374,7 +463,7 @@
 <style>
   /* Global styles */
   :root {
-    --primary: #1e4e6d;
+    --primary: #1A73E8;
     --secondary: #4caf50;
     --danger: #f44336;
     --text-dark: #333;
@@ -383,40 +472,17 @@
     --bg-light: #f5f5f5;
     --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
-
+  
   /* Main content area */
-  .content {
-    padding: 20px;
-    margin-left: 250px;
-    max-width: 1000px;
-  }
 
   /* Project header */
-  .project-header {
-    margin-bottom: 25px;
-    position: relative;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 15px;
-    transition: color 0.2s;
-  }
 
   .back-link:hover {
     color: var(--secondary);
   }
 
-  .back-link svg {
-    margin-right: 8px;
-  }
-
   .project-title {
-    color: var(--primary);
+    color: #1e4e6d;
     font-size: 28px;
     margin: 0;
     position: relative;
@@ -451,7 +517,7 @@
   }
 
   .section-title {
-    color: var(--primary);
+    color: #1e4e6d;
     font-size: 18px;
     margin: 0 0 15px 0;
     font-weight: 600;
@@ -485,7 +551,7 @@
 
   .info-label svg {
     margin-right: 8px;
-    color: var(--primary);
+    color: #1e4e6d;
   }
 
   .info-value {
@@ -515,7 +581,7 @@
   }
 
   .member-avatar {
-    background-color: var(--primary);
+    background-color: #1e4e6d;w
     color: white;
     width: 36px;
     height: 36px;
@@ -573,15 +639,17 @@
   /* Action buttons */
   .actions-section {
     background-color: var(--bg-light);
+    padding: 20px 25px;
   }
 
   .button-container {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    justify-content: center; /* Center buttons */
   }
 
-  .btn {
+  .btn-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -591,55 +659,88 @@
     font-size: 14px;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
     border: none;
-    min-width: 140px;
+    min-width: 140px; /* Ensure minimum width */
+    text-align: center;
   }
 
-  .btn svg {
+  .btn-action:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .btn-action:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn-action svg {
     margin-right: 8px;
   }
 
-  .update-btn {
+  /* Specific button styles */
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: #3a9ee6; /* Darker shade of primary */
+  }
+
+  .btn-outline-primary {
     background-color: white;
     color: var(--primary);
     border: 1px solid var(--primary);
   }
 
-  .update-btn:hover {
-    background-color: #f0f7fa;
+  .btn-outline-primary:hover:not(:disabled) {
+    background-color: var(--primary);
+    color: white;
   }
 
-  .delete-btn {
+  .btn-danger {
     background-color: var(--danger);
     color: white;
   }
 
-  .delete-btn:hover {
-    background-color: #d32f2f;
+  .btn-danger:hover:not(:disabled) {
+    background-color: #c62828; /* Darker shade of danger */
   }
 
-  .join-btn {
+  .btn-success {
     background-color: var(--secondary);
     color: white;
-    width: 100%;
   }
 
-  .join-btn:hover {
-    background-color: #3d9a40;
+  .btn-success:hover:not(:disabled) {
+    background-color: #388e3c; /* Darker shade of secondary */
   }
 
-  .leave-btn {
+  .btn-warning {
     background-color: #ff9800;
     color: white;
-    width: 100%;
   }
 
-  .leave-btn:hover {
-    background-color: #e68900;
+  .btn-warning:hover:not(:disabled) {
+    background-color: #f57c00; /* Darker shade of warning */
   }
 
-  /* Pending requests styles */
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #5a6268;
+  }
+
+  .btn-action:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Pending requests section */
   .pending-requests-list {
     display: flex;
     flex-direction: column;
@@ -652,31 +753,34 @@
     align-items: center;
     background-color: var(--bg-light);
     padding: 15px;
-    border-radius: 6px;
+    border-radius: 8px;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .request-item:hover {
+    transform: translateY(-2px);
+    background-color: #edf7ff;
   }
 
   .request-user {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
   }
 
   .user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    overflow: hidden;
     background-color: var(--primary);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 
-  .user-avatar svg {
-    color: white;
-  }
-
-  .avatar-img {
+  .user-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -688,11 +792,17 @@
   }
 
   .user-name {
+    color: var(--primary);
     font-weight: 500;
-    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.2s;
   }
 
-  .user-title {
+  .user-name:hover {
+    color: var(--secondary);
+  }
+
+  .user-speciality {
     font-size: 14px;
     color: var(--text-light);
   }
@@ -708,8 +818,10 @@
     align-items: center;
     gap: 5px;
     padding: 8px 15px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-weight: 500;
+    border: none;
+    cursor: pointer;
     transition: all 0.2s;
   }
 
@@ -737,44 +849,16 @@
     height: 16px;
   }
 
-  /* Responsive design */
-  @media (max-width: 1024px) {
-    .content {
-      margin-left: 0;
-      padding: 15px;
-    }
-  }
-
+  /* Responsive adjustments */
   @media (max-width: 768px) {
-    .info-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .members-list {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-  }
-
-  @media (max-width: 480px) {
-    .content {
-      padding: 10px;
-    }
-
-    .project-title {
-      font-size: 24px;
-    }
-
-    .card-section {
-      padding: 20px 15px;
-    }
-
-    .members-list {
-      grid-template-columns: 1fr;
-    }
-
     .button-container {
       flex-direction: column;
+    }
+
+    .btn-action,
+    .button-container form .btn-action {
+      width: 100%;
+      min-width: auto;
     }
   }
 </style>

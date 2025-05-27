@@ -136,6 +136,26 @@
                                             {% endif %}
                                         </div>
 
+                                        <!-- Formulaire de réponse -->
+                                        <div class="reply-form mt-2" id="reply-form-{{ comment.id }}" style="display: none;">
+                                            <form method="post" action="{% url 'QA:add_comment' post.id %}" class="reply-form-content">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                                <div class="mb-2">
+                                                    {{ comment_form.content.label_tag }}
+                                                    {{ comment_form.content }}
+                                                </div>
+                                                <div class="d-flex gap-2">
+                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-reply me-1"></i>{% trans "Envoyer la réponse" %}
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="{{ comment.id }}">
+                                                        {% trans "Annuler" %}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+
                                         <!-- Formulaire de modification -->
                                         <div class="edit-form mt-2" id="edit-form-{{ comment.id }}" style="display: none;">
                                             <form method="post" action="{% url 'QA:edit_comment' comment.id %}" class="edit-form-content">

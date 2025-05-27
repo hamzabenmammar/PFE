@@ -49,7 +49,7 @@ class ResourceListView(LoginAndVerifiedRequiredMixin, ListView):
         if resource_type in ['', 'tool']:
             tools = NLPTool.objects.all()
             if language_filter:
-                tools = tools.filter(language=language_filter)
+                tools = tools.filter(supported_languages__contains=language_filter)
             if search_query:
                 tools = tools.filter(
                     Q(title__icontains=search_query) | 

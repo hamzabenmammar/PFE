@@ -59,18 +59,17 @@ INSTALLED_APPS = [
     'notifications',
     'channels',
     'search',
-    'django_elasticsearch_dsl',
     'chatbot',
     'translate',
-    
 ]
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'http://localhost:9200'  
-    },
-}
-ELASTICSEARCH_DSL_AUTOSYNC = True
-ELASTICSEARCH_DSL_AUTO_REFRESH = True
+
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'http://localhost:9200'   
+#     },
+# }
+# ELASTICSEARCH_DSL_AUTOSYNC = True
+# ELASTICSEARCH_DSL_AUTO_REFRESH = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -257,3 +256,4 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
+

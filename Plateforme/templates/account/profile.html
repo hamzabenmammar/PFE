@@ -134,7 +134,7 @@
       <div class="profile-actions">
         <div class="actions-primary">
           <a
-            href="{% url 'profile-edit' pk=user.pk %}"
+            href="{% url 'accounts:profile-edit' pk=user.pk %}"
             class="btn btn-primary btn-action"
           >
             <i class="fas fa-edit me-2"></i>{% trans "Edit Profile" %}
@@ -170,7 +170,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Annuler" %}</button>
-                <form action="{% url 'delete_account' %}" method="post" class="d-inline">
+                <form action="{% url 'accounts:delete_account' %}" method="post" class="d-inline">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger">{% trans "Supprimer définitivement" %}</button>
                 </form>
@@ -182,7 +182,7 @@
         {% if request.user.is_authenticated and request.user != user and request.user.coordinated_projects.all %}
         <div class="project-invite mt-3">
           <form
-            action="{% url 'invite_to_project' user.pk %}"
+            action="{% url 'accounts:invite_to_project' user.pk %}"
             method="post"
             id="addToProjectForm"
           >

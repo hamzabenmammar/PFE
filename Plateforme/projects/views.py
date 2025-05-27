@@ -12,6 +12,7 @@ from notifications.models import Notification
 from django.contrib import messages
 from notifications.services import NotificationService
 from accounts.views import LoginAndVerifiedRequiredMixin
+from django.utils.translation import gettext_lazy as _
 
 
 class ProjectListView(LoginAndVerifiedRequiredMixin, ListView):
@@ -26,7 +27,33 @@ class ProjectListView(LoginAndVerifiedRequiredMixin, ListView):
             project=OuterRef('pk'),
             member=self.request.user
         )
+        
+        # Filtrer les projets créés par l'utilisateur si le paramètre my_projects est présent
+        if self.request.GET.get('my_projects'):
+            qs = qs.filter(coordinator=self.request.user)
+            
+        # Ajouter le filtre par statut
+        status_filter = self.request.GET.get('status')
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+            
+        # Ajouter la recherche
+        search_query = self.request.GET.get('search')
+        if search_query:
+            qs = qs.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(institution__name__icontains=search_query) |
+                Q(coordinator__full_name__icontains=search_query)
+            )
+            
         return qs.annotate(is_member=Exists(membership))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from .models import Project # Importer ici pour éviter les problèmes de dépendance circulaire si Project utilise cette vue
+        context['project_statuses'] = Project.STATUS_CHOICES
+        return context
 
 
 class ProjectDetailView(LoginAndVerifiedRequiredMixin, DetailView):
@@ -114,6 +141,12 @@ class ProjectDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Dele
 class JoinProjectView(LoginAndVerifiedRequiredMixin, View):
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
+        
+        # Vérifier si le projet est terminé
+        if project.status == 'completed':
+            messages.error(request, "Ce projet est terminé et n'accepte plus de nouveaux membres.")
+            return redirect('projects:project_detail', pk=pk)
+
         # Vérifie si l'utilisateur n'est pas déjà membre
         if not ProjectMember.objects.filter(project=project, member=request.user).exists():
             # Créer une demande en attente
@@ -238,18 +271,51 @@ class ProjectSearchView(LoginAndVerifiedRequiredMixin, ListView):
 class RemoveMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         project = get_object_or_404(Project, pk=self.kwargs['pk'])
-        return self.request.user == project.coordinator
+        return project.coordinator == self.request.user
 
     def post(self, request, pk, member_id):
         project = get_object_or_404(Project, pk=pk)
-        member = get_object_or_404(ProjectMember, project=project, member_id=member_id, status='accepted')
-        # Notification au membre retiré via le service
-        NotificationService.create_notification(
-            recipient=member.member,
-            notification_type='SYSTEM', # Ou un type spécifique
-            title="Retrait du projet",
-            message=f"Vous avez été retiré du projet « {project.title} » par le coordinateur."
-        )
+        member = get_object_or_404(ProjectMember, project=project, member_id=member_id)
         member.delete()
-        messages.success(request, "Le membre a été retiré du projet.")
+        messages.success(request, _('Member removed successfully.'))
         return redirect('projects:project_members', pk=pk)
+
+
+class RespondToRequestView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        project = get_object_or_404(Project, pk=self.kwargs['pk'])
+        return project.coordinator == self.request.user
+
+    def post(self, request, pk, request_id):
+        project = get_object_or_404(Project, pk=pk)
+        join_request = get_object_or_404(ProjectMember, pk=request_id, project=project)
+        
+        response = request.POST.get('response')
+        if response == 'accept':
+            join_request.status = 'accepted'
+            join_request.save()
+            messages.success(request, _('Request accepted successfully.'))
+            
+            # Créer une notification pour le membre
+            NotificationService.create_notification(
+                recipient=join_request.member,
+                title=_('Project Request Accepted'),
+                message=_('Your request to join {} has been accepted.').format(project.title),
+                notification_type='project_request_accepted',
+                related_object=project
+            )
+        elif response == 'reject':
+            join_request.status = 'rejected'
+            join_request.save()
+            messages.success(request, _('Request rejected successfully.'))
+            
+            # Créer une notification pour le membre
+            NotificationService.create_notification(
+                recipient=join_request.member,
+                title=_('Project Request Rejected'),
+                message=_('Your request to join {} has been rejected.').format(project.title),
+                notification_type='project_request_rejected',
+                related_object=project
+            )
+        
+        return redirect('projects:project_detail', pk=pk)

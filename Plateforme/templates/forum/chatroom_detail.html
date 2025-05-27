@@ -121,7 +121,7 @@
                 <div class="message-header">
                   <div class="message-author">
                     <a
-                      href="{% url 'profile' message.user.id %}"
+                      href="{% url 'accounts:profile' message.user.id %}"
                       class="profile-link"
                     >
                       {{ message.user }}
@@ -612,6 +612,9 @@
     transition: all 0.2s ease;
     text-decoration: none;
   }
+  .toast, .toast-container {
+  display: none !important;
+}
 
   .btn-ban:hover {
     transform: scale(1.05);
@@ -793,7 +796,7 @@
                             <div class="message-author">
                                 <a href="${
                                   isCurrentUser
-                                    ? '{% url "profile" user.id %}'
+                                    ? '{% url "accounts:profile" user.id %}'
                                     : "#"
                                 }" class="profile-link">
                                     ${data.user_name || "{{ user }}"}

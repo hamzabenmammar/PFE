@@ -1,216 +1,44 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="content">
-    <div class="confirmation-container">
-        <div class="confirmation-card">
-            <div class="warning-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-            </div>
-            
-            <h1 class="confirmation-title">Delete Project</h1>
-            
-            <p class="confirmation-message">
-                Are you sure you want to delete "<span class="project-name">{{ object.title }}</span>"?
-            </p>
-            
-            <p class="warning-text">
-                This action cannot be undone. All project data will be permanently removed.
-            </p>
-            
-            <div class="button-group">
-                <a href="{% url 'projects:project_detail' object.pk %}" class="btn cancel-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 12H5"></path>
-                        <path d="M12 19l-7-7 7-7"></path>
-                    </svg>
-                    Cancel
-                </a>
-                
-                <form method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn delete-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 6h18"></path>
-                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                        </svg>
-                        Confirm Delete
-                    </button>
-                </form>
-            </div>
+{% extends "base.html" %} {% load i18n %} {% block title %}
+{% trans "Delete Project" %} - {{ project.title }}{% endblock %} {% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-danger">
+        <div class="card-header bg-danger text-white">
+          <h2 class="text-center mb-0">
+            <i class="fas fa-exclamation-triangle me-2"></i>{% trans "Confirm Deletion" %}
+          </h2>
         </div>
-    </div>
-</div>
+        <div class="card-body p-4 text-center">
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">{% trans "Warning!" %}</h4>
+            <p class="mb-0">
+              {% trans "Are you sure you want to delete the project" %}
+              <strong>"{{ project.title }}"</strong>?
+            </p>
+          </div>
 
-<style>
-    /* Global styles */
-    :root {
-        --primary: #1e4e6d;
-        --secondary: #4CAF50;
-        --danger: #f44336;
-        --danger-light: #ffebee;
-        --text-dark: #333;
-        --text-light: #666;
-        --border-color: #e0e0e0;
-        --bg-light: #f5f5f5;
-        --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    /* Main content area */
-    .content {
-        padding: 20px;
-        margin-left: 250px;
-        height: calc(100vh - 40px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Confirmation container */
-    .confirmation-container {
-        width: 100%;
-        max-width: 500px;
-    }
-    
-    /* Confirmation card */
-    .confirmation-card {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: var(--card-shadow);
-        padding: 30px;
-        text-align: center;
-        position: relative;
-        border-top: 4px solid var(--danger);
-    }
-    
-    /* Warning icon */
-    .warning-icon {
-        width: 80px;
-        height: 80px;
-        background-color: var(--danger-light);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-    }
-    
-    .warning-icon svg {
-        color: var(--danger);
-    }
-    
-    /* Title styling */
-    .confirmation-title {
-        color: var(--text-dark);
-        font-size: 24px;
-        margin: 0 0 20px 0;
-    }
-    
-    /* Message styling */
-    .confirmation-message {
-        color: var(--text-dark);
-        font-size: 16px;
-        margin-bottom: 15px;
-        line-height: 1.5;
-    }
-    
-    .project-name {
-        font-weight: 600;
-        color: var(--primary);
-    }
-    
-    /* Warning text */
-    .warning-text {
-        color: var(--danger);
-        font-size: 14px;
-        margin-bottom: 25px;
-        padding: 10px;
-        background-color: var(--danger-light);
-        border-radius: 4px;
-    }
-    
-    /* Button group */
-    .button-group {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-    }
-    
-    /* Button styles */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 18px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.2s;
-        border: none;
-        min-width: 120px;
-    }
-    
-    .btn svg {
-        margin-right: 8px;
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-    }
-    
-    .btn:active {
-        transform: translateY(0);
-    }
-    
-    .cancel-btn {
-        background-color: white;
-        color: var(--text-dark);
-        border: 1px solid var(--border-color);
-    }
-    
-    .cancel-btn:hover {
-        background-color: var(--bg-light);
-    }
-    
-    .delete-btn {
-        background-color: var(--danger);
-        color: white;
-    }
-    
-    .delete-btn:hover {
-        background-color: #d32f2f;
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 1024px) {
-        .content {
-            margin-left: 0;
-        }
-    }
-    
-    @media (max-width: 600px) {
-        .content {
-            padding: 15px;
-            align-items: flex-start;
-        }
-        
-        .confirmation-card {
-            padding: 20px 15px;
-        }
-        
-        .button-group {
-            flex-direction: column;
-        }
-        
-        .btn {
-            width: 100%;
-        }
-    }
-</style>
-{% endblock %}
+          <p>
+            {% trans "This action cannot be undone. All project data, including members, requests, and associated information, will be permanently removed." %}
+          </p>
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center mt-4">
+              <a
+                href="{% url 'projects:project_detail' project.pk %}"
+                class="btn btn-secondary me-2"
+              >
+                <i class="fas fa-arrow-left me-2"></i>{% trans "Cancel" %}
+              </a>
+              <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt me-2"></i>{% trans "Confirm Delete" %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -141,6 +141,51 @@ def admin_dashboard(request):
     projects_count = Project.objects.filter(status='ongoing').count()
     forum_posts_count = Topic.objects.count() + ChatRoom.objects.count()
     
+    # Nouveaux compteurs pour la répartition des ressources
+    publications_count = Document.objects.count()
+    corpora_count = Corpus.objects.count()
+    tools_count = NLPTool.objects.count()
+    courses_count = Course.objects.count()
+    
+    # Compteurs pour les statuts des projets
+    projects_in_progress = Project.objects.filter(status='ongoing').count()
+    projects_completed = Project.objects.filter(status='completed').count()
+    projects_pending = Project.objects.filter(status='pending').count()
+    projects_cancelled = Project.objects.filter(status='cancelled').count()
+    
+    # Données pour l'activité du forum
+    forum_topics_data = []
+    forum_messages_data = []
+    
+    # Récupérer les données du forum pour les 12 derniers mois
+    for i in range(12):
+        month = today - datetime.timedelta(days=30 * i)
+        month_start = month.replace(day=1)
+        if i == 0:
+            month_end = today
+        else:
+            next_month = month.replace(day=28) + datetime.timedelta(days=4)
+            month_end = next_month - datetime.timedelta(days=next_month.day)
+        
+        # Comptage des nouveaux sujets
+        topics_count = Topic.objects.filter(
+            created_at__gte=month_start,
+            created_at__lte=month_end
+        ).count()
+        
+        # Comptage des nouveaux messages
+        messages_count = ChatRoom.objects.filter(
+            created_at__gte=month_start,
+            created_at__lte=month_end
+        ).count()
+        
+        forum_topics_data.append(topics_count)
+        forum_messages_data.append(messages_count)
+    
+    # Inverser les listes pour avoir l'ordre chronologique
+    forum_topics_data.reverse()
+    forum_messages_data.reverse()
+    
     # Users by type
     users_by_type = User.objects.order_by('-date_joined')[:10]
     
@@ -262,9 +307,20 @@ def admin_dashboard(request):
         'pubs_growth': pubs_growth,
         'projects_growth': projects_growth,
         'posts_growth': posts_growth,
-        'chart_labels': json.dumps(chart_labels), # Données JSON pour JavaScript
-        'users_activity_data': json.dumps(users_activity_data), # Données JSON pour JavaScript
-        'resources_activity_data': json.dumps(resources_activity_data), # Données JSON pour JavaScript
+        'chart_labels': json.dumps(chart_labels),
+        'users_activity_data': json.dumps(users_activity_data),
+        'resources_activity_data': json.dumps(resources_activity_data),
+        # Nouvelles données pour les graphiques
+        'publications_count': publications_count,
+        'corpora_count': corpora_count,
+        'tools_count': tools_count,
+        'courses_count': courses_count,
+        'projects_in_progress': projects_in_progress,
+        'projects_completed': projects_completed,
+        'projects_pending': projects_pending,
+        'projects_cancelled': projects_cancelled,
+        'forum_topics_data': json.dumps(forum_topics_data),
+        'forum_messages_data': json.dumps(forum_messages_data),
     }
     
     return render(request, 'admin/dashboard.html', context)
@@ -528,8 +584,22 @@ def admin_user_edit(request, user_id):
 def admin_user_status(request, user_id, status):
     """Change user status (approve, block, etc.)"""
     user = get_object_or_404(User, id=user_id)
+    
+    # Enregistrer l'ancien statut pour l'historique
+    old_status = user.status
+    
     user.status = status
+    
     user.save()
+    
+    # Enregistrer l'historique du changement de statut
+    UserStatusHistory.objects.create(
+        user=user,
+        old_status=old_status,
+        new_status=user.status,
+        changed_by=request.user,
+        #reason=user.block_reason # Enregistrer la raison dans l'historique aussi
+    )
     
     status_messages = {
         'active': "activé",
@@ -539,7 +609,7 @@ def admin_user_status(request, user_id, status):
     }
     
     messages.success(request, f"L'utilisateur {user.username} a été {status_messages.get(status, 'mis à jour')}.")
-    return redirect('admin_users')
+    return redirect('pages:admin_users')
 
 
 @login_required
@@ -548,7 +618,6 @@ def admin_publications(request):
     """Admin publications management"""
     # Filter parameters
     publication_type = request.GET.get('publication_type', '')
-    status = request.GET.get('status', '')
     search = request.GET.get('search', '')
     
     # Base queryset
@@ -556,24 +625,18 @@ def admin_publications(request):
     
     # Apply filters
     if publication_type:
-        publications = publications.filter(publication_type=publication_type)
-    if status:
-        publications = publications.filter(status=status)
+        publications = publications.filter(document_type=publication_type)
     if search:
         publications = publications.filter(
             Q(title__icontains=search) | 
-            Q(abstract__icontains=search) |
+            Q(description__icontains=search) |
             Q(keywords__icontains=search) |
             Q(authors__username__icontains=search)
         ).distinct()
     
-    pending_publications_count = Document.objects.filter(status='pending').count()
-    
     context = {
         'publications': publications,
-        'pending_publications_count': pending_publications_count,
         'filter_publication_type': publication_type,
-        'filter_status': status,
         'search': search,
     }
     
@@ -586,7 +649,6 @@ def admin_corpora(request):
     """Admin corpora management"""
     # Filter parameters
     corpus_type = request.GET.get('corpus_type', '')
-    status = request.GET.get('status', '')
     search = request.GET.get('search', '')
     
     # Base queryset
@@ -595,22 +657,16 @@ def admin_corpora(request):
     # Apply filters
     if corpus_type:
         corpora = corpora.filter(corpus_type=corpus_type)
-    if status:
-        corpora = corpora.filter(status=status)
     if search:
         corpora = corpora.filter(
-            Q(name__icontains=search) | 
+            Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(owner__username__icontains=search)
+            Q(author__username__icontains=search)
         )
-    
-    pending_corpora_count = Corpus.objects.filter(status='pending').count()
     
     context = {
         'corpora': corpora,
-        'pending_corpora_count': pending_corpora_count,
         'filter_corpus_type': corpus_type,
-        'filter_status': status,
         'search': search,
     }
     
@@ -622,7 +678,6 @@ def admin_tools(request):
     """Admin tools management"""
     # Filter parameters
     tool_type = request.GET.get('tool_type', '')
-    status = request.GET.get('status', '')
     search = request.GET.get('search', '')
     
     # Base queryset
@@ -631,22 +686,16 @@ def admin_tools(request):
     # Apply filters
     if tool_type:
         tools = tools.filter(tool_type=tool_type)
-    if status:
-        tools = tools.filter(status=status)
     if search:
         tools = tools.filter(
-            Q(name__icontains=search) | 
+            Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(owner__username__icontains=search)
+            Q(author__username__icontains=search)
         )
-    
-    pending_tools_count = NLPTool.objects.filter(status='pending').count()
     
     context = {
         'tools': tools,
-        'pending_tools_count': pending_tools_count,
         'filter_tool_type': tool_type,
-        'filter_status': status,
         'search': search,
     }
     

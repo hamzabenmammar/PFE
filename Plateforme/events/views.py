@@ -57,10 +57,10 @@ class EventListView(ListView):
                 queryset = queryset.filter(start_date__gte=start_date)
             
             if not include_past:
-                queryset = queryset.filter(end_date__gte=timezone.now().date())
+                queryset = queryset.filter(submission_deadline__gte=timezone.now().date())
         else:
             # By default, only show upcoming and ongoing events
-            queryset = queryset.filter(end_date__gte=timezone.now().date())
+            queryset = queryset.filter(submission_deadline__gte=timezone.now().date())
         
         return queryset.select_related('organizer', 'created_by')
     
@@ -111,9 +111,9 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         # Auto-approve events created by staff
         form.instance.is_approved = self.request.user.is_staff
         form.instance.created_by = self.request.user
-        response = super().form_valid(form)
+        self.object = form.save()
         
-        if form.instance.is_approved:
+        if self.object.is_approved:
             messages.success(self.request, _('Event created successfully!'))
             # Notifier tous les utilisateurs actifs
             User = get_user_model()
@@ -121,10 +121,11 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             NotificationService.notify_group(
                 active_users,
                 'EVENT_APPROVED',
-                f"Nouvel événement approuvé : {form.instance.title}",
-                f"Un nouvel événement a été approuvé : {form.instance.title}. Date : {form.instance.date}",
-                form.instance
+                f"Nouvel événement approuvé : {self.object.title}",
+                f"Un nouvel événement a été approuvé : {self.object.title}. Date : {self.object.start_date}",
+                self.object
             )
+            return redirect(self.object.get_absolute_url())
         else:
             messages.success(
                 self.request, 
@@ -135,10 +136,10 @@ class EventCreateView(LoginRequiredMixin, CreateView):
                 recipient=self.request.user,
                 notification_type='EVENT_CREATED',
                 title="Votre événement est en attente d'approbation",
-                message=f"Votre événement '{form.instance.title}' a été créé et est en attente d'approbation par un administrateur.",
-                related_object=form.instance
+                message=f"Votre événement '{self.object.title}' a été créé et est en attente d'approbation par un administrateur.",
+                related_object=self.object
             )
-        return response
+            return redirect('events:event_list')
 
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -259,7 +260,7 @@ def event_validate(request, pk):
         active_users,
         'EVENT_APPROVED',
         f"Nouvel événement approuvé : {event.title}",
-        f"Un nouvel événement a été approuvé : {event.title}. Date : {event.date}",
+        f"Un nouvel événement a été approuvé : {event.title}. Date : {event.start_date}",
         event
     )
     

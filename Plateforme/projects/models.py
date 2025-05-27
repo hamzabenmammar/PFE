@@ -33,6 +33,7 @@ class Project(models.Model):
     description = models.TextField()
     date_start = models.DateField(blank=True, null=True)
     date_end = models.DateField(blank=True, null=True)
+    attachment = models.FileField(upload_to='project_attachments/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

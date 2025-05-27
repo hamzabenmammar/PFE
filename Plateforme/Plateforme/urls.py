@@ -22,7 +22,7 @@ from Plateforme import settings
 
 
 urlpatterns = [
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
     path('accounts/', include('allauth.urls')),
     path('', include('pages.urls')),
     path('projects/', include('projects.urls', namespace='projects')),

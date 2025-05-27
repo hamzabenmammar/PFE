@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="{% static 'css/notifications.css' %}" rel="stylesheet">
-    <link href="{% static 'css/navbar_notifications.css' %}" rel="stylesheet">
+    {# <link href="{% static 'css/navbar_notifications.css' %}" rel="stylesheet"> #} {% comment %} Ligne commentée car le fichier semble manquant {% endcomment %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% block extra_styles %}{% endblock %}
@@ -52,7 +52,7 @@
         <div class="container header-container">
             <div class="logo-container">
                 <a href="{% url 'pages:home' %}" class="logo-link d-flex align-items-center gap-2">
-                    <img src="{% static 'images/logo.png' %}" alt="Arabic NLP Platform" class="logo-img" style="height: 40px;">
+                    <img src="{% static 'images/logo.jpg' %}" alt="Arabic NLP Platform" class="logo-img" style="height: 40px;">
                     <span class="logo-text fw-bold fs-4 ">{% trans "Arabic NLP" %}  </span>
                 </a>
             </div>
@@ -62,7 +62,7 @@
             <div class="input-group">
                 <input type="text" name="q" placeholder="Search resources,tools,corpus..." 
                        id="search-input" class="form-control" />
-                <button type="submit" class="btn btn-primary search-button">
+                <button type="submit" class="btn btn-primary ">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -71,8 +71,10 @@
     
 </div>
   <div id="search-results" class="search-results-dropdown"></div>
+           <div class="language-switcher">
            <a href="{% url 'translate:switch_language' %}?language=en">{% trans "English" %}</a> |
            <a href="{% url 'translate:switch_language' %}?language=ar">{% trans "Arabic" %}</a>
+           </div>
 
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -132,18 +134,18 @@
                     </div>
                     <!-- End of Notification Bell -->
                     
-                    <a href="{% url 'profile' user.id %}" class="btn btn-outline">
+                    <a href="{% url 'accounts:profile' user.id %}" class="">
                         <i class="fas fa-user"></i>{% trans "Profile" %}  
                     </a>
-                    <a href="{% url 'account_logout' %}" class="btn btn-primary">
+                    <a href="{% url 'account_logout' %}" class="">
                         <i class="fas fa-sign-out-alt"></i> {% trans "Logout" %} 
                     </a>
                     
                 {% else %}
-                    <a href="{% url 'account_login' %}" class="btn btn-outline">
+                    <a href="{% url 'account_login' %}" class="">
                         <i class="fas fa-sign-in-alt"></i>{% trans "Log in" %}  
                     </a>
-                    <a href="{% url 'account_signup' %}" class="btn btn-primary">
+                    <a href="{% url 'account_signup' %}" class="">
                         <i class="fas fa-user-plus"></i> {% trans "Sign up" %} 
                     </a>
                 {% endif %}

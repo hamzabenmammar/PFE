@@ -2,6 +2,10 @@
 {% load i18n %}
 {% block title %}{% trans "All Resources" %}{% endblock %}
 
+{% block extra_styles %}
+{% comment "Link to main.css managed in base.html" %}{% endcomment %}
+{% endblock %}
+
 {% block content %}
 <div class="resources-container container py-5">
     <!-- Header Section -->

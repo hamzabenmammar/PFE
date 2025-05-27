@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError, PermissionDenied
 from institutions.models import Institution
+from django.utils import timezone
 
 
 
@@ -402,7 +403,6 @@ class NLPTool(ResourceBase):
         ENGLISH = 'en', _('English')
         FRENCH = 'fr', _('French')
         SPANISH = 'es', _('Spanish')
-        
 
     tool_type = models.CharField(
         max_length=50,
@@ -460,6 +460,9 @@ class NLPTool(ResourceBase):
         choices_dict = dict(self.SupportedLanguages.choices)
         return [choices_dict.get(lang, lang) for lang in languages]
 
+    def get_absolute_url(self):
+        """Override to use the correct URL name for tools"""
+        return reverse('resources:tool_detail', kwargs={'pk': self.pk})
 
 class Corpus(ResourceBase):
     """
