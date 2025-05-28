@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from elasticsearch_dsl import MultiSearch, Q
-from elasticsearch_dsl.query import MultiMatch, DisMax, Bool, Term, MatchPhrase
+from elasticsearch_dsl import Q,MultiSearch 
+from elasticsearch_dsl.query import  MultiMatch, DisMax, Bool, Term, MatchPhrase
 import logging
 
 from .documents import (
