@@ -24,7 +24,7 @@
                                 class="form-control {% if form.name.errors %}is-invalid{% endif %}" 
                                 id="{{ form.name.id_for_label }}" 
                                 {% if form.name.value %}value="{{ form.name.value }}"{% endif %}
-                                placeholder="Entrez le nom de votre salle de discussion"
+                                placeholder="{% trans "Entrez le nom de votre salle de discussion" %}"
                             >
                             {% if form.name.errors %}
                             <div class="invalid-feedback">
@@ -40,7 +40,7 @@
                                 class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
                                 id="{{ form.description.id_for_label }}" 
                                 rows="4" 
-                                placeholder="Décrivez brièvement le sujet de discussion de cette salle"
+                                placeholder="{% trans "Décrivez brièvement le sujet de discussion de cette salle" %}"
                             >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
                             {% if form.description.errors %}
                             <div class="invalid-feedback">

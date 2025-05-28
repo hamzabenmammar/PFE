@@ -23,7 +23,7 @@
                                 class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
                                 id="{{ form.title.id_for_label }}" 
                                 {% if form.title.value %}value="{{ form.title.value }}"{% endif %}
-                                placeholder="Entrez le titre du sujet"
+                                placeholder="{% trans "Entrez le titre du sujet" %}"
                             >
                             {% if form.title.errors %}
                             <div class="invalid-feedback">
@@ -39,7 +39,7 @@
                                 class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
                                 id="{{ form.description.id_for_label }}" 
                                 rows="5"
-                                placeholder="Décrivez votre sujet pour aider les autres utilisateurs à comprendre son objectif"
+                                placeholder="{% trans "Décrivez votre sujet pour aider les autres utilisateurs à comprendre son objectif" %}"
                             >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
                             {% if form.description.errors %}
                             <div class="invalid-feedback">

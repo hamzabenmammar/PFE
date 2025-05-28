@@ -577,7 +577,7 @@
   <form method="get" action="{% url 'pages:admin_calls' %}" class="filter-bar"> {# Assurez-vous que l'action pointe vers la bonne URL de la page #}
     <div class="filter-group">
       <label class="filter-label" for="search">{% trans "Recherche" %}</label>
-      <input id="search" class="filter-input" type="text" name="search" placeholder="Titre ou organisateur..." value="{{ search }}">
+      <input id="search" class="filter-input" type="text" name="search" placeholder="{% trans "Titre ou organisateur..." %}" value="{{ search }}">
     </div>
     
     <div class="filter-group">

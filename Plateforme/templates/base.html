@@ -60,7 +60,7 @@
     <div class="search-bar">
         <form id="global-search-form" action="{% url 'search:global_search' %}" method="get">
             <div class="input-group">
-                <input type="text" name="q" placeholder="Search resources,tools,corpus..." 
+                <input type="text" name="q" placeholder=" {% trans "Search resources,tools,corpus..." %} " 
                        id="search-input" class="form-control" />
                 <button type="submit" class="btn btn-primary ">
                     <i class="fas fa-search"></i>
@@ -71,10 +71,49 @@
     
 </div>
   <div id="search-results" class="search-results-dropdown"></div>
-           <div class="language-switcher">
-           <a href="{% url 'translate:switch_language' %}?language=en">{% trans "English" %}</a> |
-           <a href="{% url 'translate:switch_language' %}?language=ar">{% trans "Arabic" %}</a>
-           </div>
+           <style>
+  .lang-container {
+    display: inline-flex;
+    gap: 12px; /* espace entre les boutons */
+  }
+  .lang-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 2px solid transparent;
+    display: inline-block;
+  }
+  .lang-en {
+    background-color: #2563eb; /* bleu */
+    color: white;
+    border-color: #2563eb;
+  }
+  .lang-en:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+  .lang-ar {
+    background-color: white;
+    color: #2563eb;
+    border-color: #2563eb;
+  }
+  .lang-ar:hover {
+    background-color: #ebf4ff; /* bleu clair */
+  }
+</style>
+
+<div class="lang-container">
+  <a href="{% url 'translate:switch_language' %}?language=en" class="lang-button lang-en">
+    {% trans "English" %}
+  </a>
+  <a href="{% url 'translate:switch_language' %}?language=ar" class="lang-button lang-ar">
+    {% trans "Arabic" %}
+  </a>
+</div>
+
 
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
