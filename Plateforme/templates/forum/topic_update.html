@@ -23,7 +23,9 @@
                                 class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
                                 id="{{ form.title.id_for_label }}" 
                                 {% if form.title.value %}value="{{ form.title.value }}"{% endif %}
+
                                 placeholder="Enter the topic title"
+
                             >
                             {% if form.title.errors %}
                             <div class="invalid-feedback">
@@ -38,8 +40,8 @@
                                 name="{{ form.description.name }}" 
                                 class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
                                 id="{{ form.description.id_for_label }}" 
-                                rows="5"
-                                placeholder="Describe your topic to help other users understand its purpose"
+
+                                placeholder="Describe your topic to help other users 
                             >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
                             {% if form.description.errors %}
                             <div class="invalid-feedback">

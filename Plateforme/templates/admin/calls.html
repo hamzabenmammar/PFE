@@ -576,8 +576,10 @@
 
   <form method="get" action="{% url 'pages:admin_calls' %}" class="filter-bar"> {# Assurez-vous que l'action pointe vers la bonne URL de la page #}
     <div class="filter-group">
+
       <label class="filter-label" for="search">{% trans "Research" %}</label>
       <input id="search" class="filter-input" type="text" name="search" placeholder="Title or organizer..." value="{{ search }}">
+
     </div>
     
     <div class="filter-group">

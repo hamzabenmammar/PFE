@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% load i18n %} {% block title %} {% trans "NLP
-Tools"%} {% endblock title %} {% block extra_styles %} 
+{% extends "base.html" %} {% load i18n %} {% block title %} {% trans "NLPTools"%} {% endblock title %} {% block extra_styles %} 
 {% comment "Link to main.css managed in base.html" %} {% endcomment %} {% endblock %} 
 {% block content %}
 <div class="container py-5">
@@ -41,7 +40,9 @@ Tools"%} {% endblock title %} {% block extra_styles %}
             name="q"
             id="globalQuery"
             class="query-input"
+
             placeholder="Search for resources..."
+
             autocomplete="off"
             value="{{ request.GET.q|default:'' }}"
           />

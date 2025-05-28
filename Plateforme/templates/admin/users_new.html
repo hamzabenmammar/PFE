@@ -176,8 +176,13 @@
                             <div class="row g-4 mb-3">
                                 <div class="col-md-12">
                                     <div class="form-floating">
+<<<<<<< HEAD
                                         <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required>
                                         <label for="full_name">{% trans "Full Name" %} <span class="required-field">*</span></label>
+=======
+                                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="{% trans "Nom complet" %}" required>
+                                        <label for="full_name">{% trans "Nom complet" %} <span class="required-field">*</span></label>
+>>>>>>> 32b710e530da6996a006d66406861724b323d18f
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +190,7 @@
                             <div class="row g-4 mb-3">
                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="{% trans "Email" %}" required>
                                         <label for="email">{% trans "Email" %} <span class="required-field">*</span></label>
                                     </div>
                                     <div class="email-domain-note">
@@ -197,7 +202,7 @@
                             <div class="row g-4 mb-4">
                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="institution" name="institution" placeholder="Institution" required>
+                                        <input type="text" class="form-control" id="institution" name="institution" placeholder="{% trans "Institution" %}" required>
                                         <label for="institution">{% trans "Institution" %} <span class="required-field">*</span></label>
                                     </div>
                                 </div>
@@ -218,8 +223,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating password-container">
+
                                         <input type="password" class="form-control" id="password2" name="password2" placeholder="Password Confirmation" required>
                                         <label for="password2">{% trans "Password Confirmation" %} <span class="required-field">*</span></label>
+
                                     </div>
                                 </div>
                             </div>
