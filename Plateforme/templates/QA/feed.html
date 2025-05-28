@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Fil d'actualités" %}{% endblock %}
+{% block title %}{% trans "News feed" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -15,7 +15,7 @@
                     <form method="post" action="{% url 'QA:create_post' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="{{ post_form.content.id_for_label }}" class="form-label">{% trans "Contenu" %}</label>
+                            <label for="{{ post_form.content.id_for_label }}" class="form-label">{% trans "Content" %}</label>
                             {{ post_form.content }}
                             {% if post_form.content.help_text %}
                             <div class="form-text">{{ post_form.content.help_text }}</div>
@@ -43,11 +43,11 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="{{ post_form.file.id_for_label }}" class="form-label">{% trans "Ajouter un fichier" %}</label>
+                            <label for="{{ post_form.file.id_for_label }}" class="form-label">{% trans "Add a file" %}</label>
                             {{ post_form.file }}
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane me-2"></i>{% trans "Publier" %}
+                            <i class="fas fa-paper-plane me-2"></i>{% trans "Publish" %}
                         </button>
                     </form>
                 </div>
@@ -70,18 +70,18 @@
                     </div>
                     {% if post.author == request.user %}
                     <div class="dropdown">
-                        <button class="btn btn-link text-muted" type="button" data-bs-toggle="dropdown">
+                        <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton{{ post.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ post.id }}">
                             <li>
                                 <a class="dropdown-item" href="{% url 'QA:edit_post' post.id %}">
-                                    <i class="fas fa-edit me-2"></i>{% trans "Modifier" %}
+                                    <i class="fas fa-edit me-2"></i>{% trans "Edit" %}
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" href="{% url 'QA:delete_post' post.id %}" onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer cette publication ?" %}')">
-                                    <i class="fas fa-trash-alt me-2"></i>{% trans "Supprimer" %}
+                                <a class="dropdown-item text-danger" href="{% url 'QA:delete_post' post.id %}">
+                                    <i class="fas fa-trash-alt me-2"></i>{% trans "Delete" %}
                                 </a>
                             </li>
                         </ul>
@@ -96,7 +96,7 @@
                     {% if post.file %}
                     <div class="mb-2">
                         <a href="{{ post.file.url }}" download class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-download me-2"></i>{% trans "Télécharger le fichier" %}
+                            <i class="fas fa-download me-2"></i>{% trans "Download file" %}
                         </a>
                     </div>
                     {% endif %}
@@ -141,7 +141,7 @@
                         {% endfor %}
                         {% if post.total_comments > 3 %}
                         <a href="{% url 'QA:post_detail' post.slug %}" class="text-muted">
-                            {% trans "Voir tous les commentaires" %} ({{ post.total_comments }})
+                            {% trans "See all comments" %} ({{ post.total_comments }})
                         </a>
                         {% endif %}
                     </div>
@@ -150,8 +150,8 @@
             {% empty %}
             <div class="text-center py-5">
                 <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                <h4>{% trans "Aucune publication pour le moment" %}</h4>
-                <p class="text-muted">{% trans "Soyez le premier à partager quelque chose !" %}</p>
+                <h4>{% trans "No publications yet" %}</h4>
+                <p class="text-muted">{% trans "Be the first to share something!" %}</p>
             </div>
             {% endfor %}
         </div>
@@ -160,55 +160,37 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Script des likes chargé');
-    
-    // Gestion des likes
-    document.querySelectorAll('.like-button').forEach(button => {
-        console.log('Bouton trouvé:', button);
-        
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Bouton cliqué');
-            
-            const postId = this.dataset.postId;
-            console.log('Post ID:', postId);
-            
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            console.log('CSRF Token:', csrfToken);
-            
-            fetch(`/QA/post/${postId}/like/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => {
-                console.log('Réponse reçue:', response);
-                if (!response.ok) {
-                    throw new Error('Erreur réseau');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Données reçues:', data);
-                const icon = this.querySelector('i');
-                const count = this.querySelector('.likes-count');
-                if (data.liked) {
-                    icon.classList.add('text-danger');
-                } else {
-                    icon.classList.remove('text-danger');
-                }
-                count.textContent = data.total_likes;
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
+    <!-- Bootstrap Bundle with Popper for dropdowns -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion des likes
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const postId = this.dataset.postId;
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                fetch(`/QA/post/${postId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Erreur réseau');
+                    return response.json();
+                })
+                .then(data => {
+                    const icon = this.querySelector('i');
+                    const count = this.querySelector('.likes-count');
+                    icon.classList.toggle('text-danger', data.liked);
+                    count.textContent = data.total_likes;
+                })
+                .catch(error => console.error('Erreur:', error));
             });
         });
     });
-});
-</script>
-{% endblock %} 
+    </script>
+{% endblock %}

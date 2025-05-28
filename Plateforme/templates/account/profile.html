@@ -72,7 +72,7 @@
               <i class="fas fa-brain"></i>
             </div>
             <div class="detail-content">
-              <h6>{% trans "Spécialité en IA" %}</h6>
+              <h6>{% trans "Specialty in AI" %}</h6>
               <p>
                 {{ user.get_speciality_display|default:_("Non spécifiée") }}
               </p>
@@ -95,7 +95,7 @@
               <i class="fas fa-share-alt"></i>
             </div>
             <div class="detail-content">
-              <h6>{% trans "Réseaux Sociaux" %}</h6>
+              <h6>{% trans "Social Networks" %}</h6>
               <div class="social-links">
                 {% if user.linkedin_url %}
                 <a
@@ -122,7 +122,7 @@
                   <i class="fab fa-facebook"></i>
                 </a>
                 {% endif %} {% if not user.linkedin_url and not user.twitter_url and not user.facebook_url %}
-                <p class="text-muted">{% trans "Aucun réseau social lié" %}</p>
+                <p class="text-muted">{% trans "No social networks linked" %}</p>
                 {% endif %}
               </div>
             </div>
@@ -153,7 +153,7 @@
             data-bs-toggle="modal"
             data-bs-target="#deleteAccountModal"
           >
-            <i class="fas fa-trash-alt me-2"></i>{% trans "Supprimer le compte" %}
+            <i class="fas fa-trash-alt me-2"></i>{% trans "Delete account" %}
           </button>
         </div>
 
@@ -162,17 +162,17 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="deleteAccountModalLabel">{% trans "Confirmer la suppression" %}</h5>
+                <h5 class="modal-title" id="deleteAccountModalLabel">{% trans "Confirm deletion" %}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <p>{% trans "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible." %}</p>
+                <p>{% trans "Are you sure you want to delete your account? This action is irreversible." %}</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Annuler" %}</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
                 <form action="{% url 'accounts:delete_account' %}" method="post" class="d-inline">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-danger">{% trans "Supprimer définitivement" %}</button>
+                  <button type="submit" class="btn btn-danger">{% trans "Permanently delete" %}</button>
                 </form>
               </div>
             </div>

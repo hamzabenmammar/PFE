@@ -1,6 +1,6 @@
 {% extends 'base_admin.html' %}
 {% load i18n %}
-{% block title %}{% trans "Statistiques" %}{% endblock %}
+{% block title %}{% trans "Statistics" %}{% endblock %}
  {% block extra_css %}
 <style>
   /* Container général */
@@ -158,7 +158,7 @@
   <div class="filters mb-4">
     <form method="get" class="row g-3">
       <div class="col-md-4">
-        <label for="start_date" class="form-label">{% trans "Date de début" %}</label>
+        <label for="start_date" class="form-label">{% trans "Start date" %}</label>
         <input
           type="date"
           class="form-control"
@@ -168,7 +168,7 @@
         />
       </div>
       <div class="col-md-4">
-        <label for="end_date" class="form-label">{% trans "Date de fin" %}</label>
+        <label for="end_date" class="form-label">{% trans "End date" %}</label>
         <input
           type="date"
           class="form-control"
@@ -178,7 +178,7 @@
         />
       </div>
       <div class="col-md-4 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary">{% trans "Filtrer" %}</button>
+        <button type="submit" class="btn btn-primary">{% trans "Filter" %}</button>
       </div>
     </form>
   </div>
@@ -188,7 +188,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Utilisateurs" %}</h5>
+          <h5 class="card-title">{% trans "Users" %}</h5>
           <h2 class="card-text">{{ current_stats.users_count }}</h2>
           <p
             class="trend {% if current_stats.users_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -201,7 +201,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Ressources" %}</h5>
+          <h5 class="card-title">{% trans "Resources" %}</h5>
           <h2 class="card-text">{{ current_stats.resources_count }}</h2>
           <p
             class="trend {% if current_stats.resources_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -214,7 +214,7 @@
     <div class="col-md-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Projets actifs" %}</h5>
+          <h5 class="card-title">{% trans "Active projects" %}</h5>
           <h2 class="card-text">{{ current_stats.active_projects_count }}</h2>
           <p
             class="trend {% if current_stats.projects_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
@@ -231,7 +231,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Inscriptions utilisateurs" %}</h5>
+          <h5 class="card-title">{% trans "User registrations" %}</h5>
           <canvas id="usersChart"></canvas>
         </div>
       </div>
@@ -239,7 +239,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Ressources par catégorie" %}</h5>
+          <h5 class="card-title">{% trans "Resources by category" %}</h5>
           <canvas id="resourcesChart"></canvas>
         </div>
       </div>
@@ -251,13 +251,13 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Top 5 des ressources les plus vues" %}</h5>
+          <h5 class="card-title">{% trans "Top 5 most viewed resources" %}</h5>
           <div class="list-group">
             {% for resource in top_resources %}
             <div class="list-group-item">
               <div class="d-flex w-100 justify-content-between">
                 <h6 class="mb-1">{{ resource.title }}</h6>
-                <small>{{ resource.views }} {% trans "vues" %}</small>
+                <small>{{ resource.views }} {% trans "views" %}</small>
               </div>
             </div>
             {% endfor %}
@@ -268,7 +268,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{% trans "Activité par catégorie" %}</h5>
+          <h5 class="card-title">{% trans "Activity by category" %}</h5>
           <canvas id="activityChart"></canvas>
         </div>
       </div>
@@ -291,7 +291,7 @@
       data: {
           labels: JSON.parse('{{ user_reg_dates|safe }}'),
           datasets: [{
-              label: 'Inscriptions',
+              label: 'Registrations',
               data: JSON.parse('{{ user_reg_counts|safe }}'),
               borderColor: '#0d6efd',
               tension: 0.4,
@@ -322,7 +322,7 @@
   new Chart(resourcesCtx, {
       type: 'doughnut',
       data: {
-          labels: ['Publications', 'Corpus', 'Outils'],
+          labels: ['Publications', 'Corpora', 'Tools'],
           datasets: [{
               data: [
                   {{ current_stats.publications_count }},
@@ -351,9 +351,9 @@
   new Chart(activityCtx, {
       type: 'bar',
       data: {
-          labels: ['Publications', 'Corpus', 'Outils', 'Projets', 'Forum'],
+          labels: ['Publications', 'Corpora', 'Tools', 'Projects', 'Forum'],
           datasets: [{
-              label: 'Activité',
+              label: 'Activity',
               data: [
                   {{ current_stats.publications_count }},
                   {{ current_stats.corpora_count }},

@@ -1,6 +1,6 @@
 {% extends 'base_admin.html' %}
 {% load i18n %}
-{% block title %}{% trans "Gestion des cours" %}{% endblock %}
+{% block title %}{% trans "Course management" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -474,33 +474,33 @@
 {% block content %}
 <div class="container">
   <div class="page-header">
-    <h1>{% trans "Gestion des cours" %}</h1>
+    <h1>{% trans "Course management" %}</h1>
     <div class="header-actions">
       <a href="#" class="btn btn-outline">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        {% trans "Exporter CSV" %}
+        {% trans "Export CSV" %}
       </a>
       <a href="{%url 'resources:course-create'%}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        {% trans "Nouveau cours" %}
+        {% trans "New cours" %}
       </a>
     </div>
   </div>
 
   <div class="stats-summary">
     <div class="stats-card">
-      <div class="stats-title">{% trans "Total des cours" %}</div>
+      <div class="stats-title">{% trans "Total courses" %}</div>
       <div class="stats-value">{{ courses.count }}</div>
     </div>
     <div class="stats-card">
-      <div class="stats-title">{% trans "Créés ce mois" %}</div>
+      <div class="stats-title">{% trans "Created this month" %}</div>
       <div class="stats-value">{{ courses_this_month_count }}</div>
       <div class="stats-trend {{ courses_growth_class }}">
-        <span>{% if courses_growth > 0 %}+{% endif %}{{ courses_growth }}% {% trans "vs mois dernier" %}</span>
+        <span>{% if courses_growth > 0 %}+{% endif %}{{ courses_growth }}% {% trans "vs last month" %}</span>
       </div>
     </div>
   </div>
@@ -508,16 +508,16 @@
   <div class="filter-panel">
     <form method="get" action="" class="filter-form">
       <div class="form-group search-input">
-        <label for="search">{% trans "Rechercher" %}</label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Rechercher par titre, description ou auteur..." value="{{ search }}">
+        <label for="search">{% trans "Research" %}</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Search by title, description or author..." value="{{ search }}">
       </div>
       <div class="form-group">
-        <label for="level">{% trans "Niveau académique" %}</label>
+        <label for="level">{% trans "Academic level" %}</label>
         <select id="level" name="level" class="form-control">
-          <option value="">{% trans "Tous les niveaux" %}</option>
-          <option value="beginner" {% if filter_level == 'beginner' %}selected{% endif %}>{% trans "Débutant" %}</option>
-          <option value="intermediate" {% if filter_level == 'intermediate' %}selected{% endif %}>{% trans "Intermédiaire" %}</option>
-          <option value="advanced" {% if filter_level == 'advanced' %}selected{% endif %}>{% trans "Avancé" %}</option>
+          <option value="">{% trans "All levels" %}</option>
+          <option value="beginner" {% if filter_level == 'beginner' %}selected{% endif %}>{% trans "Beginner" %}</option>
+          <option value="intermediate" {% if filter_level == 'intermediate' %}selected{% endif %}>{% trans "Intermediate" %}</option>
+          <option value="advanced" {% if filter_level == 'advanced' %}selected{% endif %}>{% trans "Advance" %}</option>
           <option value="expert" {% if filter_level == 'expert' %}selected{% endif %}>{% trans "Expert" %}</option>
         </select>
       </div>
@@ -526,7 +526,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          {% trans "Filtrer" %}
+          {% trans "Filter" %}
         </button>
       </div>
     </form>
@@ -537,9 +537,9 @@
     <table class="courses-table">
       <thead>
         <tr>
-          <th style="width: 40%;">{% trans "Titre" %}</th>
-          <th>{% trans "Niveau" %}</th>
-          <th>{% trans "Date de création" %}</th>
+          <th style="width: 40%;">{% trans "Title" %}</th>
+          <th>{% trans "Level" %}</th>
+          <th>{% trans "Creation date" %}</th>
           <th>{% trans "Actions" %}</th>
         </tr>
       </thead>
@@ -553,11 +553,11 @@
           </td>
           <td>
             {% if course.academic_level == 'beginner' %}
-              <span class="badge badge-info">{% trans "Débutant" %}</span>
+              <span class="badge badge-info">{% trans "Beginner" %}</span>
             {% elif course.academic_level == 'intermediate' %}
-              <span class="badge badge-secondary">{% trans "Intermédiaire" %}</span>
+              <span class="badge badge-secondary">{% trans "Intermediate" %}</span>
             {% elif course.academic_level == 'advanced' %}
-              <span class="badge badge-warning">{% trans "Avancé" %}</span>
+              <span class="badge badge-warning">{% trans "Advance" %}</span>
             {% elif course.academic_level == 'expert' %}
               <span class="badge badge-danger">{% trans "Expert" %}</span>
             {% else %}
@@ -596,15 +596,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
       </div>
-      <h3 class="empty-state-title">{% trans "Aucun cours trouvé" %}</h3>
+      <h3 class="empty-state-title">{% trans "No courses found" %}</h3>
       <p class="empty-state-description">
-        {% trans "Il n'y a pas de cours correspondant à vos critères de recherche. Essayez de modifier vos filtres ou créez un nouveau cours." %}
+        {% trans "There are no courses matching your search criteria. Try changing your filters or creating a new course." %}
       </p>
       <a href="{%url 'resources:course-create' %}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        {% trans "Créer un cours" %}
+        {% trans "Create a course" %}
       </a>
     </div>
     {% endif %}

@@ -18,8 +18,8 @@ def notify_new_academic_event(sender, instance, created, **kwargs):
         NotificationService.notify_group(
             active_users,
             NotificationType.EVENT_REMINDER,
-            f"Nouvel événement: {instance.title}",
-            f"Un nouvel événement académique a été annoncé: {instance.title}, prévu le {instance.date}",
+            f"New event: {instance.title}",
+            f"A new academic event has been announced: {instance.title}, planned on {instance.date}",
             instance
         )
 
@@ -33,8 +33,8 @@ def notify_event_registration(sender, instance, created, **kwargs):
         NotificationService.create_notification(
             event_organizer,
             NotificationType.MEMBERSHIP_REQUEST,
-            f"Nouvelle inscription à votre événement",
-            f"{instance.user.username} s'est inscrit à votre événement: {instance.event.title}",
+            f"New registration for your event",
+            f"{instance.user.username} registered for your event: {instance.event.title}",
             instance
         )
         
@@ -48,7 +48,7 @@ def notify_event_registration(sender, instance, created, **kwargs):
             NotificationService.create_notification(
                 instance.user,
                 NotificationType.EVENT_REMINDER,
-                f"Rappel: {instance.event.title} demain",
-                f"Rappel: L'événement {instance.event.title} auquel vous êtes inscrit est prévu demain.",
+                f"Reminder: {instance.event.title} tomorrow",
+                f"Reminder: The event {instance.event.title} which you are registered for is scheduled for tomorrow.",
                 instance.event
             )

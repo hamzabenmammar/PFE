@@ -25,7 +25,7 @@ def login_and_verified_required(view_func):
     """
     def _wrapped_view_func(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.warning(request, "Veuillez vous connecter pour accéder à cette page.")
+            messages.warning(request, "Please log in to access this page.")
             return redirect(settings.LOGIN_URL) # Assurez-vous que settings.LOGIN_URL est configuré
 
         # Exempter les membres du personnel de la vérification de profil
@@ -33,7 +33,7 @@ def login_and_verified_required(view_func):
             return view_func(request, *args, **kwargs)
 
         if not request.user.is_verified:
-             messages.warning(request, "Votre profil n'a pas encore été vérifié par un administrateur.")
+             messages.warning(request, "Your profile has not yet been verified by an administrator.")
              return render(request, 'awaiting_verification.html')
 
         return view_func(request, *args, **kwargs)
@@ -71,8 +71,8 @@ def question_detail(request, pk):
                 NotificationService.create_notification(
                     recipient=question.author,
                     notification_type='QA_ANSWER',
-                    title="Nouvelle réponse à votre question",
-                    message=f"{request.user.username} a répondu à votre question « {question.title} ».",
+                    title="New answer to your question",
+                    message=f"{request.user.username} answered your question « {question.title} ».",
                     related_object=question
                 )
             return redirect('QA:question_detail', pk=pk)
@@ -134,7 +134,7 @@ def create_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            messages.success(request, 'Votre publication a été créée avec succès.')
+            messages.success(request, 'Your post has been successfully created.')
             return redirect('QA:feed')
     return redirect('QA:feed')
 
@@ -170,8 +170,8 @@ def add_comment(request, post_id):
                 NotificationService.create_notification(
                     recipient=parent_comment.author,
                     notification_type='comment_reply',
-                    title="Nouvelle réponse à votre commentaire",
-                    message=f"{request.user.full_name} a répondu à votre commentaire.",
+                    title="New reply to your comment",
+                    message=f"{request.user.full_name} replied to your comment.",
                     related_object=post
                 )
         
@@ -182,12 +182,12 @@ def add_comment(request, post_id):
             NotificationService.create_notification(
                 recipient=post.author,
                 notification_type='comment',
-                title="Nouveau commentaire",
-                message=f"{request.user.full_name} a commenté votre publication.",
+                title="New comment",
+                message=f"{request.user.full_name} commented on your post.",
                 related_object=post
             )
         
-        messages.success(request, 'Votre commentaire a été ajouté.')
+        messages.success(request, 'Your comment has been added.')
         
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return JsonResponse({
@@ -213,11 +213,11 @@ def like_post(request, post_id):
     print(f"Post trouvé: {post}")
     
     if request.user in post.likes.all():
-        print(f"Utilisateur {request.user} retire son like")
+        print(f"User {request.user} remove your like")
         post.likes.remove(request.user)
         liked = False
     else:
-        print(f"Utilisateur {request.user} ajoute un like")
+        print(f"User {request.user} add a like")
         post.likes.add(request.user)
         liked = True
         
@@ -226,8 +226,8 @@ def like_post(request, post_id):
             NotificationService.create_notification(
                 recipient=post.author,
                 notification_type='like',
-                title="Nouveau j'aime",
-                message=f"{request.user.full_name} a aimé votre publication.",
+                title="New I like",
+                message=f"{request.user.full_name} liked your post.",
                 related_object=post
             )
     
@@ -235,7 +235,7 @@ def like_post(request, post_id):
         'liked': liked,
         'total_likes': post.total_likes()
     }
-    print(f"Réponse envoyée: {response_data}")
+    print(f"Response sent: {response_data}")
     return JsonResponse(response_data)
 
 @login_required
@@ -255,8 +255,8 @@ def like_comment(request, comment_id):
             NotificationService.create_notification(
                 recipient=comment.author,
                 notification_type='like',
-                title="Nouveau j'aime",
-                message=f"{request.user.full_name} a aimé votre commentaire.",
+                title="New I like",
+                message=f"{request.user.full_name} liked your comment.",
                 related_object=comment.post
             )
     
@@ -270,7 +270,7 @@ def like_comment(request, comment_id):
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, author=request.user)
     post.delete()
-    messages.success(request, 'La publication a été supprimée.')
+    messages.success(request, 'The post has been deleted.')
     return redirect('QA:feed')
 
 @login_required
@@ -279,7 +279,7 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     post_slug = comment.post.slug
     comment.delete()
-    messages.success(request, 'Le commentaire a été supprimé.')
+    messages.success(request, 'The comment has been deleted.')
     return redirect('QA:post_detail', slug=post_slug)
 
 @login_required
@@ -301,7 +301,7 @@ def edit_post(request, post_id):
                 post.file = None
 
             post = form.save()
-            messages.success(request, 'Votre publication a été modifiée avec succès.')
+            messages.success(request, 'Your post has been successfully edited.')
             return redirect('QA:post_detail', slug=post.slug)
     else:
         form = PostForm(instance=post)
@@ -332,6 +332,6 @@ def edit_comment(request, comment_id):
                     'is_reply': bool(comment.parent)
                 }
             })
-        messages.success(request, 'Votre commentaire a été modifié.')
+        messages.success(request, 'Your comment has been edited.')
     
     return redirect('QA:post_detail', slug=comment.post.slug)

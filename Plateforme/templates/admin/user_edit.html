@@ -1,6 +1,6 @@
 {% extends 'base_admin.html' %}
 {% load i18n %}
-{% block title %}{% trans "Éditer utilisateur" %}{% endblock %}
+{% block title %}{% trans "Edit user" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -140,7 +140,7 @@
 <div class="user-edit-container">
   <div class="page-header">
     <div class="user-avatar">{{ user.username.full_name|first|upper }}</div>
-    <h1>{% trans "Éditer" %} {{ user.full_name }}</h1>
+    <h1>{% trans "Edit" %} {{ user.full_name }}</h1>
   </div>
 
   <form method="post" enctype="multipart/form-data">
@@ -162,8 +162,8 @@
     {% endfor %}
     
     <div class="form-actions">
-      <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Annuler" %}</a>
-      <button type="submit" class="btn btn-primary">{% trans "Sauvegarder" %}</button>
+      <a href="javascript:history.back()" class="btn btn-secondary">{% trans "Cancel" %}</a>
+      <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
     </div>
   </form>
 </div>

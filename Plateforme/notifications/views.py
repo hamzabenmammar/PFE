@@ -95,7 +95,7 @@ def api_notification_list_filtered(request):
 def mark_all_read(request):
     """Marque toutes les notifications non lues de l'utilisateur comme lues."""
     request.user.notifications.filter(read=False).update(read=True)
-    messages.success(request, "Toutes les notifications ont été marquées comme lues.")
+    messages.success(request, "All notifications have been marked as read.")
     return redirect('notifications:list')
 
 @login_required
@@ -105,7 +105,7 @@ def mark_read(request, notification_id):
     notification.read = True
     notification.read_at = timezone.now()
     notification.save()
-    messages.success(request, "Notification marquée comme lue.")
+    messages.success(request, "Notification marked as read.")
     # Rediriger vers la page d'où la requête provenait, ou par défaut la liste
     next_url = request.GET.get('next', request.META.get('HTTP_REFERER', redirect('notifications:list').url))
     return redirect(next_url)

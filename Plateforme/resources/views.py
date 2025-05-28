@@ -594,9 +594,9 @@ class ResourceUpdateView(LoginRequiredMixin, UserPassesTestMixin, FormView):
                 memoir.save()
 
         if hasattr(resource, 'document'):
-         messages.success(self.request, f"Ressource '{resource.document.title}' mise à jour avec succès !")
+         messages.success(self.request, f"Ressource '{resource.document.title}' updated successfully !")
         else:
-         messages.success(self.request, f"Ressource '{resource.title}' mise à jour avec succès !")
+         messages.success(self.request, f"Resource '{resource.title}' updated successfully !")
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -678,13 +678,13 @@ class ResourceCreateView(LoginAndVerifiedRequiredMixin, FormView):
             for user in User.objects.filter(is_active=True):
                 Notification.objects.create(
                     recipient=user,
-                    title="Nouvelle ressource",
-                    message=f"La ressource « {resource.title} » a été ajoutée à la plateforme."
+                    title="New resource",
+                    message=f"The resource« {resource.title} » has been added to the platform."
                 )
             return super().form_valid(form)
         except Exception as e:
             logger.error(f"Error creating resource: {str(e)}")
-            messages.error(self.request, f"Une erreur est survenue lors de la création de la ressource: {str(e)}")
+            messages.error(self.request, f"An error occurred while creating the resource: {str(e)}")
             return self.form_invalid(form)
     
 class CourseCreateView(LoginAndVerifiedRequiredMixin, FormView):
@@ -704,7 +704,7 @@ class CourseCreateView(LoginAndVerifiedRequiredMixin, FormView):
     
     def form_valid(self, form):
         resource = form.save()
-        messages.success(self.request, f"Cours '{resource.title}' créé avec succès!")
+        messages.success(self.request, f"Cours '{resource.title}' created successfully!")
         return super().form_valid(form)
 
 class CorpusCreateView(LoginAndVerifiedRequiredMixin, FormView):
@@ -724,7 +724,7 @@ class CorpusCreateView(LoginAndVerifiedRequiredMixin, FormView):
     
     def form_valid(self, form):
         resource = form.save()
-        messages.success(self.request, f"Corpus '{resource.title}' créé avec succès!")
+        messages.success(self.request, f"Corpus '{resource.title}' created successfully!")
         return super().form_valid(form)
 
 class ToolCreateView(LoginAndVerifiedRequiredMixin, FormView):
@@ -744,5 +744,5 @@ class ToolCreateView(LoginAndVerifiedRequiredMixin, FormView):
     
     def form_valid(self, form):
         resource = form.save()
-        messages.success(self.request, f"Tool '{resource.title}' créé avec succès!")
+        messages.success(self.request, f"Tool '{resource.title}' created successfully!")
         return super().form_valid(form)

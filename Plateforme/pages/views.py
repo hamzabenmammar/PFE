@@ -383,11 +383,11 @@ def admin_user_new(request):
         
         # Vérifier si l'utilisateur existe déjà
         if User.objects.filter(full_name=full_name).exists():
-            messages.error(request, f"Un utilisateur avec le nom {full_name} existe déjà.")
+            messages.error(request, f"A user with the name {full_name} already exists.")
             return render(request, 'admin/users/new.html')
         
         if User.objects.filter(email=email).exists():
-            messages.error(request, f"Un utilisateur avec l'email {email} existe déjà.")
+            messages.error(request, f"A user with the email {email} already exists.")
             return render(request, 'admin/users/new.html')
         
         # Créer l'utilisateur
@@ -409,7 +409,7 @@ def admin_user_new(request):
             change_date=timezone.now()
         )
         
-        messages.success(request, f"L'utilisateur {full_name} a été créé avec succès.")
+        messages.success(request, f"The user {full_name} has been successfully created.")
         return redirect('pages:admin_users')
     
     return render(request, 'admin/users_new.html')
@@ -422,7 +422,7 @@ def admin_user_activate(request, user_id):
     user = get_object_or_404(User, id=user_id)
     
     if user.status == 'active':
-        messages.info(request, f"L'utilisateur {user.full_name} est déjà actif.")
+        messages.info(request, f"The user {user.full_name} is already active.")
         return redirect('pages:admin_users')
     
     old_status = user.status
@@ -443,11 +443,11 @@ def admin_user_activate(request, user_id):
     # Notification d'activation
     Notification.objects.create(
         recipient=user,
-        title="Compte activé",
-        message="Votre compte a été activé par un administrateur. Vous pouvez maintenant accéder à toutes les fonctionnalités."
+        title="Account activated",
+        message="Your account has been activated by an administrator. You can now access all features."
     )
     
-    messages.success(request, f"L'utilisateur {user.full_name} a été activé avec succès.")
+    messages.success(request, f"The user {user.full_name} has been successfully activated.")
     
     # Rediriger vers la page précédente si disponible
     next_url = request.GET.get('next', reverse('pages:admin_users'))
@@ -461,11 +461,11 @@ def admin_user_block(request, user_id):
     
     # Empêcher le blocage de soi-même
     if user == request.user:
-        messages.error(request, "Vous ne pouvez pas bloquer votre propre compte.")
+        messages.error(request, "You cannot block your own account.")
         return redirect('pages:admin_users')
     
     if user.status == 'blocked':
-        messages.info(request, f"L'utilisateur {user.full_name} est déjà bloqué.")
+        messages.info(request, f"The user {user.full_name} is already blocked.")
         return redirect('pages:admin_users')
     
     if request.method == 'POST':
@@ -488,11 +488,11 @@ def admin_user_block(request, user_id):
         # Notification de blocage
         Notification.objects.create(
             recipient=user,
-            title="Compte bloqué",
-            message="Votre compte a été bloqué par un administrateur. Veuillez contacter le support si besoin."
+            title="Blocked account",
+            message="Your account has been locked by an administrator. Please contact support if necessary."
         )
         
-        messages.success(request, f"L'utilisateur {user.full_name} a été bloqué avec succès.")
+        messages.success(request, f"The user {user.full_name} has been successfully blocked.")
         return redirect('pages:admin_users')
     
     return render(request, 'admin/block_confirm.html', {'user_obj': user})
@@ -566,7 +566,7 @@ def admin_user_edit(request, user_id):
         form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, f"L'utilisateur {user.username} a été mis à jour avec succès.")
+            messages.success(request, f"The user {user.username} has been successfully updated.")
             return redirect('pages:admin_users')
     else:
         form = CustomUserChangeForm(instance=user)
@@ -608,7 +608,7 @@ def admin_user_status(request, user_id, status):
         'blocked': "bloqué"
     }
     
-    messages.success(request, f"L'utilisateur {user.username} a été {status_messages.get(status, 'mis à jour')}.")
+    messages.success(request, f"The user{user.username} a été {status_messages.get(status, 'updated')}.")
     return redirect('pages:admin_users')
 
 
@@ -631,7 +631,7 @@ def admin_publications(request):
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
             Q(keywords__icontains=search) |
-            Q(authors__username__icontains=search)
+            Q(authors__full_name__icontains=search)
         ).distinct()
     
     context = {
@@ -661,7 +661,7 @@ def admin_corpora(request):
         corpora = corpora.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(author__username__icontains=search)
+            Q(author__full_name__icontains=search)
         )
     
     context = {
@@ -690,7 +690,7 @@ def admin_tools(request):
         tools = tools.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(author__username__icontains=search)
+            Q(author__full_name__icontains=search)
         )
     
     context = {
@@ -723,8 +723,7 @@ def admin_projects(request):
         projects = projects.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(objectives__icontains=search) |
-            Q(participants__username__icontains=search)
+            Q(status__icontains=search) 
         ).distinct()
 
     # Statistiques dynamiques
@@ -782,10 +781,10 @@ def admin_projects(request):
     duration_difference_days = duration_difference.days
 
     if duration_difference_days > 0:
-        duration_trend_text = f"+{duration_difference_days}j vs période précédente"
+        duration_trend_text = f"+{duration_difference_days}j vs previous period"
         duration_trend_class = 'trend-down' # Durée plus longue = tendance négative
     elif duration_difference_days < 0:
-        duration_trend_text = f"{duration_difference_days}j vs période précédente"
+        duration_trend_text = f"{duration_difference_days}jvs previous period"
         duration_trend_class = 'trend-up' # Durée plus courte = tendance positive
     else:
         duration_trend_text = "Stable"
@@ -832,7 +831,7 @@ def admin_courses(request):
         courses = courses.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) |
-            Q(author__username__icontains=search)
+            Q(author__full_name__icontains=search)
         )
     
     # Statistiques dynamiques pour les cours
@@ -897,7 +896,7 @@ def admin_forum(request):
         topics = topics.filter(
             Q(title__icontains=search) | 
             Q(description__icontains=search) | # Adapter si le champ est différent
-            Q(creator__username__icontains=search)
+            Q(creator__full_name__icontains=search)
         )
 
     # TODO: Implement category filtering here if categories are added

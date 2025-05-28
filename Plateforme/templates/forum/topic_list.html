@@ -2,14 +2,14 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Sujets de discussion | Arabic NLP Platform" %}{% endblock %}
+{% block title %}{% trans "Discussion topics | Arabic NLP Platform" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="forum-header">
-        <h1 class="forum-title">{% trans "Sujets de discussion" %}</h1>
+        <h1 class="forum-title">{% trans "Discussion topics" %}</h1>
         <a href="{% url 'forum:topic-new' %}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> {% trans "Nouveau sujet" %}
+            <i class="fas fa-plus-circle"></i> {% trans "New topic" %}
         </a>
     </div>
     
@@ -39,16 +39,16 @@
             
             <div class="topic-card-footer">
                 <a href="{% url 'forum:chatroom-new' topic.id %}" class="btn btn-outline btn-sm">
-                    <i class="fas fa-comments"></i> {% trans "Créer une salle de discussion" %}
+                    <i class="fas fa-comments"></i> {% trans "Create a chat room" %}
                 </a>
                 
                 {% if topic.creator == user %}
                 <div class="topic-actions">
                     <a href="{% url 'forum:topic-update' topic.id %}" class="btn btn-outline btn-sm">
-                        <i class="fas fa-edit"></i> {% trans "Modifier" %}
+                        <i class="fas fa-edit"></i> {% trans "Edite" %}
                     </a>
                     <a href="{% url 'forum:topic-delete' topic.id %}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i>{% trans "Supprimer" %} 
+                        <i class="fas fa-trash"></i>{% trans "Delete" %} 
                     </a>
                 </div>
                 {% endif %}
@@ -62,10 +62,10 @@
         <div class="empty-state-icon">
             <i class="fas fa-comments-alt"></i>
         </div>
-        <h3>{% trans "Aucun sujet n'a été créé" %}</h3>
-        <p>{% trans "Soyez le premier à lancer une discussion !" %}</p>
+        <h3>{% trans "No topics have been created" %}</h3>
+        <p>{% trans "Be the first to start a discussion!" %}</p>
         <a href="{% url 'forum:topic-new' %}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> {% trans "Créer un sujet" %}
+            <i class="fas fa-plus-circle"></i> {% trans "Create a topic" %}
         </a>
     </div>
     {% endif %}

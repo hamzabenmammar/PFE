@@ -6,30 +6,30 @@
         <div class="col-md-8 offset-md-2">
             <div class="card shadow-sm border-danger">
                 <div class="card-header bg-danger text-white">
-                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>{% trans "Supprimer le sujet" %}</h4>
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>{% trans "Delete topic" %}</h4>
                 </div>
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
                         <div class="display-1 text-danger mb-3">
                             <i class="fas fa-trash-alt"></i>
                         </div>
-                        <h5 class="fw-bold">{% trans "Êtes-vous sûr de vouloir supprimer le sujet :" %}</h5>
+                        <h5 class="fw-bold">{% trans "Are you sure you want to delete the topic:" %}</h5>
                         <h4 class="text-danger my-3">"{{ topic.title }}"</h4>
                     </div>
                     
                     <div class="alert alert-warning">
                         <i class="fas fa-exclamation-circle me-2"></i>
-                        <strong>{% trans "Attention :" %}</strong>{% trans "Cette action est irréversible et supprimera toutes les salles de discussion et messages associés." %} 
+                        <strong>{% trans "Attention :" %}</strong>{% trans "This action is irreversible and will delete all associated chat rooms and messages." %} 
                     </div>
                     
                     <form method="post" class="mt-4">
                         {% csrf_token %}
                         <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4">
                             <a href="{% url 'forum:topic-list' %}" class="btn btn-outline-secondary btn-lg">
-                                <i class="fas fa-arrow-left me-2"></i>{% trans "Annuler" %}
+                                <i class="fas fa-arrow-left me-2"></i>{% trans "Cancel" %}
                             </a>
                             <button type="submit" class="btn btn-danger btn-lg">
-                                <i class="fas fa-trash-alt me-2"></i>{% trans "Confirmer la suppression" %}
+                                <i class="fas fa-trash-alt me-2"></i>{% trans "Confirm deletion" %}
                             </button>
                         </div>
                     </form>

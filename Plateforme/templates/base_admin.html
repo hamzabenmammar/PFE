@@ -22,17 +22,17 @@
                 <div class="position-sticky pt-3">
                     <div class="text-center mb-4">
                         <img src="{% static 'images/admin (2).png' %}" alt="Logo" class="img-fluid" style="max-width: 150px;">
-                        <h5 class="text-white mt-2">{% trans "Panneau d'administration" %}</h5>
+                        <h5 class="text-white mt-2">{% trans "Admin Panel" %}</h5>
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'pages:admin_dashboard' %}">
-                                <i class="fas fa-tachometer-alt me-2"></i> {% trans "Tableau de bord" %}
+                                <i class="fas fa-tachometer-alt me-2"></i> {% trans "Dashboard" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_users' %}active{% endif %}" href="{% url 'pages:admin_users' %}">
-                                <i class="fas fa-users me-2"></i> {% trans "Utilisateurs" %}
+                                <i class="fas fa-users me-2"></i> {% trans "Users" %}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -47,17 +47,17 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_tools' %}active{% endif %}" href="{% url 'pages:admin_tools' %}">
-                                <i class="fas fa-tools me-2"></i>{% trans "Outils NLP" %} 
+                                <i class="fas fa-tools me-2"></i>{% trans "tools" %} 
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_projects' %}active{% endif %}" href="{% url 'pages:admin_projects' %}">
-                                <i class="fas fa-project-diagram me-2"></i>{% trans "Projets" %} 
+                                <i class="fas fa-project-diagram me-2"></i>{% trans "Projects" %} 
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_courses' %}active{% endif %}" href="{% url 'pages:admin_courses' %}">
-                                <i class="fas fa-graduation-cap me-2"></i> {% trans "Cours" %}
+                                <i class="fas fa-graduation-cap me-2"></i> {% trans "Course" %}
                             </a>
                         </li>
                         <li class="nav-item">
@@ -72,22 +72,22 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_calls' %}active{% endif %}" href="{% url 'pages:admin_calls' %}">
-                                <i class="fas fa-bullhorn me-2"></i> {% trans "Appels à comm." %}
+                                <i class="fas fa-bullhorn me-2"></i> {% trans "Calls" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_statistics' %}active{% endif %}" href="{% url 'pages:admin_statistics' %}">
-                                <i class="fas fa-chart-bar me-2"></i> {% trans "Statistiques" %}
+                                <i class="fas fa-chart-bar me-2"></i> {% trans "Statistics" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_settings' %}active{% endif %}" href="{% url 'pages:admin_settings' %}">
-                                <i class="fas fa-cog me-2"></i> {% trans "Paramètres" %}
+                                <i class="fas fa-cog me-2"></i> {% trans "Settings" %}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'admin_security' %}active{% endif %}" href="{% url 'pages:admin_security' %}">
-                                <i class="fas fa-shield-alt me-2"></i> {% trans "Sécurité" %}
+                                <i class="fas fa-shield-alt me-2"></i> {% trans "Security" %}
                             </a>
                         </li>
                     </ul>
@@ -96,12 +96,12 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'pages:home' %}">
-                                    <i class="fas fa-home me-2"></i> {% trans "Retour au site" %}
+                                    <i class="fas fa-home me-2"></i> {% trans "Return to site" %}
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'account_logout' %}">
-                                    <i class="fas fa-sign-out-alt me-2"></i> {% trans "Déconnexion" %}
+                                    <i class="fas fa-sign-out-alt me-2"></i> {% trans "Disconnect" %}
                                 </a>
                             </li>
                         </ul>

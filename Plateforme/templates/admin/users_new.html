@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load static %}
 {% load i18n %}
-{% block title %}{% trans "Nouvel utilisateur" %}{% endblock %}
+{% block title %}{% trans "New User" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -147,7 +147,7 @@
                             <i class="bi {% if message.tags == 'success' %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2"></i>
                             <strong>{{ message }}</strong>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -157,13 +157,13 @@
                     <div class="form-header">
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <h2 class="m-0">
-                                <i class="bi bi-person-plus me-2"></i> {% trans "Créer un nouvel utilisateur" %}
+                                <i class="bi bi-person-plus me-2"></i> {% trans "Create New User" %}
                             </h2>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="{% url 'pages:admin_dashboard' %}" class="text-white">{% trans "Dashboard" %}</a></li>
-                                    <li class="breadcrumb-item"><a href="{% url 'pages:admin_users' %}" class="text-white">{% trans "Utilisateurs" %}</a></li>
-                                    <li class="breadcrumb-item active text-white-50" aria-current="page">{% trans "Nouveau" %}</li>
+                                    <li class="breadcrumb-item"><a href="{% url 'pages:admin_users' %}" class="text-white">{% trans "Users" %}</a></li>
+                                    <li class="breadcrumb-item active text-white-50" aria-current="page">{% trans "New" %}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -176,8 +176,8 @@
                             <div class="row g-4 mb-3">
                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Nom complet" required>
-                                        <label for="full_name">{% trans "Nom complet" %} <span class="required-field">*</span></label>
+                                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required>
+                                        <label for="full_name">{% trans "Full Name" %} <span class="required-field">*</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                                         <label for="email">{% trans "Email" %} <span class="required-field">*</span></label>
                                     </div>
                                     <div class="email-domain-note">
-                                        <i class="bi bi-info-circle me-1"></i> {% trans "L'email doit se terminer par: usthb.dz" %}
+                                        <i class="bi bi-info-circle me-1"></i> {% trans "Email must end with: usthb.dz" %}
                                     </div>
                                 </div>
                             </div>
@@ -206,8 +206,8 @@
                             <div class="row g-4 mb-4">
                                 <div class="col-md-6">
                                     <div class="form-floating password-container">
-                                        <input type="password" class="form-control" id="password1" name="password1" placeholder="{% trans "Mot de passe" %}" required>
-                                        <label for="password1">{% trans "Mot de passe" %} <span class="required-field">*</span></label>
+                                        <input type="password" class="form-control" id="password1" name="password1" placeholder="{% trans "Password" %}" required>
+                                        <label for="password1">{% trans "Password" %} <span class="required-field">*</span></label>
                                     </div>
                                     <div class="password-strength mt-2 d-none">
                                         <div class="progress" style="height: 5px;">
@@ -218,18 +218,18 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating password-container">
-                                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirmation du mot de passe" required>
-                                        <label for="password2">{% trans "Confirmation du mot de passe" %} <span class="required-field">*</span></label>
+                                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Password Confirmation" required>
+                                        <label for="password2">{% trans "Password Confirmation" %} <span class="required-field">*</span></label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="d-flex justify-content-between mt-4 form-btn-group">
                                 <a href="{% url 'pages:admin_users' %}" class="btn btn-outline-secondary btn-cancel">
-                                    <i class="bi bi-arrow-left me-2"></i>{% trans "Annuler" %}
+                                    <i class="bi bi-arrow-left me-2"></i>{% trans "Cancel" %}
                                 </a>
                                 <button type="submit" class="btn btn-primary btn-create">
-                                    <i class="bi bi-person-plus-fill me-2"></i>{% trans "Créer l'utilisateur" %}
+                                    <i class="bi bi-person-plus-fill me-2"></i>{% trans "Create User" %}
                                 </button>
                             </div>
                         </form>
@@ -290,16 +290,16 @@
                 
                 // Feedback textuel
                 if (strength < 25) {
-                    feedback = 'Très faible';
+                    feedback = 'Very Weak';
                     strengthProgress.className = 'progress-bar bg-danger';
                 } else if (strength < 50) {
-                    feedback = 'Faible';
+                    feedback = 'Weak';
                     strengthProgress.className = 'progress-bar bg-warning';
                 } else if (strength < 75) {
-                    feedback = 'Moyen';
+                    feedback = 'Medium';
                     strengthProgress.className = 'progress-bar bg-info';
                 } else {
-                    feedback = 'Fort';
+                    feedback = 'Strong';
                     strengthProgress.className = 'progress-bar bg-success';
                 }
             } else {
@@ -322,21 +322,21 @@
             if (password.length < 8) {
                 isValid = false;
                 passwordInput.classList.add('is-invalid');
-                showError("Le mot de passe doit contenir au moins 8 caractères.");
+                showError("Password must contain at least 8 characters.");
             }
             
             // Validation de la confirmation du mot de passe
             if (password !== confirmPassword) {
                 isValid = false;
                 confirmPasswordInput.classList.add('is-invalid');
-                showError("Les mots de passe ne correspondent pas.");
+                showError("Passwords do not match.");
             }
             
             // Validation du domaine email
             if (email && !email.toLowerCase().endsWith('@usthb.dz')) {
                 isValid = false;
                 emailInput.classList.add('is-invalid');
-                showError("L'email doit se terminer par @usthb.dz");
+                showError("Email must end with @usthb.dz");
             }
             
             if (!isValid) {
@@ -356,7 +356,7 @@
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         <strong>${message}</strong>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             `;
             

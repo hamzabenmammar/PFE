@@ -17,6 +17,7 @@ class Notification(models.Model):
         ('EVENT_APPROVED', 'Événement approuvé'),
     ]
     
+    
     recipient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='notifications')
     type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES, default='SYSTEM')
     title = models.CharField(max_length=255)

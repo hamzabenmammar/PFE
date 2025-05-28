@@ -19,8 +19,8 @@ def notify_new_resource(sender, instance, created, **kwargs):
         NotificationService.notify_group(
             admins,
             NotificationType.NEW_RESOURCE,
-            f"Nouvelle ressource: {instance.title}",
-            f"Une nouvelle ressource a été ajoutée par {instance.author.username}: {instance.title}",
+            f"New resource: {instance.title}",
+            f"A new resource has been added by {instance.author.username}: {instance.title}",
             instance
         )
 
@@ -35,7 +35,7 @@ def notify_resource_contribution(sender, instance, created, **kwargs):
             NotificationService.create_notification(
                 resource_author,
                 NotificationType.CORPUS_UPDATE if instance.resource.resource_type == 'corpus' else NotificationType.RESEARCH_UPDATE,
-                f"Nouvelle contribution à votre ressource",
-                f"{instance.contributor.username} a contribué à votre ressource: {instance.resource.title}",
+                f"New contribution to your resource",
+                f"{instance.contributor.username} contributed to your resource : {instance.resource.title}",
                 instance
             )

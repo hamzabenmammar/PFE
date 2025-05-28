@@ -193,7 +193,7 @@
         </div>
         {% empty %}
         <div class="empty-message">
-          Aucun membre n'a encore rejoint ce projet.
+          No members have joined this project yet.
         </div>
         {% endfor %}
       </div>
@@ -222,7 +222,7 @@
             <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
             <path d="M16 3.13a4 4 0 010 7.75"></path>
           </svg>
-          Gérer les membres du projet
+          Manage project members
         </a>
         <a
           href="{% url 'projects:project_update' project.pk %}"
@@ -345,7 +345,7 @@
             <line x1="12" y1="1" x2="12" y2="23"></line>
             <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
           </svg>
-          Demande en attente
+          Pending request
         </button>
       </div>
       {% endif %} {% endif %} {% else %}
@@ -421,7 +421,7 @@
                 >
                   <path d="M20 6L9 17l-5-5"></path>
                 </svg>
-                Accepter
+                Accept
               </button>
             </form>
             <form
@@ -446,13 +446,13 @@
                   <path d="M18 6L6 18"></path>
                   <path d="M6 6l12 12"></path>
                 </svg>
-                Refuser
+                Refuse
               </button>
             </form>
           </div>
         </div>
         {% empty %}
-        <div class="empty-message">Aucune demande en attente.</div>
+        <div class="empty-message">No pending requests.</div>
         {% endfor %}
       </div>
     </div>

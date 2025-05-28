@@ -56,8 +56,8 @@
 <!-- Section Populaire -->
 <div class="dashboard-section">
   <div class="section-header">
-    <h2 class="section-title">{% trans "Actualités populaires" %}</h2>
-    <a href="{% url 'QA:feed' %}" class="view-all">{% trans "Voir tout" %}</a>
+    <h2 class="section-title">{% trans "Popular News" %}</h2>
+    <a href="{% url 'QA:feed' %}" class="view-all">{% trans "View All" %}</a>
   </div>
   <div class="resources-grid">
     {% for post in popular_posts %}
@@ -90,7 +90,7 @@
     </div>
     {% empty %}
     <div class="empty-message">
-      <p>{% trans "Aucun post populaire pour le moment." %}</p>
+      <p>{% trans "No popular posts yet." %}</p>
     </div>
     {% endfor %}
   </div>
@@ -99,9 +99,9 @@
 <!-- Nouvelle Section : Ressources les plus vues -->
 <div class="dashboard-section">
   <div class="section-header">
-    <h2 class="section-title">{% trans "Ressources les plus vues" %}</h2>
+    <h2 class="section-title">{% trans "Most viewed resources " %}</h2>
     <a href="{% url 'resources:list' %}" class="view-all"
-      >{% trans "Voir tout" %}</a
+      >{% trans "View All" %}</a
     >
   </div>
   <div class="resources-grid">
@@ -125,7 +125,7 @@
         <div class="resource-meta">
           <div class="meta-item">
             <i class="bi bi-eye-fill"></i>
-            <span>{{ resource.views_count }} {% trans "vues" %}</span>
+            <span>{{ resource.views_count }} {% trans "views" %}</span>
           </div>
           <div class="meta-item">
             <i class="bi bi-person-circle"></i>
@@ -141,7 +141,7 @@
     {% empty %}
     <div class="empty-state">
       <i class="bi bi-archive empty-icon"></i>
-      <p>{% trans "Aucune ressource populaire pour le moment." %}</p>
+      <p>{% trans "No popular resources yet." %}</p>
     </div>
     {% endfor %}
   </div>

@@ -103,8 +103,8 @@ class ProjectCreateView(LoginAndVerifiedRequiredMixin, CreateView):
             NotificationService.create_notification(
                 recipient=user,
                 notification_type='SYSTEM', # Ou un type spécifique si tu en crées un pour les nouveaux projets
-                title="Nouveau projet de recherche",
-                message=f"Le projet « {form.instance.title} » vient d'être publié."
+                title="New research project",
+                message=f"The project « {form.instance.title} » has just been published."
             )
         return response
 
@@ -144,7 +144,7 @@ class JoinProjectView(LoginAndVerifiedRequiredMixin, View):
         
         # Vérifier si le projet est terminé
         if project.status == 'completed':
-            messages.error(request, "Ce projet est terminé et n'accepte plus de nouveaux membres.")
+            messages.error(request, "This project is closed and is no longer accepting new members..")
             return redirect('projects:project_detail', pk=pk)
 
         # Vérifie si l'utilisateur n'est pas déjà membre
@@ -162,7 +162,7 @@ class JoinProjectView(LoginAndVerifiedRequiredMixin, View):
                 project=project,
                 sender=request.user
             )
-            messages.success(request, "Votre demande d'adhésion a été envoyée au coordinateur du projet.")
+            messages.success(request, "Your membership request has been sent to the project coordinator.")
         return redirect('projects:project_detail', pk=pk)
 
 
@@ -183,10 +183,10 @@ class AcceptMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View)
             NotificationService.create_notification(
                 recipient=member.member,
                 notification_type='SYSTEM', # Ou un type spécifique
-                title="Demande d'adhésion acceptée",
-                message=f"Votre demande pour rejoindre le projet « {project.title} » a été acceptée."
+                title="Membership application accepted",
+                message=f"Your request to join the project « {project.title} » was accepted."
             )
-            messages.success(request, f"{member.member.full_name} a été accepté dans le projet.")
+            messages.success(request, f"{member.member.full_name} was accepted into the project.")
         
         return redirect('projects:project_members', pk=pk)
 
@@ -208,10 +208,10 @@ class RejectMemberView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, View)
             NotificationService.create_notification(
                 recipient=member.member,
                 notification_type='SYSTEM', # Ou un type spécifique
-                title="Demande d'adhésion refusée",
-                message=f"Votre demande pour rejoindre le projet « {project.title} » a été refusée."
+                title="Membership application refused",
+                message=f"Your request to join the project « {project.title} » was refused."
             )
-            messages.success(request, f"La demande de {member.member.full_name} a été refusée.")
+            messages.success(request, f"The request for {member.member.full_name} was refused.")
         
         return redirect('projects:project_members', pk=pk)
 
@@ -244,8 +244,8 @@ class LeaveProjectView(LoginAndVerifiedRequiredMixin, View):
             NotificationService.create_notification(
                 recipient=project.coordinator,
                 notification_type='SYSTEM', # Ou un type spécifique
-                title="Départ d'un membre",
-                message=f"{request.user.full_name} a quitté votre projet « {project.title} »."
+                title="Departure of a member",
+                message=f"{request.user.full_name} left your project « {project.title} »."
             )
             member.delete()
         return redirect('projects:project_detail', pk=pk)

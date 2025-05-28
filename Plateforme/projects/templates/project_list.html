@@ -12,7 +12,7 @@
           <input
             type="text"
             name="search"
-            placeholder="Rechercher un projet..."
+            placeholder="Search for a project..."
             value="{{ request.GET.search }}"
             class="search-input"
           />
@@ -38,7 +38,7 @@
           href="{% if request.GET.my_projects %}?my_projects=1{% else %}{% url 'projects:project_list' %}{% endif %}"
           class="clear-search"
         >
-          Effacer la recherche
+        Clear search
         </a>
         {% endif %}
       </form>
@@ -78,7 +78,7 @@
             points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
           ></polygon>
         </svg>
-        {% if request.GET.my_projects %}Tous les projets{% else %}Mes projets{% endif %}
+        {% if request.GET.my_projects %}All projects{% else %}My projects{% endif %}
       </a>
 
       {# Filtre par statut #}
@@ -182,9 +182,9 @@
     </div>
     {% empty %}
     <div class="empty-message">
-      {% if request.GET.search %} Aucun projet ne correspond à votre recherche.
-      {% elif request.GET.my_projects %} Vous n'avez pas encore créé de projet.
-      {% else %} Aucun projet n'est disponible pour le moment. {% endif %}
+      {% if request.GET.search %} No projects match your search.
+      {% elif request.GET.my_projects %}You have not created a project yet.
+      {% else %} No projects are available at the moment. {% endif %}
     </div>
     {% endfor %}
   </div>

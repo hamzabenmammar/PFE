@@ -77,8 +77,8 @@ class NotificationService:
             project: Projet auquel l'utilisateur est invité
             sender: Utilisateur qui envoie l'invitation
         """
-        title = "Invitation à rejoindre un projet"
-        message = f"Vous avez été invité à rejoindre le projet « {project.name} » par {sender.username}."
+        title = "Invitation to join a project"
+        message = f"You have been invited to join the project « {project.name} » by {sender.username}."
         
         return NotificationService.create_notification(
             recipient=recipient,
@@ -100,8 +100,8 @@ class NotificationService:
             project: Projet concerné
             sender: Utilisateur qui demande à rejoindre
         """
-        title = "Nouvelle demande d'adhésion"
-        message = f"{sender.username} souhaite rejoindre votre projet « {project.title} »."
+        title = "New membership application"
+        message = f"{sender.username} would like to join your project « {project.title} »."
         
         return NotificationService.create_notification(
             recipient=recipient,

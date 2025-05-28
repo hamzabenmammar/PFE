@@ -12,12 +12,13 @@ Tools"%} {% endblock title %} {% block extra_styles %}
       </p>
     </div>
     <div
-      class=
+    class="col-lg-4 col-md-5 d-flex align-items-center justify-content-md-end justify-content-start mt-3 mt-md-0"
     >
       {% if user.is_authenticated %}
       <a
         href="{% url 'resources:tool-create' %}"
         class="btn btn-primary btn-lg shadow-sm"
+              
       >
         <i class="bi bi-plus-lg me-2"></i> {% trans "Add a new NLP Tool" %}
       </a>
@@ -40,7 +41,7 @@ Tools"%} {% endblock title %} {% block extra_styles %}
             name="q"
             id="globalQuery"
             class="query-input"
-            placeholder="Rechercher des ressources..."
+            placeholder="Search for resources..."
             autocomplete="off"
             value="{{ request.GET.q|default:'' }}"
           />

@@ -16,7 +16,7 @@
       {% if notifications %}
         <div class="header-actions">
           <a href="{% url 'notifications:mark_all_read' %}" class="btn btn-outline-primary btn-sm">
-            <i class="fas fa-check-double me-1"></i> {% trans "Marquer tout comme lu" %}
+            <i class="fas fa-check-double me-1"></i> {% trans "Mark all as read" %}
           </a>
         </div>
       {% endif %}
@@ -61,13 +61,13 @@
                     {% if notification.type == 'PROJECT_INVITE' %}
                       {% trans "Invitation" %}
                     {% elif notification.type == 'PROJECT_JOIN_REQUEST' %}
-                      {% trans "Demande d'adhésion" %}
+                      {% trans "Membership application" %}
                     {% elif notification.type == 'TASK_ASSIGNED' %}
-                      {% trans "Tâche assignée" %}
+                      {% trans "Assigned task" %}
                     {% elif notification.type == 'MESSAGE' %}
                       {% trans "Message" %}
                     {% elif notification.type == 'SYSTEM' %}
-                      {% trans "Système" %}
+                      {% trans "System" %}
                     {% else %}
                       {{ notification.type|default:"undefined" }}
                     {% endif %}
@@ -79,44 +79,74 @@
                 {{ notification.message }}
               </div>
 
+              
               <!-- Actions -->
-              <div class="notification-actions">
-                <div class="primary-actions">
-                  {% if notification.type == 'PROJECT_INVITE' and notification.project_id %}
-                    <form method="post" action="{% url 'respond_project_invite' notification.project_id %}" class="action-form">
-                      {% csrf_token %}
-                      <button type="submit" name="response" value="accept" class="btn btn-success btn-sm">
-                        <i class="fas fa-check me-1"></i>{% trans "Accepter" %}
-                      </button>
-                      <button type="submit" name="response" value="reject" class="btn btn-outline-danger btn-sm">
-                        <i class="fas fa-times me-1"></i>{% trans "Refuser" %}
-                      </button>
-                    </form>
-                  {% elif notification.type == 'PROJECT_JOIN_REQUEST' and notification.project_id and notification.sender_id %}
-                    <form method="post" action="{% url 'projects:accept_member' notification.project_id notification.sender_id %}" class="action-form">
-                      {% csrf_token %}
-                      <button type="submit" name="response" value="accept" class="btn btn-success btn-sm">
-                        <i class="fas fa-check me-1"></i>{% trans "Accepter" %}
-                      </button>
-                      <button type="submit" name="response" value="reject" class="btn btn-outline-danger btn-sm">
-                        <i class="fas fa-times me-1"></i>{% trans "Refuser" %}
-                      </button>
-                    </form>
-                  {% endif %}
-                </div>
-                
-                <div class="secondary-actions">
-                  {% if notification.read %}
-                    <span class="text-muted read-status">
-                      <i class="fas fa-check me-1"></i>{% trans "Lu" %}
-                    </span>
-                  {% else %}
-                    <a href="{% url 'notifications:mark_read' notification.id %}" class="mark-read-link">
-                      <i class="far fa-check-circle me-1"></i>{% trans "Marquer comme lu" %}
-                    </a>
-                  {% endif %}
-                </div>
-              </div>
+<div class="notification-actions">
+  <div class="primary-actions">
+    {% if notification.type == 'PROJECT_INVITE' and notification.project_id %}
+      {% if not notification.response_given %}
+        <form method="post" action="{% url 'accounts:respond_project_invite' notification.project_id %}" class="action-form">
+          {% csrf_token %}
+          <input type="hidden" name="notification_id" value="{{ notification.id }}">
+          <button type="submit" name="response" value="accept" class="btn btn-success btn-sm">
+            <i class="fas fa-check me-1"></i>{% trans "Accept" %}
+          </button>
+          <button type="submit" name="response" value="reject" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-times me-1"></i>{% trans "Refuse" %}
+          </button>
+        </form>
+      {% else %}
+        <!-- Afficher le statut de la réponse -->
+        {% if notification.response == 'accept' %}
+          <span class="text-success">
+            <i class="fas fa-check me-1"></i>{% trans "Invitation accepted" %}
+          </span>
+        {% elif notification.response == 'reject' %}
+          <span class="text-danger">
+            <i class="fas fa-times me-1"></i>{% trans "Invitation refused" %}
+          </span>
+        {% endif %}
+      {% endif %}
+    
+    {% elif notification.type == 'PROJECT_JOIN_REQUEST' and notification.project_id and notification.sender_id %}
+      {% if not notification.response_given %}
+        <form method="post" action="{% url 'projects:accept_member' notification.project_id notification.sender_id %}" class="action-form">
+          {% csrf_token %}
+          <input type="hidden" name="notification_id" value="{{ notification.id }}">
+          <button type="submit" name="response" value="accept" class="btn btn-success btn-sm">
+            <i class="fas fa-check me-1"></i>{% trans "Accept" %}
+          </button>
+          <button type="submit" name="response" value="reject" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-times me-1"></i>{% trans "Refuse" %}
+          </button>
+        </form>
+      {% else %}
+        <!-- Afficher le statut de la réponse -->
+        {% if notification.response == 'accept' %}
+          <span class="text-success">
+            <i class="fas fa-check me-1"></i>{% trans "Request accepted" %}
+          </span>
+        {% elif notification.response == 'reject' %}
+          <span class="text-danger">
+            <i class="fas fa-times me-1"></i>{% trans "Request refused" %}
+          </span>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  </div>
+  
+  <div class="secondary-actions">
+    {% if notification.read %}
+      <span class="text-muted read-status">
+        <i class="fas fa-check me-1"></i>{% trans "Read" %}
+      </span>
+    {% else %}
+      <a href="{% url 'notifications:mark_read' notification.id %}" class="mark-read-link">
+        <i class="far fa-check-circle me-1"></i>{% trans "Mark as read" %}
+      </a>
+    {% endif %}
+  </div>
+</div>
             </div>
           </div>
         </div>
@@ -125,8 +155,8 @@
           <div class="empty-icon">
             <i class="fas fa-bell-slash"></i>
           </div>
-          <h3>{% trans "Aucune notification" %}</h3>
-          <p>{% trans "Vous n'avez pas de notifications pour le moment." %}</p>
+          <h3>{% trans "No notifications" %}</h3>
+          <p>{% trans "You have no notifications at the moment." %}</p>
         </div>
       {% endfor %}
     </div>

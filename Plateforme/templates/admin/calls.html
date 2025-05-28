@@ -563,30 +563,30 @@
 {% block content %}
 <div class="container">
   <div class="page-header">
-    <h1 class="page-title">{% trans "Gestion des Appels à Communications" %}</h1>
+    <h1 class="page-title">{% trans "Management of Calls for Papers" %}</h1>
     <div class="header-actions">
       <a href="{% url 'events:event_create' %}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
-        {% trans "Nouveau appel" %}
+        {% trans "New call" %}
       </a>
     </div>
   </div>
 
   <form method="get" action="{% url 'pages:admin_calls' %}" class="filter-bar"> {# Assurez-vous que l'action pointe vers la bonne URL de la page #}
     <div class="filter-group">
-      <label class="filter-label" for="search">{% trans "Recherche" %}</label>
-      <input id="search" class="filter-input" type="text" name="search" placeholder="Titre ou organisateur..." value="{{ search }}">
+      <label class="filter-label" for="search">{% trans "Research" %}</label>
+      <input id="search" class="filter-input" type="text" name="search" placeholder="Title or organizer..." value="{{ search }}">
     </div>
     
     <div class="filter-group">
-      <label class="filter-label" for="call_type">{% trans "Type d'appel" %}</label>
+      <label class="filter-label" for="call_type">{% trans "Call type" %}</label>
       <select id="call_type" class="filter-input" name="call_type">
-        <option value="">{% trans "Tous types" %}</option>
-        <option value="conference" {% if filter_call_type == 'conference' %}selected{% endif %}>{% trans "Conférence" %}</option>
-        <option value="workshop" {% if filter_call_type == 'workshop' %}selected{% endif %}>{% trans "Atelier" %}</option>
-        <option value="journal" {% if filter_call_type == 'journal' %}selected{% endif %}>{% trans "Journal" %}</option>
+        <option value="">{% trans "All types" %}</option>
+        <option value="conference" {% if filter_call_type == 'conference' %}selected{% endif %}>{% trans "Conference" %}</option>
+        <option value="workshop" {% if filter_call_type == 'workshop' %}selected{% endif %}>{% trans "Workshop" %}</option>
+        <option value="journal" {% if filter_call_type == 'journal' %}selected{% endif %}>{% trans "Newspaper" %}</option>
       </select>
     </div>
 
@@ -595,9 +595,9 @@
         <form method="get" class="row g-3">
             <div class="col-md-3">
                 <select name="is_approved" class="form-select">
-                    <option value="">{% trans "Tous les statuts" %}</option>
-                    <option value="true" {% if filter_is_approved == 'true' %}selected{% endif %}>{% trans "Approuvés" %}</option>
-                    <option value="false" {% if filter_is_approved == 'false' %}selected{% endif %}>{% trans "En attente" %}</option>
+                    <option value="">{% trans "All statuses" %}</option>
+                    <option value="true" {% if filter_is_approved == 'true' %}selected{% endif %}>{% trans "Approved" %}</option>
+                    <option value="false" {% if filter_is_approved == 'false' %}selected{% endif %}>{% trans "On hold" %}</option>
                 </select>
             </div>
             <!-- ... existing filters ... -->
@@ -605,7 +605,7 @@
     </div>
     
     <div class="filter-actions">
-      <button type="submit" class="btn btn-primary">{% trans "Appliquer les filtres" %}</button>
+      <button type="submit" class="btn btn-primary">{% trans "Apply filters" %}</button>
     </div>
   </form>
 
@@ -615,11 +615,11 @@
       <table class="calls-table">
         <thead>
           <tr>
-            <th>{% trans "Titre" %}</th>
+            <th>{% trans "Title" %}</th>
             <th>{% trans "Type" %}</th>
-            <th>{% trans "Date limite" %}</th>
-            <th>{% trans "Organisateur" %}</th>
-            <th>{% trans "Statut" %}</th>
+            <th>{% trans "Deadline" %}</th>
+            <th>{% trans "Organizer" %}</th>
+            <th>{% trans "Status" %}</th>
             <th>{% trans "Actions" %}</th>
           </tr>
         </thead>
@@ -638,19 +638,19 @@
             <td>{{ call.organizer }}</td>
             <td>
               {% if call.is_approved %}
-                <span class="status-badge status-active">{% trans "Approuvé" %}</span>
+                <span class="status-badge status-active">{% trans "Approved" %}</span>
               {% else %}
-                <span class="status-badge status-inactive">{% trans "En attente" %}</span>
+                <span class="status-badge status-inactive">{% trans "On hold" %}</span>
               {% endif %}
             </td>
             <td>
               <div class="action-buttons">
-                <a href="{% url 'events:event_update' call.pk %}" class="btn-action btn-edit" title="Modifier cet appel à communication">{% trans "Modifier" %}</a>
-                <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet appel à communication ?');" title="Supprimer cet appel à communication">{% trans "Supprimer" %}</a>
+                <a href="{% url 'events:event_update' call.pk %}" class="btn-action btn-edit" title="Modifier cet appel à communication">{% trans "Edit" %}</a>
+                <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet appel à communication ?');" title="Supprimer cet appel à communication">{% trans "Delete" %}</a>
                 {% if not call.is_approved %}
                   <form action="{% url 'events:event_validate' call.pk %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success btn-action" title="Approuver cet événement">{% trans "Approuver" %}</button>
+                    <button type="submit" class="btn btn-success btn-action" title="Approuver cet événement">{% trans "Approve" %}</button>
                   </form>
                 {% endif %}
               </div>
@@ -673,38 +673,38 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="card-label">{% trans "Date limite" %}</div>
+            <div class="card-label">{% trans "Deadline" %}</div>
             <div class="card-value">
               <span class="deadline-date {% if call.submission_deadline|date:'Ymd' < now|date:'Ymd' %}deadline-past{% elif call.submission_deadline|date:'Ymd' < now|date:'Ymd'|add:'30' %}deadline-soon{% endif %}">
                 {{ call.submission_deadline|date:"d M Y" }}
               </span>
             </div>
 
-            <div class="card-label">{% trans "Organisateur" %}</div>
+            <div class="card-label">{% trans "Organizer" %}</div>
             <div class="card-value">{{ call.organizer }}</div>
 
-            <div class="card-label">{% trans "Statut" %}</div>
+            <div class="card-label">{% trans "Status" %}</div>
             <div class="card-value">
               {% if call.is_approved %}
-                <span class="status-badge status-active">{% trans "Approuvé" %}</span>
+                <span class="status-badge status-active">{% trans "Approved" %}</span>
               {% else %}
-                <span class="status-badge status-inactive">{% trans "En attente" %}</span>
+                <span class="status-badge status-inactive">{% trans "On hold" %}</span>
               {% endif %}
             </div>
           </div>
           <div class="card-footer">
             <div class="action-buttons">
               {# Bouton Modifier l'appel #}
-              <a href="{% url 'events:event_update' call.pk %}" class="btn-action btn-edit" title="Modifier cet appel à communication">{% trans "Modifier" %}</a>
+              <a href="{% url 'events:event_update' call.pk %}" class="btn-action btn-edit" title="Modifier cet appel à communication">{% trans "Edit" %}</a>
 
               {# Bouton Supprimer l'appel #}
-              <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet appel à communication ?');" title="Supprimer cet appel à communication">{% trans "Supprimer" %}</a>
+              <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet appel à communication ?');" title="Supprimer cet appel à communication">{% trans "Delete" %}</a>
 
               {# Bouton Valider (visible si l'événement lié n'est pas approuvé) #}
               {% if not call.is_approved %}
                 <form action="{% url 'events:event_validate' call.pk %}" method="post" style="display:inline;">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-success btn-action" title="Approuver cet événement">{% trans "Approuver" %}</button>
+                  <button type="submit" class="btn btn-success btn-action" title="Approuver cet événement">{% trans "Approve" %}</button>
                 </form>
               {% endif %}
             </div>
@@ -742,8 +742,8 @@
   {% else %}
     <div class="empty-state">
       <div class="empty-state-icon">📢</div> {# Peut-être changer l'icône #}
-      <p class="empty-state-message">{% trans "Aucun appel à communication trouvé. Veuillez modifier vos filtres ou ajouter un nouvel appel." %}</p>
-      <a href="{% url 'events:event_create' %}" class="btn btn-primary">{% trans "Créer un appel à communication" %}</a> {# Assurez-vous que l'URL est correcte #}
+      <p class="empty-state-message">{% trans "No calls for papers found. Please modify your filters or add a new call." %}</p>
+      <a href="{% url 'events:event_create' %}" class="btn btn-primary">{% trans "Create a call for papers" %}</a> {# Assurez-vous que l'URL est correcte #}
     </div>
   {% endif %}
 </div>

@@ -37,8 +37,8 @@ class TopicCreateView(LoginAndVerifiedRequiredMixin, CreateView):
                 NotificationService.create_notification(
                     recipient=user,
                     notification_type='SYSTEM', # Ou un type spécifique si tu en crées un pour le forum
-                    title="Nouveau sujet dans le forum",
-                    message=f"{self.request.user.username} a créé un nouveau sujet : {form.instance.title}",
+                    title="New topic in the forum",
+                    message=f"{self.request.user.username} created a new topic : {form.instance.title}",
                     related_object=form.instance # Optionnel: lie la notification à l'objet Topic créé
                 )
         return response

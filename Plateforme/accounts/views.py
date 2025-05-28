@@ -49,8 +49,8 @@ class SignUp(CreateView):
         
         # Envoi de l'email avec le code
         send_mail(
-            subject='Vérification de votre adresse email',
-            message=f'Votre code de vérification est : {user.email_verification_code}',
+            subject='Verifying your email address',
+            message=f'Your verification code is : {user.email_verification_code}',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
         )
@@ -90,10 +90,10 @@ class EmailVerificationView(View):
                 user.is_email_verified = True
                 user.email_verification_code = ''
                 user.save()
-                messages.success(request, "Email vérifié avec succès. Vous pouvez maintenant vous connecter.")
+                messages.success(request, "Email verified successfully. You can now log in.")
                 return redirect('account_login')  # Changé de 'auth:account_login' à 'account_login'
             else:
-                messages.error(request, "Code incorrect. Réessayez.")
+                messages.error(request, "Incorrect code. Try again..")
         return render(request, self.template_name, {'form': form})
 
 class InviteToProjectView(LoginRequiredMixin, View):
@@ -113,22 +113,22 @@ class InviteToProjectView(LoginRequiredMixin, View):
             NotificationService.create_notification(
                 recipient=user_to_invite,
                 notification_type='PROJECT_INVITE',
-                title="Invitation à rejoindre un projet",
-                message=f"Vous avez été invité à rejoindre le projet « {project.title} » par {request.user.full_name}.",
+                title="Invitation to join a project",
+                message=f"You have been invited to join the project « {project.title} » by {request.user.full_name}.",
                 project_id=project.pk,
                 sender_id=request.user.id
             )
-            messages.success(request, f"Invitation envoyée à {user_to_invite.full_name}.")
+            messages.success(request, f"Invitation sent to {user_to_invite.full_name}.")
         else:
-            messages.warning(request, f"{user_to_invite.full_name} est déjà membre ou a déjà une invitation en attente.")
-        return redirect('profile', pk=pk)
+            messages.warning(request, f"{user_to_invite.full_name} is already a member or already has a pending invitation.")
+        return redirect('accounts:profile', pk=pk)
 
 class RespondToProjectInviteView(LoginRequiredMixin, View):
     def post(self, request, project_id):
         project = get_object_or_404(Project, pk=project_id)
         member = ProjectMember.objects.filter(project=project, member=request.user, status='pending').first()
         if not member:
-            messages.error(request, "Aucune invitation en attente pour ce projet.")
+            messages.error(request, "No invitations pending for this project.")
             return redirect('projects:project_detail', pk=project_id)
         response = request.POST.get('response')
         if response == 'accept':
@@ -138,12 +138,12 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
             NotificationService.create_notification(
                 recipient=project.coordinator,
                 notification_type='PROJECT_INVITE_ACCEPTED',
-                title="Invitation acceptée",
-                message=f"{request.user.full_name} a accepté l'invitation à rejoindre le projet « {project.title} ».",
+                title="Invitation accepted",
+                message=f"{request.user.full_name} accepted the invitation to join the project « {project.title} ».",
                 project_id=project.pk,
                 sender_id=request.user.id
             )
-            messages.success(request, f"Vous avez rejoint le projet « {project.title} ».")
+            messages.success(request, f"You have joined the project « {project.title} ».")
         elif response == 'reject':
             member.status = 'rejected'
             member.save()
@@ -151,12 +151,12 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
             NotificationService.create_notification(
                 recipient=project.coordinator,
                 notification_type='PROJECT_INVITE_REJECTED',
-                title="Invitation refusée",
-                message=f"{request.user.full_name} a refusé l'invitation à rejoindre le projet « {project.title} ».",
+                title="Invitation refused",
+                message=f"{request.user.full_name} declined the invitation to join the project « {project.title} ».",
                 project_id=project.pk,
                 sender_id=request.user.id
             )
-            messages.info(request, f"Vous avez refusé l'invitation.")
+            messages.info(request, f"You declined the invitation.")
         return redirect('projects:project_detail', pk=project_id)
 
 def awaiting_verification_view(request):
@@ -168,6 +168,6 @@ def delete_account(request):
         user = request.user
         logout(request)
         user.delete()
-        messages.success(request, _('Votre compte a été supprimé avec succès.'))
+        messages.success(request, _('Your account has been successfully deleted.'))
         return redirect('pages:home')
     return render(request, 'accounts/delete_account.html')

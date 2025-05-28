@@ -1,6 +1,6 @@
 {% extends 'base_admin.html' %}
 {% load i18n %}
-{% block title %}{% trans "Gestion des Projets" %}{% endblock %}
+{% block title %}Projects Management{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -461,23 +461,23 @@
 <div class="container">
   <div class="projects-header">
     <div>
-      <h1>{% trans "Gestion des Projets" %}</h1>
+      <h1>Projects Management</h1>
       <div class="status-legends">
         <div class="status-item">
           <span class="status-dot status-in-progress"></span>
-          <span class="status-label">{% trans "En cours" %}</span>
+          <span class="status-label">Ongoing</span>
         </div>
         <div class="status-item">
           <span class="status-dot status-completed"></span>
-          <span class="status-label">{% trans "Terminé" %}</span>
+          <span class="status-label">Completed</span>
         </div>
         <div class="status-item">
           <span class="status-dot status-pending"></span>
-          <span class="status-label">{% trans "En attente" %}</span>
+          <span class="status-label">Pending</span>
         </div>
         <div class="status-item">
           <span class="status-dot status-cancelled"></span>
-          <span class="status-label">{% trans "Annulé" %}</span>
+          <span class="status-label">Cancelled</span>
         </div>
       </div>
     </div>
@@ -486,13 +486,13 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
           <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
         </svg>
-        {% trans "Exporter" %}
+        Export
       </a>
       <a href="{% url 'projects:project_new' %}" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
           <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
-        {% trans "Nouveau projet" %}
+        New Project
       </a>
     </div>
   </div>
@@ -500,29 +500,29 @@
   <!-- Dashboard Summary -->
   <div class="dashboard-summary">
     <div class="summary-card">
-      <div class="summary-card-title">{% trans "Total Projets" %}</div>
+      <div class="summary-card-title">Total Projects</div>
       <div class="summary-card-value">{{ total_count }}</div>
       <div class="summary-card-trend trend-up">
-        <span>{% if projects_growth > 0 %}+{% endif %}{{ projects_growth }}% {% trans "ce mois" %}</span>
+        <span>{% if projects_growth > 0 %}+{% endif %}{{ projects_growth }}% this month</span>
       </div>
     </div>
     <div class="summary-card">
-      <div class="summary-card-title">{% trans "En cours" %}</div>
+      <div class="summary-card-title">Ongoing</div>
       <div class="summary-card-value">{{ in_progress_count }}</div>
       <div class="summary-card-trend trend-neutral">
-        <span>{% trans "Stable" %}</span>
+        <span>Stable</span>
       </div>
     </div>
     <div class="summary-card">
-      <div class="summary-card-title">{% trans "Terminés" %}</div>
+      <div class="summary-card-title">Completed</div>
       <div class="summary-card-value">{{ completed_count }}</div>
       <div class="summary-card-trend trend-up">
-        <span>{% if completed_growth > 0 %}+{% endif %}{{ completed_growth }}% {% trans "ce mois" %}</span>
+        <span>{% if completed_growth > 0 %}+{% endif %}{{ completed_growth }}% this month</span>
       </div>
     </div>
     <div class="summary-card">
-      <div class="summary-card-title">{% trans "Temps moyen" %}</div>
-      <div class="summary-card-value">{{ average_duration_display_days }}j</div>
+      <div class="summary-card-title">Average Time</div>
+      <div class="summary-card-value">{{ average_duration_display_days }}d</div>
       <div class="summary-card-trend {{ duration_trend_class }}">
         <span>{{ duration_trend_text }}</span>
       </div>
@@ -530,21 +530,21 @@
   </div>
 
   <!-- Filters Form -->
-  <form method="get" action="{% url 'pages:home' %}" class="filter-bar">
+  <form method="get"  class="filter-bar">
     <div class="search-box">
-      <input type="text" name="search" placeholder="{% trans "Rechercher un projet..." %}" value="{{ search }}">
+      <input type="text" name="search" placeholder="Search for a project..." value="{{ search }}">
     </div>
     <div class="filter-dropdown">
       <select name="status">
-        <option value="">{% trans "Tous les statuts" %}</option>
-        <option value="ongoing" {% if filter_status == 'ongoing' %}selected{% endif %}>{% trans "En cours" %}</option>
-        <option value="completed"   {% if filter_status == 'completed'   %}selected{% endif %}>{% trans "Terminé" %}</option>
-        <option value="pending"     {% if filter_status == 'pending'     %}selected{% endif %}>{% trans "En attente" %}</option>
-        <option value="cancelled"   {% if filter_status == 'cancelled'   %}selected{% endif %}>{% trans "Annulé" %}</option>
+        <option value="">All Statuses</option>
+        <option value="ongoing" {% if filter_status == 'ongoing' %}selected{% endif %}>Ongoing</option>
+        <option value="completed"   {% if filter_status == 'completed'   %}selected{% endif %}>Completed</option>
+        <option value="pending"     {% if filter_status == 'pending'     %}selected{% endif %}>Pending</option>
+        <option value="cancelled"   {% if filter_status == 'cancelled'   %}selected{% endif %}>Cancelled</option>
       </select>
     </div>
     <button type="submit" class="btn btn-primary">
-      {% trans "Filtrer" %}
+      Filter
     </button>
   </form>
 
@@ -553,10 +553,10 @@
     <table class="projects-table" id="projects-table">
       <thead>
         <tr>
-          <th style="width:50%;">{% trans "Projet" %}</th>
-          <th>{% trans "Statut" %}</th>
-          <th>{% trans "Équipe" %}</th>
-          <th>{% trans "Actions" %}</th>
+          <th style="width:50%;">Project</th>
+          <th>Status</th>
+          <th>Team</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -566,28 +566,28 @@
             <a href="{% url 'projects:project_detail' project.id %}" class="project-title">{{ project.title }}</a>
             <div class="project-desc">{{ project.description|truncatechars:120 }}</div>
             <div class="project-meta">
-              <div class="meta-item">{% trans "Créé:" %} {{ project.created_at|date:"d M Y" }}</div>
+              <div class="meta-item">Created: {{ project.created_at|date:"d M Y" }}</div>
               <div class="meta-item">
-              {% trans "Échéance :" %}
+              Deadline:
               {% if project.date_start and project.date_end %}
                 {{ project.date_start|date:"d/m/Y" }} – {{ project.date_end|date:"d/m/Y" }}
               {% elif project.date_end %}
                 {{ project.date_end|date:"d/m/Y" }}
               {% else %}
-                {% trans "Non définie" %}
+                Not defined
               {% endif %}
 </div>
             </div>
           </td>
           <td>
             {% if project.status == 'ongoing' %}
-              <span class="status-badge status-badge-in-progress">{% trans "En cours" %}</span>
+              <span class="status-badge status-badge-in-progress">Ongoing</span>
             {% elif project.status == 'completed' %}
-              <span class="status-badge status-badge-completed">{% trans "Terminé" %}</span>
+              <span class="status-badge status-badge-completed">Completed</span>
             {% elif project.status == 'pending' %}
-              <span class="status-badge status-badge-pending">{% trans "En attente" %}</span>
+              <span class="status-badge status-badge-pending">Pending</span>
             {% elif project.status == 'cancelled' %}
-              <span class="status-badge status-badge-cancelled">{% trans "Annulé" %}</span>
+              <span class="status-badge status-badge-cancelled">Cancelled</span>
             {% else %}
               {{ project.get_status_display }}
             {% endif %}
@@ -596,7 +596,7 @@
             <span class="team-badge">{% for pm in project.members.all|slice:":3" %}
                                     {{ pm.member.get_full_name|default:pm.member.full_name }}{% if not forloop.last %}, {% endif %}
                                 {% empty %}
-                                    <em>{% trans "Aucun participant" %}</em>
+                                    <em>No participants</em>
                                 {% endfor %}</span>
           </td>
           <td>
@@ -606,7 +606,7 @@
                   <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
               </a>
-              <a href="{% url 'projects:project_delete' project.id %}" class="btn btn-sm btn-outline" onclick="return confirm('Supprimer ce projet ?');">
+              <a href="{% url 'projects:project_delete' project.id %}" class="btn btn-sm btn-outline" onclick="return confirm('Delete this project?');">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
                   <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                 </svg>
@@ -625,9 +625,9 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
       </svg>
     </div>
-    <h3 class="empty-state-title">{% trans "Aucun projet trouvé" %}</h3>
-    <p class="empty-state-text">{% trans "Commencez par créer un nouveau projet ou modifiez vos critères de recherche." %}</p>
-    <a href="{% url 'projects:project_new' %}" class="btn btn-primary">{% trans "Créer un projet" %}</a>
+    <h3 class="empty-state-title">No projects found</h3>
+    <p class="empty-state-text">Start by creating a new project or modify your search criteria.</p>
+    <a href="{% url 'projects:project_new' %}" class="btn btn-primary">Create a project</a>
   </div>
   {% endif %}
 </div>

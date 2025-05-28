@@ -1,11 +1,10 @@
-{% extends 'base.html' %} {% block title %}Gestion des membres - {{
-project.title }}{% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %}Membership management - {{ project.title }}{% endblock %} {% block content %}
 <div class="content">
-  <h1 class="page-title">Gestion des membres - {{ project.title }}</h1>
+  <h1 class="page-title">Membership management - {{ project.title }}</h1>
 
   <!-- Membres en attente -->
   <div class="card-section">
-    <h2 class="section-title">Demandes en attente</h2>
+    <h2 class="section-title">Pending requests</h2>
     <div class="members-list">
       {% for member in pending_members %}
       <div class="member-item pending">
@@ -52,7 +51,7 @@ project.title }}{% endblock %} {% block content %}
               >
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              Accepter
+              Accept
             </button>
           </form>
           <form
@@ -76,20 +75,20 @@ project.title }}{% endblock %} {% block content %}
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
-              Refuser
+              Refuse
             </button>
           </form>
         </div>
       </div>
       {% empty %}
-      <div class="empty-message">Aucune demande en attente.</div>
+      <div class="empty-message">No pending requests.</div>
       {% endfor %}
     </div>
   </div>
 
   <!-- Membres acceptés -->
   <div class="card-section">
-    <h2 class="section-title">Membres acceptés</h2>
+    <h2 class="section-title">Members accepted</h2>
     <div class="members-list">
       {% for member in accepted_members %}
       <div class="member-item accepted">
@@ -122,19 +121,19 @@ project.title }}{% endblock %} {% block content %}
             style="display: inline"
           >
             {% csrf_token %}
-            <button type="submit" class="btn reject-btn">Retirer</button>
+            <button type="submit" class="btn reject-btn">Withdraw</button>
           </form>
         </div>
       </div>
       {% empty %}
-      <div class="empty-message">Aucun membre accepté.</div>
+      <div class="empty-message">No members accepted.</div>
       {% endfor %}
     </div>
   </div>
 
   <!-- Membres refusés -->
   <div class="card-section">
-    <h2 class="section-title">Demandes refusées</h2>
+    <h2 class="section-title">Requests denied</h2>
     <div class="members-list">
       {% for member in rejected_members %}
       <div class="member-item rejected">
@@ -162,7 +161,7 @@ project.title }}{% endblock %} {% block content %}
         </div>
       </div>
       {% empty %}
-      <div class="empty-message">Aucune demande refusée.</div>
+      <div class="empty-message">No requests refused.</div>
       {% endfor %}
     </div>
   </div>

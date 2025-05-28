@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Détail de la publication" %}{% endblock %}
+{% block title %}{% trans "Publication details" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -30,12 +30,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item" href="{% url 'QA:edit_post' post.id %}">
-                                    <i class="fas fa-edit me-2"></i>{% trans "Modifier" %}
+                                    <i class="fas fa-edit me-2"></i>{% trans "Edit" %}
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" href="{% url 'QA:delete_post' post.id %}" onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer cette publication ?" %}')">
-                                    <i class="fas fa-trash-alt me-2"></i>{% trans "Supprimer" %}
+                                <a class="dropdown-item text-danger" href="{% url 'QA:delete_post' post.id %}" onclick="return confirm('{% trans "Are you sure you want to delete this post?" %}')">
+                                    <i class="fas fa-trash-alt me-2"></i>{% trans "Delete" %}
                                 </a>
                             </li>
                         </ul>
@@ -67,7 +67,7 @@
             <!-- Commentaires -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">{% trans "Commentaires" %}</h5>
+                    <h5 class="mb-0">{% trans "Comments" %}</h5>
                 </div>
                 <div class="card-body">
                     <!-- Formulaire de commentaire -->
@@ -84,7 +84,7 @@
                             {% endif %}
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane me-2"></i>{% trans "Commenter" %}
+                            <i class="fas fa-paper-plane me-2"></i>{% trans "Comment" %}
                         </button>
                     </form>
 
@@ -113,7 +113,7 @@
                                                 <span class="likes-count">{{ comment.total_likes }}</span>
                                             </button>
                                             <button type="button" class="btn btn-link text-muted btn-sm reply-button" data-comment-id="{{ comment.id }}">
-                                                <i class="fas fa-reply me-1"></i>{% trans "Répondre" %}
+                                                <i class="fas fa-reply me-1"></i>{% trans "Answer" %}
                                             </button>
                                             {% if comment.author == request.user %}
                                             <div class="dropdown">
@@ -123,12 +123,12 @@
                                                 <ul class="dropdown-menu">
                                                     <li>
                                                         <button type="button" class="dropdown-item edit-comment-button" data-comment-id="{{ comment.id }}">
-                                                            <i class="fas fa-edit me-2"></i>{% trans "Modifier" %}
+                                                            <i class="fas fa-edit me-2"></i>{% trans "Edit" %}
                                                         </button>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item text-danger" href="{% url 'QA:delete_comment' comment.id %}" onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer ce commentaire ?" %}')">
-                                                            <i class="fas fa-trash-alt me-2"></i>{% trans "Supprimer" %}
+                                                        <a class="dropdown-item text-danger" href="{% url 'QA:delete_comment' comment.id %}" onclick="return confirm('{% trans "Are you sure you want to delete this comment?" %}')">
+                                                            <i class="fas fa-trash-alt me-2"></i>{% trans "Delete" %}
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -147,10 +147,10 @@
                                                 </div>
                                                 <div class="d-flex gap-2">
                                                     <button type="submit" class="btn btn-primary btn-sm">
-                                                        <i class="fas fa-reply me-1"></i>{% trans "Envoyer la réponse" %}
+                                                        <i class="fas fa-reply me-1"></i>{% trans "Send reply" %}
                                                     </button>
                                                     <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="{{ comment.id }}">
-                                                        {% trans "Annuler" %}
+                                                        {% trans "Cancel" %}
                                                     </button>
                                                 </div>
                                             </form>
@@ -165,10 +165,10 @@
                                                 </div>
                                                 <div class="d-flex gap-2">
                                                     <button type="submit" class="btn btn-primary btn-sm">
-                                                        <i class="fas fa-save me-1"></i>{% trans "Enregistrer" %}
+                                                        <i class="fas fa-save me-1"></i>{% trans "Save" %}
                                                     </button>
                                                     <button type="button" class="btn btn-secondary btn-sm cancel-edit" data-comment-id="{{ comment.id }}">
-                                                        {% trans "Annuler" %}
+                                                        {% trans "Cancel" %}
                                                     </button>
                                                 </div>
                                             </form>
@@ -198,7 +198,7 @@
                                                                 <span class="likes-count">{{ reply.total_likes }}</span>
                                                             </button>
                                                             {% if reply.author == request.user %}
-                                                            <a href="{% url 'QA:delete_comment' reply.id %}" class="btn btn-link text-danger btn-sm" onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer cette réponse ?" %}')">
+                                                            <a href="{% url 'QA:delete_comment' reply.id %}" class="btn btn-link text-danger btn-sm" onclick="return confirm('{% trans "Are you sure you want to delete this answer?" %}')">
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </a>
                                                             {% endif %}
@@ -215,8 +215,8 @@
                         {% empty %}
                         <div class="text-center py-4">
                             <i class="fas fa-comments fa-3x text-muted mb-3"></i>
-                            <h5>{% trans "Aucun commentaire pour le moment" %}</h5>
-                            <p class="text-muted">{% trans "Soyez le premier à commenter !" %}</p>
+                            <h5>{% trans "No comments yet" %}</h5>
+                            <p class="text-muted">{% trans "Be the first to comment!" %}</p>
                         </div>
                         {% endfor %}
                     </div>

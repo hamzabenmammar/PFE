@@ -259,8 +259,8 @@ def event_validate(request, pk):
     NotificationService.notify_group(
         active_users,
         'EVENT_APPROVED',
-        f"Nouvel événement approuvé : {event.title}",
-        f"Un nouvel événement a été approuvé : {event.title}. Date : {event.start_date}",
+        f"New event approved : {event.title}",
+        f"A new event has been approved : {event.title}. Date : {event.start_date}",
         event
     )
     

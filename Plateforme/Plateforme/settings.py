@@ -261,3 +261,4 @@ LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
 
+ACCOUNT_PASSWORD_RESET_REDIRECT_URL = 'account_login'

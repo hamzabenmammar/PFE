@@ -92,21 +92,21 @@ class InstitutionCreateView(LoginRequiredMixin, CreateView):
                 NotificationService.create_notification(
                     recipient=moderator,
                     notification_type='INSTITUTION_PENDING_REVIEW',
-                    title=f"Nouvelle institution à examiner",
-                    message=f"Une nouvelle institution '{form.instance.name}' a été créée par {self.request.user.username} et nécessite votre examen.",
+                    title=f"New institution to examine",
+                    message=f"A new institution'{form.instance.name}'was created by {self.request.user.username} and requires your review.",
                     related_object=self.object,
                 )
 
-            messages.success(self.request, _("L'institution a été ajoutée avec succès et sera examinée par les modérateurs."))
+            messages.success(self.request, _("The institution has been successfully added and will be reviewed by moderators."))
             return redirect(self.get_success_url())
         except Exception as e:
             logger.error(f"Error creating institution: {str(e)}")
-            messages.error(self.request, f"Une erreur s'est produite lors de la création de l'institution : {str(e)}")
+            messages.error(self.request, f"An error occurred while creating the institution: {str(e)}")
             return self.form_invalid(form)
     
     def form_invalid(self, form):
         logger.error(f"Form is invalid: {form.errors}")
-        messages.error(self.request, _("Veuillez corriger les erreurs dans le formulaire."))
+        messages.error(self.request, _("Please correct any errors in the form."))
         return super().form_invalid(form)
     
     def get_success_url(self):
@@ -129,17 +129,17 @@ class InstitutionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
     def form_valid(self, form):
         try:
             self.object = form.save()
-            logger.info(f"Institution mise à jour avec succès - ID: {self.object.id}")
-            messages.success(self.request, "L'institution a été mise à jour avec succès.")
+            logger.info(f"Institution successfully updated - ID: {self.object.id}")
+            messages.success(self.request, "The institution has been successfully updated.")
             return redirect(self.get_success_url())
         except Exception as e:
-            logger.error(f"Erreur lors de la mise à jour de l'institution: {str(e)}")
-            messages.error(self.request, f"Une erreur s'est produite lors de la mise à jour de l'institution : {str(e)}")
+            logger.error(f"Error updating institution: {str(e)}")
+            messages.error(self.request, f"An error occurred while updating the institution: {str(e)}")
             return self.form_invalid(form)
     
     def form_invalid(self, form):
-        logger.error(f"Formulaire d'édition invalide - Erreurs: {form.errors}")
-        messages.error(self.request, "Veuillez corriger les erreurs dans le formulaire.")
+        logger.error(f"Invalid edit form - Errors: {form.errors}")
+        messages.error(self.request, "Please correct the errors in the form.")
         return super().form_invalid(form)
     
     def get_success_url(self):
@@ -156,6 +156,6 @@ class InstitutionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
         return self.request.user == institution.created_by or self.request.user.is_staff
         
     def delete(self, request, *args, **kwargs):
-        logger.info(f"Suppression de l'institution - ID: {self.get_object().id}")
-        messages.success(self.request, "L'institution a été supprimée avec succès.")
+        logger.info(f"Institution Deletion - ID: {self.get_object().id}")
+        messages.success(self.request, "The institution has been successfully abolished.")
         return super().delete(request, *args, **kwargs)

@@ -19,7 +19,7 @@
               href="{% url 'forum:chatroom-list' chatroom.topic.id %}"
               class="btn-return d-flex align-items-center"
             >
-              <i class="fas fa-arrow-left me-2"></i>{% trans "Retour" %}
+              <i class="fas fa-arrow-left me-2"></i>{% trans "Back" %}
             </a>
           </div>
 
@@ -40,7 +40,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#bannedUsersModal"
               >
-                <i class="fas fa-ban me-1"></i>{% trans "Utilisateurs bannis" %}
+                <i class="fas fa-ban me-1"></i>{% trans "Banned users" %}
               </button>
             </div>
             {% endif %}
@@ -59,7 +59,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="bannedUsersModalLabel">
-                 {% trans "Utilisateurs bannis" %} 
+                 {% trans "Banned users" %} 
                 </h5>
                 <button
                   type="button"
@@ -79,11 +79,11 @@
                       <div>
                         <h6 class="mb-1">{{ ban.user.username }}</h6>
                         <small class="text-muted"
-                          >{% trans "Banni le" %} {{ ban.banned_at|date:"d/m/Y H:i" }}</small
+                          >{% trans "Banned " %} {{ ban.banned_at|date:"d/m/Y H:i" }}</small
                         >
                         {% if ban.reason %}
                         <p class="mb-1 mt-2">
-                          <small>{% trans "Raison :" %} {{ ban.reason }}</small>
+                          <small>{% trans "Reason :" %} {{ ban.reason }}</small>
                         </p>
                         {% endif %}
                       </div>
@@ -102,7 +102,7 @@
                   {% endfor %}
                 </div>
                 {% else %}
-                <p class="text-center text-muted">{% trans "Aucun utilisateur banni" %}</p>
+                <p class="text-center text-muted">{% trans "No users banned" %}</p>
                 {% endif %}
               </div>
             </div>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="message-time">
                     {{ message.timestamp|date:"d/m/Y H:i" }} {% if message.is_edited %}
-                    <span class="edited-indicator">{% trans "(modifié)" %}</span>
+                    <span class="edited-indicator">{% trans "(edited)" %}</span>
                     {% endif %}
                   </div>
                 </div>
@@ -172,8 +172,8 @@
               <div class="empty-icon">
                 <i class="fas fa-comments"></i>
               </div>
-              <h5>{% trans "Aucun message dans cette salle" %}</h5>
-              <p>{% trans "Soyez le premier à démarrer la conversation!" %}</p>
+              <h5>{% trans "No messages in this room" %}</h5>
+              <p>{% trans "Be the first to start the conversation!" %}</p>
             </div>
             {% endif %}
             <div id="typing-indicator" class="typing-indicator d-none">
@@ -205,7 +205,7 @@
                 name="message"
                 id="message-input"
                 class="message-input"
-                placeholder="{% trans "Votre message..." %}"
+                placeholder="{% trans "Your message..." %}"
                 required
                 autocomplete="off"
               />

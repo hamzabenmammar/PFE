@@ -16,8 +16,8 @@ def notify_new_forum_post(sender, instance, created, **kwargs):
         NotificationService.notify_group(
             admins, 
             NotificationType.NEW_FORUM_POST,
-            f"Nouveau sujet dans le forum: {instance.title}",
-            f"{instance.author.username} a créé un nouveau sujet dans le forum: {instance.title}",
+            f"New topic in the forum: {instance.title}",
+            f"{instance.author.username} created a new topic in the forum: {instance.title}",
             instance
         )
         
@@ -37,8 +37,8 @@ def notify_new_comment(sender, instance, created, **kwargs):
             NotificationService.create_notification(
                 post_author,
                 NotificationType.NEW_COMMENT,
-                f"Nouveau commentaire sur votre sujet",
-                f"{instance.author.username} a commenté votre sujet: {instance.post.title}",
+                f"New comment on your topic",
+                f"{instance.author.username} commented on your topic: {instance.post.title}",
                 instance
             )
         
@@ -54,7 +54,7 @@ def notify_new_comment(sender, instance, created, **kwargs):
         NotificationService.notify_group(
             participant_users,
             NotificationType.NEW_COMMENT,
-            f"Nouveau commentaire dans une discussion",
-            f"{instance.author.username} a commenté le sujet: {instance.post.title}",
+            f"New comment in a discussion",
+            f"{instance.author.username} commented on the topic: {instance.post.title}",
             instance
         )
