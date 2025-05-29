@@ -680,7 +680,7 @@ class GlobalSearchView(View):
         elif 'avatar' in source:
             result['profile_picture'] = str(source['avatar'])
 
-        result['link'] = f"/accounts/accounts/profile/{hit.meta.id}/"
+        result['link'] = f"/accounts/profile/{hit.meta.id}/"
 
     def _process_course_fields(self, hit, source, result):
         for field in ['academic_level', 'academic_level_display', 'field', 'field_display']:
