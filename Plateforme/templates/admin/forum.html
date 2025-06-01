@@ -354,16 +354,6 @@
             </div>
           </div>
           <div class="col-12 col-md-6 col-lg-3">
-            <label class="form-label fw-semibold text-muted small mb-2">{% trans "CATEGORY" %}</label>
-            <select class="form-select search-input" name="category">
-              <option value="">{% trans "All categories" %}</option>
-              {# TODO: Afficher les catégories dynamiquement #}
-              <option value="general">{% trans "General" %}</option>
-              <option value="tech">{% trans "Technical" %}</option>
-              <option value="support">{% trans "Support" %}</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-6 col-lg-3">
             <label class="form-label fw-semibold text-muted small mb-2">{% trans "STATUT" %}</label>
             <select class="form-select search-input" name="status">
               <option value="">{% trans "All statuses" %}</option>
@@ -399,7 +389,6 @@
         <thead>
           <tr>
             <th style="width: 40%;">{% trans "topics" %}</th>
-            <th style="width: 15%;">{% trans "Category" %}</th>{# TODO: Afficher dynamiquement #}
             <th style="width: 15%;">{% trans "Author" %}</th>
             <th style="width: 12%;">{% trans "Date" %}</th>
             <th style="width: 8%;">{% trans "Answers" %}</th>
@@ -414,10 +403,6 @@
                 <div class="topic-title mb-1">{{ topic.title }}</div>
                 <div class="topic-preview">{{ topic.description|truncatechars:100 }}</div>{# Adapter le champ #}
               </div>
-            </td>
-            <td class="p-3">
-              {# TODO: Afficher la catégorie dynamique #}
-              <span class="status-badge" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46;">{% trans "Category" %}</span>
             </td>
             <td class="p-3">
               <div class="author-info">

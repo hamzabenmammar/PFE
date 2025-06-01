@@ -170,19 +170,16 @@
                     </div>
                     
                     <div class="card-body p-4">
-                        <form method="POST" action="{% url 'pages:admin_user_new' %}" id="newUserForm">
+                        <form method="POST" action="{% url 'pages:admin_users_new' %}" id="newUserForm">
                             {% csrf_token %}
                             
                             <div class="row g-4 mb-3">
                                 <div class="col-md-12">
                                     <div class="form-floating">
-<<<<<<< HEAD
+
                                         <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" required>
                                         <label for="full_name">{% trans "Full Name" %} <span class="required-field">*</span></label>
-=======
-                                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="{% trans "Nom complet" %}" required>
-                                        <label for="full_name">{% trans "Nom complet" %} <span class="required-field">*</span></label>
->>>>>>> 32b710e530da6996a006d66406861724b323d18f
+
                                     </div>
                                 </div>
                             </div>

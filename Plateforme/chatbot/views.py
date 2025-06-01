@@ -4,12 +4,14 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 import requests
+from django.contrib.auth.decorators import login_required
 import uuid
 import json
 import os
 
 FASTAPI_URL = os.getenv("FASTAPI_URL", "http://localhost:8000")
 
+@login_required
 def chatbot_interface(request):
     session_id = None
     try:

@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
+from django.utils import timezone
 from django.conf import settings
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
@@ -69,7 +70,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
    template_name='account/profile_edit.html'
    context_object_name = 'user'
    def get_success_url(self):
-    return reverse_lazy('profile', kwargs={'pk': self.object.pk})
+    return reverse_lazy('accounts:profile', kwargs={'pk': self.object.pk})
 
 class EmailVerificationView(View):
     form_class = EmailVerificationForm
@@ -127,13 +128,36 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
     def post(self, request, project_id):
         project = get_object_or_404(Project, pk=project_id)
         member = ProjectMember.objects.filter(project=project, member=request.user, status='pending').first()
+        
         if not member:
             messages.error(request, "No invitations pending for this project.")
             return redirect('projects:project_detail', pk=project_id)
+        
         response = request.POST.get('response')
+        notification_id = request.POST.get('notification_id')
+        
+        # Récupérer la notification pour la mettre à jour
+        notification = None
+        if notification_id:
+            try:
+                notification = Notification.objects.get(
+                    id=notification_id, 
+                    recipient=request.user
+                )
+            except Notification.DoesNotExist:
+                pass
+        
         if response == 'accept':
             member.status = 'accepted'
             member.save()
+            
+            # Mettre à jour la notification
+            if notification:
+                notification.response_given = True
+                notification.response = 'accept'
+                notification.response_date = timezone.now()
+                notification.save()
+            
             # Utiliser NotificationService pour la notification d'acceptation
             NotificationService.create_notification(
                 recipient=project.coordinator,
@@ -144,9 +168,18 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
                 sender_id=request.user.id
             )
             messages.success(request, f"You have joined the project « {project.title} ».")
+            
         elif response == 'reject':
             member.status = 'rejected'
             member.save()
+            
+            # Mettre à jour la notification
+            if notification:
+                notification.response_given = True
+                notification.response = 'reject'
+                notification.response_date = timezone.now()
+                notification.save()
+            
             # Utiliser NotificationService pour la notification de refus
             NotificationService.create_notification(
                 recipient=project.coordinator,
@@ -157,8 +190,8 @@ class RespondToProjectInviteView(LoginRequiredMixin, View):
                 sender_id=request.user.id
             )
             messages.info(request, f"You declined the invitation.")
+        
         return redirect('projects:project_detail', pk=project_id)
-
 def awaiting_verification_view(request):
     return render(request, 'awaiting_verification.html')
 

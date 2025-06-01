@@ -86,7 +86,7 @@
                 <i class="fas fa-clock me-1"></i> {{ pending_users_count }}{% trans " pending user(s)" %} 
               </div>
               {% endif %}
-              <a href="{% url 'pages:admin_user_new' %}" class="btn btn-primary">
+              <a href="{% url 'pages:admin_users_new' %}" class="btn btn-primary">
                 <i class="fas fa-plus me-1"></i> {% trans "New User" %}
               </a>
             </div>
@@ -210,6 +210,11 @@
                           {% endif %}
                           <li><hr class="dropdown-divider"></li>
                           <li><a class="dropdown-item" href="{% url 'pages:admin_user_history' user.id %}">{% trans "History" %}</a></li>
+                          <li>
+                          <a class="dropdown-item text-danger" href="{% url 'pages:admin_user_delete' user.id %}">
+                            {% trans "Delete" %}
+                          </a>
+                        </li>
                         </ul>
                       </div>
                     </div>

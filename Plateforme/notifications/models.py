@@ -16,8 +16,17 @@ class Notification(models.Model):
         ('EVENT_CREATED', 'Événement créé'),
         ('EVENT_APPROVED', 'Événement approuvé'),
     ]
-    
-    
+    response_given = models.BooleanField(default=False)
+    response = models.CharField(
+        max_length=10, 
+        choices=[
+            ('accept', 'Accept'),
+            ('reject', 'Reject'),
+        ],
+        null=True, 
+        blank=True
+    )
+    response_date = models.DateTimeField(null=True, blank=True)
     recipient = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='notifications')
     type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES, default='SYSTEM')
     title = models.CharField(max_length=255)

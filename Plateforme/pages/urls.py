@@ -22,7 +22,8 @@ urlpatterns = [
     
     # User management
      path('admin/users/<uuid:user_id>/edit/', views.admin_user_edit, name='admin_user_edit'),
-     path('admin/users/new/', views.admin_user_new, name='admin_user_new'),
+     path('admin/users/new/', views.admin_users_new, name='admin_users_new'),
+     path('admin/users/<uuid:user_id>/delete/', views.admin_user_delete, name='admin_user_delete'),
       path('admin/users/<uuid:user_id>/activate/', views.admin_user_activate, name='admin_user_activate'),
       path('admin/users/<uuid:user_id>/block/', views.admin_user_block, name='admin_user_block'),
      path('admin/users/<uuid:user_id>/history/', views.admin_user_history, name='admin_user_history'),

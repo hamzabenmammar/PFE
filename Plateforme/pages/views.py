@@ -370,14 +370,12 @@ def admin_users(request):
 
 @login_required
 @user_passes_test(is_admin)
-def admin_user_new(request):
+def admin_users_new(request):
     """Vue pour créer un nouvel utilisateur."""
     if request.method == 'POST':
         # Extraire les données du formulaire
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
         password = request.POST.get('password')
         status = request.POST.get('status', 'active')
         
@@ -395,8 +393,6 @@ def admin_user_new(request):
             full_name=full_name,
             email=email,
             password=password,
-            first_name=first_name,
-            last_name=last_name,
             status=status
         )
         
@@ -413,6 +409,36 @@ def admin_user_new(request):
         return redirect('pages:admin_users')
     
     return render(request, 'admin/users_new.html')
+
+@login_required
+@user_passes_test(is_admin)
+@transaction.atomic
+def admin_user_delete(request, user_id):
+    user_obj = get_object_or_404(User, id=user_id)
+
+    if user_obj == request.user:
+        messages.error(request, "You cannot delete your own account.")
+        return redirect('pages:admin_users')
+
+    if request.method == 'POST':
+        # Historique
+        UserStatusHistory.objects.create(
+            user=user_obj,
+            old_status=user_obj.status,
+            new_status='deleted',
+            changed_by=request.user,
+            change_date=timezone.now(),
+            reason='Account deleted by admin'
+        )
+        # Suppression
+        user_obj.delete()
+
+        messages.success(request, f"The user {user_obj.full_name} has been successfully deleted.")
+        return redirect('pages:admin_users')
+
+    return render(request, 'admin/users_delete_confirm.html', {'user_obj': user_obj})
+
+
 
 @login_required
 @user_passes_test(is_admin)
