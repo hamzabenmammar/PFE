@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-28 23:06+0100\n"
+"POT-Creation-Date: 2025-06-01 17:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,8 +31,7 @@ msgstr "الانجليزية"
 msgid "Arabic"
 msgstr "العربية"
 
-#: .\accounts\views.py:171
-
+#: .\accounts\views.py:204
 msgid "Your account has been successfully deleted."
 msgstr "  لقد تم حذف حسابك بنجاح."
 
@@ -93,14 +92,14 @@ msgid "Text Summarization"
 msgstr "تلخيص النص"
 
 #: .\events\models.py:40 .\resources\models.py:33
-#: .\templates\admin\calls.html:620 .\templates\admin\corpora.html:461
-#: .\templates\admin\courses.html:542 .\templates\admin\tools.html:460
+#: .\templates\admin\calls.html:620 .\templates\admin\corpora.html:444
+#: .\templates\admin\courses.html:536 .\templates\admin\tools.html:443
 #: .\templates\forum\topic_new.html:18 .\templates\forum\topic_update.html:19
 msgid "Title"
 msgstr "عنوان"
 
 #: .\events\models.py:41 .\institutions\forms.py:64 .\institutions\models.py:57
-#: .\resources\models.py:37 .\templates\admin\corpora.html:462
+#: .\resources\models.py:37 .\templates\admin\corpora.html:445
 #: .\templates\forum\chatroom_new.html:39
 #: .\templates\forum\chatroom_update.html:29
 #: .\templates\forum\topic_new.html:37 .\templates\forum\topic_update.html:38
@@ -251,7 +250,7 @@ msgstr "تمت الموافقة على الحدث بنجاح!"
 
 #: .\institutions\forms.py:7 .\institutions\forms.py:20
 #: .\institutions\forms.py:29 .\templates\admin\history.html:274
-#: .\templates\admin\history.html:283 .\templates\resources\list.html:86
+#: .\templates\admin\history.html:283 .\templates\resources\list.html:84
 msgid "All"
 msgstr "الكل"
 
@@ -313,7 +312,7 @@ msgstr "الموقع الالكتروني"
 
 #: .\institutions\forms.py:61 .\institutions\models.py:54
 #: .\templates\account\profile.html:55 .\templates\admin\users.html:165
-#: .\templates\admin\users_new.html:193 .\templates\admin\users_new.html:194
+#: .\templates\admin\users_new.html:190 .\templates\admin\users_new.html:191
 #: .\templates\events\event_detail.html:507
 #: .\templates\institutions\institution_form.html:333
 msgid "Email"
@@ -395,8 +394,8 @@ msgstr "تم الإنشاء بواسطة"
 
 #: .\institutions\models.py:72 .\resources\models.py:207
 #: .\resources\models.py:307 .\resources\models.py:347
-#: .\templates\admin\institutions.html:639 .\templates\admin\users_new.html:205
-#: .\templates\admin\users_new.html:206
+#: .\templates\admin\institutions.html:639 .\templates\admin\users_new.html:202
+#: .\templates\admin\users_new.html:203
 msgid "Institution"
 msgstr "المؤسسة"
 
@@ -407,7 +406,8 @@ msgstr "المؤسسات"
 
 #: .\institutions\views.py:100
 msgid ""
-"The institution has been successfully added and will be reviewed by moderators."
+"The institution has been successfully added and will be reviewed by "
+"moderators."
 msgstr "لقد تمت إضافة المؤسسة بنجاح وسيتم مراجعتها من قبل المشرفين."
 
 #: .\institutions\views.py:109
@@ -490,7 +490,8 @@ msgstr ""
 #: .\templates\account\profile.html:172
 #: .\templates\account\profile_edit.html:37
 #: .\templates\admin\block_confirm.html:44 .\templates\admin\user_edit.html:165
-#: .\templates\admin\users_new.html:236
+#: .\templates\admin\users_delete_confirm.html:10
+#: .\templates\admin\users_new.html:233
 #: .\templates\events\event_confirm_delete.html:38
 #: .\templates\events\event_form.html:222 .\templates\forum\ban_user.html:48
 #: .\templates\forum\chatroom_delete.html:28
@@ -546,7 +547,7 @@ msgid "Your request to join {} has been rejected."
 msgstr "لقد تم رفض طلبك للانضمام إلى {}."
 
 #: .\resources\forms.py:10 .\resources\models.py:219
-#: .\templates\base_admin.html:60 .\templates\resources\course_list.html:75
+#: .\templates\base_admin.html:60 .\templates\resources\course_list.html:73
 msgid "Course"
 msgstr "دورة"
 
@@ -556,7 +557,7 @@ msgstr "أداة البرمجة اللغوية"
 
 #: .\resources\forms.py:12 .\templates\base.html:209 .\templates\base.html:289
 #: .\templates\base_admin.html:45 .\templates\resources\corpus_list.html:3
-#: .\templates\resources\list.html:67 .\templates\resources\list.html:110
+#: .\templates\resources\list.html:65 .\templates\resources\list.html:108
 msgid "Corpus"
 msgstr "مجموعة"
 
@@ -569,7 +570,7 @@ msgid "Article"
 msgstr "مقالة"
 
 #: .\resources\forms.py:18 .\resources\models.py:244
-#: .\templates\resources\list.html:63
+#: .\templates\resources\list.html:61
 msgid "Thesis"
 msgstr "أُطرُوحَة"
 
@@ -799,7 +800,7 @@ msgstr "وصف مفصل للمورد"
 msgid "Creation Date"
 msgstr "تاريخ الإنشاء"
 
-#: .\resources\models.py:52 .\templates\admin\forum.html:403
+#: .\resources\models.py:52 .\templates\admin\forum.html:392
 #: .\templates\resources\resource_detail.html:108
 msgid "Author"
 msgstr "مؤلف"
@@ -935,7 +936,7 @@ msgstr "السنة الدراسية"
 #: .\resources\models.py:220 .\templates\base.html:230
 #: .\templates\base.html:292
 #: .\templates\institutions\institution_detail.html:260
-#: .\templates\resources\list.html:66 .\templates\resources\list.html:106
+#: .\templates\resources\list.html:64 .\templates\resources\list.html:104
 msgid "Courses"
 msgstr "الدورات"
 
@@ -967,7 +968,7 @@ msgstr "سنة الدفاع"
 msgid "thesis"
 msgstr "الاطروحة"
 
-#: .\resources\models.py:321 .\templates\resources\list.html:94
+#: .\resources\models.py:321 .\templates\resources\list.html:92
 msgid "Theses"
 msgstr "الأطروحات"
 
@@ -975,8 +976,8 @@ msgstr "الأطروحات"
 msgid "memoir"
 msgstr "مذكرة"
 
-#: .\resources\models.py:362 .\templates\resources\list.html:64
-#: .\templates\resources\list.html:98
+#: .\resources\models.py:362 .\templates\resources\list.html:62
+#: .\templates\resources\list.html:96
 msgid "Memoirs"
 msgstr "مذكرات"
 
@@ -1104,12 +1105,10 @@ msgstr "الأسئلة المشابهة الموجودة سابقًا:"
 
 #: .\templates\QA\edit_post.html:3 .\templates\QA\edit_post.html:11
 #: .\templates\forum\message_update.html:10
-
 msgid "Edit post"
 msgstr "تعديل المنشور"
 
 #: .\templates\QA\edit_post.html:19 .\templates\QA\feed.html:18
-
 msgid "Content"
 msgstr "المحتوى"
 
@@ -1119,7 +1118,6 @@ msgid "Image"
 msgstr "صورة"
 
 #: .\templates\QA\edit_post.html:42
-
 msgid "Delete image"
 msgstr "حذف الصورة"
 
@@ -1133,7 +1131,6 @@ msgid "Current file:"
 msgstr ":الملف الحالي"
 
 #: .\templates\QA\edit_post.html:69
-
 msgid "Delete file"
 msgstr "حذف الملف"
 
@@ -1141,12 +1138,10 @@ msgstr "حذف الملف"
 #: .\templates\forum\message_update.html:47
 #: .\templates\forum\topic_update.html:58
 #: .\templates\institutions\institution_form.html:353
-
 msgid "Save changes"
 msgstr "حفظ التغييرات"
 
 #: .\templates\QA\feed.html:5
-
 msgid "News feed"
 msgstr "أخبار"
 
@@ -1155,7 +1150,6 @@ msgid "Add a file"
 msgstr "اضف ملف"
 
 #: .\templates\QA\feed.html:50
-
 msgid "Publish"
 msgstr "نشر"
 
@@ -1171,7 +1165,7 @@ msgstr "تعديل"
 #: .\templates\QA\feed.html:84 .\templates\QA\post_detail.html:38
 #: .\templates\QA\post_detail.html:131 .\templates\admin\calls.html:651
 #: .\templates\admin\calls.html:703 .\templates\admin\institutions.html:664
-#: .\templates\admin\institutions.html:692
+#: .\templates\admin\institutions.html:692 .\templates\admin\users.html:215
 #: .\templates\events\event_confirm_delete.html:12
 #: .\templates\events\event_detail.html:416
 #: .\templates\forum\topic_list.html:51
@@ -1183,7 +1177,6 @@ msgid "Delete"
 msgstr "الحذف"
 
 #: .\templates\QA\feed.html:99
-
 msgid "Download file"
 msgstr "تحميل الملف"
 
@@ -1192,7 +1185,6 @@ msgid "See all comments"
 msgstr "رؤية جميع التعليقات"
 
 #: .\templates\QA\feed.html:153
-
 msgid "No publications yet"
 msgstr "لا توجد منشورات حتى الآن"
 
@@ -1201,22 +1193,18 @@ msgid "Be the first to share something!"
 msgstr "كن أول من يشارك شيئًا!"
 
 #: .\templates\QA\post_detail.html:5
-
 msgid "Publication details"
 msgstr "تفاصيل المنشورات "
 
 #: .\templates\QA\post_detail.html:37
-
 msgid "Are you sure you want to delete this post?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا المنشور"
 
 #: .\templates\QA\post_detail.html:70
-
 msgid "Comments"
 msgstr "تعليقات"
 
 #: .\templates\QA\post_detail.html:87
-
 msgid "Comment"
 msgstr "تعليق"
 
@@ -1225,7 +1213,6 @@ msgid "Answer"
 msgstr "الاجابة"
 
 #: .\templates\QA\post_detail.html:130
-
 msgid "Are you sure you want to delete this comment?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا التعليق؟"
 
@@ -1234,12 +1221,10 @@ msgid "Send reply"
 msgstr "إرسال الرد"
 
 #: .\templates\QA\post_detail.html:201
-
 msgid "Are you sure you want to delete this answer?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا الجواب"
 
 #: .\templates\QA\post_detail.html:218
-
 msgid "No comments yet"
 msgstr "لا توجد تعليقات حتى الآن "
 
@@ -1288,7 +1273,6 @@ msgid "Account Inactive"
 msgstr "الحساب غير نشط"
 
 #: .\templates\account\account_inactive.html:12
-
 msgid "This account is inactive."
 msgstr "الحساب غير نشط"
 
@@ -1309,7 +1293,6 @@ msgstr "اشتراك"
 #: .\templates\account\delete_account.html:4
 #: .\templates\account\delete_account.html:12
 #: .\templates\account\delete_account.html:27
-
 msgid "Delete my account"
 msgstr "حذف الحساب"
 
@@ -1320,11 +1303,13 @@ msgstr "!انتباه "
 
 #: .\templates\account\delete_account.html:17
 msgid ""
-"Are you sure you want to delete your account? This action is irreversible and will delete all your data."
-msgstr "هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا رجعة فيه وسيؤدي إلى حذف جميع بياناتك."
+"Are you sure you want to delete your account? This action is irreversible "
+"and will delete all your data."
+msgstr ""
+"هل أنت متأكد من رغبتك في حذف حسابك؟ هذا الإجراء لا رجعة فيه وسيؤدي إلى حذف "
+"جميع بياناتك."
 
 #: .\templates\account\delete_account.html:24
-
 msgid "Back to profile"
 msgstr "العودة  للحساب"
 
@@ -1333,7 +1318,6 @@ msgid "Êtes-vous vraiment sûr de vouloir supprimer votre compte ?"
 msgstr "هل أنت متأكد أنك تريد حذف حسابك؟"
 
 #: .\templates\account\email_verification.html:58
-
 msgid "Check your email"
 msgstr "تحقق من البريد الوارد الخاص بك"
 
@@ -1461,12 +1445,10 @@ msgid "try again"
 msgstr "حاول ثانية"
 
 #: .\templates\account\password_reset_from_key.html:8
-
 msgid "Change Password!"
 msgstr "تغيير كلمة المرور"
 
 #: .\templates\account\password_reset_from_key.html:24
-
 msgid "Change my password"
 msgstr "تغيير كلمة المرور"
 
@@ -1483,7 +1465,6 @@ msgid "Your password was changed."
 msgstr "تم تغيير كلمة المرور الخاصة بك"
 
 #: .\templates\account\password_reset_from_key_done.html:14
-
 msgid "Go to login"
 msgstr "العودة لتسجيل الدخول"
 
@@ -1500,7 +1481,6 @@ msgid "Affiliation"
 msgstr "انتساب"
 
 #: .\templates\account\profile.html:75
-
 msgid "Specialty in AI"
 msgstr "التخصص"
 
@@ -1534,20 +1514,18 @@ msgid "Logout"
 msgstr "تسجيل الخروج"
 
 #: .\templates\account\profile.html:156
-
 msgid "Delete account"
 msgstr "حذف الحساب"
 
 #: .\templates\account\profile.html:165
+#: .\templates\admin\users_delete_confirm.html:5
 #: .\templates\forum\chatroom_delete.html:31
 #: .\templates\forum\topic_delete.html:32
 #: .\templates\institutions\institution_confirm_delete.html:1
-
 msgid "Confirm deletion"
 msgstr "تأكيد الحذف"
 
 #: .\templates\account\profile.html:169
-
 msgid ""
 "Are you sure you want to delete your account? This action is irreversible."
 msgstr "هل أنت متأكد أنك تريد حذف هذا الحساب"
@@ -1595,11 +1573,13 @@ msgstr "حظر هذا المستخدم"
 
 #: .\templates\admin\block_confirm.html:27
 msgid ""
-". He will no longer be able to log in or use the site's features until it is reactivated."
-msgstr "لن يتمكن بعد الآن من تسجيل الدخول أو استخدام ميزات الموقع حتى يتم إعادة تفعيله"
+". He will no longer be able to log in or use the site's features until it is "
+"reactivated."
+msgstr ""
+"لن يتمكن بعد الآن من تسجيل الدخول أو استخدام ميزات الموقع حتى يتم إعادة "
+"تفعيله"
 
 #: .\templates\admin\block_confirm.html:35
-
 msgid "Reason for blocking"
 msgstr "سبب الحظر"
 
@@ -1608,12 +1588,10 @@ msgid "This information will be recorded in the user's history."
 msgstr "سيتم تسجيل هذه المعلومات في سجل المستخدم."
 
 #: .\templates\admin\block_confirm.html:48
-
 msgid "Confirm blocking"
 msgstr "تأكيد الحظر"
 
 #: .\templates\admin\calls.html:566
-
 msgid "Management of Calls for Papers"
 msgstr "إدارة دعوات تقديم الأوراق البحثية"
 
@@ -1621,8 +1599,7 @@ msgstr "إدارة دعوات تقديم الأوراق البحثية"
 msgid "New call"
 msgstr "دعوة جديدة"
 
-#: .\templates\admin\calls.html:580 .\templates\admin\courses.html:512
-
+#: .\templates\admin\calls.html:580 .\templates\admin\courses.html:506
 msgid "Research"
 msgstr "الباحثون"
 
@@ -1631,18 +1608,15 @@ msgid "Call type"
 msgstr "نوع الدعوة"
 
 #: .\templates\admin\calls.html:588
-
 msgid "All types"
 msgstr "جميع الحالات"
 
 #: .\templates\admin\calls.html:591
-
 msgid "Newspaper"
 msgstr "أخبار"
 
-#: .\templates\admin\calls.html:600 .\templates\admin\forum.html:369
+#: .\templates\admin\calls.html:600 .\templates\admin\forum.html:359
 #: .\templates\admin\users.html:115
-
 msgid "All statuses"
 msgstr "جميع الحالات"
 
@@ -1652,11 +1626,10 @@ msgid "On hold"
 msgstr "في الانتظار"
 
 #: .\templates\admin\calls.html:610
-
 msgid "Apply filters"
 msgstr "تطبيق المرشحات"
 
-#: .\templates\admin\calls.html:621 .\templates\admin\tools.html:461
+#: .\templates\admin\calls.html:621 .\templates\admin\tools.html:444
 #: .\templates\events\event_confirm_delete.html:25
 #: .\templates\events\event_list.html:37
 #: .\templates\resources\resource_detail.html:138
@@ -1664,36 +1637,34 @@ msgid "Type"
 msgstr "النوع"
 
 #: .\templates\admin\calls.html:622 .\templates\admin\calls.html:678
-
 msgid "Deadline"
 msgstr ":موعد التسليم"
 
 #: .\templates\admin\calls.html:624 .\templates\admin\calls.html:688
 #: .\templates\admin\users.html:166
-
 msgid "Status"
 msgstr "حالة"
 
-#: .\templates\admin\calls.html:625 .\templates\admin\corpora.html:464
-#: .\templates\admin\courses.html:545 .\templates\admin\forum.html:406
+#: .\templates\admin\calls.html:625 .\templates\admin\corpora.html:447
+#: .\templates\admin\courses.html:539 .\templates\admin\forum.html:395
 #: .\templates\admin\institutions.html:643
-#: .\templates\admin\publications.html:258 .\templates\admin\tools.html:463
+#: .\templates\admin\publications.html:258 .\templates\admin\tools.html:446
 #: .\templates\admin\users.html:168
 msgid "Actions"
 msgstr "الأجراءات"
 
 #: .\templates\admin\calls.html:655 .\templates\admin\calls.html:709
-
 msgid "Approve"
 msgstr "موافقة"
 
 #: .\templates\admin\calls.html:747
 msgid ""
 "No calls for papers found. Please modify your filters or add a new call."
-msgstr "لم يتم العثور على طلبات لتقديم أوراق بحثية. يُرجى تعديل عوامل التصفية أو إضافة طلب جديد."
+msgstr ""
+"لم يتم العثور على طلبات لتقديم أوراق بحثية. يُرجى تعديل عوامل التصفية أو "
+"إضافة طلب جديد."
 
 #: .\templates\admin\calls.html:748
-
 msgid "Create a call for papers"
 msgstr "إنشاء دعوة لتقديم أوراق بحثية"
 
@@ -1701,75 +1672,67 @@ msgstr "إنشاء دعوة لتقديم أوراق بحثية"
 msgid "Corpus Management"
 msgstr "إدارة المجموعات"
 
-#: .\templates\admin\corpora.html:412 .\templates\admin\tools.html:400
-=
-msgid "Export"
-msgstr "مصدر"
-
-#: .\templates\admin\corpora.html:429
-
+#: .\templates\admin\corpora.html:412
 msgid "New corpus"
 msgstr "مجموعة جديدة"
 
-#: .\templates\admin\corpora.html:437 .\templates\admin\institutions.html:605
-#: .\templates\admin\institutions.html:619 .\templates\admin\tools.html:427
+#: .\templates\admin\corpora.html:420 .\templates\admin\institutions.html:605
+#: .\templates\admin\institutions.html:619 .\templates\admin\tools.html:410
 #: .\templates\institutions\institution_list.html:43
 msgid "Search"
 msgstr "البحث"
 
-#: .\templates\admin\corpora.html:451 .\templates\admin\history.html:300
-#: .\templates\admin\tools.html:439 .\templates\admin\users.html:128
+#: .\templates\admin\corpora.html:434 .\templates\admin\history.html:300
+#: .\templates\admin\tools.html:422 .\templates\admin\users.html:128
 #: .\templates\events\event_list.html:153
 #: .\templates\institutions\institution_list.html:40
 msgid "Reset"
 msgstr "إعادة ضبط"
 
-#: .\templates\admin\corpora.html:453 .\templates\admin\courses.html:531
-#: .\templates\admin\forum.html:377 .\templates\admin\statistics.html:181
-#: .\templates\admin\tools.html:441 .\templates\admin\users.html:123
+#: .\templates\admin\corpora.html:436 .\templates\admin\courses.html:525
+#: .\templates\admin\forum.html:367 .\templates\admin\statistics.html:181
+#: .\templates\admin\tools.html:424 .\templates\admin\users.html:123
 #: .\templates\events\event_list.html:60
 msgid "Filter"
 msgstr "ترشيح"
 
-#: .\templates\admin\corpora.html:463 .\templates\admin\courses.html:544
-
+#: .\templates\admin\corpora.html:446 .\templates\admin\courses.html:538
 msgid "Creation date"
 msgstr "تاريخ الإنشاء"
 
-#: .\templates\admin\corpora.html:584 .\templates\admin\institutions.html:718
-#: .\templates\admin\tools.html:663
+#: .\templates\admin\corpora.html:567 .\templates\admin\institutions.html:718
+#: .\templates\admin\tools.html:646
 #: .\templates\institutions\institution_list.html:113
 msgid "First"
 msgstr "الاول"
 
-#: .\templates\admin\corpora.html:585 .\templates\admin\institutions.html:719
-#: .\templates\admin\tools.html:665
+#: .\templates\admin\corpora.html:568 .\templates\admin\institutions.html:719
+#: .\templates\admin\tools.html:648
 #: .\templates\institutions\institution_list.html:118
 msgid "Previous"
 msgstr "السابق"
 
-#: .\templates\admin\corpora.html:591
+#: .\templates\admin\corpora.html:574
 msgid "Following"
 msgstr "التالي"
 
-#: .\templates\admin\corpora.html:592 .\templates\admin\institutions.html:726
-#: .\templates\admin\tools.html:674
+#: .\templates\admin\corpora.html:575 .\templates\admin\institutions.html:726
+#: .\templates\admin\tools.html:657
 #: .\templates\institutions\institution_list.html:141
 msgid "Last"
 msgstr "الاخير"
 
-#: .\templates\admin\corpora.html:612
-
+#: .\templates\admin\corpora.html:595
 msgid "No corpus available"
 msgstr "لا توجد مجموعات بيانات متاحة"
 
-#: .\templates\admin\corpora.html:614
-
+#: .\templates\admin\corpora.html:597
 msgid "You have not yet created a corpus or none match your search criteria."
-msgstr "لم تقم بإنشاء مجموعة من النصوص بعد أو لا يوجد أي نص يتطابق مع معايير البحث الخاصة بك."
+msgstr ""
+"لم تقم بإنشاء مجموعة من النصوص بعد أو لا يوجد أي نص يتطابق مع معايير البحث "
+"الخاصة بك."
 
-#: .\templates\admin\corpora.html:631
-
+#: .\templates\admin\corpora.html:614
 msgid "Create a corpus"
 msgstr "إنشاء مجموعة جديدة"
 
@@ -1778,78 +1741,65 @@ msgid "Course management"
 msgstr "إدارة الدورة"
 
 #: .\templates\admin\courses.html:483
-
-msgid "Export CSV"
-msgstr "مصدر"
-
-#: .\templates\admin\courses.html:489
-
 msgid "New cours"
 msgstr "دورة جديدة"
 
-#: .\templates\admin\courses.html:496
-
+#: .\templates\admin\courses.html:490
 msgid "Total courses"
 msgstr "مجموع الدورات"
 
-#: .\templates\admin\courses.html:500
-
+#: .\templates\admin\courses.html:494
 msgid "Created this month"
 msgstr "تم الإنشاء في"
 
-#: .\templates\admin\courses.html:503
+#: .\templates\admin\courses.html:497
 msgid "vs last month"
 msgstr "مقابل الشهر الماضي"
 
-#: .\templates\admin\courses.html:517
-
+#: .\templates\admin\courses.html:511
 msgid "Academic level"
 msgstr "المستوى الأكاديمي"
 
-#: .\templates\admin\courses.html:519
-
+#: .\templates\admin\courses.html:513
 msgid "All levels"
 msgstr "جميع الموارد"
 
-#: .\templates\admin\courses.html:520 .\templates\admin\courses.html:558
+#: .\templates\admin\courses.html:514 .\templates\admin\courses.html:552
 msgid "Beginner"
 msgstr "مبتدىء"
 
-#: .\templates\admin\courses.html:521 .\templates\admin\courses.html:560
-
+#: .\templates\admin\courses.html:515 .\templates\admin\courses.html:554
 msgid "Intermediate"
 msgstr "متوسط"
 
-#: .\templates\admin\courses.html:522 .\templates\admin\courses.html:562
-
+#: .\templates\admin\courses.html:516 .\templates\admin\courses.html:556
 msgid "Advance"
 msgstr "متقدم"
 
-#: .\templates\admin\courses.html:523 .\templates\admin\courses.html:564
+#: .\templates\admin\courses.html:517 .\templates\admin\courses.html:558
 msgid "Expert"
 msgstr "خبير"
 
-#: .\templates\admin\courses.html:543
+#: .\templates\admin\courses.html:537
 msgid "Level"
 msgstr "المستوى"
 
-#: .\templates\admin\courses.html:601
-
+#: .\templates\admin\courses.html:595
 msgid "No courses found"
 msgstr "لم يتم العثور على دورات"
 
-#: .\templates\admin\courses.html:603
+#: .\templates\admin\courses.html:597
 msgid ""
-"There are no courses matching your search criteria. Try changing your filters or creating a new course."
-msgstr "لا توجد دورات تُطابق معايير بحثك. جرّب تغيير عوامل التصفية أو إنشاء دورة جديدة."
+"There are no courses matching your search criteria. Try changing your "
+"filters or creating a new course."
+msgstr ""
+"لا توجد دورات تُطابق معايير بحثك. جرّب تغيير عوامل التصفية أو إنشاء دورة جديدة."
 
-#: .\templates\admin\courses.html:609
-
+#: .\templates\admin\courses.html:603
 msgid "Create a course"
 msgstr "اٍنشاء دورة جديدة"
 
 #: .\templates\admin\dashboard.html:2
-
 msgid "Admin Dashboard"
 msgstr "لوحة القيادة"
 
@@ -1866,7 +1816,6 @@ msgstr "المستخدمين"
 
 #: .\templates\admin\dashboard.html:340 .\templates\admin\dashboard.html:370
 #: .\templates\admin\dashboard.html:427
-
 msgid "/ month"
 msgstr "/ شهر"
 
@@ -1881,7 +1830,6 @@ msgid "Projects"
 msgstr "المشاريع"
 
 #: .\templates\admin\dashboard.html:397
-
 msgid " / month"
 msgstr "/ شهر"
 
@@ -1890,17 +1838,14 @@ msgid "forum"
 msgstr "المنتدى"
 
 #: .\templates\admin\dashboard.html:449
-
 msgid "New users"
 msgstr "المستخدمين الجدد"
 
 #: .\templates\admin\dashboard.html:463
-
 msgid "View all users"
 msgstr "عرض الكل"
 
 #: .\templates\admin\dashboard.html:473 .\templates\admin\users.html:164
-
 msgid "User"
 msgstr "المستخدمين"
 
@@ -1908,7 +1853,7 @@ msgstr "المستخدمين"
 msgid "Statut"
 msgstr "حالة"
 
-#: .\templates\admin\dashboard.html:475 .\templates\admin\forum.html:404
+#: .\templates\admin\dashboard.html:475 .\templates\admin\forum.html:393
 msgid "Date"
 msgstr "تاريخ "
 
@@ -1917,23 +1862,19 @@ msgid "Actif"
 msgstr "مفعل"
 
 #: .\templates\admin\dashboard.html:510
-
 msgid "Inactive"
 msgstr "غير مفعل"
 
 #: .\templates\admin\dashboard.html:514 .\templates\admin\users.html:118
 #: .\templates\admin\users.html:191
-
 msgid "Blocked"
 msgstr "الحظر"
 
 #: .\templates\admin\dashboard.html:528
-
 msgid "No recent users"
 msgstr "لا يوجد مستخدمين حديثين"
 
 #: .\templates\admin\forum.html:303
-
 msgid "Administration of the Forums"
 msgstr "إدارة المنتديات"
 
@@ -1946,12 +1887,10 @@ msgid "New topic"
 msgstr "موضوع جديد"
 
 #: .\templates\admin\forum.html:321
-
 msgid "Total topics"
 msgstr "إجمالي المشاريع"
 
 #: .\templates\admin\forum.html:327
-
 msgid "Active topics"
 msgstr " مواضيع نشطة"
 
@@ -1959,7 +1898,7 @@ msgstr " مواضيع نشطة"
 msgid "Closed topics"
 msgstr "المواضيع المغلقة"
 
-#: .\templates\admin\forum.html:339 .\templates\admin\forum.html:405
+#: .\templates\admin\forum.html:339 .\templates\admin\forum.html:394
 msgid "Answers"
 msgstr "الاجابات"
 
@@ -1972,67 +1911,38 @@ msgid "Search for a topic..."
 msgstr "البحث عن موضوع ..."
 
 #: .\templates\admin\forum.html:357
-msgid "CATEGORY"
-msgstr "الفئة"
-
-#: .\templates\admin\forum.html:359
-
-msgid "All categories"
-msgstr "جميع الفئات"
-
-#: .\templates\admin\forum.html:361
-msgid "General"
-msgstr "عام"
-
-#: .\templates\admin\forum.html:362
-
-msgid "Technical"
-msgstr "تقني"
-
-#: .\templates\admin\forum.html:363
-msgid "Support"
-msgstr "الدعم"
-
-#: .\templates\admin\forum.html:367
 msgid "STATUT"
 msgstr "الحالة"
 
-#: .\templates\admin\forum.html:370
+#: .\templates\admin\forum.html:360
 msgid "Open"
 msgstr "مفتوح"
 
-#: .\templates\admin\forum.html:371
+#: .\templates\admin\forum.html:361
 msgid "Farm"
 msgstr "حقل"
 
-#: .\templates\admin\forum.html:391
+#: .\templates\admin\forum.html:381
 msgid "Forum topics"
 msgstr "موضوع المنتدى"
 
-#: .\templates\admin\forum.html:393 .\templates\admin\forum.html:401
+#: .\templates\admin\forum.html:383 .\templates\admin\forum.html:391
 msgid "topics"
 msgstr "المواضيع"
 
-#: .\templates\admin\forum.html:402 .\templates\admin\forum.html:420
-msgid "Category"
-msgstr "الفئة"
-
-#: .\templates\admin\forum.html:473
-
+#: .\templates\admin\forum.html:458
 msgid "No forum topics found"
 msgstr "لم يتم العثور على نتائج"
 
-#: .\templates\admin\forum.html:474
-
+#: .\templates\admin\forum.html:459
 msgid "There are no topics matching your search criteria."
 msgstr "لا توجد مواضيع تطابق معايير البحث الخاصة بك."
 
-#: .\templates\admin\forum.html:501
+#: .\templates\admin\forum.html:486
 msgid "(current"
 msgstr "(حاضِر)"
 
 #: .\templates\admin\history.html:3
-
 msgid "Administration Panel - Status History"
 msgstr "لوحة الإدارة - سجل الحالة"
 
@@ -2041,17 +1951,14 @@ msgid "User Status History"
 msgstr "سجل حالة المستخدم"
 
 #: .\templates\admin\history.html:125
-
 msgid "Back to dashboard"
 msgstr "لوحة القيادة"
 
 #: .\templates\admin\history.html:140
-
 msgid "Total changes"
 msgstr "حفظ التغييرات"
 
 #: .\templates\admin\history.html:147
-
 msgid "Since the creation of the site"
 msgstr "منذ إنشاء الموقع"
 
@@ -2060,12 +1967,10 @@ msgid "Activations"
 msgstr "التنشيطات"
 
 #: .\templates\admin\history.html:164
-
 msgid "Activated users"
 msgstr "المستخدمين النشطين "
 
 #: .\templates\admin\history.html:174
-
 msgid "Blockages"
 msgstr "الحظر"
 
@@ -2074,7 +1979,6 @@ msgid "Blocked users"
 msgstr "المستخدمين المحظورين"
 
 #: .\templates\admin\history.html:191 .\templates\admin\history.html:262
-
 msgid "Recent changes"
 msgstr "التغييرات الأخيرة"
 
@@ -2083,22 +1987,18 @@ msgid "These last 7 days"
 msgstr "هذه الأيام السبعة الماضية"
 
 #: .\templates\admin\history.html:209
-
 msgid "Administrator activity"
 msgstr "المسؤول"
 
 #: .\templates\admin\history.html:216 .\templates\admin\history.html:281
-
 msgid "Administrator"
 msgstr "المسؤول"
 
 #: .\templates\admin\history.html:217
-
 msgid "Changes"
 msgstr "تغيير"
 
 #: .\templates\admin\history.html:218
-
 msgid "Last action"
 msgstr "اخر اجراء"
 
@@ -2107,17 +2007,14 @@ msgid "No administrator activity recorded"
 msgstr "لم يتم تسجيل أي نشاط للمسؤول"
 
 #: .\templates\admin\history.html:250
-
 msgid "Types of changes"
 msgstr "أنواع التغييرات"
 
 #: .\templates\admin\history.html:264
-
 msgid "Filters"
 msgstr "ترشيح"
 
 #: .\templates\admin\history.html:272
-
 msgid "Type of change"
 msgstr "نوع التغيير"
 
@@ -2130,12 +2027,10 @@ msgid "Hold"
 msgstr "في الانتظار"
 
 #: .\templates\admin\history.html:277
-
 msgid "Blocking"
 msgstr "الحظر"
 
 #: .\templates\admin\history.html:290
-
 msgid "Period"
 msgstr "الفترة"
 
@@ -2160,22 +2055,18 @@ msgid "Apply"
 msgstr "يتقدم"
 
 #: .\templates\admin\history.html:334
-
 msgid "User:"
 msgstr "المستخدمين"
 
 #: .\templates\admin\history.html:346
-
 msgid "Edited by:"
 msgstr "التصفية حسب:"
 
 #: .\templates\admin\history.html:358
-
 msgid "Reason:"
 msgstr ":السبب"
 
 #: .\templates\admin\history.html:369
-
 msgid "No history available"
 msgstr "لا توجد مجموعات بيانات متاحة"
 
@@ -2185,7 +2076,6 @@ msgstr "لم يتم تسجيل أي تغييرات في الحالة خلال ه
 
 #: .\templates\admin\institutions.html:3
 #: .\templates\admin\institutions.html:564
-
 msgid "Institution Management"
 msgstr "اسم المؤسسة"
 
@@ -2194,7 +2084,6 @@ msgid "Easily manage all your academic institutions and partners"
 msgstr "إدارة جميع المؤسسات الأكاديمية والشركاء بسهولة"
 
 #: .\templates\admin\institutions.html:572
-
 msgid "New Institution"
 msgstr "المؤسسة"
 
@@ -2203,22 +2092,18 @@ msgid "Total Institutions"
 msgstr "مجموع المؤسسات "
 
 #: .\templates\admin\institutions.html:601
-
 msgid "Search Filters"
 msgstr "مصطلح البحث"
 
 #: .\templates\admin\institutions.html:606
-
 msgid "Institution name or acronym…"
 msgstr "اسم المؤسسة"
 
 #: .\templates\admin\institutions.html:611
-
 msgid "All countries"
 msgstr "البلدان"
 
 #: .\templates\admin\institutions.html:629
-
 msgid "List of Institutions"
 msgstr " قائمة المؤسسات"
 
@@ -2228,17 +2113,14 @@ msgstr "المؤسسات"
 
 #: .\templates\admin\institutions.html:658
 #: .\templates\admin\institutions.html:686
-
 msgid "View"
 msgstr "المشاهدات"
 
 #: .\templates\admin\institutions.html:672
-
 msgid "No institution found."
 msgstr "لم يتم العثور على أي مؤسسة "
 
 #: .\templates\admin\institutions.html:698
-
 msgid "Acronym:"
 msgstr "اختصار"
 
@@ -2248,16 +2130,14 @@ msgid "Country:"
 msgstr ":البلد"
 
 #: .\templates\admin\institutions.html:707
-
 msgid "No institutions found"
 msgstr "لم يتم العثور على أي مؤسسات"
 
 #: .\templates\admin\institutions.html:708
-
 msgid "Try adjusting your filters or adding a new institution."
 msgstr "حاول تعديل المرشحات الخاصة بك أو إضافة مؤسسة جديدة"
 
-#: .\templates\admin\institutions.html:725 .\templates\admin\tools.html:672
+#: .\templates\admin\institutions.html:725 .\templates\admin\tools.html:655
 #: .\templates\institutions\institution_list.html:136
 msgid "Next"
 msgstr "القادم"
@@ -2336,12 +2216,10 @@ msgstr "لم يتم العثور على منشورات"
 
 #: .\templates\admin\security.html:4 .\templates\admin\security.html:6
 #: .\templates\base_admin.html:90
-
 msgid "Security"
 msgstr "الحماية"
 
 #: .\templates\admin\security.html:7
-
 msgid "To be implemented.w"
 msgstr "ليتم تنفيذها."
 
@@ -2351,37 +2229,30 @@ msgid "Settings"
 msgstr "الاٍعدادات"
 
 #: .\templates\admin\settings.html:6
-
 msgid "To be implemented."
 msgstr "ليتم تنفيذها."
 
 #: .\templates\admin\statistics.html:3 .\templates\base_admin.html:80
-
 msgid "Statistics"
 msgstr "الاٍحصائيات"
 
 #: .\templates\admin\statistics.html:161
-
 msgid "Start date"
 msgstr "تاريخ البدء"
 
 #: .\templates\admin\statistics.html:171
-
 msgid "End date"
 msgstr "تاريخ الانتهاء"
 
 #: .\templates\admin\statistics.html:217
-
 msgid "Active projects"
 msgstr "Active Projects"
 
 #: .\templates\admin\statistics.html:234
-
 msgid "User registrations"
 msgstr "تسجيلات المستخدمين"
 
 #: .\templates\admin\statistics.html:242
-
 msgid "Resources by category"
 msgstr "الموارد حسب الفئة"
 
@@ -2390,75 +2261,64 @@ msgid "Top 5 most viewed resources"
 msgstr "أفضل 5 مصادر الأكثر مشاهدة"
 
 #: .\templates\admin\statistics.html:260 .\templates\home.html:128
-
 msgid "views"
 msgstr "المشاهدات"
 
 #: .\templates\admin\statistics.html:271
-
 msgid "Activity by category"
 msgstr "النشاط حسب الفئة"
 
 #: .\templates\admin\tools.html:1 .\templates\admin\tools.html:382
-
 msgid "Tools Management"
 msgstr "إدارة الأدوات "
 
-#: .\templates\admin\tools.html:417
-
+#: .\templates\admin\tools.html:400
 msgid "New Tool"
 msgstr "اداة جديدة"
 
-#: .\templates\admin\tools.html:447
-
+#: .\templates\admin\tools.html:430
 msgid "All Types"
 msgstr "جميع الانواع "
 
-#: .\templates\admin\tools.html:448 .\templates\admin\tools.html:495
-
+#: .\templates\admin\tools.html:431 .\templates\admin\tools.html:478
 msgid "Analysis"
 msgstr "تحليل"
 
-#: .\templates\admin\tools.html:449 .\templates\admin\tools.html:515
+#: .\templates\admin\tools.html:432 .\templates\admin\tools.html:498
 msgid "Extraction"
 msgstr "اِستِخلاص"
 
-#: .\templates\admin\tools.html:450 .\templates\admin\tools.html:541
-
+#: .\templates\admin\tools.html:433 .\templates\admin\tools.html:524
 msgid "Visualization"
 msgstr "تصوير"
 
-#: .\templates\admin\tools.html:451 .\templates\admin\tools.html:561
+#: .\templates\admin\tools.html:434 .\templates\admin\tools.html:544
 msgid "Transformation"
 msgstr "تحويل "
 
-#: .\templates\admin\tools.html:462
-
+#: .\templates\admin\tools.html:445
 msgid "Date Added"
 msgstr "تاريخ البدء"
 
-#: .\templates\admin\tools.html:701
-
+#: .\templates\admin\tools.html:684
 msgid "No tools available"
 msgstr "لا توجد الأدوات المتاحة"
 
-#: .\templates\admin\tools.html:703
-
+#: .\templates\admin\tools.html:686
 msgid "You haven't created any tools yet or none match your search criteria."
-msgstr "لم تقم بإنشاء أي أدوات بعد أو لا يوجد أي منها يتطابق مع معايير البحث الخاصة بك"
+msgstr ""
+"لم تقم بإنشاء أي أدوات بعد أو لا يوجد أي منها يتطابق مع معايير البحث الخاصة "
+"بك"
 
-#: .\templates\admin\tools.html:720
-
+#: .\templates\admin\tools.html:703
 msgid "Create a tool"
 msgstr "اٍنشاء أداة جديدة"
 
 #: .\templates\admin\user_edit.html:3
-
 msgid "Edit user"
 msgstr "تعديل الحدث"
 
 #: .\templates\admin\users.html:3 .\templates\admin\users.html:82
-
 msgid "User Management"
 msgstr "إدارة المستخدم "
 
@@ -2467,17 +2327,14 @@ msgid " pending user(s)"
 msgstr "المستخدمون المعلقون"
 
 #: .\templates\admin\users.html:90 .\templates\admin\users_new.html:4
-
 msgid "New User"
 msgstr "المستخدمين الجدد"
 
 #: .\templates\admin\users.html:107
-
 msgid "Search by name or email..."
 msgstr "البحث حسب الاسم أو البريد الإلكتروني..."
 
 #: .\templates\admin\users.html:116 .\templates\admin\users.html:187
-
 msgid "Active"
 msgstr "تفعيل"
 
@@ -2486,61 +2343,59 @@ msgid "Pending"
 msgstr "قيد الانتظار"
 
 #: .\templates\admin\users.html:135
-
 msgid "Active filters:"
 msgstr "تفعيل"
 
 #: .\templates\admin\users.html:138
-
 msgid "Search:"
 msgstr "البحث"
 
 #: .\templates\admin\users.html:144
-
 msgid "Status:"
 msgstr ":الحالة"
 
 #: .\templates\admin\users.html:167
-
 msgid "Registration Date"
 msgstr "تاريخ الإنشاء"
 
 #: .\templates\admin\users.html:206
-
 msgid "Activate"
 msgstr "تفعيل"
 
 #: .\templates\admin\users.html:209
-
 msgid "Block"
 msgstr "الحظر"
 
 #: .\templates\admin\users.html:212
-
 msgid "History"
 msgstr "سجل"
 
-#: .\templates\admin\users.html:269
-
+#: .\templates\admin\users.html:274
 msgid "No users found"
 msgstr "لم يتم العثور على أي مستخدم"
 
-#: .\templates\admin\users.html:270
-
+#: .\templates\admin\users.html:275
 msgid "No users match your search criteria."
 msgstr "لا يوجد مستخدم يتطابق معايير البحث الخاصة بك."
 
-#: .\templates\admin\users.html:272
+#: .\templates\admin\users.html:277
 msgid "Reset filters"
 msgstr "إعادة تعيين المرشحات"
 
-#: .\templates\admin\users_new.html:160
+#: .\templates\admin\users_delete_confirm.html:6
 
+msgid "Are you sure you want to delete user"
+msgstr "هل أنت متأكد أنك تريد الحذف؟"
+
+#: .\templates\admin\users_delete_confirm.html:9
+msgid "Yes, delete"
+msgstr "نعم ,احذف"
+
+#: .\templates\admin\users_new.html:160
 msgid "Create New User"
 msgstr "اٍنشاء مستخدم جديد"
 
 #: .\templates\admin\users_new.html:166
-
 msgid "New"
 msgstr "أخبار"
 
@@ -2548,41 +2403,31 @@ msgstr "أخبار"
 msgid "Full Name"
 msgstr "الاسم الكامل"
 
-#: .\templates\admin\users_new.html:183 .\templates\admin\users_new.html:184
-msgid "Nom complet"
-msgstr "الاسم الكام"
-
-#: .\templates\admin\users_new.html:197
+#: .\templates\admin\users_new.html:194
 msgid "Email must end with: usthb.dz"
 msgstr "يجب أن ينتهي البريد الإلكتروني بـ"
 
-#: .\templates\admin\users_new.html:214 .\templates\admin\users_new.html:215
-
+#: .\templates\admin\users_new.html:211 .\templates\admin\users_new.html:212
 msgid "Password"
 msgstr " كلمة المرور"
 
-#: .\templates\admin\users_new.html:228
-
+#: .\templates\admin\users_new.html:225
 msgid "Password Confirmation"
 msgstr "تاكيد كلمة السر "
 
-#: .\templates\admin\users_new.html:239
-
+#: .\templates\admin\users_new.html:236
 msgid "Create User"
 msgstr " اٍنشاء مستخدم"
 
 #: .\templates\awaiting_verification.html:3
-
 msgid "Waiting for verification"
 msgstr "   في انتظار التحقق "
 
 #: .\templates\awaiting_verification.html:11
-
 msgid "Your profile is awaiting verification"
 msgstr "ملفك الشخصي في انتظار التحقق"
 
 #: .\templates\awaiting_verification.html:14
-
 msgid ""
 "Access to certain sections of the platform is restricted pending "
 "verification of your profile by an administrator."
@@ -2592,7 +2437,8 @@ msgstr ""
 
 #: .\templates\awaiting_verification.html:18
 msgid ""
-"Thank you for your patience. You will receive a notification as soon as your profile has been verified."
+"Thank you for your patience. You will receive a notification as soon as your "
+"profile has been verified."
 msgstr "شكرًا لصبركم. ستصلكم إشعارات فور التحقق من ملفكم الشخصي."
 
 #: .\templates\awaiting_verification.html:22
@@ -2600,12 +2446,10 @@ msgid "In the meantime, you can explore the public sections:"
 msgstr "وفي الوقت نفسه، يمكنك استكشاف الأقسام العامة"
 
 #: .\templates\awaiting_verification.html:26
-
 msgid "Welcome"
 msgstr "مرحبًا بعودتك"
 
 #: .\templates\awaiting_verification.html:42
-
 msgid "My Profile"
 msgstr "حساب الشخصي"
 
@@ -2652,7 +2496,7 @@ msgid "Home"
 msgstr "الرئيسية"
 
 #: .\templates\base.html:212 .\templates\base.html:290
-#: .\templates\resources\list.html:65 .\templates\resources\list.html:102
+#: .\templates\resources\list.html:63 .\templates\resources\list.html:100
 msgid "Tools"
 msgstr "أدوات"
 
@@ -2721,7 +2565,6 @@ msgid "Administration"
 msgstr " الإدارة"
 
 #: .\templates\base_admin.html:25
-
 msgid "Admin Panel"
 msgstr "مسؤول"
 
@@ -2731,7 +2574,6 @@ msgid "Publications"
 msgstr "المنشورات"
 
 #: .\templates\base_admin.html:50
-
 msgid "tools"
 msgstr "أدوات"
 
@@ -2740,7 +2582,6 @@ msgid "Calls"
 msgstr "دعوة"
 
 #: .\templates\base_admin.html:99
-
 msgid "Return to site"
 msgstr "العودة للموقع"
 
@@ -2865,6 +2706,10 @@ msgstr "التواريخ"
 #: .\templates\events\event_confirm_delete.html:31
 msgid "This action cannot be undone!"
 msgstr "!لا يمكن التراجع عن هذا الإجراء"
+
+#: .\templates\events\event_detail.html:225
+msgid "Skip to main content"
+msgstr "انتقل إلى المحتوى الرئيسي"
 
 #: .\templates\events\event_detail.html:261
 msgid "Virtual Event"
@@ -3058,28 +2903,23 @@ msgid "This action will prevent the user from accessing this chat room."
 msgstr "سيؤدي هذا الإجراء إلى منع المستخدم من الوصول إلى غرفة الدردشة هذه."
 
 #: .\templates\forum\ban_user.html:25
-
 msgid "Reason for banishment"
 msgstr "سبب الحظر"
 
 #: .\templates\forum\ban_user.html:51
-
 msgid "Confirm the ban"
 msgstr "تأكيد الحظر"
 
 #: .\templates\forum\chatroom_delete.html:3
 #: .\templates\forum\chatroom_delete.html:12
-
 msgid "Delete chat room"
 msgstr "حذف الغرفة"
 
 #: .\templates\forum\chatroom_delete.html:18
-
 msgid "You are about to delete the chat room"
 msgstr "هل أنت متأكد أنك تريد حذف هذه الغرفة"
 
 #: .\templates\forum\chatroom_delete.html:18
-
 msgid ". This action is"
 msgstr "هذا العمل "
 
@@ -3094,17 +2934,14 @@ msgstr "العودة"
 
 #: .\templates\forum\chatroom_detail.html:43
 #: .\templates\forum\chatroom_detail.html:62
-
 msgid "Banned users"
 msgstr "المستخدمين المحظورين "
 
 #: .\templates\forum\chatroom_detail.html:82
-
 msgid "Banned "
 msgstr "حظر في"
 
 #: .\templates\forum\chatroom_detail.html:86
-
 msgid "Reason :"
 msgstr ":السبب "
 
@@ -3125,12 +2962,10 @@ msgid "Be the first to start the conversation!"
 msgstr "كن أول من يبدأ المحادثة"
 
 #: .\templates\forum\chatroom_detail.html:208
-
 msgid "Your message..."
 msgstr "رسالتك..."
 
 #: .\templates\forum\chatroom_list.html:5
-
 msgid "Chat rooms | Arabic NLP Platform"
 msgstr "منصة البرمجة اللغوية العربية"
 
@@ -3139,17 +2974,14 @@ msgid "Chat rooms"
 msgstr "غرف الدردشة"
 
 #: .\templates\forum\chatroom_list.html:12
-
 msgid "View topics"
 msgstr "رؤية التفاصيل"
 
 #: .\templates\forum\chatroom_list.html:43
-
 msgid "Join the discussion"
 msgstr "انضم إلى المناقشة"
 
 #: .\templates\forum\chatroom_list.html:55
-
 msgid "No chat room is available"
 msgstr "لا تتوفر غرف دردشة   "
 
@@ -3158,17 +2990,14 @@ msgid "Return to topics to create a new chat room"
 msgstr "العودة إلى المواضيع لإنشاء غرفة دردشة جديدة"
 
 #: .\templates\forum\chatroom_list.html:58
-
 msgid "Back to topics"
 msgstr "العودة  للمواضيع"
 
 #: .\templates\forum\chatroom_new.html:9
-
 msgid "Create a new chat room"
 msgstr "اٍنشاء غرفة جديدة"
 
 #: .\templates\forum\chatroom_new.html:13
-
 msgid "Subject:"
 msgstr "الموضوع "
 
@@ -3186,7 +3015,6 @@ msgid "Décrivez brièvement le sujet de discussion de cette salle"
 msgstr " صف بإيجاز موضوع المناقشة في هذه الغرفة  "
 
 #: .\templates\forum\chatroom_new.html:61
-
 msgid "Create the room"
 msgstr "اٍنشاء غرفة  جديدة"
 
@@ -3201,37 +3029,33 @@ msgid "Message"
 msgstr "رسالة"
 
 #: .\templates\forum\topic_delete.html:9
-
 msgid "Delete topic"
 msgstr "حذف الموضوع"
 
 #: .\templates\forum\topic_delete.html:16
-
 msgid "Are you sure you want to delete the topic:"
 msgstr "هل أنت متأكد أنك تريد حذف هذا الموضوع"
 
 #: .\templates\forum\topic_delete.html:22
 msgid ""
-"This action is irreversible and will delete all associated chat rooms and messages."
-msgstr "هذا الإجراء لا رجعة فيه وسيؤدي إلى حذف جميع غرف الدردشة والرسائل المرتبطة بها"
+"This action is irreversible and will delete all associated chat rooms and "
+"messages."
+msgstr ""
+"هذا الإجراء لا رجعة فيه وسيؤدي إلى حذف جميع غرف الدردشة والرسائل المرتبطة بها"
 
 #: .\templates\forum\topic_list.html:5
-
 msgid "Discussion topics | Arabic NLP Platform"
 msgstr "غرف الدردشة | منصة البرمجة اللغوية العربية"
 
 #: .\templates\forum\topic_list.html:10
-
 msgid "Discussion topics"
 msgstr "المناقشات الأخيرة"
 
 #: .\templates\forum\topic_list.html:42
-
 msgid "Create a chat room"
 msgstr "اٍنشاء  غرفة دردشة"
 
 #: .\templates\forum\topic_list.html:48
-
 msgid "Edite"
 msgstr "تعديل"
 
@@ -3244,27 +3068,22 @@ msgid "Be the first to start a discussion!"
 msgstr "كن أول من يبدأ المناقشة!"
 
 #: .\templates\forum\topic_list.html:68
-
 msgid "Create a topic"
 msgstr "تم الإنشاء في"
 
 #: .\templates\forum\topic_new.html:9
-
 msgid "Create a new topic"
 msgstr "إنشاء مجموعة جديدة"
 
 #: .\templates\forum\topic_new.html:13
-
 msgid "Create a new discussion topic for the community."
 msgstr "إنشاء موضوع نقاش جديد للمجتمع"
 
 #: .\templates\forum\topic_new.html:59
-
 msgid "Create topic"
 msgstr " الإنشاء موضوع"
 
 #: .\templates\forum\topic_update.html:10
-
 msgid "Edit topic"
 msgstr "تعديل الموضوع"
 
@@ -3277,7 +3096,6 @@ msgid "Unban a user"
 msgstr "قم بإلغاء الحظر على مستخدم"
 
 #: .\templates\forum\unban_user.html:19
-
 msgid "Are you sure you want to unban:"
 msgstr "هل أنت متأكد أنك تريد رفع الحظر"
 
@@ -3286,7 +3104,6 @@ msgid "from the chat room"
 msgstr "من غرفة الدردشة"
 
 #: .\templates\forum\unban_user.html:38
-
 msgid "Confirm unbanning"
 msgstr "تأكيد الحظر"
 
@@ -3347,12 +3164,10 @@ msgid "No popular posts yet."
 msgstr "لا توجد مشاركات شائعة حتى الآن."
 
 #: .\templates\home.html:102
-
 msgid "Most viewed resources "
 msgstr "لم يتم العثور على الموارد"
 
 #: .\templates\home.html:144
-
 msgid "No popular resources yet."
 msgstr "لم يتم العثور على الموارد"
 
@@ -3369,17 +3184,14 @@ msgid "No upcoming events."
 msgstr "لا توجد أحداث قادمة."
 
 #: .\templates\institutions\institution_confirm_delete.html:7
-
 msgid "Confirm institution deletion"
 msgstr "تأكيد الحذف"
 
 #: .\templates\institutions\institution_confirm_delete.html:11
-
 msgid "Are you sure you want to delete the institution?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا المؤسسة"
 
 #: .\templates\institutions\institution_confirm_delete.html:13
-
 msgid "This action is irreversible."
 msgstr "هذا الإجراء لا رجعة فيه."
 
@@ -3470,22 +3282,19 @@ msgstr "الأعضاء "
 msgid "Contact Information"
 msgstr "معلومات الاتصال"
 
-#: .\templates\institutions\institution_detail.html:371
+#: .\templates\institutions\institution_detail.html:370
 msgid "Social Media"
 msgstr "وسائل التواصل الاجتماعي"
 
 #: .\templates\institutions\institution_form.html:173
-
 msgid "Edit institution"
 msgstr "تعديل المؤسسات "
 
 #: .\templates\institutions\institution_form.html:173
-
 msgid "New institution"
 msgstr "المؤسسات"
 
 #: .\templates\institutions\institution_form.html:176
-
 msgid "Edit the institution information"
 msgstr "تعديل معلومات المؤسسة "
 
@@ -3494,22 +3303,18 @@ msgid "Add a new institution to the platform"
 msgstr "إضافة مؤسسة جديدة إلى المنصة"
 
 #: .\templates\institutions\institution_form.html:214
-
 msgid "General information"
 msgstr "تحويل "
 
 #: .\templates\institutions\institution_form.html:219
-
 msgid "Name of the institution"
 msgstr "اسم المؤسسة"
 
 #: .\templates\institutions\institution_form.html:224
-
 msgid "The full name of the institution"
 msgstr "اسم الكامل المؤسسة"
 
 #: .\templates\institutions\institution_form.html:229
-
 msgid "acronym"
 msgstr "اختصار"
 
@@ -3518,7 +3323,6 @@ msgid "The institution's acronym or abbreviation"
 msgstr "اختصار أو اسم المؤسسة"
 
 #: .\templates\institutions\institution_form.html:241
-
 msgid "Type of institution"
 msgstr "نوع المؤسسة"
 
@@ -3527,7 +3331,6 @@ msgid "Select the institution's specialties"
 msgstr "حدد تخصصات المؤسسة"
 
 #: .\templates\institutions\institution_form.html:277
-
 msgid "Upload the institution logo (recommended format: PNG or JPG)"
 msgstr "قم بتحميل شعار المؤسسة (الصيغة الموصى بها: PNG أو JPG)   "
 
@@ -3536,7 +3339,6 @@ msgid "Localisation"
 msgstr "الموقع"
 
 #: .\templates\institutions\institution_form.html:353
-
 msgid "Create the institution"
 msgstr "انشاء المؤسسة"
 
@@ -3557,8 +3359,8 @@ msgstr ""
 
 #: .\templates\institutions\institution_list.html:84
 #: .\templates\resources\corpus_list.html:125
-#: .\templates\resources\course_list.html:117
-#: .\templates\resources\list.html:148 .\templates\resources\tool_list.html:129
+#: .\templates\resources\course_list.html:115
+#: .\templates\resources\list.html:146 .\templates\resources\tool_list.html:129
 msgid "View Details"
 msgstr "رؤية التفاصيل"
 
@@ -3579,7 +3381,6 @@ msgid "Invitation"
 msgstr "دعوة"
 
 #: .\templates\notifications\list.html:64
-
 msgid "Membership application"
 msgstr "تعديل النشر"
 
@@ -3588,34 +3389,28 @@ msgid "Assigned task"
 msgstr "المهمة المعينة"
 
 #: .\templates\notifications\list.html:70
-
 msgid "System"
 msgstr "نظام"
 
 #: .\templates\notifications\list.html:92
 #: .\templates\notifications\list.html:117
-
 msgid "Accept"
 msgstr "قبول"
 
 #: .\templates\notifications\list.html:95
 #: .\templates\notifications\list.html:120
-
 msgid "Refuse"
 msgstr "رفض"
 
 #: .\templates\notifications\list.html:102
-
 msgid "Invitation accepted"
 msgstr "دعوة مقبولة"
 
 #: .\templates\notifications\list.html:106
-
 msgid "Invitation refused"
 msgstr "دعوة مرفوضة"
 
 #: .\templates\notifications\list.html:127
-
 msgid "Request accepted"
 msgstr "تم قبول طلب المشروع"
 
@@ -3628,17 +3423,14 @@ msgid "Read"
 msgstr "يقرأ"
 
 #: .\templates\notifications\list.html:145
-
 msgid "Mark as read"
 msgstr "وضع علامة على الكل كمقروءة"
 
 #: .\templates\notifications\list.html:158
-
 msgid "No notifications"
 msgstr "الاشعارات"
 
 #: .\templates\notifications\list.html:159
-
 msgid "You have no notifications at the moment."
 msgstr "ليس لديك أي إشعارات في الوقت الحالي."
 
@@ -3775,23 +3567,19 @@ msgstr "اٍضافة دورة جديدة"
 msgid "You need to be logged in to add new courses"
 msgstr "يجب عليك تسجيل الدخول  للاٍضافة في الدورات ."
 
-#: .\templates\resources\course_list.html:45 .\templates\resources\list.html:39
-msgid "Rechercher des ressources..."
-msgstr "البحث عن الموارد..."
-
-#: .\templates\resources\course_list.html:64
+#: .\templates\resources\course_list.html:62
 msgid "Explore Courses"
 msgstr "استكشاف الدورات"
 
-#: .\templates\resources\course_list.html:128
+#: .\templates\resources\course_list.html:126
 msgid "No courses available"
 msgstr "لا توجد دورات متاحة"
 
-#: .\templates\resources\course_list.html:129
+#: .\templates\resources\course_list.html:127
 msgid "Courses you add will appear here"
 msgstr "ستظهر هنا الدورات التي تضيفها"
 
-#: .\templates\resources\course_list.html:135
+#: .\templates\resources\course_list.html:133
 msgid "Add Your First Course"
 msgstr "أضف دورتك الأولى"
 
@@ -3807,31 +3595,31 @@ msgstr "الموارد المتاحة"
 msgid "Add Resource"
 msgstr "إضافة الموارد"
 
-#: .\templates\resources\list.html:50
+#: .\templates\resources\list.html:48
 msgid "Chargement..."
 msgstr "تحميل..."
 
-#: .\templates\resources\list.html:61
+#: .\templates\resources\list.html:59
 msgid "Tous les types"
 msgstr "جميع الانواع"
 
-#: .\templates\resources\list.html:62 .\templates\resources\list.html:90
+#: .\templates\resources\list.html:60 .\templates\resources\list.html:88
 msgid "Articles"
 msgstr "مقالات"
 
-#: .\templates\resources\list.html:81
+#: .\templates\resources\list.html:79
 msgid "Filter by:"
 msgstr "التصفية حسب:"
 
-#: .\templates\resources\list.html:205
+#: .\templates\resources\list.html:203
 msgid "No resources found"
 msgstr "لم يتم العثور على الموارد"
 
-#: .\templates\resources\list.html:206
+#: .\templates\resources\list.html:204
 msgid "Try adjusting your search criteria"
 msgstr "حاول تعديل معايير البحث الخاصة بك"
 
-#: .\templates\resources\list.html:209
+#: .\templates\resources\list.html:207
 msgid "Add a resource"
 msgstr "إضافة مورد"
 
@@ -3951,7 +3739,6 @@ msgid "Supported Languages:"
 msgstr "اللغات المدعومة:"
 
 #: .\templates\resources\tool_list.html:1
-
 msgid "NLPTools"
 msgstr "أدوات البرمجة اللغوية"
 
@@ -4058,7 +3845,7 @@ msgstr "أدخل عنوان بريد إلكتروني صالحًا."
 #: .\venv\Lib\site-packages\django\core\validators.py:310
 msgid ""
 "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
-msgstr ""
+msgstr "أدخل شعار صالحًا يتكون من أحرف أو أرقام أو شرطات سفلية أو شرطة"
 
 #: .\venv\Lib\site-packages\django\core\validators.py:318
 msgid ""
@@ -5202,6 +4989,36 @@ msgstr "مجتمع جانغو"
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Export"
+#~ msgstr "مصدر"
+
+#~ msgid "Export CSV"
+#~ msgstr "مصدر"
+
+#~ msgid "CATEGORY"
+#~ msgstr "الفئة"
+
+#~ msgid "All categories"
+#~ msgstr "جميع الفئات"
+
+#~ msgid "General"
+#~ msgstr "عام"
+
+#~ msgid "Technical"
+#~ msgstr "تقني"
+
+#~ msgid "Support"
+#~ msgstr "الدعم"
+
+#~ msgid "Category"
+#~ msgstr "الفئة"
+
+#~ msgid "Nom complet"
+#~ msgstr "الاسم الكام"
+
+#~ msgid "Rechercher des ressources..."
+#~ msgstr "البحث عن الموارد..."
 
 #~ msgid "Votre compte a été supprimé avec succès."
 #~ msgstr "لقد تم حذف حسابك بنجاح."

@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 
 ELASTICSEARCH_DSL = {
    'default': {
-       # Ajout du schéma http:// devant l'hôte
+       
        'hosts': 'http://localhost:9200',
        'timeout': 120,
        'sniff_on_start': True,
