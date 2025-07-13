@@ -212,17 +212,7 @@
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{% trans "Active projects" %}</h5>
-          <h2 class="card-text">{{ current_stats.active_projects_count }}</h2>
-          <p
-            class="trend {% if current_stats.projects_growth > 0 %}trend-up{% else %}trend-down{% endif %}"
-          >
-            {{ current_stats.projects_growth|floatformat:1 }}%
-          </p>
-        </div>
-      </div>
+      
     </div>
   </div>
 

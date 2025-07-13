@@ -43,7 +43,7 @@
                                 id="{{ form.description.id_for_label }}" 
                                 rows="4" 
 
-                                placeholder="{% trans "Décrivez brièvement le sujet de discussion de cette salle" %}"
+                               placeholder="{% trans 'Briefly describe the topic of discussion in this room' %}"
 
                             >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
                             {% if form.description.errors %}

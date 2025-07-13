@@ -3,7 +3,7 @@ from .views import (
     ProjectListView, ProjectDetailView, ProjectCreateView, 
     ProjectUpdateView, ProjectDeleteView, JoinProjectView, 
     LeaveProjectView, ProjectSearchView, AcceptMemberView,
-    RejectMemberView, ProjectMembersView, RemoveMemberView,
+    RejectMemberView, ProjectMembersView, RemoveMemberView, RespondToLeaveRequestView,
     RespondToRequestView
 )
 
@@ -20,6 +20,7 @@ urlpatterns = [
     
     # Nouvelles URLs pour la gestion des membres
     path('<uuid:pk>/members/', ProjectMembersView.as_view(), name='project_members'),
+    path('projects/<uuid:pk>/respond-leave/<uuid:member_id>/', RespondToLeaveRequestView.as_view(), name='respond_leave_request'),
     path('<uuid:pk>/members/<uuid:member_id>/accept/', AcceptMemberView.as_view(), name='accept_member'),
     path('<uuid:pk>/members/<uuid:member_id>/reject/', RejectMemberView.as_view(), name='reject_member'),
     path('<uuid:pk>/members/<uuid:member_id>/remove/', RemoveMemberView.as_view(), name='remove_member'),

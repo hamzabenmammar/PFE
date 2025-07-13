@@ -648,7 +648,7 @@
             <td>
               <div class="action-buttons">
                 <a href="{% url 'events:event_update' call.pk %}" class="btn-action btn-edit" title="Modifier cet appel à communication">{% trans "Edit" %}</a>
-                <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet appel à communication ?');" title="Supprimer cet appel à communication">{% trans "Delete" %}</a>
+                <a href="{% url 'events:event_delete' call.pk %}" class="btn-action btn-delete" onclick="return confirm('Are you sure you want to delete this call for papers??');" title="Supprimer cet appel à communication">{% trans "Delete" %}</a>
                 {% if not call.is_approved %}
                   <form action="{% url 'events:event_validate' call.pk %}" method="post" style="display:inline;">
                     {% csrf_token %}

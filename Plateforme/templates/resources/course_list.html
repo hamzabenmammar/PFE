@@ -69,9 +69,7 @@
   <div class="course-grid">
     {% for course in courses %}
     <div class="course-card">
-      <div class="ribbon-wrapper">
-        <div class="ribbon">{% trans "Course" %}</div>
-      </div>
+      
       <div class="card-body d-flex flex-column">
         <h5 class="card-title">{{ course.title }}</h5>
         {% if course.titre and course.titre != course.title %}
@@ -183,29 +181,6 @@
     box-shadow: var(--hover-shadow);
   }
 
-  /* Ribbon */
-  .ribbon-wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    overflow: hidden;
-    width: 120px;
-    height: 120px;
-  }
-
-  .ribbon {
-    position: absolute;
-    top: 20px;
-    right: -30px;
-    transform: rotate(45deg);
-    background-color: var(--primary-color);
-    color: white;
-    padding: 5px 40px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
 
   .course-card .card-body {
     padding: 2rem;

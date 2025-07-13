@@ -80,7 +80,7 @@
   .status-in-progress { background-color: var(--primary-color); }
   .status-completed { background-color: var(--success-color); }
   .status-pending { background-color: var(--warning-color); }
-  .status-cancelled { background-color: var(--danger-color); }
+  
 
   .projects-actions {
     display: flex;
@@ -363,10 +363,7 @@
     color: var(--warning-color);
   }
 
-  .status-badge-cancelled {
-    background-color: rgba(229, 62, 62, 0.1);
-    color: var(--danger-color);
-  }
+ 
 
   .team-badge {
     display: inline-flex;
@@ -475,10 +472,6 @@
           <span class="status-dot status-pending"></span>
           <span class="status-label">Pending</span>
         </div>
-        <div class="status-item">
-          <span class="status-dot status-cancelled"></span>
-          <span class="status-label">Cancelled</span>
-        </div>
       </div>
     </div>
     <div class="projects-actions">
@@ -534,7 +527,7 @@
         <option value="ongoing" {% if filter_status == 'ongoing' %}selected{% endif %}>Ongoing</option>
         <option value="completed"   {% if filter_status == 'completed'   %}selected{% endif %}>Completed</option>
         <option value="pending"     {% if filter_status == 'pending'     %}selected{% endif %}>Pending</option>
-        <option value="cancelled"   {% if filter_status == 'cancelled'   %}selected{% endif %}>Cancelled</option>
+       
       </select>
     </div>
     <button type="submit" class="btn btn-primary">
@@ -580,8 +573,6 @@
               <span class="status-badge status-badge-completed">Completed</span>
             {% elif project.status == 'pending' %}
               <span class="status-badge status-badge-pending">Pending</span>
-            {% elif project.status == 'cancelled' %}
-              <span class="status-badge status-badge-cancelled">Cancelled</span>
             {% else %}
               {{ project.get_status_display }}
             {% endif %}

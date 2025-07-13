@@ -36,14 +36,14 @@
                         
                         <div class="mb-4">
                             <label for="{{ form.description.id_for_label }}" class="form-label fw-bold">{% trans "Description" %}</label>
-                            <textarea 
-                                name="{{ form.description.name }}" 
-                                class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
-                                id="{{ form.description.id_for_label }}" 
-
-                                placeholder="Describe your topic to help other users 
-                            >{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
-                            {% if form.description.errors %}
+                                    <textarea 
+                                    name="{{ form.description.name }}" 
+                                    class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.description.id_for_label }}" 
+                                    placeholder="Describe your topic to help other users">
+                                   
+                        </textarea>
+                                        {% if form.description.errors %}
                             <div class="invalid-feedback">
                                 {{ form.description.errors }}
                             </div>

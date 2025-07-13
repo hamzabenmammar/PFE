@@ -6,6 +6,9 @@ app_name = "pages"
 urlpatterns = [
   path('', HomePageView.as_view(), name='home'),
 # Main admin views
+    path('admin/contact', views.contact_view, name='contact'),
+    path('admin/', views.admin_contact_list, name='admin_contact_list'),
+    path('admin/<int:pk>/', views.admin_contact_detail, name='admin_contact_detail'),
     path('dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('admin/users/', views.admin_users, name='admin_users'),
     path('admin/publications/', views.admin_publications, name='admin_publications'),

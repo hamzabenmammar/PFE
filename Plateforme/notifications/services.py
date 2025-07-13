@@ -89,23 +89,32 @@ class NotificationService:
             project_id=project.id,
             sender_id=sender.id
         )
-    
     @staticmethod
-    def create_membership_request(recipient, project, sender):
-        """
-        Crée une notification de demande d'adhésion à un projet
-        
-        Args:
-            recipient: Responsable du projet (qui reçoit la demande)
-            project: Projet concerné
-            sender: Utilisateur qui demande à rejoindre
-        """
-        title = "New membership application"
-        message = f"{sender.username} would like to join your project « {project.title} »."
+    def create_Leave_Request(recipient, project, sender):
+        title = "Leave Request"
+        message = f"{sender.username} woulde leave your project :  « {project.name} » ."
         
         return NotificationService.create_notification(
             recipient=recipient,
-            notification_type='MEMBERSHIP_REQUEST',  # Assurez-vous que ce type existe dans votre modèle
+            notification_type='LEAVE_REQUEST',  # Assurez-vous que ce type existe dans votre modèle
+            title=title,
+            message=message,
+            related_object=project,
+            project_id=project.id,
+            sender_id=sender.id
+        )
+    
+    @staticmethod
+    def create_membership_request(recipient, project, sender):
+        title = "New membership application"
+        
+        sender_name = getattr(sender, 'full_name', None) or getattr(sender, 'username', None) or 'Unknown user'
+        
+        message = f"{sender_name} would like to join your project « {project.title} »."
+        
+        return NotificationService.create_notification(
+            recipient=recipient,
+            notification_type='MEMBERSHIP_REQUEST',
             title=title,
             message=message,
             related_object=project,

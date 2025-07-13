@@ -4,16 +4,25 @@ from django.http import JsonResponse
 from django.utils import timezone
 from .models import Notification
 from .services import NotificationService
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
 @login_required
 def notification_list(request):
+    
     """Vue pour afficher la liste des notifications"""
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
+
+    paginator = Paginator(notifications, 10)  
+    page = request.GET.get('page')
+    try:
+        notifications = paginator.page(page)
+    except PageNotAnInteger:
+        notifications = paginator.page(1)
+    except EmptyPage:
+        notifications = paginator.page(paginator.num_pages)
     
-    # Ajouter du débogage si nécessaire
-    # for notif in notifications:
-    #     print(f"Notification: {notif.title}, Project ID: {notif.project_id}, Sender ID: {notif.sender_id}")
+    
     
     return render(request, 'notifications/list.html', {
         'notifications': notifications,
@@ -109,4 +118,9 @@ def mark_read(request, notification_id):
     # Rediriger vers la page d'où la requête provenait, ou par défaut la liste
     next_url = request.GET.get('next', request.META.get('HTTP_REFERER', redirect('notifications:list').url))
     return redirect(next_url)
+
+def delete_all_notifications(request):
+    Notification.objects.filter(recipient=request.user).delete()
+    messages.success(request, "All your notifications have been deleted.")
+    return redirect('notifications:list') 
 

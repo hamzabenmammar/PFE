@@ -131,6 +131,7 @@
       </div>
 
       <!-- Action Buttons -->
+       {% if request.user == user %}
       <div class="profile-actions">
         <div class="actions-primary">
           <a
@@ -178,6 +179,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
 
         {% if request.user.is_authenticated and request.user != user and request.user.coordinated_projects.all %}
         <div class="project-invite mt-3">
@@ -209,7 +211,7 @@
   :root {
     --primary: #4361ee;
     --primary-hover: #3a56d4;
-    --primary-light: rgba(67, 97, 238, 0.1);
+    --primary-light: rgba(67, 98, 238, 0.404);
     --secondary: #3f37c9;
     --text-primary: #333333;
     --text-secondary: #666666;

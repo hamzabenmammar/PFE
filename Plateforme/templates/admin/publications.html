@@ -1,5 +1,4 @@
-{% extends 'base_admin.html' %} {% load i18n %} {% block title %}{% trans
-"Gestion des publications" %}{% endblock %} {% block extra_css %}
+{% extends 'base_admin.html' %} {% load i18n %} {% block title %}{% trans "Publication management" %}{% endblock %} {% block extra_css %}
 <style>
   .publications-header {
     display: flex;
@@ -200,29 +199,29 @@
 {% endblock %} {% block content %}
 <div class="publications-header">
   <h1>
-    {% trans "Gestion des publications" %} {% if pending_publications_count > 0 %}<span class="pending-badge"
+    {% trans "Publication management" %} {% if pending_publications_count > 0 %}<span class="pending-badge"
       >{{ pending_publications_count }} en attente</span
     >{% endif %}
   </h1>
   <a href="{% url 'resources:create' %}" class="btn btn-primary"
-    >{% trans "Ajouter une publication" %}</a
+    >{% trans "Add a publication" %}</a
   >
 </div>
 
 <form method="get" class="filter-form">
   <div class="form-row">
     <div class="form-group">
-      <label for="search">{% trans "Recherche" %}</label>
+      <label for="search">{% trans "Research" %}</label>
       <input
         type="text"
         id="search"
         name="search"
         value="{{ request.GET.search }}"
-        placeholder="Titre, auteur..."
+        placeholder="Title, author..."
       />
     </div>
     <div class="form-group">
-      <label for="date_from">{% trans "Date début" %}</label>
+      <label for="date_from">{% trans "Start date" %}</label>
       <input
         type="date"
         id="date_from"
@@ -231,7 +230,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="date_to">{% trans "Date fin" %}</label>
+      <label for="date_to">{% trans "End date" %}</label>
       <input
         type="date"
         id="date_to"
@@ -242,7 +241,7 @@
   </div>
   <div class="buttons">
     <button type="button" class="btn btn-outline" onclick="resetFilters()">
-      {% trans "Réinitialiser" %}
+      {% trans "Reset" %}
     </button>
     <button type="submit" class="btn btn-primary">{% trans "Filtrer" %}</button>
   </div>
@@ -252,9 +251,9 @@
 <table class="publications-table">
   <thead>
     <tr>
-      <th>{% trans "Titre" %}</th>
-      <th>{% trans "Auteur" %}(s)</th>
-      <th>{% trans "Date de soumission" %}</th>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Author" %}(s)</th>
+      <th>{% trans "Submission date" %}</th>
       <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
@@ -381,30 +380,12 @@
 </div>
 {% endif %} {% else %}
 <div class="empty-state">
-  <h3>{% trans "Aucune publication trouvée" %}</h3>
+  <h3>{% trans "No publications found" %}</h3>
   <p>
-    {% trans "Modifiez vos critères de recherche ou ajoutez de nouvelles
-    publications." %}
+    {% trans "Modify your search criteria or add new publications." %}
   </p>
 </div>
 {% endif %}
 
-<script>
-  function resetFilters() {
-    document.getElementById('search').value = '';
-    document.getElementById('status').value = '';
-    document.getElementById('date_from').value = '';
-    document.getElementById('date_to').value = '';
-  }
 
-  // Animation pour la notification de nouvelles publications en attente
-  document.addEventListener('DOMContentLoaded', function() {
-    const pendingCount = {{ pending_publications_count }};
-    if (pendingCount > 0) {
-      const audio = new Audio('/static/admin/sounds/notification.mp3');
-      audio.volume = 0.5;
-      audio.play().catch(e => console.log('Notification audio non jouée: interaction utilisateur requise.'));
-    }
-  });
-</script>
 {% endblock %}

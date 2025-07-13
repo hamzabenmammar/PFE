@@ -525,6 +525,21 @@
       </div>
 
       <!-- Admin actions -->
+       
+{% if show_approval_status and not event.is_approved %}
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">{% trans "Pending Approval" %}</h4>
+    <p>{% trans "This event is currently pending approval and is not visible to other users." %}</p>
+    {% if user.is_staff %}
+        <hr>
+        <p class="mb-0">
+            <a href="{% url 'events:event_validate' event.pk %}" class="btn btn-success btn-sm">
+                {% trans "Approve Event" %}
+            </a>
+        </p>
+    {% endif %}
+</div>
+{% endif %}
     </div>
   </div>
 </div>

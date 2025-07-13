@@ -1,7 +1,12 @@
+from django.conf import settings
 from django.db import transaction
 from django.urls import reverse
+from django.core.mail import send_mail
 from django.views.generic import TemplateView
 from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
+from pages.forms import AdminResponseForm, ContactForm
+from accounts.models import CustomUser
 from events.models import Event
 from resources.models import Corpus, NLPTool ,Document , Course
 from projects.models import Project ,ProjectMember
@@ -56,7 +61,7 @@ class HomePageView(TemplateView):
         # Récupérer les 5 outils NLP les plus vus
         most_viewed_tools = NLPTool.objects.order_by('-views_count')[:3]
         for resource in most_viewed_tools:
-             resource.resource_type_display = "Outil NLP"
+             resource.resource_type_display = "Tool"
              most_viewed_resources.append(resource)
 
         # Récupérer les 5 documents les plus vus
@@ -68,23 +73,15 @@ class HomePageView(TemplateView):
         # Récupérer les 5 cours les plus vus
         most_viewed_courses = Course.objects.order_by('-views_count')[:3]
         for resource in most_viewed_courses:
-             resource.resource_type_display = "Cours"
+             resource.resource_type_display = "Course"
              most_viewed_resources.append(resource)
 
         # Trier toutes les ressources les plus vues par nombre de vues (décroissant) et prendre les 5 premières au total
         context['most_viewed_resources'] = sorted(most_viewed_resources, key=lambda x: x.views_count, reverse=True)[:3]
 
-        # Nouveaux membres
-        try:
-            context['new_members'] = User.objects.order_by('-date_joined')[:3]
-        except:
-            context['new_members'] = []
-
-        # Discussions récentes : Utilisation de ChatRoom.objects comme le nom d'URL l'indique
-        try:
-            context['recent_discussions'] = Topic.objects.order_by('-created_at')[:3]
-        except:
-            context['recent_discussions'] = []
+      
+            
+        context['page'] = 'home'
         
         return context
     
@@ -96,7 +93,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Count, Q
-from .models import  Stats ,UserStatusHistory
+from .models import  ContactMessage, Stats ,UserStatusHistory
 
 from institutions.models import Institution
 
@@ -370,45 +367,51 @@ def admin_users(request):
 
 @login_required
 @user_passes_test(is_admin)
+@login_required
+@user_passes_test(is_admin)
 def admin_users_new(request):
-    """Vue pour créer un nouvel utilisateur."""
     if request.method == 'POST':
-        # Extraire les données du formulaire
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
-        password = request.POST.get('password')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
         status = request.POST.get('status', 'active')
+       
+
+        # 1. Vérification des mots de passe
+        if password1 != password2:
+            messages.error(request, "Les mots de passe ne correspondent pas.")
+            return render(request, 'admin/users_new.html')
+
+        # 2. Vérification de l’unicité de l’email
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, f"L'utilisateur avec l'email {email} existe déjà.")
+            return render(request, 'admin/users_new.html')
+
+        # 3. Récupération de l'institution (si fournie)
+        institution_obj = None
         
-        # Vérifier si l'utilisateur existe déjà
-        if User.objects.filter(full_name=full_name).exists():
-            messages.error(request, f"A user with the name {full_name} already exists.")
-            return render(request, 'admin/users/new.html')
         
-        if User.objects.filter(email=email).exists():
-            messages.error(request, f"A user with the email {email} already exists.")
-            return render(request, 'admin/users/new.html')
-        
-        # Créer l'utilisateur
-        user = User.objects.create_user(
-            full_name=full_name,
+
+        # 4. Création du compte admin
+        user = CustomUser.objects.create_user(
             email=email,
-            password=password,
-            status=status
+            password=password1,
+            full_name=full_name,
+            institution=institution_obj,
         )
-        
-        # Créer une entrée dans l'historique
-        UserStatusHistory.objects.create(
-            user=user,
-            old_status='new',
-            new_status=status,
-            changed_by=request.user,
-            change_date=timezone.now()
-        )
-        
-        messages.success(request, f"The user {full_name} has been successfully created.")
+
+        user.status = status
+        user.is_active = True         
+        user.is_staff = True         
+        user.is_superuser = True      
+        user.save()
+
+        messages.success(request, f"L'administrateur {full_name} a été créé avec succès.")
         return redirect('pages:admin_users')
-    
+
     return render(request, 'admin/users_new.html')
+
 
 @login_required
 @user_passes_test(is_admin)
@@ -904,13 +907,13 @@ def admin_forum(request):
     """Admin forum management"""
     # Filter parameters
     status = request.GET.get('status', '')
-    # category = request.GET.get('category', '') # TODO: Implement category filtering if categories are added
     search = request.GET.get('search', '')
     page_number = request.GET.get('page')
 
-    # Base queryset
-    # Annoter chaque sujet avec le nombre total de messages dans toutes ses chatrooms
-    topics = Topic.objects.annotate(total_messages=Count('chatrooms__messages')).order_by('-created_at')
+    # Base queryset with proper prefetch for chatrooms
+    topics = Topic.objects.prefetch_related('chatrooms').annotate(
+        total_messages=Count('chatrooms__messages')
+    ).order_by('-created_at')
 
     # Apply filters
     if status == 'open':
@@ -921,36 +924,86 @@ def admin_forum(request):
     if search:
         topics = topics.filter(
             Q(title__icontains=search) | 
-            Q(description__icontains=search) | # Adapter si le champ est différent
+            Q(description__icontains=search) |
             Q(creator__full_name__icontains=search)
         )
 
-    # TODO: Implement category filtering here if categories are added
-
     # Pagination
-    paginator = Paginator(topics, 10) # 10 sujets par page
+    paginator = Paginator(topics, 10)
     page_obj = paginator.get_page(page_number)
 
-    # Statistiques dynamiques
+    # Statistics
     total_topics_count = Topic.objects.count()
     open_topics_count = Topic.objects.filter(is_closed=False).count()
     closed_topics_count = Topic.objects.filter(is_closed=True).count()
-    total_messages_count = Message.objects.count() # Assurez-vous que Message est importé en haut si utilisé ici
+    total_messages_count = Message.objects.count()
 
     context = {
-        'topics': page_obj, # Passer l'objet page paginé
+        'topics': page_obj,
         'total_topics_count': total_topics_count,
         'open_topics_count': open_topics_count,
         'closed_topics_count': closed_topics_count,
         'total_messages_count': total_messages_count,
         'filter_status': status,
-        # 'filter_category': category, # TODO: Pass filter_category if categories are added
         'search': search,
     }
 
     return render(request, 'admin/forum.html', context)
 
 
+# Add these additional views for proper topic management
+@login_required
+@user_passes_test(is_admin)
+def admin_topic_detail(request, pk):
+    """View topic details"""
+    topic = get_object_or_404(Topic, pk=pk)
+    return render(request, 'admin/topic_detail.html', {'topic': topic})
+
+
+@login_required
+@user_passes_test(is_admin)
+def admin_topic_edit(request, pk):
+    """Edit topic"""
+    topic = get_object_or_404(Topic, pk=pk)
+    if request.method == 'POST':
+        # Handle topic update logic here
+        pass
+    return render(request, 'admin/topic_edit.html', {'topic': topic})
+
+
+@login_required
+@user_passes_test(is_admin)
+def admin_topic_delete(request, pk):
+    """Delete topic"""
+    topic = get_object_or_404(Topic, pk=pk)
+    if request.method == 'POST':
+        topic.delete()
+        return JsonResponse({'status': 'success'})
+    return render(request, 'admin/topic_delete.html', {'topic': topic})
+
+
+@login_required
+@user_passes_test(is_admin)  
+def admin_topic_toggle_status(request, pk):
+    """Toggle topic status (open/closed)"""
+    if request.method == 'POST':
+        topic = get_object_or_404(Topic, pk=pk)
+        topic.is_closed = not topic.is_closed
+        topic.save()
+        
+        return JsonResponse({
+            'status': 'success',
+            'is_closed': topic.is_closed,
+            'message': f'Topic {"fermé" if topic.is_closed else "ouvert"} avec succès'
+        })
+    
+    return JsonResponse({'status': 'error', 'message': 'Method not allowed'})
+
+
+# Make sure you have this utility function
+def is_admin(user):
+    """Check if user is admin"""
+    return user.is_staff or user.is_superuser or hasattr(user, 'is_admin') and user.is_admin
 @login_required
 @user_passes_test(is_admin)
 def admin_institutions(request):
@@ -1004,7 +1057,7 @@ def admin_calls(request):
     
     # Apply filters
     if call_type:
-        calls = calls.filter(call_type=call_type)
+       calls = calls.filter(event_type=call_type)
     if is_active:
         calls = calls.filter(is_active=(is_active == 'true'))
     if is_approved:
@@ -1154,7 +1207,7 @@ def admin_statistics(request):
     top_corpora = Corpus.objects.order_by('-views_count')[:2]
     for corpus in top_corpora:
         top_resources.append({
-            'title': corpus.title,  # Changé de name à title
+            'title': corpus.title,  
             'views': corpus.views_count
         })
     
@@ -1162,7 +1215,7 @@ def admin_statistics(request):
     top_tools = NLPTool.objects.order_by('-views_count')[:1]
     for tool in top_tools:
         top_resources.append({
-            'title': tool.title,  # Changé de name à title
+            'title': tool.title,  
             'views': tool.views_count
         })
 
@@ -1421,3 +1474,140 @@ def admin_api_recent_content(request):
     
     return JsonResponse({'content': data})
 
+def contact_view(request):
+    """Vue pour le formulaire de contact public"""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save(commit=False)
+            if request.user.is_authenticated:
+                contact_message.user = request.user
+            contact_message.save()
+            
+            # Envoyer une notification email à l'admin (optionnel)
+            try:
+                send_mail(
+                    subject=f"[Arabic NLP Platform] New Contact Message: {contact_message.get_subject_display()}",
+                    message=f"New message from {contact_message.name} ({contact_message.email})\n\n{contact_message.message}",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.ADMIN_EMAIL],  # Vous devez définir cette variable dans settings.py
+                    fail_silently=True,
+                )
+            except:
+                pass
+            
+            messages.success(request, _('Your message has been sent successfully. We will get back to you soon.'))
+            return redirect('contact:contact')
+    else:
+        form = ContactForm()
+        # Préremplir les champs pour les utilisateurs connectés
+        if request.user.is_authenticated:
+            form.initial['name'] = f"{request.user.first_name} {request.user.last_name}".strip() or request.user.username
+            form.initial['email'] = request.user.email
+    
+    return render(request, 'contact/contact.html', {
+        'form': form,
+        'page': 'contact'
+    })
+
+@login_required
+def admin_contact_list(request):
+    """Vue pour lister les messages de contact dans l'admin"""
+    if not request.user.is_staff:
+        messages.error(request, _('You do not have permission to access this page.'))
+        return redirect('pages:home')
+    
+    # Filtres
+    status_filter = request.GET.get('status', '')
+    subject_filter = request.GET.get('subject', '')
+    search_query = request.GET.get('search', '')
+    
+    # Queryset de base
+    messages_list = ContactMessage.objects.all()
+    
+    # Appliquer les filtres
+    if status_filter:
+        messages_list = messages_list.filter(status=status_filter)
+    if subject_filter:
+        messages_list = messages_list.filter(subject=subject_filter)
+    if search_query:
+        messages_list = messages_list.filter(
+            Q(name__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(message__icontains=search_query)
+        )
+    
+    # Pagination
+    paginator = Paginator(messages_list, 20)
+    page_number = request.GET.get('page')
+    messages_page = paginator.get_page(page_number)
+    
+    # Statistiques
+    stats = {
+        'total': ContactMessage.objects.count(),
+        'pending': ContactMessage.objects.filter(status='pending').count(),
+        'read': ContactMessage.objects.filter(status='read').count(),
+        'replied': ContactMessage.objects.filter(status='replied').count(),
+        'closed': ContactMessage.objects.filter(status='closed').count(),
+    }
+    
+    context = {
+        'messages': messages_page,
+        'stats': stats,
+        'status_filter': status_filter,
+        'subject_filter': subject_filter,
+        'search_query': search_query,
+        'status_choices': ContactMessage.STATUS_CHOICES,
+        'subject_choices': ContactMessage.SUBJECT_CHOICES,
+    }
+    
+    return render(request, 'admin/contact_list.html', context)
+
+@login_required
+def admin_contact_detail(request, pk):
+    """Vue pour voir et répondre à un message de contact"""
+    if not request.user.is_staff:
+        messages.error(request, _('You do not have permission to access this page.'))
+        return redirect('pages:home')
+    
+    contact_message = get_object_or_404(ContactMessage, pk=pk)
+    
+    # Marquer comme lu si c'est la première fois
+    if contact_message.status == 'pending':
+        contact_message.status = 'read'
+        contact_message.save()
+    
+    if request.method == 'POST':
+        form = AdminResponseForm(request.POST, instance=contact_message)
+        if form.is_valid():
+            response = form.save(commit=False)
+            response.responded_by = request.user
+            response.responded_at = timezone.now()
+            if response.admin_response and response.status != 'replied':
+                response.status = 'replied'
+            response.save()
+            
+            # Envoyer la réponse par email si il y a une réponse
+            if response.admin_response:
+                try:
+                    send_mail(
+                        subject=f"[Arabic NLP Platform] Response to your message: {contact_message.get_subject_display()}",
+                        message=f"Hello {contact_message.name},\n\n{response.admin_response}\n\nBest regards,\nArabic NLP Platform Team",
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[contact_message.email],
+                        fail_silently=True,
+                    )
+                    messages.success(request, _('Response sent successfully.'))
+                except:
+                    messages.warning(request, _('Response saved but email could not be sent.'))
+            else:
+                messages.success(request, _('Status updated successfully.'))
+            
+            return redirect('contact:admin_contact_detail', pk=pk)
+    else:
+        form = AdminResponseForm(instance=contact_message)
+    
+    return render(request, 'admin/contact_detail.html', {
+        'contact_message': contact_message,
+        'form': form,
+    })

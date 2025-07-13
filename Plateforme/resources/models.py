@@ -284,6 +284,9 @@ class Document(ResourceBase):
         elif hasattr(self, 'memoir'):
             return reverse('resources:memoir_detail', kwargs={'pk': self.memoir.pk})
         return reverse('resources:document_detail', kwargs={'pk': self.pk})
+    def increment_views(self):
+        self.views_count += 1
+        self.save(update_fields=['views_count'])
 
 class Thesis(models.Model):
     document = models.OneToOneField(
@@ -315,6 +318,7 @@ class Thesis(models.Model):
 
     def get_absolute_url(self):
         return reverse('resources:thesis_detail', kwargs={'pk': self.pk})
+    
 
     class Meta:  
         verbose_name = _("thesis")

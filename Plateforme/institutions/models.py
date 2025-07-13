@@ -19,7 +19,7 @@ class Country(models.Model):
 
 
 class Specialty(models.Model):
-    name = models.CharField(_("Specialty Name"), max_length=100)
+    name = models.CharField(_("Specialty Name"), max_length=100 ,unique=True)
     code = models.CharField(_("Specialty Code"), max_length=20)
 
     class Meta:

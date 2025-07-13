@@ -113,6 +113,7 @@ class ResourceListView(LoginAndVerifiedRequiredMixin, ListView):
         context['field_choices'] = FieldChoices.choices
         context['current_field'] = self.request.GET.get('field', '')
         context['current_language'] = self.request.GET.get('language', '')
+        context['page'] = 'resources'
         return context
 
 class ToolListView(LoginAndVerifiedRequiredMixin, ListView):
@@ -150,6 +151,8 @@ class ToolListView(LoginAndVerifiedRequiredMixin, ListView):
         else:
             context['total_count'] = NLPTool.objects.count()
             context['is_search'] = False
+        
+        context['page'] = 'tools'
             
         return context
 
@@ -195,6 +198,7 @@ class CourseListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total_count'] = Course.objects.count()
+        context['page'] = 'course'
         return context
 
 class ArticleListView(LoginAndVerifiedRequiredMixin, ListView):
@@ -262,6 +266,8 @@ class CorpusListView(LoginAndVerifiedRequiredMixin, ListView):
         else:
             context['total_count'] = Corpus.objects.count()
             context['is_search'] = False
+
+        context['page'] = 'corpus'
             
         return context
 
@@ -322,11 +328,29 @@ class ResourceDetailView(LoginAndVerifiedRequiredMixin, DetailView):
         else:
             obj = get_object_or_404(model, pk=pk)
 
-        # Incrémentation du compteur de vues si méthode disponible
-        if hasattr(obj, 'increment_views'):
-            obj.increment_views()
-
         return obj
+
+    def get(self, request, *args, **kwargs):
+        """Override get method to handle view increment after object is retrieved"""
+        self.object = self.get_object()
+        
+        # Incrémentation du compteur de vues avec gestion spéciale pour les documents
+        resource_type = self.kwargs.get('type')
+        
+        if resource_type in ['article', 'thesis', 'memoir']:
+            # Pour les sous-types de Document, incrémenter les vues du document parent
+            if hasattr(self.object, 'document') and self.object.document:
+                self.object.document.increment_views()
+            else:
+                logger.warning(f"Object {self.object.pk} has no associated document")
+        elif hasattr(self.object, 'increment_views'):
+            # Pour les autres types (Course, NLPTool, Corpus)
+            self.object.increment_views()
+        else:
+            logger.warning(f"Object {self.object.pk} has no increment_views method")
+        
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
     def get_template_names(self):
         return [
@@ -340,6 +364,7 @@ class ResourceDetailView(LoginAndVerifiedRequiredMixin, DetailView):
         resource_type = self.MODEL_VIEW_NAMES.get(model_name, model_name)
         context['resource_type'] = resource_type
         context['list_url_name'] = self.URL_NAMES.get(resource_type, 'list')
+        context['page'] = 'resources'
 
         if hasattr(self.object, 'document'):
             context['specific_object'] = self.object  # Article, Thesis, Memoir...
@@ -358,6 +383,8 @@ class ResourceDetailView(LoginAndVerifiedRequiredMixin, DetailView):
                 context['related_corpora'] = Corpus.objects.filter(field__icontains=field)[:3]
             else:
                 context['related_corpora'] = Corpus.objects.all()[:3]
+
+    
 
         return context
 
@@ -476,7 +503,14 @@ class ResourceUpdateView(LoginRequiredMixin, UserPassesTestMixin, FormView):
             })
             initial['resource_type'] = 'corpus'
 
+        
+
       return initial
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -611,10 +645,19 @@ class ResourceUpdateView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         })
 
     def test_func(self):
+         
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return True
+
         resource = self.get_object()
+       
         if hasattr(resource, 'document'):
             return resource.document.author == self.request.user
         return resource.author == self.request.user 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
 
 
 class ResourceDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -659,6 +702,10 @@ class ResourceDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Del
         if self.request.user.is_staff or self.request.user.is_superuser:
             return True
         return resource.author == self.request.user
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
 
 class ResourceCreateView(LoginAndVerifiedRequiredMixin, FormView):
     template_name = 'resources/resource_form.html'
@@ -686,6 +733,11 @@ class ResourceCreateView(LoginAndVerifiedRequiredMixin, FormView):
             logger.error(f"Error creating resource: {str(e)}")
             messages.error(self.request, f"An error occurred while creating the resource: {str(e)}")
             return self.form_invalid(form)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
     
 class CourseCreateView(LoginAndVerifiedRequiredMixin, FormView):
     template_name = 'resources/course_create_form.html'
@@ -706,6 +758,12 @@ class CourseCreateView(LoginAndVerifiedRequiredMixin, FormView):
         resource = form.save()
         messages.success(self.request, f"Cours '{resource.title}' created successfully!")
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
+    
+         
 
 class CorpusCreateView(LoginAndVerifiedRequiredMixin, FormView):
     template_name = 'resources/corpus_create_form.html'
@@ -726,6 +784,10 @@ class CorpusCreateView(LoginAndVerifiedRequiredMixin, FormView):
         resource = form.save()
         messages.success(self.request, f"Corpus '{resource.title}' created successfully!")
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context
 
 class ToolCreateView(LoginAndVerifiedRequiredMixin, FormView):
     template_name = 'resources/tool_create_form.html'
@@ -746,3 +808,7 @@ class ToolCreateView(LoginAndVerifiedRequiredMixin, FormView):
         resource = form.save()
         messages.success(self.request, f"Tool '{resource.title}' created successfully!")
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'resources'  
+        return context

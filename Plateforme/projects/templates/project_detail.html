@@ -77,7 +77,7 @@
             {{ project.date_start }} - {{ project.date_end }}
           </div>
         </div>
-        {% if project.attachment %}
+        {% if project.attachment and project.coordinator == user or is_member %}
         <div class="info-item">
           <div class="info-label">
             <svg
@@ -581,7 +581,7 @@
   }
 
   .member-avatar {
-    background-color: #1e4e6d;w
+    background-color: #1e4e6d;
     color: white;
     width: 36px;
     height: 36px;

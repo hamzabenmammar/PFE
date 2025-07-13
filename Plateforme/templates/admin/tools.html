@@ -102,6 +102,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    text-decoration: none;
   }
 
   .btn-primary {
@@ -346,6 +347,102 @@
     color: #276749;
   }
 
+  /* Styles améliorés pour la barre de recherche - identique au corpus management */
+  .filter-form {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .filter-form .form-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+
+  .filter-form .form-group {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+  }
+
+  .filter-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+  }
+
+  .filter-form .form-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    color: #495057;
+  }
+
+  .filter-form .form-group input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .filter-form .form-group input::placeholder {
+    color: #a0aec0;
+    font-style: italic;
+  }
+
+  .filter-form .buttons {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .filter-form .btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    min-width: 100px;
+    white-space: nowrap;
+  }
+
+  .filter-form .btn-outline {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+  }
+
+  .filter-form .btn-outline:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    color: #495057;
+  }
+
+  .filter-form .btn-primary {
+    background-color: #4f46e5;
+    color: white;
+    border: 1px solid #4f46e5;
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+  }
+
+  .filter-form .btn-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+  }
+
   @media (max-width: 768px) {
     .tools-header {
       flex-direction: column;
@@ -361,9 +458,22 @@
       padding: 0.6rem 1rem;
     }
 
-    .filter-bar {
+    .filter-form .form-row {
       flex-direction: column;
       gap: 1rem;
+    }
+
+    .filter-form .form-group {
+      min-width: 100%;
+    }
+
+    .filter-form .buttons {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .filter-form .btn {
+      flex: 1;
     }
 
     .filter-dropdown {
@@ -372,6 +482,21 @@
     }
 
     .filter-dropdown select {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .filter-form {
+      padding: 1rem;
+    }
+
+    .filter-form .buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-form .btn {
       width: 100%;
     }
   }
@@ -402,20 +527,17 @@
   </div>
 </div>
 
-<div class="filter-bar">
-
-  <form method="get" class="filter-form">
-    <div class="form-row">
-      <div class="form-group">
-        <label for="search">{% trans "Search" %}</label>
-        <input
-          type="text"
-          id="search"
-          name="search"
-          value="{{ request.GET.search }}"
-          placeholder="Title, author..."
-        />
-      </div>
+<form method="get" class="filter-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="search">{% trans "Search" %}</label>
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value="{{ request.GET.search }}"
+        placeholder="{% trans 'Search by title, author, description...' %}"
+      />
     </div>
     <div class="buttons">
       <button type="button" class="btn btn-outline" onclick="resetFilters()">
@@ -423,17 +545,17 @@
       </button>
       <button type="submit" class="btn btn-primary">{% trans "Filter" %}</button>
     </div>
-  </form>
-
-  <div class="filter-dropdown">
-    <select id="type-filter">
-      <option value="">{% trans "All Types" %}</option>
-      <option value="analysis">{% trans "Analysis" %}</option>
-      <option value="extraction">{% trans "Extraction" %}</option>
-      <option value="visualization">{% trans "Visualization" %}</option>
-      <option value="transformation">{% trans "Transformation" %}</option>
-    </select>
   </div>
+</form>
+
+<div class="filter-dropdown">
+  <select id="type-filter">
+    <option value="">{% trans "All Types" %}</option>
+    <option value="analysis">{% trans "Analysis" %}</option>
+    <option value="extraction">{% trans "Extraction" %}</option>
+    <option value="visualization">{% trans "Visualization" %}</option>
+    <option value="transformation">{% trans "Transformation" %}</option>
+  </select>
 </div>
 
 {% if tools %}
@@ -706,15 +828,29 @@
 {% endif %}
 
 <script>
+  function resetFilters() {
+    document.getElementById('search').value = '';
+    document.querySelector('.filter-form').submit();
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById("tool-search");
+    const searchInput = document.getElementById("search");
     const statusFilter = document.getElementById("status-filter");
     const typeFilter = document.getElementById("type-filter");
     const table = document.getElementById("tools-table");
 
+    // Animation au focus de l'input - identique au corpus management
+    searchInput.addEventListener('focus', function() {
+      this.style.borderColor = '#4f46e5';
+    });
+
+    searchInput.addEventListener('blur', function() {
+      this.style.borderColor = '#ced4da';
+    });
+
     function filterTable() {
       const searchTerm = searchInput.value.toLowerCase();
-      const statusTerm = statusFilter.value.toLowerCase();
+      const statusTerm = statusFilter ? statusFilter.value.toLowerCase() : '';
       const typeTerm = typeFilter.value.toLowerCase();
       const rows = table.querySelectorAll("tbody tr");
 
@@ -727,34 +863,277 @@
           .textContent.toLowerCase();
         const statusText = row.querySelector(".status-badge")
           ? row.querySelector(".status-badge").textContent.toLowerCase()
-          : "";
+          : "";const matchesSearch = title.includes(searchTerm);
+        const matchesStatus = statusTerm === '' || statusText.includes(statusTerm);
+        const matchesType = typeTerm === '' || toolType.includes(typeTerm);
 
-        const matchesSearch = searchTerm === "" || title.includes(searchTerm);
-        const matchesStatus =
-          statusTerm === "" || statusText.includes(statusTerm);
-        const matchesType = typeTerm === "" || toolType.includes(typeTerm);
-
-        row.style.display =
-          matchesSearch && matchesStatus && matchesType ? "" : "none";
+        if (matchesSearch && matchesStatus && matchesType) {
+          row.style.display = "";
+          // Animation d'apparition
+          row.style.opacity = "0";
+          setTimeout(() => {
+            row.style.transition = "opacity 0.3s ease";
+            row.style.opacity = "1";
+          }, 50);
+        } else {
+          row.style.display = "none";
+        }
       });
+
+      // Vérifier s'il y a des résultats
+      const visibleRows = table.querySelectorAll("tbody tr[style=''], tbody tr:not([style])");
+      const emptyState = document.querySelector('.empty-state');
+      
+      if (visibleRows.length === 0 && !emptyState) {
+        showNoResultsMessage();
+      } else if (visibleRows.length > 0 && emptyState) {
+        hideNoResultsMessage();
+      }
     }
 
+    function showNoResultsMessage() {
+      const tableContainer = table.parentElement;
+      const noResultsDiv = document.createElement('div');
+      noResultsDiv.className = 'empty-state';
+      noResultsDiv.id = 'no-results-message';
+      noResultsDiv.innerHTML = `
+        <div class="empty-state-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <h3>No results found</h3>
+        <p>No tools match your search criteria. Try changing your filters.</p>
+        <button type="button" class="btn btn-outline" onclick="clearAllFilters()">
+         Clear filters
+        </button>
+      `;
+      table.style.display = 'none';
+      tableContainer.appendChild(noResultsDiv);
+    }
+
+    function hideNoResultsMessage() {
+      const noResultsMessage = document.getElementById('no-results-message');
+      if (noResultsMessage) {
+        noResultsMessage.remove();
+        table.style.display = 'table';
+      }
+    }
+
+    function clearAllFilters() {
+      searchInput.value = '';
+      if (statusFilter) statusFilter.value = '';
+      if (typeFilter) typeFilter.value = '';
+      filterTable();
+      hideNoResultsMessage();
+    }
+
+    // Événements de filtrage
     searchInput.addEventListener("input", filterTable);
-    statusFilter.addEventListener("change", filterTable);
-    typeFilter.addEventListener("change", filterTable);
+    if (statusFilter) statusFilter.addEventListener("change", filterTable);
+    if (typeFilter) typeFilter.addEventListener("change", filterTable);
 
-    // Effet visuel sur survol des lignes
-    const tableRows = document.querySelectorAll(".tools-table tbody tr");
-    tableRows.forEach((row) => {
-      row.addEventListener("mouseenter", () => {
-        row.style.transform = "translateY(-2px)";
-        row.style.transition = "transform 0.2s ease";
+    // Animation des boutons d'action au survol
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px) scale(1.05)';
+        this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
       });
+      
+      button.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+        this.style.boxShadow = 'none';
+      });
+    });
 
-      row.addEventListener("mouseleave", () => {
-        row.style.transform = "translateY(0)";
+    // Animation des lignes du tableau
+    const tableRows = document.querySelectorAll('.tools-table tbody tr');
+    tableRows.forEach((row, index) => {
+      row.style.animationDelay = `${index * 0.1}s`;
+      row.classList.add('fade-in-row');
+    });
+
+    // Confirmation de suppression
+    const deleteButtons = document.querySelectorAll('.action-btn-delete');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        const toolTitle = this.closest('tr').querySelector('.tool-title').textContent;
+        if (!confirm(`Are you sure you want to delete the tool? "${toolTitle}" `)) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Raccourcis clavier
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + K pour focus sur la recherche
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+      
+      // Escape pour effacer la recherche
+      if (e.key === 'Escape' && document.activeElement === searchInput) {
+        searchInput.value = '';
+        searchInput.blur();
+        filterTable();
+      }
+    });
+
+    // Sauvegarde des filtres dans le localStorage (si disponible)
+    function saveFilters() {
+      if (typeof(Storage) !== "undefined") {
+        const filters = {
+          search: searchInput.value,
+          status: statusFilter ? statusFilter.value : '',
+          type: typeFilter.value
+        };
+        localStorage.setItem('toolsFilters', JSON.stringify(filters));
+      }
+    }
+
+    function loadFilters() {
+      if (typeof(Storage) !== "undefined") {
+        const savedFilters = localStorage.getItem('toolsFilters');
+        if (savedFilters) {
+          const filters = JSON.parse(savedFilters);
+          searchInput.value = filters.search || '';
+          if (statusFilter) statusFilter.value = filters.status || '';
+          typeFilter.value = filters.type || '';
+          filterTable();
+        }
+      }
+    }
+
+    // Charger les filtres sauvegardés au chargement de la page
+    loadFilters();
+
+    // Sauvegarder les filtres à chaque changement
+    searchInput.addEventListener('input', saveFilters);
+    if (statusFilter) statusFilter.addEventListener('change', saveFilters);
+    typeFilter.addEventListener('change', saveFilters);
+
+    // Compteur de résultats
+    function updateResultsCount() {
+      const visibleRows = table.querySelectorAll("tbody tr[style=''], tbody tr:not([style*='display: none'])");
+      const totalRows = table.querySelectorAll("tbody tr").length;
+      
+      let countDisplay = document.getElementById('results-count');
+      if (!countDisplay) {
+        countDisplay = document.createElement('div');
+        countDisplay.id = 'results-count';
+        countDisplay.style.cssText = `
+          color: #718096;
+          font-size: 0.9rem;
+          margin-top: 1rem;
+          text-align: center;
+        `;
+        table.parentElement.appendChild(countDisplay);
+      }
+      
+      if (visibleRows.length !== totalRows) {
+        countDisplay.textContent = `Display of ${visibleRows.length} on ${totalRows} tools`;
+      } else {
+        countDisplay.textContent = `${totalRows} tool${totalRows > 1 ? 's' : ''}`;
+      }
+    }
+
+    // Mettre à jour le compteur initialement et après chaque filtrage
+    updateResultsCount();
+    
+    const originalFilterTable = filterTable;
+    filterTable = function() {
+      originalFilterTable();
+      updateResultsCount();
+    };
+
+    // Tooltip pour les boutons d'action
+    const tooltipButtons = document.querySelectorAll('[title]');
+    tooltipButtons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'custom-tooltip';
+        tooltip.textContent = this.getAttribute('title');
+        tooltip.style.cssText = `
+          position: absolute;
+          background: #2d3748;
+          color: white;
+          padding: 0.5rem 0.75rem;
+          border-radius: 6px;
+          font-size: 0.8rem;
+          z-index: 1000;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.2s;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        `;
+        
+        document.body.appendChild(tooltip);
+        
+        const rect = this.getBoundingClientRect();
+        tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+        tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+        
+        setTimeout(() => tooltip.style.opacity = '1', 10);
+        
+        this.addEventListener('mouseleave', function() {
+          tooltip.remove();
+        }, { once: true });
       });
     });
   });
+
+  // Fonction globale pour réinitialiser les filtres (appelée depuis le HTML)
+  function resetFilters() {
+    document.getElementById('search').value = '';
+    const statusFilter = document.getElementById('status-filter');
+    const typeFilter = document.getElementById('type-filter');
+    
+    if (statusFilter) statusFilter.value = '';
+    if (typeFilter) typeFilter.value = '';
+    
+    // Déclencher l'événement de filtrage
+    const event = new Event('input', { bubbles: true });
+    document.getElementById('search').dispatchEvent(event);
+    
+    // Effacer les filtres sauvegardés
+    if (typeof(Storage) !== "undefined") {
+      localStorage.removeItem('toolsFilters');
+    }
+  }
+
+  // Fonction pour exporter les outils (fonctionnalité bonus)
+  function exportTools() {
+    const visibleRows = document.querySelectorAll('.tools-table tbody tr[style=""], .tools-table tbody tr:not([style*="display: none"])');
+    const tools = [];
+    
+    visibleRows.forEach(row => {
+      const title = row.querySelector('.tool-title').textContent;
+      const type = row.querySelector('.tool-type').textContent.trim();
+      const date = row.querySelector('.tool-meta').textContent.trim();
+      
+      tools.push({
+        title: title,
+        type: type,
+        date: date
+      });
+    });
+    
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Title,Type,Date\n"
+      + tools.map(tool => `"${tool.title}","${tool.type}","${tool.date}"`).join("\n");
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "tools_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
 </script>
-{% endblock %}
+{%endblock%}

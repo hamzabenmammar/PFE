@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
+from accounts import models
+from django.db.models import Q
 from notifications.services import NotificationService
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
@@ -67,6 +69,7 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search_form'] = EventSearchForm(self.request.GET or None)
+        context['page']= 'events'
         return context
 
 
@@ -80,8 +83,21 @@ class EventDetailView(DetailView):
     def get_queryset(self):
         """Add related objects and filter based on user permissions."""
         queryset = Event.objects.select_related('organizer', 'created_by')
-        if not self.request.user.is_staff:
+        
+        # Allow staff to see all events
+        if self.request.user.is_staff:
+            return queryset
+        
+        # Allow authenticated users to see approved events OR their own events
+        if self.request.user.is_authenticated:
+            queryset = queryset.filter(
+                Q(is_approved=True) | 
+                Q(created_by=self.request.user)
+            )
+        else:
+            # Anonymous users can only see approved events
             queryset = queryset.filter(is_approved=True)
+        
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -97,6 +113,13 @@ class EventDetailView(DetailView):
             
         # Add registration count
         context['registration_count'] = self.object.registrations.count()
+        context['page'] = 'events'
+        
+        # Add approval status for creators/staff
+        if (self.request.user.is_authenticated and 
+            (self.request.user == self.object.created_by or self.request.user.is_staff)):
+            context['show_approval_status'] = True
+        
         return context
 
 
@@ -121,8 +144,8 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             NotificationService.notify_group(
                 active_users,
                 'EVENT_APPROVED',
-                f"Nouvel événement approuvé : {self.object.title}",
-                f"Un nouvel événement a été approuvé : {self.object.title}. Date : {self.object.start_date}",
+                f"New event approved : {self.object.title}",
+                f"A new event has been approved: {self.object.title}. Date : {self.object.start_date}",
                 self.object
             )
             return redirect(self.object.get_absolute_url())
@@ -135,11 +158,15 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             NotificationService.create_notification(
                 recipient=self.request.user,
                 notification_type='EVENT_CREATED',
-                title="Votre événement est en attente d'approbation",
-                message=f"Votre événement '{self.object.title}' a été créé et est en attente d'approbation par un administrateur.",
+                title="Your event is awaiting approval",
+                message=f"Your event '{self.object.title}' has been created and is awaiting approval by an administrator.",
                 related_object=self.object
             )
             return redirect('events:event_list')
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'events'  
+            return context
 
 
 class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -166,6 +193,10 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             messages.success(self.request, _('Event updated successfully!'))
             
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'events'  
+            return context
 
 
 class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -184,6 +215,10 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         event_title = self.get_object().title
         messages.success(request, _('Event "{}" deleted successfully.').format(event_title))
         return super().delete(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'events'  
+            return context
 
 
 def register_for_event(request, pk):
@@ -248,8 +283,8 @@ def event_validate(request, pk):
     NotificationService.create_notification(
         recipient=event.created_by,
         notification_type='EVENT_APPROVED',
-        title="Votre événement a été approuvé",
-        message=f"Votre événement '{event.title}' a été approuvé et est maintenant visible par tous les utilisateurs.",
+        title="Your event has been approved",
+        message=f"Your event '{event.title}' has been approved and is now visible to all users.",
         related_object=event
     )
     

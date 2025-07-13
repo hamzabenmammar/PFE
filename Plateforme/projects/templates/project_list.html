@@ -5,7 +5,7 @@
 {% endblock %} {% block content %}
 <div class="content">
   <div class="projects-header">
-    <h1 class="page-title">Projects</h1>
+   
     <div class="projects-actions">
       <form method="get" class="search-form">
         <div class="search-wrapper">
@@ -239,7 +239,7 @@
   }
 
   .search-input {
-    padding: 8px 12px;
+    padding: 8px 10px;
     border: none;
     outline: none;
     font-size: 14px;
@@ -277,7 +277,8 @@
 
   /* Filter styles */
   .filter-status select {
-    padding: 8px 12px;
+    padding: 8px ;
+    padding-right: 30px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
@@ -361,18 +362,18 @@
     font-weight: 500;
   }
 
-  .status-badge.status-ongoing {
-    background-color: #ffca28; /* Jaune/Orange */
-    color: #8d6e00; /* Texte plus sombre pour le contraste */
-  }
-
-  .status-badge.status-completed {
-    background-color: #4caf50; /* Vert */
+  .status-badge {
+    background-color: #ffca28; 
     color: white;
   }
 
-  .status-badge.status-planned {
-    background-color: #64b5f6; /* Bleu */
+  .status-badge.status-Réalisé {
+    background-color: #4caf50; 
+    color: white;
+  }
+
+  .status-badge.status-Planifié {
+    background-color: #64b5f6; 
     color: white;
   }
 

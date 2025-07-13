@@ -294,15 +294,7 @@
         font-size: 1rem;
     }
 
-    .institution-acronym {
-        background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-        color: #3730a3;
-        padding: 0.25rem 0.75rem;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
+  
 
     .country-badge {
         background: linear-gradient(135deg, #fef3c7, #fde68a);
@@ -576,23 +568,9 @@
         </div>
     </div>
 
-    <!-- Statistics -->
-    <div class="stats-container animate-fade-in">
-        <div class="stat-card">
-            <div class="stat-icon institutions">
-                <i class="fas fa-university"></i>
-            </div>
-            <div class="stat-number">{{ total_institutions }}</div>
-            <div class="stat-label">{% trans "Total Institutions" %}</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon countries">
-                <i class="fas fa-globe"></i>
-            </div>
-            <div class="stat-number">{{ total_countries }}</div>
-            <div class="stat-label">{% trans "Countries" %}</div>
-        </div>
-    </div>
+    
+    
+        
 
     <!-- Filter Section -->
     <div class="filter-section animate-fade-in">
@@ -605,15 +583,7 @@
                 <label class="form-label">{% trans "Search" %}</label>
                 <input type="text" class="form-control" name="search" value="{{ request.GET.search }}" placeholder="{% trans "Institution name or acronym…" %}">
             </div>
-            <div class="form-group">
-                <label class="form-label">{% trans "Country" %}</label>
-                <select class="form-control" name="country">
-                    <option value="">{% trans "All countries" %}</option>
-                    {% for country in countries %}
-                    <option value="{{ country }}" {% if request.GET.country == country %}selected{% endif %}>{{ country }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+           
             <div class="form-group">
                 <button type="submit" class="btn-filter">
                     <i class="fas fa-search me-2"></i>{% trans "Search" %}

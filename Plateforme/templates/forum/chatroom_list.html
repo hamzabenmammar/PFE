@@ -39,10 +39,19 @@
             </div>
             
             <div class="chatroom-card-footer">
-                <a href="{% url 'forum:chatroom-detail' chatroom.id %}" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> {% trans "Join the discussion" %}
-                </a>
-            </div>
+    <a href="{% url 'forum:chatroom-detail' chatroom.id %}" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i> {% trans "Join the discussion" %}
+    </a>
+
+   {% if request.user.is_authenticated and request.user == chatroom.creator or request.user.is_staff %}
+        <a href="{% url 'forum:chatroom-update' chatroom.pk %}" class="btn btn-outline ms-2">
+            <i class="fas fa-edit"></i> {% trans "Edit" %}
+        </a>
+        <a href="{% url 'forum:chatroom-delete' chatroom.pk %}" class="btn btn-outline-danger ms-2">
+            <i class="fas fa-trash-alt"></i> {% trans "Delete" %}
+        </a>
+    {% endif %}
+</div>
         </div>
         {% endfor %}
     </div>

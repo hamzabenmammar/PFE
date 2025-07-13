@@ -245,22 +245,29 @@ body {
 
 .resource-type-badge {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: var(--primary-color);
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--primary-color); 
   color: var(--light-text);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: flex;
+  padding: 0.15rem 0.6rem;
+  border-radius: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  z-index: 1;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  white-space: nowrap;
+}
+
+.resource-type-badge:hover {
+  transform: scale(1.05);
 }
 
 .resource-type-badge i {
-  font-size: 0.9rem;
+  font-size: 0.1rem;
+  
 }
 
 .resource-card img {
@@ -297,11 +304,17 @@ body {
 }
 
 p.resource-content {
+  
   font-size: 1rem;
   color: #555;
   margin-bottom: 1rem;
   line-height: 1.5;
   flex-grow: 1;
+  transition: transform 0.2s ease-in-out;
+}
+.viewed-resources{
+  padding : 1.7rem;
+
 }
 
 .resource-meta {

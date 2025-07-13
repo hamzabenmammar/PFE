@@ -31,14 +31,16 @@
         position: absolute;
         top: 0px;
         right: -5px;
-        padding: 2px 6px;
+        padding: 2px;
+        padding-right: 6px;
+
         border-radius: 50%;
         background-color: #dc3545; /* Rouge */
         color: white;
         font-size: 0.7em;
         font-weight: bold;
         text-align: center;
-        min-width: 18px; /* Largeur minimale pour les nombres à 1 chiffre */
+        min-width: 18px; 
         height: 18px;
         line-height: 14px;
       }
@@ -95,6 +97,7 @@
   .lang-en:hover {
     background-color: #1d4ed8;
     border-color: #1d4ed8;
+    color : white
   }
   .lang-ar {
     background-color: white;
@@ -201,35 +204,35 @@
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
                 <ul class="sidebar-menu">
-                    <li><a {% if page == 'pages:home' %}class="active"{% endif %} href="{% url 'pages:home' %}">
+                    <li><a href="{% url 'pages:home' %}" class="{% if page == 'home' %}active{% endif %}">
                         <i class="fas fa-home"></i> {% trans "Home" %} 
                     </a></li>
-                    <li><a {% if page == 'corpus' %}class="active"{% endif %} href="{% url 'resources:corpus_list' %}">
+                    <li><a href="{% url 'resources:corpus_list' %}" class="{% if page == 'corpus' %}active{% endif %}">
                         <i class="fas fa-database"></i>{% trans "Corpus" %}  
                     </a></li>
-                    <li><a {% if page == 'tools' %}class="active"{% endif %} href="{% url 'resources:tool_list' %}">
+                    <li><a href="{% url 'resources:tool_list' %}" class="{% if page == 'tools' %}active{% endif %}">
                         <i class="fas fa-tools"></i> {% trans "Tools" %} 
                     </a></li>
-                    <li><a {% if page == 'resources' %}class="active"{% endif %} href="{% url 'resources:list' %}">
+                    <li><a class="{% if page == 'resources' %} active {% endif %}" href="{% url 'resources:list' %}">
                         <i class="fas fa-archive"></i> {% trans "Resources" %} 
                     </a></li>
-                    <li><a {% if page == 'research_projects' %}class="active"{% endif %} href="{% url 'projects:project_list' %}">
+                    <li><a href="{% url 'projects:project_list' %}" class="{% if page == 'research_projects' %}active{% endif %}">
                         <i class="fas fa-flask"></i> {% trans "Research Projects" %} 
                     </a></li>
-                    <li><a {% if page == 'community' %}class="active"{% endif %} href="{% url 'forum:topic-list' %}">
+                    <li><a class="{% if page == 'community' %} active {% endif %}" href="{% url 'forum:topic-list' %}">
                         <i class="fas fa-users"></i> {% trans "Community" %} 
                     </a></li>
-                    <li><a {% if page == 'feed' %}class="active"{% endif %} href="{% url 'QA:feed' %}">
+                    <li><a class="{% if page == 'feed' %}active{% endif %}" href="{% url 'QA:feed' %}">
                         <i class="fas fa-newspaper"></i> {% trans "News" %} 
                     </a></li>
-                    <li><a {% if page == 'events' %}class="active"{% endif %} href="{% url 'events:event_list' %}">
+                    <li><a class="{% if page == 'events' %} active{% endif %}" href="{% url 'events:event_list' %}">
                         <i class="fas fa-calendar-alt"></i> {% trans "Events" %} 
                     </a></li>
-                    <li><a {% if page == 'cours' %}class="active"{% endif %} href="{% url 'resources:course_list' %}">
+                    <li><a class="{% if page == 'course' %} active{% endif %}" href="{% url 'resources:course_list' %}">
                         <i class="fas fa-graduation-cap"></i> {% trans "Courses" %} 
                     </a></li>
                     <li>
-                        <a {% if page == 'institutions' %}class="active"{% endif %} href="{% url 'institutions:institution_list' %}" aria-label="Institutions">
+                        <a class="{% if page == 'institutions' %} active{% endif %}" href="{% url 'institutions:institution_list' %}" aria-label="Institutions">
                           <i class="fas fa-university"></i> {% trans "Institutions" %} 
                         </a>
                       </li>
@@ -297,7 +300,7 @@
                             <li><a href="{% url 'forum:topic-list' %}">{% trans "Forum" %}</a></li>
                             <li><a href="{% url 'projects:project_list' %}">{% trans "Research Projects" %}</a></li>
                             <li><a href="{% url 'events:event_list' %}">{% trans "Events" %}</a></li>
-                            <li><a href="{% url 'pages:home' %}#contributors">{% trans "Contributors" %}</a></li>
+                           
                         </ul>
                     </div>
                     <div class="footer-column">
@@ -314,11 +317,7 @@
         <div class="footer-bottom">
             <div class="container">
                 <p class="copyright">© {% now "Y" %}{% trans "Arabic NLP Platform. All rights reserved." %} </p>
-                <div class="legal-links">
-                    <a href="{% url 'pages:home' %}">{% trans "Privacy Policy" %}</a>
-                    <a href="{% url 'pages:home' %}">{% trans "Terms of Service" %}</a>
-                    <a href="{% url 'pages:home' %}">{% trans "About Us" %}</a>
-                </div>
+               
             </div>
         </div>
     </footer>
@@ -327,6 +326,8 @@
 
     
     <script>
+
+        
         // Mobile menu toggle
         document.getElementById('sidebarToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('active');

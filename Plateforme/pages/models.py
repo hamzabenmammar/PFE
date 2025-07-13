@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
+User = get_user_model()
+
 class Stats(models.Model):
     """Model for platform statistics"""
     date = models.DateField(_('date'), unique=True, default=timezone.now)
@@ -206,6 +208,54 @@ def status_change_stats():
         'recent_changes': recent_changes
     }
 """
+
+class ContactMessage(models.Model):
+    SUBJECT_CHOICES = [
+        ('general', 'General Inquiry'),
+        ('technical', 'Technical Support'),
+        ('suggestion', 'Suggestion'),
+        ('bug', 'Bug Report'),
+        ('other', 'Other'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('read', 'Read'),
+        ('replied', 'Replied'),
+        ('closed', 'Closed'),
+    ]
+    
+    # Utilisateur qui envoie le message (optionnel pour les non-connectés)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    
+    # Informations de contact pour les utilisateurs non connectés
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    
+    # Contenu du message
+    subject = models.CharField(max_length=20, choices=SUBJECT_CHOICES, default='general')
+    message = models.TextField()
+    
+    # Métadonnées
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    admin_response = models.TextField(blank=True, null=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+    responded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='admin_responses')
+    
+    class Meta:
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f"{self.name} - {self.get_subject_display()}"
+    
+    def save(self, *args, **kwargs):
+        # Si l'utilisateur est connecté, préremplir les informations
+        if self.user and not self.name:
+            self.name = f"{self.user.first_name} {self.user.last_name}".strip() or self.user.username
+        if self.user and not self.email:
+            self.email = self.user.email
+        super().save(*args, **kwargs)
 
 
 

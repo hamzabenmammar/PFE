@@ -5,7 +5,7 @@
     <h1 class="page-title">Update Project</h1>
     
     <div class="form-container">
-        <form method="post" class="update-form">
+        <form method="post" enctype="multipart/form-data" class="update-form">
             {% csrf_token %}
             <div class="form-fields">
                 {% for field in form %}

@@ -230,7 +230,7 @@ function updateNotificationDropdown() {
       if (data.notifications.length === 0) {
         notificationBody.innerHTML = `
                     <div class="dropdown-item text-center py-3">
-                        <p class="m-0 text-muted">Aucune notification non lue</p>
+                        <p class="m-0 text-muted">No unread notifications</p>
                     </div>
                 `;
         return;
@@ -371,7 +371,7 @@ function displayNotifications(notifications) {
   if (notifications.length === 0) {
     notificationList.innerHTML = `
             <div class="text-center py-5">
-                <p class="text-muted">Aucune notification.</p>
+                <p class="text-muted">No notifications.</p>
             </div>
         `;
     return;

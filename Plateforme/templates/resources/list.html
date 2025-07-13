@@ -54,16 +54,8 @@
                     <div class="history-panel" id="queryHistory"></div>
                 </div>
                 
-                <!-- Type Selection -->
-                <select name="type" class="type-select" id="contentTypeSelect">
-                    <option value="">{% trans "Tous les types" %}</option>
-                    <option value="article" {% if request.GET.type == 'article' %}selected{% endif %}>{% trans "Articles" %}</option>
-                    <option value="thesis" {% if request.GET.type == 'thesis' %}selected{% endif %}>{% trans "Thesis" %}</option>
-                    <option value="memoir" {% if request.GET.type == 'memoir' %}selected{% endif %}>{% trans "Memoirs" %}</option>
-                    <option value="tool" {% if request.GET.type == 'tool' %}selected{% endif %}>{% trans "Tools" %}</option>
-                    <option value="course" {% if request.GET.type == 'course' %}selected{% endif %}>{% trans "Courses" %}</option>
-                    <option value="corpus" {% if request.GET.type == 'corpus' %}selected{% endif %}>{% trans "Corpus" %}</option>
-                </select>
+               
+                
                 
                 <!-- Action Buttons -->
                 <button type="submit" class="action-button submit-action">

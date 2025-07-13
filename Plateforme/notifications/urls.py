@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/count/', views.api_notification_count, name='api_notification_count'),
     path('api/list/filtered/', views.api_notification_list_filtered, name='api_list_filtered'),
     path('mark-all-read/', views.mark_all_read, name='mark_all_read'),
+    path('delete-all/', views.delete_all_notifications, name='delete_all'),
     path('mark-read/<uuid:notification_id>/', views.mark_read, name='mark_read'),
     path('ajax/count/', views.api_notification_count, name='ajax_count'),
 ]

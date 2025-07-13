@@ -109,9 +109,12 @@ def qa_home(request):
         'recent_posts': recent_posts,
         'recent_questions': recent_questions,
         'resources': resources,
+         'page': 'feed'
     }
     
+    
     return render(request, 'QA/qa_home.html', context)
+
 
 @login_required
 @login_and_verified_required
@@ -122,7 +125,8 @@ def feed(request):
     return render(request, 'QA/feed.html', {
         'posts': posts,
         'post_form': post_form,
-        'comment_form': comment_form
+        'comment_form': comment_form,
+        'page': 'feed'
     })
 
 @login_required
@@ -136,7 +140,11 @@ def create_post(request):
             post.save()
             messages.success(request, 'Your post has been successfully created.')
             return redirect('QA:feed')
+        
     return redirect('QA:feed')
+
+
+
 
 @login_required
 @login_and_verified_required
@@ -145,7 +153,8 @@ def post_detail(request, slug):
     comment_form = CommentForm()
     return render(request, 'QA/post_detail.html', {
         'post': post,
-        'comment_form': comment_form
+        'comment_form': comment_form,
+        'page': 'feed'
     })
 
 @login_required
@@ -308,7 +317,8 @@ def edit_post(request, post_id):
 
     return render(request, 'QA/edit_post.html', {
         'form': form,
-        'post': post
+        'post': post , 
+        'page': 'feed'
     })
 
 @login_required
@@ -335,3 +345,4 @@ def edit_comment(request, comment_id):
         messages.success(request, 'Your comment has been edited.')
     
     return redirect('QA:post_detail', slug=comment.post.slug)
+

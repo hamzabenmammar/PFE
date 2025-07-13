@@ -7,17 +7,24 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from notifications.models import Notification
 from notifications.services import NotificationService
 from accounts.views import LoginAndVerifiedRequiredMixin
 from django.utils import timezone
 from django.http import HttpResponseForbidden, JsonResponse
 
 class TopicListView(LoginAndVerifiedRequiredMixin, ListView):
-    model = Topic
-    template_name = 'forum/topic_list.html'  # Ajout du préfixe 'forum/'
-    context_object_name = 'topics'
-    ordering = ['-created_at']  # Tri par date de création décroissante
+        model = Topic
+        template_name = 'forum/topic_list.html'  # Ajout du préfixe 'forum/'
+        context_object_name = 'topics'
+        ordering = ['-created_at']  # Tri par date de création décroissante
+
+        def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
+
+       
+        
 
 class TopicCreateView(LoginAndVerifiedRequiredMixin, CreateView):
     model = Topic
@@ -42,6 +49,10 @@ class TopicCreateView(LoginAndVerifiedRequiredMixin, CreateView):
                     related_object=form.instance # Optionnel: lie la notification à l'objet Topic créé
                 )
         return response
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
 
 class TopicUpdateView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Topic
@@ -51,7 +62,12 @@ class TopicUpdateView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Update
     context_object_name = 'topic'
     
     def test_func(self):
-        return self.get_object().creator == self.request.user
+        topic = self.get_object()
+        return topic.creator == self.request.user or self.request.user.is_staff or self.request.user.is_superuser
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
 
 class TopicDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Topic
@@ -60,17 +76,22 @@ class TopicDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Delete
     context_object_name = 'topic'
     
     def test_func(self):
-        return self.get_object().creator == self.request.user
+        topic = self.get_object()
+        return topic.creator == self.request.user or self.request.user.is_staff or self.request.user.is_superuser
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
 
 class TopicDetailView(LoginAndVerifiedRequiredMixin, DetailView):
     model = Topic
-    template_name = 'forum/topic_detail.html' # Nous devrons créer ce template
+    template_name = 'forum/topic_detail.html' 
     context_object_name = 'topic'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Vous pouvez ajouter ici des données supplémentaires au contexte, par exemple les chatrooms liées
         context['chatrooms'] = self.object.chatrooms.all()
+        context['page'] = 'community'  
         return context
 
 class ChatRoomListView(LoginAndVerifiedRequiredMixin, ListView):
@@ -85,6 +106,10 @@ class ChatRoomListView(LoginAndVerifiedRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['topic_id'] = Topic.objects.get(id=self.kwargs.get('topic_id'))  # pour afficher le nom du topic si besoin
+
+        context['page'] = 'community'
+
+        
         return context
 
 class ChatRoomDetailView(LoginAndVerifiedRequiredMixin, DetailView):
@@ -96,6 +121,7 @@ class ChatRoomDetailView(LoginAndVerifiedRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['messages'] = Message.objects.filter(chatroom=self.object).order_by('timestamp')
         context['banned_users'] = BannedUser.objects.filter(chatroom=self.object)
+        context['page'] = 'community'
         return context
     
     def dispatch(self, request, *args, **kwargs):
@@ -163,6 +189,10 @@ class ChatRoomCreateView(LoginAndVerifiedRequiredMixin, CreateView):
     
     def get_success_url(self):
         return reverse_lazy('forum:chatroom-detail', kwargs={'pk': self.object.pk})
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
 
 class ChatRoomUpdateView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ChatRoom
@@ -176,6 +206,10 @@ class ChatRoomUpdateView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Upd
     
     def get_success_url(self):
         return reverse_lazy('forum:chatroom-detail', kwargs={'pk': self.object.pk})
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['page'] = 'community'  
+            return context
 
 class ChatRoomDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DeleteView):
     model = ChatRoom
@@ -187,7 +221,13 @@ class ChatRoomDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, Del
         return self.request.user.is_staff or chatroom.creator == self.request.user
     
     def get_success_url(self):
-        return reverse_lazy('forum:topic-detail', kwargs={'pk': self.object.topic.pk})
+        # Rediriger vers la liste des chatrooms du topic parent
+        return reverse_lazy('forum:chatroom-list', kwargs={'topic_id': self.object.topic.pk})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page'] = 'community'  
+        return context
 
 class MessageDeleteView(LoginAndVerifiedRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Message

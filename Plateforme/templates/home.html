@@ -74,7 +74,7 @@
             >{{ post.content|truncatechars:10 }}</a
           >
         </h3>
-        <p class="resource-content">{{ post.content|truncatechars:100 }}</p>
+        <p class="resource-content ">{{ post.content|truncatechars:100 }}</p>
         <div class="resource-meta">
           <div class="resource-meta-item">
             <i class="fas fa-heart text-danger"></i> {{ post.total_likes }}
@@ -113,7 +113,7 @@
         ></i>
         {{ resource.resource_type_display }}
       </div>
-      <div class="resource-content">
+      <div class="viewed-resources">
         <h3 class="resource-title">
           <a href="{{ resource.get_absolute_url }}"
             >{{ resource.title|truncatechars:50 }}</a

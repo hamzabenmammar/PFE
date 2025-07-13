@@ -48,6 +48,7 @@ a {
   text-decoration: none;
   color: var(--primary-color);
   transition: var(--transition);
+  text-align: center;
 }
 
 a:hover {
@@ -118,7 +119,8 @@ a:hover {
 /* Authentication Buttons */
 .auth-buttons {
   display: flex;
-  gap: 12px;
+  gap: 54px;
+  
 }
 
 .btn {
@@ -225,6 +227,7 @@ a:hover {
   background-color: var(--primary-light);
   color: var(--primary-color);
 }
+
 
 .sidebar-menu a:hover i {
   color: var(--primary-color);

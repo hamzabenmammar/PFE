@@ -55,6 +55,11 @@ class ProjectMember(models.Model):
         ('accepted', 'Accepté'),
         ('rejected', 'Refusé'),
     )
+    LEAVE_REQUEST_STATUS_CHOICES = [
+        ('none', 'None'),
+        ('pending', 'Pending'),
+        ('rejected', 'Rejected'),
+    ]
     
     id = models.UUIDField(
         primary_key=True,
@@ -79,6 +84,13 @@ class ProjectMember(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    leave_request_status = models.CharField(
+        max_length=10, 
+        choices=LEAVE_REQUEST_STATUS_CHOICES, 
+        default='none'
+    )
+    leave_request_date = models.DateTimeField(null=True, blank=True)
+    
 
     class Meta:
         unique_together = ('project', 'member')
